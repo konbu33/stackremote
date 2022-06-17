@@ -45,5 +45,9 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Need camera access</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Need microphone access</string>
 </dict>
 </plist>

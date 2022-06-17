@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:stackremote/agora_video.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'home_page.dart';
-
-void main() {
+void main() async {
   runApp(const MyApp());
+  await dotenv.load(fileName: ".env");
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      // home: const HomePage(),
+      home: AgoraVideoPage(),
     );
   }
 }
