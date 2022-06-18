@@ -9,7 +9,7 @@ import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'package:stackremote/channel_create_widget.dart';
-// import 'package:stackremote/token_create_widget.dart';
+import 'package:stackremote/token_create_widget.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Define App ID and Token
@@ -139,13 +139,13 @@ class _AgoraVideoPageState extends State<AgoraVideoPage> {
                     child: const Text("leave channel")),
               ],
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //   children: const [
-            //     ChannelCreateWidget(),
-            //     TokenCreateWidget(),
-            //   ],
-            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                // ChannelCreateWidget(),
+                TokenCreateWidget(),
+              ],
+            ),
             Flexible(
               child: Stack(
                 children: [
