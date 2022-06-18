@@ -1,18 +1,21 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'package:stackremote/channel_create_widget.dart';
 // import 'package:stackremote/token_create_widget.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Define App ID and Token
-final String appId = dotenv.env["APP_ID"] ?? '';
-final String token = dotenv.env["Token"] ?? '';
-final String roomName = dotenv.env["RoomName"] ?? '';
+final String appId = dotenv.get("APP_ID");
+final String token = dotenv.get("Token");
+final String roomName = dotenv.get("RoomName");
 // const RoomName = '123';
 
 class AgoraVideoPage extends StatefulWidget {
@@ -38,8 +41,25 @@ class _AgoraVideoPageState extends State<AgoraVideoPage> {
       await [Permission.microphone, Permission.camera].request();
     }
 
+    // ログ出力
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    print("tempPath : ${tempPath}");
+
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+    print("tempPath : ${appDocPath}");
+
+    final LogConfig logConfig =
+        LogConfig(filePath: "${tempPath}/custom_agora.log");
+    // final LogConfig logConfig = LogConfig();
+    // LogConfig(filePath: "${tempPath}/custom_agora.log");
+
+    final RtcEngineContext context =
+        RtcEngineContext(appId, logConfig: logConfig);
+
     // Create RTC client instance
-    RtcEngineContext context = RtcEngineContext(appId);
+    // RtcEngineContext context = RtcEngineContext(appId);
     var engine = await RtcEngine.createWithContext(context);
     // Define event handling logic
     engine.setEventHandler(RtcEngineEventHandler(
