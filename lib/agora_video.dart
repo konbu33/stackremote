@@ -48,7 +48,7 @@ class _AgoraVideoPageState extends State<AgoraVideoPage> {
 
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String appDocPath = appDocDir.path;
-    print("tempPath : ${appDocPath}");
+    print("appDocPath : ${appDocPath}");
 
     final LogConfig logConfig =
         LogConfig(filePath: "${tempPath}/custom_agora.log");
