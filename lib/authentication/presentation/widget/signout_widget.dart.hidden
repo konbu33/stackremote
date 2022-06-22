@@ -1,0 +1,33 @@
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '/infrastructure/authentication_service_if.dart';
+import '/application/state/signout_state.dart';
+import '/application/providers.dart';
+
+class SignOutWidget extends HookConsumerWidget {
+  const SignOutWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final SignOutState state = ref.watch(Providers.signOutStateProvider);
+    final AuthenticationServiceIF notifier =
+        ref.watch(Providers.authenticationServiceProvider.notifier);
+
+    // SignOutボタン
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: ElevatedButton(
+        style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        )),
+        onPressed: () async {
+          await notifier.signOut();
+        },
+        child: Text(state.signOutButtonName),
+      ),
+    );
+  }
+}

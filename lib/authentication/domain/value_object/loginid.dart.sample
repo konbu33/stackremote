@@ -1,0 +1,28 @@
+import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
+
+part 'loginid.freezed.dart';
+
+@freezed
+class LoginId with _$LoginId {
+  // @Assert('value.length < 20')
+  const factory LoginId(
+    TextEditingController value,
+  ) = _LoginId;
+}
+
+class LoginIdConverter
+    implements JsonConverter<LoginId, TextEditingController> {
+  const LoginIdConverter();
+
+  @override
+  LoginId fromJson(TextEditingController value) {
+    return LoginId(value);
+  }
+
+  @override
+  TextEditingController toJson(LoginId loginid) {
+    return loginid.value;
+  }
+}
