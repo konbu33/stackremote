@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/agora_video.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:stackremote/custom_mouse_cursor/custom_mouse_cursor_overlay.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: const HomePage(),
-      home: AgoraVideoPage(),
+      home: CustomMouseCursorOverlayer(child: AgoraVideoPage()),
     );
   }
 }
