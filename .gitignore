@@ -55,3 +55,6 @@ lib/firebase_options.dart
 # Freezed
 lib/**/*.freezed.dart
 lib/**/*.g.dart
+
+# try
+lib/try

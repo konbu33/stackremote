@@ -45,7 +45,7 @@ class CustomMouseCursorOverlayer extends HookConsumerWidget {
             child,
             // ↓マウスカーソル↓
             // const CustomMouseCursor(),
-            if (state.isOnLongPressing) const CustomPositionedCursor(),
+            if (state.isOnLongPressing) const CustomMouseCursorPositioned(),
           ],
         ),
       ),

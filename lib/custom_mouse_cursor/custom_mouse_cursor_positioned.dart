@@ -7,8 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'custom_mouse_cursor.dart';
 import '../providers.dart';
 
-class CustomPositionedCursor extends HookConsumerWidget {
-  const CustomPositionedCursor({Key? key}) : super(key: key);
+class CustomMouseCursorPositioned extends HookConsumerWidget {
+  const CustomMouseCursorPositioned({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
