@@ -56,5 +56,8 @@ lib/firebase_options.dart
 lib/**/*.freezed.dart
 lib/**/*.g.dart
 
+# Flutter_gen
+lib/**/*.gen.dart
+
 # try
 lib/try
