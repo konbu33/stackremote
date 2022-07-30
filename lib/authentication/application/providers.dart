@@ -2,7 +2,9 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user_detail_page.dart';
 
+import '../../user_page.dart';
 import '../presentation/page/home_page.dart';
 import '../presentation/page/signin_page.dart';
 import '../presentation/page/signin_page_notifier.dart';
@@ -105,12 +107,16 @@ class Providers {
       return GoRouter(
         initialLocation: '/',
         routes: [
-          GoRoute(path: '/', builder: (context, state) => const HomePage()),
+          GoRoute(path: '/', builder: (context, state) => const UserPage()),
           GoRoute(path: '/home', builder: (context, state) => const HomePage()),
           GoRoute(
               path: '/signin', builder: (context, state) => const SignInPage()),
           GoRoute(
               path: '/signup', builder: (context, state) => const SignUpPage()),
+          GoRoute(path: '/user', builder: (context, state) => const UserPage()),
+          GoRoute(
+              path: '/userdetail',
+              builder: (context, state) => const UserDetailPage()),
           // GoRoute(
           //     path: '/todolist',
           //     builder: (context, state) => const TodoListPage()),
@@ -137,9 +143,9 @@ class Providers {
             }
           } else {
             if (state.subloc == '/signin') {
-              return '/home';
+              return '/';
             } else if (state.subloc == '/signup') {
-              return '/home';
+              return '/';
             } else {
               return null;
             }
