@@ -39,16 +39,19 @@ class SignInPage extends HookConsumerWidget {
               child: Column(
                 children: [
                   LoginIdFieldWidget(
+                    key: const ValueKey("loginIdTextFormField"),
                     state: state.loginIdFieldState,
                     notifier: state.loginIdFieldStateNotifier,
                   ),
                   const SizedBox(height: 30),
                   PasswordFieldWidget(
+                    key: const ValueKey("passwordTextFormField"),
                     state: state.passwordFieldState,
                     notifier: state.passwordFieldStateNotifier,
                   ),
                   const SizedBox(height: 40),
                   LoginSubmitWidget(
+                    key: const ValueKey("loginSubmitWidget"),
                     name: state.title,
                     state: state.loginSubmitState,
                     onSubmit: state.onSubmit,
