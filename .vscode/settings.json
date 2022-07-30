@@ -5,5 +5,6 @@
         "lib/**/*.gen.dart": true,
         "lib/**/*.dart.hidden": true,
         "lib/**/*.dart.sample": true,
+        "test/**/*.mocks.dart": true,
     }
 }
