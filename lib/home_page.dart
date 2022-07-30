@@ -32,11 +32,13 @@ class _HomePageState extends State<HomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
+              key: const ValueKey("counterField"),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        key: const ValueKey("incrementButton"),
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
