@@ -61,3 +61,8 @@ lib/**/*.gen.dart
 
 # try
 lib/try
+test/try
+integration_test/try
+
+# goldens_test
+test/goldens_test/goldens
