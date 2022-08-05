@@ -45,3 +45,27 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# flutter_dotenv
+*.env
+
+# Firebase
+lib/firebase_options.dart
+
+# Freezed
+lib/**/*.freezed.dart
+lib/**/*.g.dart
+
+# Flutter_gen
+lib/**/*.gen.dart
+
+# try
+lib/try
+test/try
+integration_test/try
+
+# goldens_test
+test/goldens_test/goldens
+
+# mockito 
+test/**/*.mocks.dart

@@ -1,0 +1,45 @@
+// import '/common/date_time_converter.dart';
+// import '/domain/value/detail.dart';
+import 'package:flutter/material.dart' hide Title;
+
+import 'title.dart.exsample';
+// import '/domain/value/todo_id.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
+
+import 'loginid.dart.sample';
+
+part 'todo_item.freezed.dart';
+part 'todo_item.g.dart';
+
+@freezed
+class TodoItem with _$TodoItem {
+  factory TodoItem({
+    // @TodoIdConverter() required TodoId id,
+    @TitleConverter() required Title title,
+    @LoginIdConverter() required LoginId loginid,
+    // @DetailConverter() required Detail detail,
+    // @Default(false) bool isDone,
+    // @DateTimeConverter() required DateTime createdAt,
+  }) = _TodoItem;
+
+  factory TodoItem.fromJson(Map<String, dynamic> json) =>
+      _$TodoItemFromJson(json);
+
+  factory TodoItem.initial() => TodoItem(
+        // id: const TodoId(null),
+        title: const Title(""),
+        loginid: LoginId(TextEditingController()),
+        // detail: const Detail(""),
+        // createdAt: DateTime.now(),
+      );
+
+  // TodoItem updateIsDone() {
+  //   return copyWith(
+  //     // id: id,
+  //     title: title,
+  //     // detail: detail,
+  //     // isDone: !isDone,
+  //   );
+  // }
+}

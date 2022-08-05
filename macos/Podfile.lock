@@ -1,0 +1,29 @@
+PODS:
+  - agora_rtc_engine (5.2.0):
+    - AgoraIrisRTC_macOS (= 3.6.2-fix.2)
+    - FlutterMacOS
+  - AgoraIrisRTC_macOS (3.6.2-fix.2)
+  - FlutterMacOS (1.0.0)
+
+DEPENDENCIES:
+  - agora_rtc_engine (from `Flutter/ephemeral/.symlinks/plugins/agora_rtc_engine/macos`)
+  - FlutterMacOS (from `Flutter/ephemeral`)
+
+SPEC REPOS:
+  trunk:
+    - AgoraIrisRTC_macOS
+
+EXTERNAL SOURCES:
+  agora_rtc_engine:
+    :path: Flutter/ephemeral/.symlinks/plugins/agora_rtc_engine/macos
+  FlutterMacOS:
+    :path: Flutter/ephemeral
+
+SPEC CHECKSUMS:
+  agora_rtc_engine: 36b2e1b7fee9d0d1e9c28dc45f45012db539a88a
+  AgoraIrisRTC_macOS: c60a91aba025d9c7ded292643ad27af6afdad2b4
+  FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
+
+PODFILE CHECKSUM: 6eac6b3292e5142cfc23bdeb71848a40ec51c14c
+
+COCOAPODS: 1.11.3
