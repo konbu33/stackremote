@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../user_detail_page.dart';
 import '../../../user_page.dart';
 import '../../application/providers.dart';
-import '../page/home_page.dart';
 import '../page/signin_page.dart';
 import '../page/signup_page.dart';
 
@@ -62,7 +61,7 @@ final routerProvider = Provider(
       initialLocation: '/',
       routes: [
         GoRoute(path: '/', builder: (context, state) => const UserPage()),
-        GoRoute(path: '/home', builder: (context, state) => const HomePage()),
+        // GoRoute(path: '/home', builder: (context, state) => const HomePage()),
         GoRoute(
             path: '/signin', builder: (context, state) => const SignInPage()),
         GoRoute(
