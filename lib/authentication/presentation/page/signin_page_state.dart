@@ -11,6 +11,11 @@ import '../widget/password_field_notifier.dart';
 
 part 'signin_page_state.freezed.dart';
 
+// --------------------------------------------------
+//
+//   Freezed
+//
+// --------------------------------------------------
 @freezed
 class SignInPageState with _$SignInPageState {
   const factory SignInPageState({
@@ -45,4 +50,31 @@ class SignInPageState with _$SignInPageState {
         onSubmit: onSubmit,
         useAuth: useAuth,
       );
+}
+
+// --------------------------------------------------
+//
+//  StateNotifier
+//
+// --------------------------------------------------
+class SignInPageNotifier extends StateNotifier<SignInPageState> {
+  SignInPageNotifier({
+    required LoginFormState loginFormState,
+    required LoginSubmitState loginSubmitState,
+    required LoginIdFieldState loginIdFieldState,
+    required LoginIdFieldStateNotifier loginIdFieldStateNotifier,
+    required PasswordFieldState passwordFieldState,
+    required PasswordFieldStateNotifier passwordFieldStateNotifier,
+    required Function onSubmit,
+    required Function useAuth,
+  }) : super(SignInPageState.initial(
+          loginFormState: loginFormState,
+          loginSubmitState: loginSubmitState,
+          loginIdFieldState: loginIdFieldState,
+          loginIdFieldStateNotifier: loginIdFieldStateNotifier,
+          passwordFieldState: passwordFieldState,
+          passwordFieldStateNotifier: passwordFieldStateNotifier,
+          onSubmit: onSubmit,
+          useAuth: useAuth,
+        ));
 }
