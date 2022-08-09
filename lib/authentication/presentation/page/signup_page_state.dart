@@ -19,7 +19,7 @@ part 'signup_page_state.freezed.dart';
 // --------------------------------------------------
 @freezed
 class SignUpPageState with _$SignUpPageState {
-  factory SignUpPageState({
+  factory SignUpPageState._({
     required LoginFormState loginFormState,
     required LoginIdFieldState loginIdFieldState,
     required LoginIdFieldStateNotifier loginIdFieldStateNotifier,
@@ -48,7 +48,7 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
     required Function onSubmit,
     required Function useAuth,
   }) : super(
-          SignUpPageState(
+          SignUpPageState._(
             loginFormState: loginFormState,
             loginIdFieldState: loginIdFieldState,
             loginIdFieldStateNotifier: loginIdFieldStateNotifier,
