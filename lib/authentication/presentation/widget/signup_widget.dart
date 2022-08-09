@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../application/providers.dart';
-
 class SignUpWidget extends HookConsumerWidget {
   const SignUpWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(Providers.signUpPageNotifierProvider);
     return
         // GestureDetector(
         //   onTap: () {
@@ -26,8 +23,8 @@ class SignUpWidget extends HookConsumerWidget {
         onPressed: () {
           context.push('/signup');
         },
-        icon: Icon(Icons.person_add),
-        tooltip: state.title,
+        icon: const Icon(Icons.person_add),
+        tooltip: "新規登録",
       ),
       // ),
     );

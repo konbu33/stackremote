@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../application/providers.dart';
 import '../../application/state/login_form_state.dart';
 import '../../application/state/login_submit_state.dart';
 import '../../application/state/loginid_field_state.dart';
@@ -59,3 +60,27 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
           ),
         );
 }
+
+// --------------------------------------------------
+//
+//  StateNotifierProvider
+//
+// --------------------------------------------------
+final signUpPageNotifierProvider =
+    StateNotifierProvider.autoDispose<SignUpPageStateNotifier, SignUpPageState>(
+        (ref) {
+  return SignUpPageStateNotifier(
+    loginFormState: ref.watch(Providers.signUpFormStateNotifierProvider),
+    loginIdFieldState:
+        ref.watch(Providers.signUpLoginIdFieldStateNotifierProvider),
+    loginIdFieldStateNotifier:
+        ref.read(Providers.signUpLoginIdFieldStateNotifierProvider.notifier),
+    passwordFieldState:
+        ref.watch(Providers.signUpPasswordFieldStateNotifierProvider),
+    passwordFieldStateNotifier:
+        ref.read(Providers.signUpPasswordFieldStateNotifierProvider.notifier),
+    loginSubmitState: ref.watch(Providers.signUpSubmitStateProvider),
+    onSubmit: ref.read(Providers.authenticationServiceProvider.notifier).signUp,
+    useAuth: ref.read(Providers.useAuthProvider),
+  );
+});
