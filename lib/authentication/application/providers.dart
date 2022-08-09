@@ -1,8 +1,6 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../presentation/page/signin_page_state.dart';
-import '../presentation/page/signup_page_state.dart';
 import '../presentation/widget/login_form_notifier.dart';
 import '../presentation/widget/loginid_field_notifier.dart';
 import '../presentation/widget/password_field_notifier.dart';
