@@ -85,7 +85,7 @@ class SignInPageNotifier extends StateNotifier<SignInPageState> {
 //  StateNotifierProvider
 //
 // --------------------------------------------------
-final SignInPageNotifierProvider =
+final signInPageNotifierProvider =
     StateNotifierProvider.autoDispose<SignInPageNotifier, SignInPageState>(
         (ref) => SignInPageNotifier(
               loginFormState:

@@ -17,7 +17,7 @@ class SignInPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // ref.read(Providers.useAuthProvider);
 
-    final state = ref.watch(SignInPageNotifierProvider);
+    final state = ref.watch(signInPageNotifierProvider);
     state.useAuth();
     // final notifier = ref.watch(Providers.SignInPageNotifierProvider.notifier);
 
