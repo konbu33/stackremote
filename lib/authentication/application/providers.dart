@@ -116,25 +116,6 @@ class Providers {
     return useAuth;
   });
 
-  static final SignInPageNotifierProvider =
-      StateNotifierProvider.autoDispose<SignInPageNotifier, SignInPageState>(
-          (ref) => SignInPageNotifier(
-                loginFormState: ref.watch(signInFormStateNotifierProvider),
-                loginSubmitState: ref.watch(signInSubmitStateProvider),
-                loginIdFieldState:
-                    ref.watch(signInLoginIdFieldStateNotifierProvider),
-                loginIdFieldStateNotifier: ref.read(
-                  signInLoginIdFieldStateNotifierProvider.notifier,
-                ),
-                passwordFieldState:
-                    ref.watch(signInPasswordFieldStateNotifierProvider),
-                passwordFieldStateNotifier:
-                    ref.read(signInPasswordFieldStateNotifierProvider.notifier),
-                onSubmit:
-                    ref.read(authenticationServiceProvider.notifier).signIn,
-                useAuth: ref.read(useAuthProvider),
-              ));
-
   static final signUpPageNotifierProvider = StateNotifierProvider.autoDispose<
       SignUpPageStateNotifier, SignUpPageState>((ref) {
     return SignUpPageStateNotifier(

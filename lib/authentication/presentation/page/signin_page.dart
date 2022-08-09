@@ -1,8 +1,5 @@
-import 'package:go_router/go_router.dart';
-// import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../application/providers.dart';
 import '../widget/background_image_widget.dart';
 import '../widget/base_layout_widget.dart';
 import '../widget/login_submit_widget.dart';
@@ -11,6 +8,8 @@ import '../widget/password_field_widget.dart';
 import '../widget/signup_widget.dart';
 import 'package:flutter/material.dart';
 
+import 'signin_page_state.dart';
+
 class SignInPage extends HookConsumerWidget {
   const SignInPage({Key? key}) : super(key: key);
 
@@ -18,7 +17,7 @@ class SignInPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // ref.read(Providers.useAuthProvider);
 
-    final state = ref.watch(Providers.SignInPageNotifierProvider);
+    final state = ref.watch(SignInPageNotifierProvider);
     state.useAuth();
     // final notifier = ref.watch(Providers.SignInPageNotifierProvider.notifier);
 
