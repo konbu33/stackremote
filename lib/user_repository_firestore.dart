@@ -21,25 +21,30 @@ class UserRepositoryFireBase implements UserRepository {
   @override
   Stream<Users> fetchAll() {
     // Firestore Data Stream Listen
-    final Stream<QuerySnapshot<JsonMap>> snapshotStream = ref.snapshots();
+    try {
+      final Stream<QuerySnapshot<JsonMap>> snapshotStream = ref.snapshots();
 
-    // Stream Data Transfar from Firestore Stream to Object Stream
-    Stream<Users> transferStream(
-        Stream<QuerySnapshot<JsonMap>> snapshotStream) async* {
-      // Out snapshot from Stream
-      await for (final snapshot in snapshotStream) {
-        // from Firestore Snapshot to User Type Object Collection.
-        final docDatas = snapshot.docs.map(((doc) {
-          final docData = doc.data();
-          return User.fromJson(docData);
-        })).toList();
+      // Stream Data Transfar from Firestore Stream to Object Stream
+      Stream<Users> transferStream(
+          Stream<QuerySnapshot<JsonMap>> snapshotStream) async* {
+        // Out snapshot from Stream
+        await for (final snapshot in snapshotStream) {
+          // from Firestore Snapshot to User Type Object Collection.
+          final docDatas = snapshot.docs.map(((doc) {
+            final docData = doc.data();
+            return User.fromJson(docData);
+          })).toList();
 
-        final Users users = Users.reconstruct(users: docDatas);
-        yield users;
+          final Users users = Users.reconstruct(users: docDatas);
+          yield users;
+        }
       }
-    }
 
-    return transferStream(snapshotStream);
+      return transferStream(snapshotStream);
+    } catch (e) {
+      print("error: $e");
+      rethrow;
+    }
   }
 
   @override
