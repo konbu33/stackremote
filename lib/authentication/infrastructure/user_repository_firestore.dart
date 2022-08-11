@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../domain/value_object/user.dart';
-import 'user_repository.dart';
-import '../domain/value_object/userid.dart';
+import '../domain/user.dart';
+import '../domain/user_repository.dart';
+import '../domain/userid.dart';
 // import 'users.dart';
 
 class UserRepositoryFireBase implements UserRepository {
