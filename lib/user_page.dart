@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/authentication/presentation/widget/signout_widget.dart';
 import 'package:stackremote/user_page_state.dart';
 
 class UserPage extends HookConsumerWidget {
@@ -18,6 +19,7 @@ class UserPage extends HookConsumerWidget {
         title: state.pageTitleWidget,
         actions: [
           state.userAddButton,
+          const SignOutWidget(),
         ],
       ),
       body: Column(
