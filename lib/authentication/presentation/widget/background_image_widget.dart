@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../common/gen/assets.gen.dart';
+import '../../common/assets.gen.dart';
 
 class BackgroundImageWidget extends StatelessWidget {
   const BackgroundImageWidget({Key? key, required this.child})
