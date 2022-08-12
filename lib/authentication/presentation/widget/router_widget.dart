@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../user_detail_page.dart';
 import '../../../user_page.dart';
-import '../../application/providers.dart';
+import '../../common/use_auth.dart';
 import '../page/signin_page.dart';
 import '../page/signup_page.dart';
 
@@ -67,8 +67,7 @@ final routerProvider = Provider(
             builder: (context, state) => const UserDetailPage()),
       ],
       redirect: (state) {
-        final loggedIn =
-            ref.watch(Providers.authenticationServiceProvider).loggedIn;
+        final loggedIn = ref.watch(authenticationServiceProvider).loggedIn;
         // print(
         //     "call go_router ridirect : ------------------------------- : loggedIn : ${loggedIn} , subloc : ${state.subloc}");
 
