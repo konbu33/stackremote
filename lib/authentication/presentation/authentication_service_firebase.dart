@@ -23,10 +23,6 @@ class AuthenticationServiceFirebase
     state = state.copyWith(loggedIn: flg);
   }
 
-  void toggleLoggedIn() {
-    state = state.copyWith(loggedIn: !state.loggedIn);
-  }
-
   @override
   void signUp(String email, String password) async {
     print("email : ${email}, password : ${password} ");
