@@ -7,26 +7,19 @@ class SignUpWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return
-        // GestureDetector(
-        //   onTap: () {
-        //     context.push('/signup');
-        //   },
-        //   child:
-        Container(
-      alignment: Alignment.center,
-      // color: Colors.amber,
-      margin: const EdgeInsets.only(right: 5),
-      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-      // child: const Text("新規登録"),
-      child: IconButton(
-        onPressed: () {
-          context.push('/signup');
-        },
-        icon: const Icon(Icons.person_add),
-        tooltip: "新規登録",
-      ),
-      // ),
-    );
+    return Builder(builder: (context) {
+      return Container(
+        alignment: Alignment.center,
+        margin: const EdgeInsets.only(right: 5),
+        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+        child: IconButton(
+          onPressed: () {
+            context.push('/signup');
+          },
+          icon: const Icon(Icons.person_add),
+          tooltip: "新規登録",
+        ),
+      );
+    });
   }
 }
