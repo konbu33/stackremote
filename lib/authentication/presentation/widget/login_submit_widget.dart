@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/presentation/widget/loginid_field_state.dart';
-
-import 'login_submit_state.dart';
-import 'password_field_state.dart';
 
 class LoginSubmitWidget extends HookConsumerWidget {
-  const LoginSubmitWidget({Key? key}) : super(key: key);
+  const LoginSubmitWidget({
+    Key? key,
+    required this.loginIdFieldStateProvider,
+    required this.passwordFieldStateProvider,
+    required this.loginSubmitStateProvider,
+  }) : super(key: key);
+
+  final loginIdFieldStateProvider;
+  final passwordFieldStateProvider;
+  final loginSubmitStateProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginIdFieldState = ref.watch(loginIdFieldStateNotifierProvider);
+    final loginIdFieldState = ref.watch(loginIdFieldStateProvider);
     final loginIdFieldStateNotifier =
-        ref.read(loginIdFieldStateNotifierProvider.notifier);
+        ref.read(loginIdFieldStateProvider.notifier);
 
-    final passwordFieldState = ref.watch(passwordFieldStateNotifierProvider);
+    final passwordFieldState = ref.watch(passwordFieldStateProvider);
     final passwordFieldStateNotifier =
-        ref.read(passwordFieldStateNotifierProvider.notifier);
+        ref.read(passwordFieldStateProvider.notifier);
 
-    final state = ref.watch(loginSubmitStateNotifierProvider);
+    final state = ref.watch(loginSubmitStateProvider);
 
     return Column(
       children: [
@@ -37,7 +42,7 @@ class LoginSubmitWidget extends HookConsumerWidget {
                         loginIdFieldState.loginIdFieldController.text;
                     final String password =
                         passwordFieldState.passwordFieldController.text;
-                    state.signIn(email, password);
+                    state.onSubmit(email, password);
 
                     loginIdFieldStateNotifier.initial();
                     passwordFieldStateNotifier.initial();
