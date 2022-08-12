@@ -1,11 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../../usecase/authentication_service_signin_usecase.dart';
-import '../authentication_service_firebase.dart';
 
 part 'login_submit_state.freezed.dart';
 
@@ -17,18 +14,19 @@ part 'login_submit_state.freezed.dart';
 @freezed
 class LoginSubmitState with _$LoginSubmitState {
   const factory LoginSubmitState._({
-    // Login Submit Widget
-    @Default("サインイン") String loginSubmitWidgetName,
     required Widget loginSubmitWidget,
-    required Function signIn,
+    required String loginSubmitWidgetName,
+    required Function onSubmit,
   }) = _LoginSubmitState;
 
-  factory LoginSubmitState.create() => LoginSubmitState._(
+  factory LoginSubmitState.create({
+    required String loginSubmitWidgetName,
+    required Function onSubmit,
+  }) =>
+      LoginSubmitState._(
+        loginSubmitWidgetName: loginSubmitWidgetName,
         loginSubmitWidget: const Placeholder(),
-        signIn: AuthenticationServiceSignInUsecase(
-                authenticationService: AuthenticationServiceFirebase(
-                    instance: FirebaseAuth.instance))
-            .execute,
+        onSubmit: onSubmit,
       );
 }
 
@@ -38,7 +36,13 @@ class LoginSubmitState with _$LoginSubmitState {
 //
 // --------------------------------------------------
 class LoginSubmitStateNotifier extends StateNotifier<LoginSubmitState> {
-  LoginSubmitStateNotifier() : super(LoginSubmitState.create());
+  LoginSubmitStateNotifier({
+    required String loginSubmitWidgetName,
+    required Function onSubmit,
+  }) : super(LoginSubmitState.create(
+          loginSubmitWidgetName: loginSubmitWidgetName,
+          onSubmit: onSubmit,
+        ));
 }
 
 // --------------------------------------------------
@@ -46,6 +50,6 @@ class LoginSubmitStateNotifier extends StateNotifier<LoginSubmitState> {
 //  StateNotifierProvider
 //
 // --------------------------------------------------
-final loginSubmitStateNotifierProvider =
-    StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>(
-        (ref) => LoginSubmitStateNotifier());
+// final loginSubmitStateNotifierProvider =
+//     StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>(
+//         (ref) => LoginSubmitStateNotifier());
