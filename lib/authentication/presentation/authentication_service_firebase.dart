@@ -1,17 +1,21 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../application/state/authentication_service_state.dart';
-import 'authentication_service_if.dart';
+import '../usecase/authentication_service.dart';
+import 'authentication_service_state.dart';
 
 class AuthenticationServiceFirebase
     extends StateNotifier<AuthenticationServiceState>
-    implements AuthenticationServiceIF {
-  AuthenticationServiceFirebase() : super(AuthenticationServiceState.initial());
+    implements AuthenticationService {
+  AuthenticationServiceFirebase({
+    required this.instance,
+  }) : super(AuthenticationServiceState.create());
+
+  final FirebaseAuth instance;
 
   @override
   Stream<User?> authStatusChanges() {
-    final Stream<User?> res = FirebaseAuth.instance.authStateChanges();
+    final Stream<User?> res = instance.authStateChanges();
     return res;
   }
 
@@ -26,14 +30,14 @@ class AuthenticationServiceFirebase
   @override
   void signUp(String email, String password) async {
     print("email : ${email}, password : ${password} ");
-    final res = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
+    final res = await instance.createUserWithEmailAndPassword(
+        email: email, password: password);
     print("signUp : ${res}");
   }
 
   @override
   Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
+    await instance.signOut();
     print("signOut : ");
   }
 
@@ -41,8 +45,8 @@ class AuthenticationServiceFirebase
   void signIn(String email, String password) async {
     print("email : ${email}, password : ${password} ");
     try {
-      final res = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      final res = await instance.signInWithEmailAndPassword(
+          email: email, password: password);
     } on FirebaseAuthException catch (e) {
       print(e);
     }

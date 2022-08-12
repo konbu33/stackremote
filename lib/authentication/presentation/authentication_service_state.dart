@@ -6,7 +6,7 @@ part 'authentication_service_state.g.dart';
 
 @freezed
 class AuthenticationServiceState with _$AuthenticationServiceState {
-  const factory AuthenticationServiceState({
+  const factory AuthenticationServiceState._({
     required String loginid,
     required String password,
     @Default(false) bool loggedIn,
@@ -15,6 +15,6 @@ class AuthenticationServiceState with _$AuthenticationServiceState {
   factory AuthenticationServiceState.fromJson(Map<String, dynamic> json) =>
       _$AuthenticationServiceStateFromJson(json);
 
-  factory AuthenticationServiceState.initial() =>
-      const AuthenticationServiceState(loginid: '', password: '');
+  factory AuthenticationServiceState.create() =>
+      const AuthenticationServiceState._(loginid: '', password: '');
 }

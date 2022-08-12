@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/authentication/presentation/widget/loginid_field_state.dart';
 
-import '../../application/state/login_submit_state.dart';
+import 'login_submit_state.dart';
+import 'password_field_state.dart';
 
 class LoginSubmitWidget extends HookConsumerWidget {
-  const LoginSubmitWidget(
-      {Key? key,
-      required this.name,
-      required this.state,
-      required this.onSubmit})
-      : super(key: key);
-
-  final String name;
-  final LoginSubmitState state;
-  final Function onSubmit;
+  const LoginSubmitWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Submitボタン
+    final loginIdFieldState = ref.watch(loginIdFieldStateNotifierProvider);
+    final loginIdFieldStateNotifier =
+        ref.read(loginIdFieldStateNotifierProvider.notifier);
+
+    final passwordFieldState = ref.watch(passwordFieldStateNotifierProvider);
+    final passwordFieldStateNotifier =
+        ref.read(passwordFieldStateNotifierProvider.notifier);
+
+    final state = ref.watch(loginSubmitStateNotifierProvider);
+
     return Column(
       children: [
         SizedBox(
@@ -28,22 +30,22 @@ class LoginSubmitWidget extends HookConsumerWidget {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
             )),
-            onPressed: state.loginIdFieldState.isSubmitable &&
-                    state.passwordFieldState.isSubmitable
+            onPressed: loginIdFieldState.loginIdIsValidate.isValid &&
+                    passwordFieldState.passwordIsValidate.isValid
                 ? () {
-                    onSubmit(
-                        state.loginIdFieldState.loginidController.value.text,
-                        state.passwordFieldState.passwordController.value.text);
+                    final String email =
+                        loginIdFieldState.loginIdFieldController.text;
+                    final String password =
+                        passwordFieldState.passwordFieldController.text;
+                    state.signIn(email, password);
 
-                    state.loginIdFieldStateNotifier.init();
-                    state.passwordFieldStateNotifier.init();
+                    loginIdFieldStateNotifier.initial();
+                    passwordFieldStateNotifier.initial();
                   }
                 : null,
-            child: Text(name),
+            child: Text(state.loginSubmitWidgetName),
           ),
         ),
-        Text(
-            "${state.loginIdFieldState.isSubmitable}, ${state.passwordFieldState.isSubmitable}"),
       ],
     );
   }

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'user.dart';
-import 'user_repository.dart';
-import 'userid.dart';
-import 'users.dart';
+import '../domain/user.dart';
+import '../domain/user_repository.dart';
+import '../domain/userid.dart';
+// import 'users.dart';
 
 class UserRepositoryFireBase implements UserRepository {
   UserRepositoryFireBase({
@@ -18,34 +18,34 @@ class UserRepositoryFireBase implements UserRepository {
   @override
   late CollectionReference<JsonMap> ref;
 
-  @override
-  Stream<Users> fetchAll() {
-    // Firestore Data Stream Listen
-    try {
-      final Stream<QuerySnapshot<JsonMap>> snapshotStream = ref.snapshots();
+  // @override
+  // Stream<Users> fetchAll() {
+  //   // Firestore Data Stream Listen
+  //   try {
+  //     final Stream<QuerySnapshot<JsonMap>> snapshotStream = ref.snapshots();
 
-      // Stream Data Transfar from Firestore Stream to Object Stream
-      Stream<Users> transferStream(
-          Stream<QuerySnapshot<JsonMap>> snapshotStream) async* {
-        // Out snapshot from Stream
-        await for (final snapshot in snapshotStream) {
-          // from Firestore Snapshot to User Type Object Collection.
-          final docDatas = snapshot.docs.map(((doc) {
-            final docData = doc.data();
-            return User.fromJson(docData);
-          })).toList();
+  //     // Stream Data Transfar from Firestore Stream to Object Stream
+  //     Stream<Users> transferStream(
+  //         Stream<QuerySnapshot<JsonMap>> snapshotStream) async* {
+  //       // Out snapshot from Stream
+  //       await for (final snapshot in snapshotStream) {
+  //         // from Firestore Snapshot to User Type Object Collection.
+  //         final docDatas = snapshot.docs.map(((doc) {
+  //           final docData = doc.data();
+  //           return User.fromJson(docData);
+  //         })).toList();
 
-          final Users users = Users.reconstruct(users: docDatas);
-          yield users;
-        }
-      }
+  //         final Users users = Users.reconstruct(users: docDatas);
+  //         yield users;
+  //       }
+  //     }
 
-      return transferStream(snapshotStream);
-    } catch (e) {
-      print("error: $e");
-      rethrow;
-    }
-  }
+  //     return transferStream(snapshotStream);
+  //   } catch (e) {
+  //     print("error: $e");
+  //     rethrow;
+  //   }
+  // }
 
   @override
   Future<User> fetchById(String userId) async {

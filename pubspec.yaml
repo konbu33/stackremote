@@ -127,7 +127,7 @@ flutter:
     - assets/images/background_image_cloud_pink.png
       
 flutter_gen:
-  output: lib/authentication/common/gen/ # Optional (default: lib/gen/)
+  output: lib/authentication/common/ # Optional (default: lib/gen/)
   line_length: 80 # Optional (default: 80)
 
   # Optional

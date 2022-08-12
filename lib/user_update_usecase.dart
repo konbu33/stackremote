@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:stackremote/user.dart';
 
 import 'user_repository.dart';
@@ -16,11 +17,20 @@ class UserUpdateUseCase {
   void execute(
     UserId userId,
     String email,
-    String password,
-  ) {
+    String password, {
+    Offset? cursorPosition,
+    bool? isOnLongPressing,
+  }) {
     // Construct Dimain Model Object
-    final User user =
-        User.reconstruct(userId: userId, email: email, password: password);
+    final User user = User.reconstruct(
+      userId: userId,
+      email: email,
+      password: password,
+      cursorPosition: cursorPosition,
+      isOnLongPressing: isOnLongPressing,
+      // cursorPosition: CursorPosition.initial(),
+      // customMouseCursorOerlayerState: CustomMouseCursorOerlayerState.initial(),
+    );
 
     // Repository Execute
     userRepository.update(user);
