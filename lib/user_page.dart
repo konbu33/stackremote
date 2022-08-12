@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/authentication/presentation/widget/signout_widget.dart';
 import 'package:stackremote/user_page_state.dart';
 
+import 'authentication/common/use_auth.dart';
+
 class UserPage extends HookConsumerWidget {
   const UserPage({Key? key}) : super(key: key);
 
@@ -13,6 +15,8 @@ class UserPage extends HookConsumerWidget {
     final Reader watch = ref.watch;
     final state = watch(userPageStateControllerProvider);
     final notifier = read(userPageStateControllerProvider.notifier);
+    final useAuth = ref.read(useAuthProvider);
+    useAuth();
 
     return Scaffold(
       appBar: AppBar(
