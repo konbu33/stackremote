@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class BaseLayoutWidget extends StatelessWidget {
-  const BaseLayoutWidget({Key? key, required this.children}) : super(key: key);
+  const BaseLayoutWidget({
+    Key? key,
+    required this.children,
+  }) : super(key: key);
 
   final List<Widget> children;
 
