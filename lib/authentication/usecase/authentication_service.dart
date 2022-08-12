@@ -14,5 +14,4 @@ abstract class AuthenticationService {
   Future<void> signOut();
 
   void signIn(String email, String password);
-  void toggleLoggedIn();
 }
