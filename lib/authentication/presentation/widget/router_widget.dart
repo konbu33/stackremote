@@ -18,9 +18,13 @@ class RouterWidget extends HookConsumerWidget {
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
+
+      // Routeing
       routerDelegate: router.routerDelegate,
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
+
+      // Design Theme
       theme: ThemeData.from(
         colorScheme: const ColorScheme.light(primary: Colors.cyan),
         textTheme: GoogleFonts.mPlus1TextTheme(
@@ -65,8 +69,8 @@ final routerProvider = Provider(
       redirect: (state) {
         final loggedIn =
             ref.watch(Providers.authenticationServiceProvider).loggedIn;
-        print(
-            "call go_router ridirect : ------------------------------- : loggedIn : ${loggedIn} , subloc : ${state.subloc}");
+        // print(
+        //     "call go_router ridirect : ------------------------------- : loggedIn : ${loggedIn} , subloc : ${state.subloc}");
 
         if (!loggedIn) {
           if (state.subloc == '/signin') {
