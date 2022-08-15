@@ -1,13 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import '../domain/user.dart';
 
 abstract class AuthenticationService {
   AuthenticationService({
     required this.instance,
   });
 
-  final FirebaseAuth instance;
+  final instance;
 
-  Stream<User?> authStatusChanges();
+  Stream<User> authStateChanges();
 
   void signUp(String email, String password);
 

@@ -14,11 +14,12 @@ class UserAddUseCase {
 
   // UseCase Execute
   Future<UserId> execute(
+    String firebaseAuthUid,
     String email,
-    String password,
   ) async {
     // Construct Dimain Model Object
-    final User user = User.create(email: email, password: password);
+    final userId = UserId.create(value: firebaseAuthUid);
+    final User user = User.create(userId: userId, email: email);
 
     // Repository Execute
     await userRepository.add(user);

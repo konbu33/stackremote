@@ -11,14 +11,19 @@ class UserId with _$UserId {
     プライベートコンストラタでのみインスタンス生成可能とするように制限する。
   */
   const factory UserId._({
-    required Ulid value,
+    required String value,
   }) = _UserId;
 
   /*
     生成的コンストラクタを利用したインスタンス生成は不可にし、
     ファクトリメソッドからプライベートコンストラクタを利用したインスタンス生成可能に制限する。
   */
-  factory UserId.create() => UserId._(value: Ulid());
+  factory UserId.create({
+    String? value,
+  }) =>
+      UserId._(
+        value: value ?? Ulid().toString(),
+      );
 }
 
 // fromJson, toJsonメソッド利用可能にするためのコンバータ
@@ -27,7 +32,7 @@ class UserIdConverter extends JsonConverter<UserId, String> {
 
   @override
   UserId fromJson(String json) {
-    return UserId._(value: Ulid.parse(json));
+    return UserId._(value: json);
   }
 
   @override

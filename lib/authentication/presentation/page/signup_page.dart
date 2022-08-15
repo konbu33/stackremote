@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../common/use_auth.dart';
+// import '../../common/use_auth.dartx';
 import '../widget/background_image_widget.dart';
 import '../widget/base_layout_widget.dart';
 
@@ -13,8 +13,8 @@ class SignUpPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(signUpPageStateNotifierProvider);
-    final useAuth = ref.read(useAuthProvider);
-    useAuth();
+    // final useAuth = ref.read(useAuthProvider);
+    // useAuth();
 
     return BackgroundImageWidget(
       child: Scaffold(
