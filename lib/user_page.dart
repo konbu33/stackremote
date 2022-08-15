@@ -1,22 +1,27 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/authentication/domain/user.dart';
+import 'package:stackremote/authentication/presentation/widget/router_widget.dart';
 import 'package:stackremote/authentication/presentation/widget/signout_widget.dart';
 import 'package:stackremote/user_page_state.dart';
 
 import 'authentication/common/use_auth.dart';
+import 'authentication/presentation/widget/login_state.dart';
 
 class UserPage extends HookConsumerWidget {
   const UserPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Reader read = ref.read;
-    final Reader watch = ref.watch;
-    final state = watch(userPageStateControllerProvider);
-    final notifier = read(userPageStateControllerProvider.notifier);
-    final useAuth = ref.read(useAuthProvider);
-    useAuth();
+    // final Reader read = ref.read;
+    // final Reader watch = ref.watch;
+    final state = ref.watch(userPageStateControllerProvider);
+    final notifier = ref.read(userPageStateControllerProvider.notifier);
+    final authservice = ref.watch(authStateChangesStreamProvider);
+    // final useAuth = ref.watch(useAuthProvider);
+    // useAuth();
+
+    final userState = ref.watch(userStateNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -29,18 +34,20 @@ class UserPage extends HookConsumerWidget {
       body: Column(
         children: [
           state.userListWidget,
-          TextFormField(
-            controller: TextEditingController(),
-            onChanged: (t) async {
-              print("text : $t");
-              try {
-                await state.userFindByIdUseCase.execute(t);
-              } on FirebaseException catch (e) {
-                print("e1 : $e");
-              } catch (e, s) {
-                print("e2 : $e , s2: $s");
-              }
+          Text("User : ${userState.toJson()}"),
+          // ElevatedButton(
+          //   onPressed: () {
+          //     final state = ref.read(LoginStateProvider);
+          //     state.emit(false);
+          //   },
+          // child: const Text("logout"),
+          // ),
+          authservice.when(
+            data: (user) {
+              return Text("${user.toString()}");
             },
+            error: (e, st) => Text("error : $e"),
+            loading: () => const Text("loading"),
           )
         ],
       ),
