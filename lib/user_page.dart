@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/authentication/domain/user.dart';
 import 'package:stackremote/authentication/presentation/widget/router_widget.dart';
-import 'package:stackremote/authentication/presentation/widget/signout_widget.dart';
 import 'package:stackremote/user_page_state.dart';
 
 import 'authentication/common/use_auth.dart';
 import 'authentication/presentation/widget/login_state.dart';
+import 'authentication/presentation/widget/signout_widget.dart';
 
 class UserPage extends HookConsumerWidget {
   const UserPage({Key? key}) : super(key: key);
