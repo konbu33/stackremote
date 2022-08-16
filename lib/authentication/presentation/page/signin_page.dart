@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/presentation/widget/auth_widget.dart';
 
-import '../../common/use_auth.dart';
 import '../widget/background_image_widget.dart';
 import '../widget/base_layout_widget.dart';
 
@@ -14,8 +12,6 @@ class SignInPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(signInPageStateNotifierProvider);
-    // final useAuth = ref.watch(useAuthProvider);
-    // useAuth();
 
     return BackgroundImageWidget(
       child: Scaffold(
@@ -36,9 +32,6 @@ class SignInPage extends HookConsumerWidget {
                   state.passwordField,
                   const SizedBox(height: 40),
                   state.loginSubmitWidget,
-                  const SizedBox(height: 40),
-                  state.userInformationWidget,
-                  const AuthWidget(child: Text("getDataOK")),
                 ],
               ),
             ),

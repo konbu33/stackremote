@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
@@ -61,7 +61,7 @@ class SignUpPageState with _$SignUpPageState {
             loginSubmitWidgetName: "新規登録",
             onSubmit: AuthenticationServiceSignUpUsecase(
               authenticationService: AuthenticationServiceFirebase(
-                instance: FirebaseAuth.instance,
+                instance: firebase_auth.FirebaseAuth.instance,
               ),
             ).execute,
           ),
@@ -79,7 +79,7 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
     rebuild();
   }
 
-  // init
+  // initial
   void initial() {
     state = SignUpPageState.create();
   }

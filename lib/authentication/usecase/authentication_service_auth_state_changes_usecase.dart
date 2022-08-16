@@ -9,12 +9,7 @@ class AuthenticationServiceAuthStateChangesUsecase {
   late AuthenticationService authenticationService;
 
   Stream<User> execute() {
-    final userStream =
-        authenticationService.authStateChanges().asBroadcastStream();
-    userStream.listen((user) {
-      // print(
-      //     " AuthenticationServiceAuthStatusChangesUsecase : ${user.toJson()}");
-    });
+    final userStream = authenticationService.authStateChanges();
     return userStream;
   }
 }
