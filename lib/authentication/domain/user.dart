@@ -98,8 +98,12 @@ class UserStateNotifier extends StateNotifier<User> {
           userId: UserId.create(value: "ini"),
           email: "ini",
         )) {
+    initial();
   }
 
+  void initial() {
+    state = User.create(userId: UserId.create(value: "ini"), email: "ini");
+  }
 
   void userInformationRegiser(User user) {
     state = state.copyWith(
