@@ -204,7 +204,6 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
   // Rebuild
   void rebuild() {
     state = state.copyWith();
-    print(" ---------- rebuild !!! ---------- ");
   }
 }
 
