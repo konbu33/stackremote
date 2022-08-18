@@ -1,4 +1,4 @@
-import 'package:stackremote/authentication/usecase/authentication_service.dart';
+import 'authentication_service.dart';
 
 class AuthenticationServiceSignInUsecase {
   AuthenticationServiceSignInUsecase({

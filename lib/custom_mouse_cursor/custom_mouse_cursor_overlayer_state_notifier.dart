@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/custom_mouse_cursor/custom_mouse_cursor_overlayer_state.dart';
+
+import 'custom_mouse_cursor_overlayer_state.dart';
 
 class CustomMouseCursorOverlayerStateNotifier
     extends StateNotifier<CustomMouseCursorOerlayerState> {

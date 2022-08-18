@@ -1,4 +1,4 @@
-import 'package:stackremote/users.dart';
+import 'users.dart';
 
 import 'user_repository.dart';
 
