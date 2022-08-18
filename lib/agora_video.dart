@@ -12,7 +12,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:stackremote/custom_mouse_cursor/custom_mouse_cursor_overlay.dart';
 import 'package:stackremote/providers.dart';
 // import 'package:stackremote/channel_create_widget.dart';
-import 'package:stackremote/token_create_widget.dart';
+import 'token_create_widget.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Define App ID and Token

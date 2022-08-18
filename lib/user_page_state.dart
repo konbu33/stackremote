@@ -1,15 +1,15 @@
 // StateNotifier
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/user_fetch_all_usecase.dart';
-import 'package:stackremote/user_detail_page.dart';
+import 'user_fetch_all_usecase.dart';
+import 'user_detail_page.dart';
 
 // Freezed
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:stackremote/user_detail_page_state.dart';
-import 'package:stackremote/user_repository_firestore.dart';
+import 'user_detail_page_state.dart';
+import 'user_repository_firestore.dart';
 
 import 'user_delete_usecase.dart';
 import 'user.dart';

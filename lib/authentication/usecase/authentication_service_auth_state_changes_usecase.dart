@@ -1,6 +1,5 @@
-import 'package:stackremote/authentication/usecase/authentication_service.dart';
-
 import '../domain/user.dart';
+import 'authentication_service.dart';
 
 class AuthenticationServiceAuthStateChangesUsecase {
   AuthenticationServiceAuthStateChangesUsecase({

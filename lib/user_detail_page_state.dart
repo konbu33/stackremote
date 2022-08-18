@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
-import 'package:stackremote/user_repository_firestore.dart';
+import 'user_repository_firestore.dart';
 
 import 'user_add_usecase.dart';
 import 'user.dart';

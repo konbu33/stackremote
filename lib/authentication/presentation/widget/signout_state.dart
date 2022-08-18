@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/usecase/authentication_service_signout_usecase.dart';
 
+import '../../usecase/authentication_service_signout_usecase.dart';
 import '../authentication_service_firebase.dart';
 
 part 'signout_state.freezed.dart';
