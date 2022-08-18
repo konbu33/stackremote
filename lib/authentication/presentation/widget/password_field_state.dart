@@ -50,6 +50,11 @@ class PasswordFieldStateNotifier extends StateNotifier<PasswordFieldState> {
     state = PasswordFieldState.create();
   }
 
+  void setUserPassword(String value) {
+    state = state.copyWith(
+        passwordFieldController: TextEditingController(text: value));
+  }
+
   void passwordToggleObscureText() {
     state = state.copyWith(passwordIsObscure: !state.passwordIsObscure);
   }
