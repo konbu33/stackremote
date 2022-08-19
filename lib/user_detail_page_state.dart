@@ -17,7 +17,6 @@ import 'user_repository_firestore.dart';
 import 'user_add_usecase.dart';
 import 'user.dart';
 import 'user_update_usecase.dart';
-import 'userid.dart';
 
 part 'user_detail_page_state.freezed.dart';
 
@@ -190,11 +189,6 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
     ref.read(state.loginIdFieldStateProvider.notifier).initial();
     ref.read(state.passwordFieldStateProvider.notifier).initial();
     state = state.copyWith(currentUser: null);
-  }
-
-  // Rebuild
-  void rebuild() {
-    state = state.copyWith();
   }
 }
 
