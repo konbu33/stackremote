@@ -35,7 +35,7 @@ class UserDetailPageState with _$UserDetailPageState {
     required Widget pageTitleWidget,
 
     // Form
-    required ValueKey userPageformValueKey,
+    required GlobalKey<FormState> userPageformValueKey,
 
     // Current User
     required User? currentUser,
@@ -69,7 +69,7 @@ class UserDetailPageState with _$UserDetailPageState {
         pageTitleWidget: const Placeholder(),
 
         // Form
-        userPageformValueKey: const ValueKey("userpageform"),
+        userPageformValueKey: GlobalKey<FormState>(),
 
         // Current User
         currentUser: null,
