@@ -49,6 +49,11 @@ class LoginIdFieldStateNotifier extends StateNotifier<LoginIdFieldState> {
     state = LoginIdFieldState.create();
   }
 
+  void setUserEmail(String value) {
+    state = state.copyWith(
+        loginIdFieldController: TextEditingController(text: value));
+  }
+
   Validation loginIdCustomValidator(String value) {
     const defaultMessage = "";
     const emptyMessage = "";
