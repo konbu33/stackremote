@@ -10,6 +10,8 @@ import 'authentication/presentation/widget/loginid_field_state.dart';
 import 'authentication/presentation/widget/loginid_field_widget.dart';
 import 'authentication/presentation/widget/password_field_state.dart';
 import 'authentication/presentation/widget/password_field_widget.dart';
+import 'authentication/presentation/widget/user_submit_state.dart';
+import 'authentication/presentation/widget/user_submit_widget.dart';
 import 'user_repository_firestore.dart';
 
 import 'user_add_usecase.dart';
@@ -50,10 +52,9 @@ class UserDetailPageState with _$UserDetailPageState {
         passwordFieldStateProvider,
 
     // User Add Button
-    required String userAddButtonName,
     required Widget userAddButton,
-    required ValueKey userAddButtonValueKey,
-    required UserAddUseCase userAddUseCase,
+    required StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>
+        userAddSubmitStateProvider,
 
     // User Update Button
     required String userUpdateButtonName,
@@ -91,11 +92,17 @@ class UserDetailPageState with _$UserDetailPageState {
 
         // User Add Button
         userAddButton: const Placeholder(),
-        userAddButtonValueKey: const ValueKey("userAddButton"),
-        userAddButtonName: "新規登録",
-        userAddUseCase: UserAddUseCase(
-            userRepository: UserRepositoryFireBase(
-                firebaseFirestoreInstance: FirebaseFirestore.instance)),
+        userAddSubmitStateProvider:
+            StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>(
+                (ref) {
+          return UserSubmitStateNotifier(
+            userSubmitWidgetName: "新規登録",
+            onSubmit: UserAddUseCase(
+                    userRepository: UserRepositoryFireBase(
+                        firebaseFirestoreInstance: FirebaseFirestore.instance))
+                .execute,
+          );
+        }),
 
         // User Update Button
         userUpdateButton: const Placeholder(),
@@ -146,20 +153,11 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
 
   // User Add Button
   void buildUserAddButton() {
-    final Widget widget = Builder(builder: (context) {
-      return ElevatedButton(
-        key: state.userAddButtonValueKey,
-        onPressed: () {
-          final String email = state.userNameFieldController.text;
-          final String password = state.passwordFieldController.text;
-          state.userAddUseCase.execute(email, password);
-
-          clearUserEmailAndPassword();
-          Navigator.pop(context);
-        },
-        child: Text(state.userAddButtonName),
-      );
-    });
+    final Widget widget = UserSubmitWidget(
+      loginIdFieldStateProvider: state.loginIdFieldStateProvider,
+      passwordFieldStateProvider: state.passwordFieldStateProvider,
+      userSubmitStateProvider: state.userAddSubmitStateProvider,
+    );
 
     state = state.copyWith(userAddButton: widget);
   }
