@@ -57,10 +57,9 @@ class UserDetailPageState with _$UserDetailPageState {
         userAddSubmitStateProvider,
 
     // User Update Button
-    required String userUpdateButtonName,
     required Widget userUpdateButton,
-    required ValueKey userUpdateButtonValueKey,
-    required UserUpdateUseCase userUpdateUseCase,
+    required StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>
+        userUpdateSubmitStateProvider,
   }) = _UserDetailPageState;
 
   // Factory Constructor
@@ -106,11 +105,17 @@ class UserDetailPageState with _$UserDetailPageState {
 
         // User Update Button
         userUpdateButton: const Placeholder(),
-        userUpdateButtonValueKey: const ValueKey("userUpdateButton"),
-        userUpdateButtonName: "ユーザ更新",
-        userUpdateUseCase: UserUpdateUseCase(
-            userRepository: UserRepositoryFireBase(
-                firebaseFirestoreInstance: FirebaseFirestore.instance)),
+        userUpdateSubmitStateProvider:
+            StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>(
+                (ref) {
+          return UserSubmitStateNotifier(
+              userSubmitWidgetName: "ユーザ更新",
+              onSubmit: UserUpdateUseCase(
+                      userRepository: UserRepositoryFireBase(
+                          firebaseFirestoreInstance:
+                              FirebaseFirestore.instance))
+                  .execute);
+        }),
       );
 }
 
@@ -164,25 +169,11 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
 
   // User Update Button
   void buildUserUpdateButton() {
-    final Widget widget = Builder(builder: (context) {
-      return ElevatedButton(
-        key: state.userUpdateButtonValueKey,
-        onPressed: () {
-          final currentUser = state.currentUser;
-          if (currentUser != null) {
-            // final String userId = currentUser.userId.value.toString();
-            final UserId userId = currentUser.userId;
-            final String email = state.userNameFieldController.text;
-            final String password = state.passwordFieldController.text;
-            state.userUpdateUseCase.execute(userId, email, password);
-          }
-
-          clearUserEmailAndPassword();
-          Navigator.pop(context);
-        },
-        child: Text(state.userUpdateButtonName),
-      );
-    });
+    final Widget widget = UserSubmitWidget(
+      loginIdFieldStateProvider: state.loginIdFieldStateProvider,
+      passwordFieldStateProvider: state.passwordFieldStateProvider,
+      userSubmitStateProvider: state.userUpdateSubmitStateProvider,
+    );
 
     state = state.copyWith(userUpdateButton: widget);
   }
