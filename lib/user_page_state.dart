@@ -148,14 +148,14 @@ class UserPageStateController extends StateNotifier<UserPageState> {
             final notifier =
                 ref.read(userDetailPageStateControllerProvider.notifier);
 
-            notifier.clearUserEmailAndPassword();
+            notifier.clearUserEmailAndPassword(ref);
             await showModalBottomSheet(
               context: context,
               builder: (context) {
                 return const UserDetailPage();
               },
             );
-            notifier.clearUserEmailAndPassword();
+            notifier.clearUserEmailAndPassword(ref);
           },
           icon: const Icon(Icons.person_add),
           tooltip: state.userAddButtonName,

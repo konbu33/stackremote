@@ -195,9 +195,9 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
     state = state.copyWith(currentUser: user);
   }
 
-  void clearUserEmailAndPassword() {
-    state.userNameFieldController.clear();
-    state.passwordFieldController.clear();
+  void clearUserEmailAndPassword(WidgetRef ref) {
+    ref.read(state.loginIdFieldStateProvider.notifier).initial();
+    ref.read(state.passwordFieldStateProvider.notifier).initial();
     state = state.copyWith(currentUser: null);
   }
 
