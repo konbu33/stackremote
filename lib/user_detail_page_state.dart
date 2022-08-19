@@ -6,6 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'authentication/presentation/widget/loginid_field_state.dart';
+import 'authentication/presentation/widget/loginid_field_widget.dart';
 import 'user_repository_firestore.dart';
 
 import 'user_add_usecase.dart';
@@ -36,8 +38,8 @@ class UserDetailPageState with _$UserDetailPageState {
 
     // User Name Field
     required Widget userNameField,
-    required ValueKey userNameFieldValueKey,
-    required TextEditingController userNameFieldController,
+    required StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>
+        loginIdFieldStateProvider,
 
     // Password Field
     required Widget passwordField,
@@ -71,8 +73,11 @@ class UserDetailPageState with _$UserDetailPageState {
 
         // User Name Field
         userNameField: const Placeholder(),
-        userNameFieldValueKey: const ValueKey("userNameField"),
-        userNameFieldController: TextEditingController(),
+        loginIdFieldStateProvider:
+            StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>(
+                (ref) {
+          return LoginIdFieldStateNotifier();
+        }),
 
         // Password Field
         passwordField: const Placeholder(),
@@ -120,13 +125,8 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
 
   // User Name Field
   void buildUserNameField() {
-    final Widget widget = TextFormField(
-      key: state.userNameFieldValueKey,
-      controller: state.userNameFieldController,
-      onChanged: (String text) {
-        rebuild();
-      },
-    );
+    final Widget widget = LoginIdFieldWidget(
+        loginIdFieldstateProvider: state.loginIdFieldStateProvider);
 
     state = state.copyWith(userNameField: widget);
   }
