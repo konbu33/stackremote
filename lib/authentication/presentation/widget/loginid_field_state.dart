@@ -6,6 +6,8 @@ import '../../common/validation.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../domain/user.dart';
+
 part 'loginid_field_state.freezed.dart';
 
 // --------------------------------------------------
