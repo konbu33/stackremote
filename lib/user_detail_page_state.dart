@@ -8,6 +8,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'authentication/presentation/widget/loginid_field_state.dart';
 import 'authentication/presentation/widget/loginid_field_widget.dart';
+import 'authentication/presentation/widget/password_field_state.dart';
+import 'authentication/presentation/widget/password_field_widget.dart';
 import 'user_repository_firestore.dart';
 
 import 'user_add_usecase.dart';
@@ -43,8 +45,9 @@ class UserDetailPageState with _$UserDetailPageState {
 
     // Password Field
     required Widget passwordField,
-    required ValueKey passwordFieldValueKey,
-    required TextEditingController passwordFieldController,
+    required StateNotifierProvider<PasswordFieldStateNotifier,
+            PasswordFieldState>
+        passwordFieldStateProvider,
 
     // User Add Button
     required String userAddButtonName,
@@ -81,8 +84,10 @@ class UserDetailPageState with _$UserDetailPageState {
 
         // Password Field
         passwordField: const Placeholder(),
-        passwordFieldValueKey: const ValueKey("passwordField"),
-        passwordFieldController: TextEditingController(),
+        passwordFieldStateProvider: StateNotifierProvider<
+            PasswordFieldStateNotifier, PasswordFieldState>((ref) {
+          return PasswordFieldStateNotifier();
+        }),
 
         // User Add Button
         userAddButton: const Placeholder(),
@@ -133,13 +138,8 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
 
   // Password Field
   void buildPasswordField() {
-    final Widget widget = TextFormField(
-      key: state.passwordFieldValueKey,
-      controller: state.passwordFieldController,
-      onChanged: (String text) {
-        rebuild();
-      },
-    );
+    final Widget widget = PasswordFieldWidget(
+        passwordFieldStateProvider: state.passwordFieldStateProvider);
 
     state = state.copyWith(passwordField: widget);
   }
