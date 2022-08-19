@@ -189,9 +189,11 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
     state = state.copyWith(userUpdateButton: widget);
   }
 
-  void setUserEmailAndPassword(User user) {
-    state.userNameFieldController.text = user.email;
-    state.passwordFieldController.text = user.password;
+  void setUserEmailAndPassword(WidgetRef ref, User user) {
+    ref.read(state.loginIdFieldStateProvider.notifier).setUserEmail(user.email);
+    ref
+        .read(state.passwordFieldStateProvider.notifier)
+        .setUserPassword(user.password);
     state = state.copyWith(currentUser: user);
   }
 
