@@ -126,8 +126,7 @@ class UserPageStateController extends StateNotifier<UserPageState> {
                             return const UserDetailPage();
                           },
                         );
-
-                        //
+                        notifier.clearUserEmailAndPassword(ref);
                       },
                     );
                   }),
