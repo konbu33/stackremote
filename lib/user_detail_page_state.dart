@@ -62,6 +62,7 @@ class UserDetailPageState with _$UserDetailPageState {
 
     // User Update Button
     required Widget userUpdateButton,
+    required UserUpdateUseCase userUpdateUseCase,
     required StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>
         userUpdateSubmitStateProvider,
   }) = _UserDetailPageState;
@@ -117,16 +118,15 @@ class UserDetailPageState with _$UserDetailPageState {
 
         // User Update Button
         userUpdateButton: const Placeholder(),
+        userUpdateUseCase: UserUpdateUseCase(
+            userRepository: UserRepositoryFireBase(
+                firebaseFirestoreInstance: FirebaseFirestore.instance)),
         userUpdateSubmitStateProvider:
             StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>(
                 (ref) {
           return UserSubmitStateNotifier(
-              userSubmitWidgetName: "ユーザ更新",
-              onSubmit: UserUpdateUseCase(
-                      userRepository: UserRepositoryFireBase(
-                          firebaseFirestoreInstance:
-                              FirebaseFirestore.instance))
-                  .execute);
+            userSubmitWidgetName: "ユーザ更新",
+          );
         }),
       );
 }
@@ -207,6 +207,21 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
     state = state.copyWith(currentUser: user);
   }
 
+  void setUserUpdateOnSubmit(User user) {
+    // User Update Submit Function
+    state.ref.read(state.userUpdateSubmitStateProvider.notifier).setOnSubmit(({
+      required BuildContext context,
+      required String email,
+      required String password,
+    }) {
+      state.userUpdateUseCase.execute(user.userId, email, password);
+
+      state.ref.read(state.loginIdFieldStateProvider.notifier).initial();
+      state.ref.read(state.passwordFieldStateProvider.notifier).initial();
+
+      Navigator.pop(context);
+    });
+  }
 
   void clearUserEmailAndPassword() {
     state.ref.read(state.loginIdFieldStateProvider.notifier).initial();

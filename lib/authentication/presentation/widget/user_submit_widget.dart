@@ -43,12 +43,12 @@ class UserSubmitWidget extends HookConsumerWidget {
 
                     final String password =
                         passwordFieldState.passwordFieldController.text;
-                    state.onSubmit(email, password);
 
-                    loginIdFieldStateNotifier.initial();
-                    passwordFieldStateNotifier.initial();
-
-                    Navigator.pop(context);
+                    state.onSubmit(
+                      context: context,
+                      email: email,
+                      password: password,
+                    );
                   }
                 : null,
             child: Text(state.userSubmitWidgetName),
