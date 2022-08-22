@@ -158,6 +158,7 @@ class UserPageStateController extends StateNotifier<UserPageState> {
             final notifier =
                 ref.read(userDetailPageStateControllerProvider.notifier);
 
+            notifier.setUserAddOnSubmit();
             notifier.clearUserEmailAndPassword();
             await showModalBottomSheet(
               context: context,
