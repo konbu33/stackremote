@@ -1,6 +1,7 @@
 // StateNotifier
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/authentication/presentation/widget/signout_widget.dart';
 import 'user_fetch_all_usecase.dart';
 import 'user_detail_page.dart';
 
@@ -40,6 +41,10 @@ class UserPageState with _$UserPageState {
     // User Add Button
     required String userAddButtonName,
     required Widget userAddButton,
+
+    // SignOut Button
+    required String signOutButtonName,
+    required Widget signOutButton,
   }) = _UserPageState;
 
   // Factory Constructor
@@ -66,6 +71,10 @@ class UserPageState with _$UserPageState {
         // User Add Button
         userAddButtonName: "ユーザ追加",
         userAddButton: const Placeholder(),
+
+        // Sign Out Button
+        signOutButtonName: "サインアウト",
+        signOutButton: const Placeholder(),
       );
 }
 
@@ -79,6 +88,7 @@ class UserPageStateController extends StateNotifier<UserPageState> {
     buildPageTitleWidget();
     buildUserListWidget();
     buildUserAddButton();
+    buildSignOutButton();
   }
 
   // Page Title
@@ -162,6 +172,12 @@ class UserPageStateController extends StateNotifier<UserPageState> {
       },
     );
     state = state.copyWith(userAddButton: widget);
+  }
+
+  void buildSignOutButton() {
+    const Widget widget = SignOutWidget();
+
+    state = state.copyWith(signOutButton: widget);
   }
 }
 
