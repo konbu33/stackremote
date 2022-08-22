@@ -44,14 +44,6 @@ class UserSubmitStateNotifier extends StateNotifier<UserSubmitState> {
           onSubmit: onSubmit ?? () {},
         ));
 
-// --------------------------------------------------
-//
-//  StateNotifierProvider
-//
-// --------------------------------------------------
-// final userSubmitStateNotifierProvider =
-//     StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>(
-//         (ref) => UserSubmitStateNotifier());
   void setOnSubmit(Function onSubmit) {
     state = state.copyWith(onSubmit: onSubmit);
   }
