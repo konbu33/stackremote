@@ -10,6 +10,11 @@ import 'userid.dart';
 part 'user.freezed.dart';
 part 'user.g.dart';
 
+// --------------------------------------------------
+//
+// Freezed
+//
+// --------------------------------------------------
 @freezed
 class User with _$User {
   const factory User._({
@@ -62,6 +67,11 @@ class User with _$User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
 
+// --------------------------------------------------
+//
+//  JsonConverter
+//
+// --------------------------------------------------
 class OffsetConverter extends JsonConverter<Offset, String> {
   const OffsetConverter();
 
