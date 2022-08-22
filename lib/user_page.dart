@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'authentication/presentation/widget/signout_widget.dart';
 import 'user_page_state.dart';
 
 class UserPage extends HookConsumerWidget {
@@ -15,7 +14,7 @@ class UserPage extends HookConsumerWidget {
         title: state.pageTitleWidget,
         actions: [
           state.userAddButton,
-          const SignOutWidget(),
+          state.signOutButton,
         ],
       ),
       body: Column(

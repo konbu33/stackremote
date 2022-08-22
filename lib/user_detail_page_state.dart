@@ -29,6 +29,11 @@ part 'user_detail_page_state.freezed.dart';
 class UserDetailPageState with _$UserDetailPageState {
   // Private Constructor
   const factory UserDetailPageState._({
+    // ref
+    required StateNotifierProviderRef<UserDetailPageStateController,
+            UserDetailPageState>
+        ref,
+
     // Page Title
     required String pageTitle,
     required Widget pageTitleWidget,
@@ -52,17 +57,27 @@ class UserDetailPageState with _$UserDetailPageState {
 
     // User Add Button
     required Widget userAddButton,
+    required UserAddUseCase userAddUseCase,
     required StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>
         userAddSubmitStateProvider,
 
     // User Update Button
     required Widget userUpdateButton,
+    required UserUpdateUseCase userUpdateUseCase,
     required StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>
         userUpdateSubmitStateProvider,
   }) = _UserDetailPageState;
 
   // Factory Constructor
-  factory UserDetailPageState.create() => UserDetailPageState._(
+  factory UserDetailPageState.create({
+    required StateNotifierProviderRef<UserDetailPageStateController,
+            UserDetailPageState>
+        ref,
+  }) =>
+      UserDetailPageState._(
+        // ref
+        ref: ref,
+
         // Page Title
         pageTitle: "User Page Detail",
         pageTitleWidget: const Placeholder(),
@@ -90,30 +105,28 @@ class UserDetailPageState with _$UserDetailPageState {
 
         // User Add Button
         userAddButton: const Placeholder(),
+        userAddUseCase: UserAddUseCase(
+            userRepository: UserRepositoryFireBase(
+                firebaseFirestoreInstance: FirebaseFirestore.instance)),
         userAddSubmitStateProvider:
             StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>(
                 (ref) {
           return UserSubmitStateNotifier(
             userSubmitWidgetName: "新規登録",
-            onSubmit: UserAddUseCase(
-                    userRepository: UserRepositoryFireBase(
-                        firebaseFirestoreInstance: FirebaseFirestore.instance))
-                .execute,
           );
         }),
 
         // User Update Button
         userUpdateButton: const Placeholder(),
+        userUpdateUseCase: UserUpdateUseCase(
+            userRepository: UserRepositoryFireBase(
+                firebaseFirestoreInstance: FirebaseFirestore.instance)),
         userUpdateSubmitStateProvider:
             StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>(
                 (ref) {
           return UserSubmitStateNotifier(
-              userSubmitWidgetName: "ユーザ更新",
-              onSubmit: UserUpdateUseCase(
-                      userRepository: UserRepositoryFireBase(
-                          firebaseFirestoreInstance:
-                              FirebaseFirestore.instance))
-                  .execute);
+            userSubmitWidgetName: "ユーザ更新",
+          );
         }),
       );
 }
@@ -124,7 +137,11 @@ class UserDetailPageState with _$UserDetailPageState {
 //
 // --------------------------------------------------
 class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
-  UserDetailPageStateController() : super(UserDetailPageState.create()) {
+  UserDetailPageStateController({
+    required StateNotifierProviderRef<UserDetailPageStateController,
+            UserDetailPageState>
+        ref,
+  }) : super(UserDetailPageState.create(ref: ref)) {
     buildPageTitleWidget();
     buildUserNameField();
     buildPasswordField();
@@ -158,8 +175,7 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
   // User Add Button
   void buildUserAddButton() {
     final Widget widget = UserSubmitWidget(
-      loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-      passwordFieldStateProvider: state.passwordFieldStateProvider,
+      userDetailPageStateProvider: userDetailPageStateControllerProvider,
       userSubmitStateProvider: state.userAddSubmitStateProvider,
     );
 
@@ -169,25 +185,63 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
   // User Update Button
   void buildUserUpdateButton() {
     final Widget widget = UserSubmitWidget(
-      loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-      passwordFieldStateProvider: state.passwordFieldStateProvider,
+      userDetailPageStateProvider: userDetailPageStateControllerProvider,
       userSubmitStateProvider: state.userUpdateSubmitStateProvider,
     );
 
     state = state.copyWith(userUpdateButton: widget);
   }
 
-  void setUserEmailAndPassword(WidgetRef ref, User user) {
-    ref.read(state.loginIdFieldStateProvider.notifier).setUserEmail(user.email);
-    ref
+  void setUserEmailAndPassword(User user) {
+    // User Id Field Controller text set
+    state.ref
+        .read(state.loginIdFieldStateProvider.notifier)
+        .setUserEmail(user.email);
+
+    // Password Field Controller text set
+    state.ref
         .read(state.passwordFieldStateProvider.notifier)
         .setUserPassword(user.password);
+
+    // currentUser set
     state = state.copyWith(currentUser: user);
   }
 
-  void clearUserEmailAndPassword(WidgetRef ref) {
-    ref.read(state.loginIdFieldStateProvider.notifier).initial();
-    ref.read(state.passwordFieldStateProvider.notifier).initial();
+  void setUserAddOnSubmit() {
+    // User Add Submit Function
+    state.ref.read(state.userAddSubmitStateProvider.notifier).setOnSubmit(({
+      required BuildContext context,
+      required String email,
+      required String password,
+    }) {
+      state.userAddUseCase.execute(email, password);
+
+      state.ref.read(state.loginIdFieldStateProvider.notifier).initial();
+      state.ref.read(state.passwordFieldStateProvider.notifier).initial();
+
+      Navigator.pop(context);
+    });
+  }
+
+  void setUserUpdateOnSubmit(User user) {
+    // User Update Submit Function
+    state.ref.read(state.userUpdateSubmitStateProvider.notifier).setOnSubmit(({
+      required BuildContext context,
+      required String email,
+      required String password,
+    }) {
+      state.userUpdateUseCase.execute(user.userId, email, password);
+
+      state.ref.read(state.loginIdFieldStateProvider.notifier).initial();
+      state.ref.read(state.passwordFieldStateProvider.notifier).initial();
+
+      Navigator.pop(context);
+    });
+  }
+
+  void clearUserEmailAndPassword() {
+    state.ref.read(state.loginIdFieldStateProvider.notifier).initial();
+    state.ref.read(state.passwordFieldStateProvider.notifier).initial();
     state = state.copyWith(currentUser: null);
   }
 }
@@ -199,5 +253,5 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
 // --------------------------------------------------
 final userDetailPageStateControllerProvider =
     StateNotifierProvider<UserDetailPageStateController, UserDetailPageState>(
-  (ref) => UserDetailPageStateController(),
+  (ref) => UserDetailPageStateController(ref: ref),
 );

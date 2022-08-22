@@ -4,6 +4,11 @@ import 'package:ulid/ulid.dart';
 
 part 'userid.freezed.dart';
 
+// --------------------------------------------------
+//
+// Freezed
+//
+// --------------------------------------------------
 @freezed
 class UserId with _$UserId {
   /* 
@@ -20,6 +25,12 @@ class UserId with _$UserId {
   */
   factory UserId.create() => UserId._(value: Ulid());
 }
+
+// --------------------------------------------------
+//
+//  JsonConverter
+//
+// --------------------------------------------------
 
 // fromJson, toJsonメソッド利用可能にするためのコンバータ
 class UserIdConverter extends JsonConverter<UserId, String> {
