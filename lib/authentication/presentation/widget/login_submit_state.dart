@@ -44,12 +44,3 @@ class LoginSubmitStateNotifier extends StateNotifier<LoginSubmitState> {
           onSubmit: onSubmit,
         ));
 }
-
-// --------------------------------------------------
-//
-//  StateNotifierProvider
-//
-// --------------------------------------------------
-// final loginSubmitStateNotifierProvider =
-//     StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>(
-//         (ref) => LoginSubmitStateNotifier());
