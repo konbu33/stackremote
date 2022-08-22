@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user_detail_page_state.dart';
 
 class UserSubmitWidget extends HookConsumerWidget {
   const UserSubmitWidget({
     Key? key,
-    required this.loginIdFieldStateProvider,
-    required this.passwordFieldStateProvider,
+    required this.userDetailPageStateProvider,
     required this.userSubmitStateProvider,
   }) : super(key: key);
 
-  final loginIdFieldStateProvider;
-  final passwordFieldStateProvider;
+  final StateNotifierProvider<UserDetailPageStateController,
+      UserDetailPageState> userDetailPageStateProvider;
   final userSubmitStateProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginIdFieldState = ref.watch(loginIdFieldStateProvider);
-    final loginIdFieldStateNotifier =
-        ref.read(loginIdFieldStateProvider.notifier);
+    final userDetailPageState = ref.watch(userDetailPageStateProvider);
 
-    final passwordFieldState = ref.watch(passwordFieldStateProvider);
-    final passwordFieldStateNotifier =
-        ref.read(passwordFieldStateProvider.notifier);
+    final loginIdFieldState =
+        ref.watch(userDetailPageState.loginIdFieldStateProvider);
+
+    final passwordFieldState =
+        ref.watch(userDetailPageState.passwordFieldStateProvider);
 
     final state = ref.watch(userSubmitStateProvider);
 
@@ -40,6 +40,7 @@ class UserSubmitWidget extends HookConsumerWidget {
                 ? () {
                     final String email =
                         loginIdFieldState.loginIdFieldController.text;
+
                     final String password =
                         passwordFieldState.passwordFieldController.text;
                     state.onSubmit(email, password);

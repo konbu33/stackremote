@@ -175,8 +175,7 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
   // User Add Button
   void buildUserAddButton() {
     final Widget widget = UserSubmitWidget(
-      loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-      passwordFieldStateProvider: state.passwordFieldStateProvider,
+      userDetailPageStateProvider: userDetailPageStateControllerProvider,
       userSubmitStateProvider: state.userAddSubmitStateProvider,
     );
 
@@ -186,8 +185,7 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
   // User Update Button
   void buildUserUpdateButton() {
     final Widget widget = UserSubmitWidget(
-      loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-      passwordFieldStateProvider: state.passwordFieldStateProvider,
+      userDetailPageStateProvider: userDetailPageStateControllerProvider,
       userSubmitStateProvider: state.userUpdateSubmitStateProvider,
     );
 
