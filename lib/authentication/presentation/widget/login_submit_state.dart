@@ -34,11 +34,15 @@ class LoginSubmitState with _$LoginSubmitState {
 class LoginSubmitStateNotifier extends StateNotifier<LoginSubmitState> {
   LoginSubmitStateNotifier({
     required String loginSubmitWidgetName,
-    required Function onSubmit,
+    Function? onSubmit,
   }) : super(LoginSubmitState.create(
           loginSubmitWidgetName: loginSubmitWidgetName,
-          onSubmit: onSubmit,
+          onSubmit: onSubmit ?? () {},
         ));
+
+  void setOnSubmit(Function onSubmit) {
+    state = state.copyWith(onSubmit: onSubmit);
+  }
 }
 
 // --------------------------------------------------
