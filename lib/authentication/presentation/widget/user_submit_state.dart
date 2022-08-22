@@ -38,12 +38,11 @@ class UserSubmitState with _$UserSubmitState {
 class UserSubmitStateNotifier extends StateNotifier<UserSubmitState> {
   UserSubmitStateNotifier({
     required String userSubmitWidgetName,
-    required Function onSubmit,
+    Function? onSubmit,
   }) : super(UserSubmitState.create(
           userSubmitWidgetName: userSubmitWidgetName,
-          onSubmit: onSubmit,
+          onSubmit: onSubmit ?? () {},
         ));
-}
 
 // --------------------------------------------------
 //
@@ -53,3 +52,7 @@ class UserSubmitStateNotifier extends StateNotifier<UserSubmitState> {
 // final userSubmitStateNotifierProvider =
 //     StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>(
 //         (ref) => UserSubmitStateNotifier());
+  void setOnSubmit(Function onSubmit) {
+    state = state.copyWith(onSubmit: onSubmit);
+  }
+}
