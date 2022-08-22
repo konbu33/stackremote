@@ -129,14 +129,14 @@ class UserPageStateController extends StateNotifier<UserPageState> {
                             await state.userFindByIdUseCase.execute(userId);
                         final notifier = ref.read(
                             userDetailPageStateControllerProvider.notifier);
-                        notifier.setUserEmailAndPassword(ref, user);
+                        notifier.setUserEmailAndPassword(user);
                         await showModalBottomSheet(
                           context: context,
                           builder: (context) {
                             return const UserDetailPage();
                           },
                         );
-                        notifier.clearUserEmailAndPassword(ref);
+                        notifier.clearUserEmailAndPassword();
                       },
                     );
                   }),
@@ -157,14 +157,14 @@ class UserPageStateController extends StateNotifier<UserPageState> {
             final notifier =
                 ref.read(userDetailPageStateControllerProvider.notifier);
 
-            notifier.clearUserEmailAndPassword(ref);
+            notifier.clearUserEmailAndPassword();
             await showModalBottomSheet(
               context: context,
               builder: (context) {
                 return const UserDetailPage();
               },
             );
-            notifier.clearUserEmailAndPassword(ref);
+            notifier.clearUserEmailAndPassword();
           },
           icon: const Icon(Icons.person_add),
           tooltip: state.userAddButtonName,
