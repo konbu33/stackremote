@@ -17,7 +17,7 @@ class UserSubmitWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final loginIdFieldState = ref.watch(loginIdFieldStateProvider);
     final passwordFieldState = ref.watch(passwordFieldStateProvider);
-    final state = ref.watch(userSubmitStateProvider);
+    final userSubmitState = ref.watch(userSubmitStateProvider);
 
     return Column(
       children: [
@@ -38,14 +38,14 @@ class UserSubmitWidget extends HookConsumerWidget {
                     final String password =
                         passwordFieldState.passwordFieldController.text;
 
-                    state.onSubmit(
+                    userSubmitState.onSubmit(
                       context: context,
                       email: email,
                       password: password,
                     );
                   }
                 : null,
-            child: Text(state.userSubmitWidgetName),
+            child: Text(userSubmitState.userSubmitWidgetName),
           ),
         ),
       ],
