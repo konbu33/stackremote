@@ -1,29 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/user_detail_page_state.dart';
 
 class UserSubmitWidget extends HookConsumerWidget {
   const UserSubmitWidget({
     Key? key,
-    required this.userDetailPageStateProvider,
+    required this.loginIdFieldStateProvider,
+    required this.passwordFieldStateProvider,
     required this.userSubmitStateProvider,
   }) : super(key: key);
 
-  final StateNotifierProvider<UserDetailPageStateController,
-      UserDetailPageState> userDetailPageStateProvider;
+  final loginIdFieldStateProvider;
+  final passwordFieldStateProvider;
   final userSubmitStateProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userDetailPageState = ref.watch(userDetailPageStateProvider);
-
-    final loginIdFieldState =
-        ref.watch(userDetailPageState.loginIdFieldStateProvider);
-
-    final passwordFieldState =
-        ref.watch(userDetailPageState.passwordFieldStateProvider);
-
-    final state = ref.watch(userSubmitStateProvider);
+    final loginIdFieldState = ref.watch(loginIdFieldStateProvider);
+    final passwordFieldState = ref.watch(passwordFieldStateProvider);
+    final userSubmitState = ref.watch(userSubmitStateProvider);
 
     return Column(
       children: [
@@ -44,14 +38,14 @@ class UserSubmitWidget extends HookConsumerWidget {
                     final String password =
                         passwordFieldState.passwordFieldController.text;
 
-                    state.onSubmit(
+                    userSubmitState.onSubmit(
                       context: context,
                       email: email,
                       password: password,
                     );
                   }
                 : null,
-            child: Text(state.userSubmitWidgetName),
+            child: Text(userSubmitState.userSubmitWidgetName),
           ),
         ),
       ],
