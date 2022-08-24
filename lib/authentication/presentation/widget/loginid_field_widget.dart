@@ -4,15 +4,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class LoginIdFieldWidget extends HookConsumerWidget {
   const LoginIdFieldWidget({
     Key? key,
-    required this.loginIdFieldstateProvider,
+    required this.loginIdFieldStateProvider,
   }) : super(key: key);
 
-  final loginIdFieldstateProvider;
+  final loginIdFieldStateProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(loginIdFieldstateProvider);
-    final notifier = ref.read(loginIdFieldstateProvider.notifier);
+    final state = ref.watch(loginIdFieldStateProvider);
+    final notifier = ref.read(loginIdFieldStateProvider.notifier);
 
     return Column(
       children: [

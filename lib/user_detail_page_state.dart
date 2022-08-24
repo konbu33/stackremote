@@ -159,7 +159,7 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
   // User Name Field
   void buildUserNameField() {
     final Widget widget = LoginIdFieldWidget(
-        loginIdFieldstateProvider: state.loginIdFieldStateProvider);
+        loginIdFieldStateProvider: state.loginIdFieldStateProvider);
 
     state = state.copyWith(userNameField: widget);
   }

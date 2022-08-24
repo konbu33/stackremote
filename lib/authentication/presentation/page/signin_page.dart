@@ -56,7 +56,7 @@ class SignInPageWidgets {
   // Login Id Field Widget
   static Widget loginIdField(SignInPageState state) {
     final Widget widget = LoginIdFieldWidget(
-      loginIdFieldstateProvider: state.loginIdFieldStateProvider,
+      loginIdFieldStateProvider: state.loginIdFieldStateProvider,
     );
     return widget;
   }

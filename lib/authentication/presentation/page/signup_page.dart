@@ -49,7 +49,7 @@ class SignUpPageWidgets {
   // Login Id Field Widget
   static Widget loginIdField(SignUpPageState state) {
     final Widget widget = LoginIdFieldWidget(
-      loginIdFieldstateProvider: state.loginIdFieldStateProvider,
+      loginIdFieldStateProvider: state.loginIdFieldStateProvider,
     );
     return widget;
   }
