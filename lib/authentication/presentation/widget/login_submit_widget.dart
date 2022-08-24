@@ -45,6 +45,7 @@ class LoginSubmitWidget extends HookConsumerWidget {
 
                     loginIdFieldStateNotifier.initial();
                     passwordFieldStateNotifier.initial();
+                    loginSubmitState.onSubmit(email, password);
                   }
                 : null,
             child: Text(loginSubmitState.loginSubmitWidgetName),

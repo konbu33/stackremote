@@ -29,6 +29,8 @@ class SignInPageState with _$SignInPageState {
 
     // Login Submit Widget
     @Default("サインイン") String loginSubmitWidgetName,
+    required AuthenticationServiceSignInUsecase
+        authenticationServiceSignInUsecase,
     required StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>
         loginSubmitStateProvider,
   }) = _SignInPageState;
@@ -41,6 +43,10 @@ class SignInPageState with _$SignInPageState {
         passwordFieldStateProvider: passwordFieldStateNotifierProviderCreator(),
 
         // Login Submit
+        authenticationServiceSignInUsecase: AuthenticationServiceSignInUsecase(
+            authenticationService: AuthenticationServiceFirebase(
+                instance: firebase_auth.FirebaseAuth.instance)),
+
         loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
           loginSubmitWidgetName: "",
           onSubmit: () {},
@@ -55,15 +61,28 @@ class SignInPageState with _$SignInPageState {
 // --------------------------------------------------
 class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
   SignInPageStateNotifier() : super(SignInPageState.create()) {
+    initial();
   }
 
   // initial
   void initial() {
     state = SignInPageState.create();
+    setOnSubmit();
   }
 
+  void setOnSubmit() {
+    Function buildOnSubmit() {
+      return (String email, String password) {
+        state.authenticationServiceSignInUsecase.execute(email, password);
 
+        initial();
+      };
+    }
 
+    state = state.copyWith(
+        loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+            loginSubmitWidgetName: state.loginSubmitWidgetName,
+            onSubmit: buildOnSubmit()));
   }
 }
 
