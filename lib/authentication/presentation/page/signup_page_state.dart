@@ -29,32 +29,27 @@ class SignUpPageState with _$SignUpPageState {
 
     // Login Submit Widget
     @Default("新規登録") String loginSubmitWidgetName,
+    required AuthenticationServiceSignUpUsecase
+        authenticationServiceSignUpUsecase,
     required StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>
         loginSubmitStateProvider,
   }) = _SignUpPageState;
 
   factory SignUpPageState.create() => SignUpPageState._(
         // Login Id Field Widget
-        loginIdFieldStateProvider:
-            StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>(
-                (ref) => LoginIdFieldStateNotifier()),
+        loginIdFieldStateProvider: loginIdFieldStateNotifierProviderCreator(),
 
         // Password Field Widget
-        passwordFieldStateProvider: StateNotifierProvider<
-            PasswordFieldStateNotifier,
-            PasswordFieldState>((ref) => PasswordFieldStateNotifier()),
+        passwordFieldStateProvider: passwordFieldStateNotifierProviderCreator(),
 
         // Login Submit
-        loginSubmitStateProvider:
-            StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>(
-          (ref) => LoginSubmitStateNotifier(
-            loginSubmitWidgetName: "新規登録",
-            onSubmit: AuthenticationServiceSignUpUsecase(
-              authenticationService: AuthenticationServiceFirebase(
-                instance: firebase_auth.FirebaseAuth.instance,
-              ),
-            ).execute,
-          ),
+        authenticationServiceSignUpUsecase: AuthenticationServiceSignUpUsecase(
+            authenticationService: AuthenticationServiceFirebase(
+                instance: firebase_auth.FirebaseAuth.instance)),
+
+        loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+          loginSubmitWidgetName: "",
+          onSubmit: () {},
         ),
       );
 }
@@ -66,15 +61,28 @@ class SignUpPageState with _$SignUpPageState {
 // --------------------------------------------------
 class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
   SignUpPageStateNotifier() : super(SignUpPageState.create()) {
+    initial();
   }
 
   // initial
   void initial() {
     state = SignUpPageState.create();
+    setOnSubmit();
   }
 
+  void setOnSubmit() {
+    Function buildOnSubmit() {
+      return (String email, String password) {
+        state.authenticationServiceSignUpUsecase.execute(email, password);
 
+        initial();
+      };
+    }
 
+    state = state.copyWith(
+        loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+            loginSubmitWidgetName: state.loginSubmitWidgetName,
+            onSubmit: buildOnSubmit()));
   }
 }
 

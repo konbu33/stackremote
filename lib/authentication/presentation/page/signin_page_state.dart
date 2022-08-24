@@ -29,32 +29,27 @@ class SignInPageState with _$SignInPageState {
 
     // Login Submit Widget
     @Default("サインイン") String loginSubmitWidgetName,
+    required AuthenticationServiceSignInUsecase
+        authenticationServiceSignInUsecase,
     required StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>
         loginSubmitStateProvider,
   }) = _SignInPageState;
 
   factory SignInPageState.create() => SignInPageState._(
         // Login Id Field Widget
-        loginIdFieldStateProvider:
-            StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>(
-                (ref) => LoginIdFieldStateNotifier()),
+        loginIdFieldStateProvider: loginIdFieldStateNotifierProviderCreator(),
 
         // Password Field Widget
-        passwordFieldStateProvider: StateNotifierProvider<
-            PasswordFieldStateNotifier,
-            PasswordFieldState>((ref) => PasswordFieldStateNotifier()),
+        passwordFieldStateProvider: passwordFieldStateNotifierProviderCreator(),
 
         // Login Submit
-        loginSubmitStateProvider:
-            StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>(
-          (ref) => LoginSubmitStateNotifier(
-            loginSubmitWidgetName: "サインイン",
-            onSubmit: AuthenticationServiceSignInUsecase(
-              authenticationService: AuthenticationServiceFirebase(
-                instance: firebase_auth.FirebaseAuth.instance,
-              ),
-            ).execute,
-          ),
+        authenticationServiceSignInUsecase: AuthenticationServiceSignInUsecase(
+            authenticationService: AuthenticationServiceFirebase(
+                instance: firebase_auth.FirebaseAuth.instance)),
+
+        loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+          loginSubmitWidgetName: "",
+          onSubmit: () {},
         ),
       );
 }
@@ -66,15 +61,28 @@ class SignInPageState with _$SignInPageState {
 // --------------------------------------------------
 class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
   SignInPageStateNotifier() : super(SignInPageState.create()) {
+    initial();
   }
 
   // initial
   void initial() {
     state = SignInPageState.create();
+    setOnSubmit();
   }
 
+  void setOnSubmit() {
+    Function buildOnSubmit() {
+      return (String email, String password) {
+        state.authenticationServiceSignInUsecase.execute(email, password);
 
+        initial();
+      };
+    }
 
+    state = state.copyWith(
+        loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+            loginSubmitWidgetName: state.loginSubmitWidgetName,
+            onSubmit: buildOnSubmit()));
   }
 }
 

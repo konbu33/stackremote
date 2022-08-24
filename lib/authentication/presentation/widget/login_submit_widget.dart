@@ -16,13 +16,7 @@ class LoginSubmitWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final loginIdFieldState = ref.watch(loginIdFieldStateProvider);
-    final loginIdFieldStateNotifier =
-        ref.read(loginIdFieldStateProvider.notifier);
-
     final passwordFieldState = ref.watch(passwordFieldStateProvider);
-    final passwordFieldStateNotifier =
-        ref.read(passwordFieldStateProvider.notifier);
-
     final loginSubmitState = ref.watch(loginSubmitStateProvider);
 
     return Column(
@@ -43,8 +37,7 @@ class LoginSubmitWidget extends HookConsumerWidget {
                     final String password =
                         passwordFieldState.passwordFieldController.text;
 
-                    loginIdFieldStateNotifier.initial();
-                    passwordFieldStateNotifier.initial();
+                    loginSubmitState.onSubmit(email, password);
                   }
                 : null,
             child: Text(loginSubmitState.loginSubmitWidgetName),

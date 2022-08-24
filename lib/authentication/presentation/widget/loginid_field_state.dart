@@ -86,9 +86,10 @@ class LoginIdFieldStateNotifier extends StateNotifier<LoginIdFieldState> {
 
 // --------------------------------------------------
 //
-//  StateNotifierProvider
+//  StateNotifierProviderCreateor
 //
 // --------------------------------------------------
-// final loginIdFieldStateNotifierProvider =
-//     StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>(
-//         (ref) => LoginIdFieldStateNotifier());
+Function loginIdFieldStateNotifierProviderCreator = () {
+  return StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>(
+      (ref) => LoginIdFieldStateNotifier());
+};
