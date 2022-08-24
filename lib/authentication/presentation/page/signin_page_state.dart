@@ -35,26 +35,15 @@ class SignInPageState with _$SignInPageState {
 
   factory SignInPageState.create() => SignInPageState._(
         // Login Id Field Widget
-        loginIdFieldStateProvider:
-            StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>(
-                (ref) => LoginIdFieldStateNotifier()),
+        loginIdFieldStateProvider: loginIdFieldStateNotifierProviderCreator(),
 
         // Password Field Widget
-        passwordFieldStateProvider: StateNotifierProvider<
-            PasswordFieldStateNotifier,
-            PasswordFieldState>((ref) => PasswordFieldStateNotifier()),
+        passwordFieldStateProvider: passwordFieldStateNotifierProviderCreator(),
 
         // Login Submit
-        loginSubmitStateProvider:
-            StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>(
-          (ref) => LoginSubmitStateNotifier(
-            loginSubmitWidgetName: "サインイン",
-            onSubmit: AuthenticationServiceSignInUsecase(
-              authenticationService: AuthenticationServiceFirebase(
-                instance: firebase_auth.FirebaseAuth.instance,
-              ),
-            ).execute,
-          ),
+        loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+          loginSubmitWidgetName: "",
+          onSubmit: () {},
         ),
       );
 }
