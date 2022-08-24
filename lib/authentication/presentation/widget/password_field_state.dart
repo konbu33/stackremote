@@ -87,9 +87,10 @@ class PasswordFieldStateNotifier extends StateNotifier<PasswordFieldState> {
 
 // --------------------------------------------------
 //
-//  StateNotifierProvider
+//  StateNotifierProviderCreator
 //
 // --------------------------------------------------
-// final passwordFieldStateNotifierProvider =
-//     StateNotifierProvider<PasswordFieldStateNotifier, PasswordFieldState>(
-//         (ref) => PasswordFieldStateNotifier());
+Function passwordFieldStateNotifierProviderCreator = () {
+  return StateNotifierProvider<PasswordFieldStateNotifier, PasswordFieldState>(
+      (ref) => PasswordFieldStateNotifier());
+};

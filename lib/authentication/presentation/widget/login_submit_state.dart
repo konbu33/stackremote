@@ -40,3 +40,20 @@ class LoginSubmitStateNotifier extends StateNotifier<LoginSubmitState> {
           onSubmit: onSubmit,
         ));
 }
+
+// --------------------------------------------------
+//
+// StateNotifierProviderCreator
+//
+// --------------------------------------------------
+Function loginSubmitStateNotifierProviderCreator = ({
+  required String loginSubmitWidgetName,
+  required Function onSubmit,
+}) {
+  return StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>(
+    (ref) => LoginSubmitStateNotifier(
+      loginSubmitWidgetName: loginSubmitWidgetName,
+      onSubmit: onSubmit,
+    ),
+  );
+};
