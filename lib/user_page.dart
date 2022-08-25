@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user_add_icon_widget.dart';
 
 import 'authentication/presentation/widget/signout_widget.dart';
 import 'user.dart';
@@ -45,24 +46,9 @@ class UserPageWidgets {
     UserPageState state,
     UserDetailPageStateController notifier,
   ) {
-    final Widget widget = Consumer(
-      builder: (context, ref, child) {
-        return IconButton(
-          onPressed: () async {
-            notifier.setUserAddOnSubmit();
-            notifier.clearUserEmailAndPassword();
-            await showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return const UserDetailPage();
-              },
-            );
-            notifier.clearUserEmailAndPassword();
-          },
-          icon: const Icon(Icons.person_add),
-          tooltip: state.userAddButtonName,
-        );
-      },
+    final Widget widget = UserAddIconWidget(
+      state: state,
+      notifier: notifier,
     );
 
     return widget;
