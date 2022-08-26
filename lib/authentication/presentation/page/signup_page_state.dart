@@ -19,8 +19,7 @@ part 'signup_page_state.freezed.dart';
 class SignUpPageState with _$SignUpPageState {
   const factory SignUpPageState._({
     // Login Id Field Widget
-    required StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>
-        loginIdFieldStateProvider,
+    required LoginIdFieldStateProvider loginIdFieldStateProvider,
 
     // Password Field Widget
     required StateNotifierProvider<PasswordFieldStateNotifier,

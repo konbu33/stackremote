@@ -36,8 +36,7 @@ class UserDetailPageState with _$UserDetailPageState {
     required User? currentUser,
 
     // User Name Field
-    required StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>
-        loginIdFieldStateProvider,
+    required LoginIdFieldStateProvider loginIdFieldStateProvider,
 
     // Password Field
     required StateNotifierProvider<PasswordFieldStateNotifier,

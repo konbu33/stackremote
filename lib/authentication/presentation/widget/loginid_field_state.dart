@@ -86,6 +86,14 @@ class LoginIdFieldStateNotifier extends StateNotifier<LoginIdFieldState> {
 
 // --------------------------------------------------
 //
+//  typedef Provider
+//
+// --------------------------------------------------
+typedef LoginIdFieldStateProvider
+    = StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>;
+
+// --------------------------------------------------
+//
 //  StateNotifierProviderCreateor
 //
 // --------------------------------------------------
