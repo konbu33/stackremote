@@ -31,8 +31,7 @@ class SignUpPageState with _$SignUpPageState {
     @Default("新規登録") String loginSubmitWidgetName,
     required AuthenticationServiceSignUpUsecase
         authenticationServiceSignUpUsecase,
-    required StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>
-        loginSubmitStateProvider,
+    required LoginSubmitStateProvider loginSubmitStateProvider,
   }) = _SignUpPageState;
 
   factory SignUpPageState.create() => SignUpPageState._(

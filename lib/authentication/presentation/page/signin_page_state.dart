@@ -31,8 +31,7 @@ class SignInPageState with _$SignInPageState {
     @Default("サインイン") String loginSubmitWidgetName,
     required AuthenticationServiceSignInUsecase
         authenticationServiceSignInUsecase,
-    required StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>
-        loginSubmitStateProvider,
+    required LoginSubmitStateProvider loginSubmitStateProvider,
   }) = _SignInPageState;
 
   factory SignInPageState.create() => SignInPageState._(
