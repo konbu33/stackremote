@@ -22,9 +22,7 @@ class SignInPageState with _$SignInPageState {
     required LoginIdFieldStateProvider loginIdFieldStateProvider,
 
     // Password Field Widget
-    required StateNotifierProvider<PasswordFieldStateNotifier,
-            PasswordFieldState>
-        passwordFieldStateProvider,
+    required PasswordFieldStateProvider passwordFieldStateProvider,
 
     // Login Submit Widget
     @Default("サインイン") String loginSubmitWidgetName,

@@ -39,9 +39,7 @@ class UserDetailPageState with _$UserDetailPageState {
     required LoginIdFieldStateProvider loginIdFieldStateProvider,
 
     // Password Field
-    required StateNotifierProvider<PasswordFieldStateNotifier,
-            PasswordFieldState>
-        passwordFieldStateProvider,
+    required PasswordFieldStateProvider passwordFieldStateProvider,
 
     // User Add Button
     required UserAddUseCase userAddUseCase,

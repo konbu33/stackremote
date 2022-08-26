@@ -87,6 +87,14 @@ class PasswordFieldStateNotifier extends StateNotifier<PasswordFieldState> {
 
 // --------------------------------------------------
 //
+//  typedef Provider
+//
+// --------------------------------------------------
+typedef PasswordFieldStateProvider
+    = StateNotifierProvider<PasswordFieldStateNotifier, PasswordFieldState>;
+
+// --------------------------------------------------
+//
 //  StateNotifierProviderCreator
 //
 // --------------------------------------------------

@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'login_submit_state.dart';
 import 'loginid_field_state.dart';
+import 'password_field_state.dart';
 
 class LoginSubmitWidget extends HookConsumerWidget {
   const LoginSubmitWidget({
@@ -12,8 +13,8 @@ class LoginSubmitWidget extends HookConsumerWidget {
     required this.loginSubmitStateProvider,
   }) : super(key: key);
 
-  final passwordFieldStateProvider;
   final LoginIdFieldStateProvider loginIdFieldStateProvider;
+  final PasswordFieldStateProvider passwordFieldStateProvider;
   final LoginSubmitStateProvider loginSubmitStateProvider;
 
   @override
