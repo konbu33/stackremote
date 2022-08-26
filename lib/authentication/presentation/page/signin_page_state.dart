@@ -19,20 +19,16 @@ part 'signin_page_state.freezed.dart';
 class SignInPageState with _$SignInPageState {
   const factory SignInPageState._({
     // Login Id Field Widget
-    required StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>
-        loginIdFieldStateProvider,
+    required LoginIdFieldStateProvider loginIdFieldStateProvider,
 
     // Password Field Widget
-    required StateNotifierProvider<PasswordFieldStateNotifier,
-            PasswordFieldState>
-        passwordFieldStateProvider,
+    required PasswordFieldStateProvider passwordFieldStateProvider,
 
     // Login Submit Widget
     @Default("サインイン") String loginSubmitWidgetName,
     required AuthenticationServiceSignInUsecase
         authenticationServiceSignInUsecase,
-    required StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>
-        loginSubmitStateProvider,
+    required LoginSubmitStateProvider loginSubmitStateProvider,
   }) = _SignInPageState;
 
   factory SignInPageState.create() => SignInPageState._(

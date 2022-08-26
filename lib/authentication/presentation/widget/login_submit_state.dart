@@ -43,6 +43,14 @@ class LoginSubmitStateNotifier extends StateNotifier<LoginSubmitState> {
 
 // --------------------------------------------------
 //
+// typedef Provider
+//
+// --------------------------------------------------
+typedef LoginSubmitStateProvider
+    = StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>;
+
+// --------------------------------------------------
+//
 // StateNotifierProviderCreator
 //
 // --------------------------------------------------

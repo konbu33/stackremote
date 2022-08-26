@@ -36,23 +36,18 @@ class UserDetailPageState with _$UserDetailPageState {
     required User? currentUser,
 
     // User Name Field
-    required StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>
-        loginIdFieldStateProvider,
+    required LoginIdFieldStateProvider loginIdFieldStateProvider,
 
     // Password Field
-    required StateNotifierProvider<PasswordFieldStateNotifier,
-            PasswordFieldState>
-        passwordFieldStateProvider,
+    required PasswordFieldStateProvider passwordFieldStateProvider,
 
     // User Add Button
     required UserAddUseCase userAddUseCase,
-    required StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>
-        userAddSubmitStateProvider,
+    required UserSubmitStateProvider userAddSubmitStateProvider,
 
     // User Update Button
     required UserUpdateUseCase userUpdateUseCase,
-    required StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>
-        userUpdateSubmitStateProvider,
+    required UserSubmitStateProvider userUpdateSubmitStateProvider,
   }) = _UserDetailPageState;
 
   // Factory Constructor

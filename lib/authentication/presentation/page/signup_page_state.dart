@@ -19,20 +19,16 @@ part 'signup_page_state.freezed.dart';
 class SignUpPageState with _$SignUpPageState {
   const factory SignUpPageState._({
     // Login Id Field Widget
-    required StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>
-        loginIdFieldStateProvider,
+    required LoginIdFieldStateProvider loginIdFieldStateProvider,
 
     // Password Field Widget
-    required StateNotifierProvider<PasswordFieldStateNotifier,
-            PasswordFieldState>
-        passwordFieldStateProvider,
+    required PasswordFieldStateProvider passwordFieldStateProvider,
 
     // Login Submit Widget
     @Default("新規登録") String loginSubmitWidgetName,
     required AuthenticationServiceSignUpUsecase
         authenticationServiceSignUpUsecase,
-    required StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>
-        loginSubmitStateProvider,
+    required LoginSubmitStateProvider loginSubmitStateProvider,
   }) = _SignUpPageState;
 
   factory SignUpPageState.create() => SignUpPageState._(
