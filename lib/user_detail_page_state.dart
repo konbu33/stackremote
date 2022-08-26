@@ -67,41 +67,30 @@ class UserDetailPageState with _$UserDetailPageState {
         currentUser: null,
 
         // User Name Field
-        loginIdFieldStateProvider:
-            StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>(
-                (ref) {
-          return LoginIdFieldStateNotifier();
-        }),
+        loginIdFieldStateProvider: loginIdFieldStateNotifierProviderCreator(),
 
         // Password Field
-        passwordFieldStateProvider: StateNotifierProvider<
-            PasswordFieldStateNotifier, PasswordFieldState>((ref) {
-          return PasswordFieldStateNotifier();
-        }),
+        passwordFieldStateProvider: passwordFieldStateNotifierProviderCreator(),
 
         // User Add Button
         userAddUseCase: UserAddUseCase(
             userRepository: UserRepositoryFireBase(
                 firebaseFirestoreInstance: FirebaseFirestore.instance)),
-        userAddSubmitStateProvider:
-            StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>(
-                (ref) {
-          return UserSubmitStateNotifier(
-            userSubmitWidgetName: "新規登録",
-          );
-        }),
+
+        userAddSubmitStateProvider: userSubmitStateNotifierProviderCreator(
+          userSubmitWidgetName: "新規登録",
+          onSubmit: () {},
+        ),
 
         // User Update Button
         userUpdateUseCase: UserUpdateUseCase(
             userRepository: UserRepositoryFireBase(
                 firebaseFirestoreInstance: FirebaseFirestore.instance)),
-        userUpdateSubmitStateProvider:
-            StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>(
-                (ref) {
-          return UserSubmitStateNotifier(
-            userSubmitWidgetName: "ユーザ更新",
-          );
-        }),
+
+        userUpdateSubmitStateProvider: userSubmitStateNotifierProviderCreator(
+          userSubmitWidgetName: "ユーザ更新",
+          onSubmit: () {},
+        ),
       );
 }
 
