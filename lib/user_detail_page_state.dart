@@ -29,11 +29,6 @@ part 'user_detail_page_state.freezed.dart';
 class UserDetailPageState with _$UserDetailPageState {
   // Private Constructor
   const factory UserDetailPageState._({
-    // ref
-    required StateNotifierProviderRef<UserDetailPageStateController,
-            UserDetailPageState>
-        ref,
-
     // Page Title
     required String pageTitle,
     required Widget pageTitleWidget,
@@ -69,15 +64,7 @@ class UserDetailPageState with _$UserDetailPageState {
   }) = _UserDetailPageState;
 
   // Factory Constructor
-  factory UserDetailPageState.create({
-    required StateNotifierProviderRef<UserDetailPageStateController,
-            UserDetailPageState>
-        ref,
-  }) =>
-      UserDetailPageState._(
-        // ref
-        ref: ref,
-
+  factory UserDetailPageState.create() => UserDetailPageState._(
         // Page Title
         pageTitle: "User Page Detail",
         pageTitleWidget: const Placeholder(),
@@ -138,16 +125,17 @@ class UserDetailPageState with _$UserDetailPageState {
 // --------------------------------------------------
 class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
   UserDetailPageStateController({
-    required StateNotifierProviderRef<UserDetailPageStateController,
-            UserDetailPageState>
-        ref,
-  }) : super(UserDetailPageState.create(ref: ref)) {
+    required this.ref,
+  }) : super(UserDetailPageState.create()) {
     buildPageTitleWidget();
     buildUserNameField();
     buildPasswordField();
     buildUserAddButton();
     buildUserUpdateButton();
   }
+
+  // ref
+  final Ref ref;
 
   // Page Title
   void buildPageTitleWidget() {
@@ -196,12 +184,9 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
 
   void setUserEmailAndPassword(User user) {
     // User Id Field Controller text set
-    state.ref
-        .read(state.loginIdFieldStateProvider.notifier)
-        .setUserEmail(user.email);
-
+    ref.read(state.loginIdFieldStateProvider.notifier).setUserEmail(user.email);
     // Password Field Controller text set
-    state.ref
+    ref
         .read(state.passwordFieldStateProvider.notifier)
         .setUserPassword(user.password);
 
@@ -211,15 +196,15 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
 
   void setUserAddOnSubmit() {
     // User Add Submit Function
-    state.ref.read(state.userAddSubmitStateProvider.notifier).setOnSubmit(({
+    ref.read(state.userAddSubmitStateProvider.notifier).setOnSubmit(({
       required BuildContext context,
       required String email,
       required String password,
     }) {
       state.userAddUseCase.execute(email, password);
 
-      state.ref.read(state.loginIdFieldStateProvider.notifier).initial();
-      state.ref.read(state.passwordFieldStateProvider.notifier).initial();
+      ref.read(state.loginIdFieldStateProvider.notifier).initial();
+      ref.read(state.passwordFieldStateProvider.notifier).initial();
 
       Navigator.pop(context);
     });
@@ -227,23 +212,23 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
 
   void setUserUpdateOnSubmit(User user) {
     // User Update Submit Function
-    state.ref.read(state.userUpdateSubmitStateProvider.notifier).setOnSubmit(({
+    ref.read(state.userUpdateSubmitStateProvider.notifier).setOnSubmit(({
       required BuildContext context,
       required String email,
       required String password,
     }) {
       state.userUpdateUseCase.execute(user.userId, email, password);
 
-      state.ref.read(state.loginIdFieldStateProvider.notifier).initial();
-      state.ref.read(state.passwordFieldStateProvider.notifier).initial();
+      ref.read(state.loginIdFieldStateProvider.notifier).initial();
+      ref.read(state.passwordFieldStateProvider.notifier).initial();
 
       Navigator.pop(context);
     });
   }
 
   void clearUserEmailAndPassword() {
-    state.ref.read(state.loginIdFieldStateProvider.notifier).initial();
-    state.ref.read(state.passwordFieldStateProvider.notifier).initial();
+    ref.read(state.loginIdFieldStateProvider.notifier).initial();
+    ref.read(state.passwordFieldStateProvider.notifier).initial();
     state = state.copyWith(currentUser: null);
   }
 }
