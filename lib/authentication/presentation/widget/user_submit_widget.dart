@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'user_submit_state.dart';
+
 class UserSubmitWidget extends HookConsumerWidget {
   const UserSubmitWidget({
     Key? key,
@@ -11,7 +13,7 @@ class UserSubmitWidget extends HookConsumerWidget {
 
   final loginIdFieldStateProvider;
   final passwordFieldStateProvider;
-  final userSubmitStateProvider;
+  final UserSubmitStateProvider userSubmitStateProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

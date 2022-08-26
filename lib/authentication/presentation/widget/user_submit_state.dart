@@ -50,6 +50,14 @@ class UserSubmitStateNotifier extends StateNotifier<UserSubmitState> {
 
 // --------------------------------------------------
 //
+// typedef Provider
+//
+// --------------------------------------------------
+typedef UserSubmitStateProvider
+    = StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>;
+
+// --------------------------------------------------
+//
 // StateNotifierProviderCreator
 //
 // --------------------------------------------------

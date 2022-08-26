@@ -46,13 +46,11 @@ class UserDetailPageState with _$UserDetailPageState {
 
     // User Add Button
     required UserAddUseCase userAddUseCase,
-    required StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>
-        userAddSubmitStateProvider,
+    required UserSubmitStateProvider userAddSubmitStateProvider,
 
     // User Update Button
     required UserUpdateUseCase userUpdateUseCase,
-    required StateNotifierProvider<UserSubmitStateNotifier, UserSubmitState>
-        userUpdateSubmitStateProvider,
+    required UserSubmitStateProvider userUpdateSubmitStateProvider,
   }) = _UserDetailPageState;
 
   // Factory Constructor
