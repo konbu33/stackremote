@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -73,7 +74,18 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
 
   void setOnSubmit() {
     Function buildOnSubmit() {
-      return (String email, String password) {
+      return ({
+        required BuildContext context,
+      }) {
+        final email = ref
+            .read(state.loginIdFieldStateProvider)
+            .loginIdFieldController
+            .text;
+        final password = ref
+            .read(state.passwordFieldStateProvider)
+            .passwordFieldController
+            .text;
+
         state.authenticationServiceSignUpUsecase.execute(email, password);
 
         initial();
