@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../usecase/authentication_service_signout_usecase.dart';
 import '../authentication_service_firebase.dart';
 
-part 'signout_state.freezed.dart';
+part 'signout_icon_state.freezed.dart';
 
 // --------------------------------------------------
 //
@@ -14,13 +14,13 @@ part 'signout_state.freezed.dart';
 //
 // --------------------------------------------------
 @freezed
-class SignOutState with _$SignOutState {
-  const factory SignOutState._({
+class SignOutIconState with _$SignOutIconState {
+  const factory SignOutIconState._({
     required Function signOut,
     @Default('サインアウト') String signOutWidgetName,
-  }) = _SignOutState;
+  }) = _SignOutIconState;
 
-  factory SignOutState.create() => SignOutState._(
+  factory SignOutIconState.create() => SignOutIconState._(
         signOut: AuthenticationServiceSignOutUsecase(
                 authenticationService: AuthenticationServiceFirebase(
                     instance: FirebaseAuth.instance))
@@ -33,8 +33,8 @@ class SignOutState with _$SignOutState {
 // StateNotifier
 //
 // --------------------------------------------------
-class SignOutStateNotifier extends StateNotifier<SignOutState> {
-  SignOutStateNotifier() : super(SignOutState.create());
+class SignOutIconStateNotifier extends StateNotifier<SignOutIconState> {
+  SignOutIconStateNotifier() : super(SignOutIconState.create());
 }
 
 // --------------------------------------------------
@@ -42,8 +42,7 @@ class SignOutStateNotifier extends StateNotifier<SignOutState> {
 //  Provider
 //
 // --------------------------------------------------
-final signOutStateProvider =
-    StateNotifierProvider.autoDispose<SignOutStateNotifier, SignOutState>(
-        (ref) {
-  return SignOutStateNotifier();
+final signOutStateProvider = StateNotifierProvider.autoDispose<
+    SignOutIconStateNotifier, SignOutIconState>((ref) {
+  return SignOutIconStateNotifier();
 });

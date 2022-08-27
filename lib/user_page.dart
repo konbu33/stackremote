@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/user_add_icon_widget.dart';
 import 'package:stackremote/user_list_widget.dart';
 
-import 'authentication/presentation/widget/signout_widget.dart';
+import 'authentication/presentation/widget/signout_icon_widget.dart';
 import 'user_detail_page_state.dart';
 import 'user_page_state.dart';
 
@@ -57,7 +57,7 @@ class UserPageWidgets {
 
   // signOutButton
   static Widget signOutButton() {
-    const Widget widget = SignOutWidget();
+    const Widget widget = SignOutIconWidget();
 
     return widget;
   }
