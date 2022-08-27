@@ -8,7 +8,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'authentication/presentation/widget/loginid_field_state.dart';
 import 'authentication/presentation/widget/password_field_state.dart';
-import 'authentication/presentation/widget/user_submit_state.dart';
+import 'authentication/presentation/widget/login_submit_state.dart';
 import 'user_repository_firestore.dart';
 
 import 'user_add_usecase.dart';
@@ -43,11 +43,11 @@ class UserDetailPageState with _$UserDetailPageState {
 
     // User Add Button
     required UserAddUseCase userAddUseCase,
-    required UserSubmitStateProvider userAddSubmitStateProvider,
+    required LoginSubmitStateProvider userAddSubmitStateProvider,
 
     // User Update Button
     required UserUpdateUseCase userUpdateUseCase,
-    required UserSubmitStateProvider userUpdateSubmitStateProvider,
+    required LoginSubmitStateProvider userUpdateSubmitStateProvider,
   }) = _UserDetailPageState;
 
   // Factory Constructor
@@ -72,8 +72,8 @@ class UserDetailPageState with _$UserDetailPageState {
             userRepository: UserRepositoryFireBase(
                 firebaseFirestoreInstance: FirebaseFirestore.instance)),
 
-        userAddSubmitStateProvider: userSubmitStateNotifierProviderCreator(
-          userSubmitWidgetName: "新規登録",
+        userAddSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+          loginSubmitWidgetName: "新規登録",
           onSubmit: () {},
         ),
 
@@ -82,8 +82,8 @@ class UserDetailPageState with _$UserDetailPageState {
             userRepository: UserRepositoryFireBase(
                 firebaseFirestoreInstance: FirebaseFirestore.instance)),
 
-        userUpdateSubmitStateProvider: userSubmitStateNotifierProviderCreator(
-          userSubmitWidgetName: "ユーザ更新",
+        userUpdateSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+          loginSubmitWidgetName: "ユーザ更新",
           onSubmit: () {},
         ),
       );
@@ -137,8 +137,8 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
     }
 
     state = state.copyWith(
-        userAddSubmitStateProvider: userSubmitStateNotifierProviderCreator(
-      userSubmitWidgetName: "新規登録",
+        userAddSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+      loginSubmitWidgetName: "新規登録",
       onSubmit: buildOnSubmit(),
     ));
   }
@@ -167,8 +167,8 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
     }
 
     state = state.copyWith(
-      userUpdateSubmitStateProvider: userSubmitStateNotifierProviderCreator(
-        userSubmitWidgetName: "ユーザ更新",
+      userUpdateSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+        loginSubmitWidgetName: "ユーザ更新",
         onSubmit: buildOnSubmit(),
       ),
     );
