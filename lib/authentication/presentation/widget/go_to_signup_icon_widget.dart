@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class SignUpWidget extends HookConsumerWidget {
-  const SignUpWidget({Key? key}) : super(key: key);
+class GoToSignUpWidget extends HookConsumerWidget {
+  const GoToSignUpWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

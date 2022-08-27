@@ -7,7 +7,7 @@ import '../widget/base_layout_widget.dart';
 import '../widget/login_submit_widget.dart';
 import '../widget/loginid_field_widget.dart';
 import '../widget/password_field_widget.dart';
-import '../widget/signup_widget.dart';
+import '../widget/go_to_signup_icon_widget.dart';
 import 'signin_page_state.dart';
 
 class SignInPage extends HookConsumerWidget {
@@ -49,7 +49,7 @@ class SignInPage extends HookConsumerWidget {
 class SignInPageWidgets {
   // SignUp Widget
   static Widget singUpWidget(SignInPageState state) {
-    const Widget widget = SignUpWidget();
+    const Widget widget = GoToSignUpWidget();
     return widget;
   }
 
