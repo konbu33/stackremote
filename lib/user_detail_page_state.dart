@@ -8,7 +8,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'authentication/presentation/widget/loginid_field_state.dart';
 import 'authentication/presentation/widget/password_field_state.dart';
-import 'authentication/presentation/widget/user_submit_state.dart';
+import 'authentication/presentation/widget/login_submit_state.dart';
 import 'user_repository_firestore.dart';
 
 import 'user_add_usecase.dart';
@@ -43,11 +43,11 @@ class UserDetailPageState with _$UserDetailPageState {
 
     // User Add Button
     required UserAddUseCase userAddUseCase,
-    required UserSubmitStateProvider userAddSubmitStateProvider,
+    required LoginSubmitStateProvider userAddSubmitStateProvider,
 
     // User Update Button
     required UserUpdateUseCase userUpdateUseCase,
-    required UserSubmitStateProvider userUpdateSubmitStateProvider,
+    required LoginSubmitStateProvider userUpdateSubmitStateProvider,
   }) = _UserDetailPageState;
 
   // Factory Constructor
@@ -72,8 +72,8 @@ class UserDetailPageState with _$UserDetailPageState {
             userRepository: UserRepositoryFireBase(
                 firebaseFirestoreInstance: FirebaseFirestore.instance)),
 
-        userAddSubmitStateProvider: userSubmitStateNotifierProviderCreator(
-          userSubmitWidgetName: "新規登録",
+        userAddSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+          loginSubmitWidgetName: "新規登録",
           onSubmit: () {},
         ),
 
@@ -82,8 +82,8 @@ class UserDetailPageState with _$UserDetailPageState {
             userRepository: UserRepositoryFireBase(
                 firebaseFirestoreInstance: FirebaseFirestore.instance)),
 
-        userUpdateSubmitStateProvider: userSubmitStateNotifierProviderCreator(
-          userSubmitWidgetName: "ユーザ更新",
+        userUpdateSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+          loginSubmitWidgetName: "ユーザ更新",
           onSubmit: () {},
         ),
       );
@@ -115,35 +115,63 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
   }
 
   void setUserAddOnSubmit() {
-    // User Add Submit Function
-    ref.read(state.userAddSubmitStateProvider.notifier).setOnSubmit(({
-      required BuildContext context,
-      required String email,
-      required String password,
-    }) {
-      state.userAddUseCase.execute(email, password);
+    Function buildOnSubmit() {
+      return ({
+        required BuildContext context,
+      }) {
+        final email = ref
+            .read(state.loginIdFieldStateProvider)
+            .loginIdFieldController
+            .text;
+        final password = ref
+            .read(state.passwordFieldStateProvider)
+            .passwordFieldController
+            .text;
 
-      ref.read(state.loginIdFieldStateProvider.notifier).initial();
-      ref.read(state.passwordFieldStateProvider.notifier).initial();
+        // ユーザ情情追加
+        state.userAddUseCase.execute(email, password);
 
-      Navigator.pop(context);
-    });
+        // 戻る
+        Navigator.pop(context);
+      };
+    }
+
+    state = state.copyWith(
+        userAddSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+      loginSubmitWidgetName: "新規登録",
+      onSubmit: buildOnSubmit(),
+    ));
   }
 
   void setUserUpdateOnSubmit(User user) {
-    // User Update Submit Function
-    ref.read(state.userUpdateSubmitStateProvider.notifier).setOnSubmit(({
-      required BuildContext context,
-      required String email,
-      required String password,
-    }) {
-      state.userUpdateUseCase.execute(user.userId, email, password);
+    Function buildOnSubmit() {
+      return ({
+        required BuildContext context,
+      }) {
+        final userId = user.userId;
+        final email = ref
+            .read(state.loginIdFieldStateProvider)
+            .loginIdFieldController
+            .text;
+        final password = ref
+            .read(state.passwordFieldStateProvider)
+            .passwordFieldController
+            .text;
 
-      ref.read(state.loginIdFieldStateProvider.notifier).initial();
-      ref.read(state.passwordFieldStateProvider.notifier).initial();
+        // ユーザ情情更新
+        state.userUpdateUseCase.execute(userId, email, password);
 
-      Navigator.pop(context);
-    });
+        // 戻る
+        Navigator.pop(context);
+      };
+    }
+
+    state = state.copyWith(
+      userUpdateSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+        loginSubmitWidgetName: "ユーザ更新",
+        onSubmit: buildOnSubmit(),
+      ),
+    );
   }
 
   void clearUserEmailAndPassword() {

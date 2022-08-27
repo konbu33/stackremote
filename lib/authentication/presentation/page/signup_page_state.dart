@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -56,9 +57,14 @@ class SignUpPageState with _$SignUpPageState {
 //
 // --------------------------------------------------
 class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
-  SignUpPageStateNotifier() : super(SignUpPageState.create()) {
+  SignUpPageStateNotifier({
+    required this.ref,
+  }) : super(SignUpPageState.create()) {
     initial();
   }
+
+  // ref
+  final Ref ref;
 
   // initial
   void initial() {
@@ -68,7 +74,18 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
 
   void setOnSubmit() {
     Function buildOnSubmit() {
-      return (String email, String password) {
+      return ({
+        required BuildContext context,
+      }) {
+        final email = ref
+            .read(state.loginIdFieldStateProvider)
+            .loginIdFieldController
+            .text;
+        final password = ref
+            .read(state.passwordFieldStateProvider)
+            .passwordFieldController
+            .text;
+
         state.authenticationServiceSignUpUsecase.execute(email, password);
 
         initial();
@@ -89,5 +106,5 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
 // --------------------------------------------------
 final signUpPageStateNotifierProvider =
     StateNotifierProvider.autoDispose<SignUpPageStateNotifier, SignUpPageState>(
-  (ref) => SignUpPageStateNotifier(),
+  (ref) => SignUpPageStateNotifier(ref: ref),
 );

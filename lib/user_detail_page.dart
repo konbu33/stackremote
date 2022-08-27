@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'authentication/presentation/widget/loginid_field_widget.dart';
 import 'authentication/presentation/widget/password_field_widget.dart';
-import 'authentication/presentation/widget/user_submit_widget.dart';
+import 'authentication/presentation/widget/login_submit_widget.dart';
 import 'user_detail_page_state.dart';
 
 class UserDetailPage extends HookConsumerWidget {
@@ -61,10 +61,10 @@ class UserDetailPageWidgets {
 
   // User Add Button
   static Widget userAddButton(UserDetailPageState state) {
-    final Widget widget = UserSubmitWidget(
+    final Widget widget = LoginSubmitWidget(
       loginIdFieldStateProvider: state.loginIdFieldStateProvider,
       passwordFieldStateProvider: state.passwordFieldStateProvider,
-      userSubmitStateProvider: state.userAddSubmitStateProvider,
+      loginSubmitStateProvider: state.userAddSubmitStateProvider,
     );
 
     return widget;
@@ -72,10 +72,10 @@ class UserDetailPageWidgets {
 
   // User Update Button
   static Widget userUpdateButton(UserDetailPageState state) {
-    final Widget widget = UserSubmitWidget(
+    final Widget widget = LoginSubmitWidget(
       loginIdFieldStateProvider: state.loginIdFieldStateProvider,
       passwordFieldStateProvider: state.passwordFieldStateProvider,
-      userSubmitStateProvider: state.userUpdateSubmitStateProvider,
+      loginSubmitStateProvider: state.userUpdateSubmitStateProvider,
     );
 
     return widget;

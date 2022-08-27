@@ -23,3 +23,8 @@ class CustomMouseCursorOverlayerStateNotifier
   //   // state = state.copyWith(positionDx: 0, positionDy: 0);
   // }
 }
+
+final customMouseCursorOverlayerStateNotifierProvider = StateNotifierProvider<
+        CustomMouseCursorOverlayerStateNotifier,
+        CustomMouseCursorOerlayerState>(
+    (ref) => CustomMouseCursorOverlayerStateNotifier());

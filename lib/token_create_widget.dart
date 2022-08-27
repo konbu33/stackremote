@@ -4,8 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'providers.dart';
-
 class TokenCreateWidget extends HookConsumerWidget {
   const TokenCreateWidget({Key? key}) : super(key: key);
 
@@ -65,10 +63,9 @@ class TokenCreateWidget extends HookConsumerWidget {
     //   }
     // }
 
-    final state = ref.read(Providers.testProvider);
     return ElevatedButton(
       onPressed: () async {
-        print("riverpod : ${state}");
+        print("riverpod : ");
         // await createToken();
       },
       child: const Text("Create Token"),
