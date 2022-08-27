@@ -118,9 +118,16 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
     Function buildOnSubmit() {
       return ({
         required BuildContext context,
-        required String email,
-        required String password,
       }) {
+        final email = ref
+            .read(state.loginIdFieldStateProvider)
+            .loginIdFieldController
+            .text;
+        final password = ref
+            .read(state.passwordFieldStateProvider)
+            .passwordFieldController
+            .text;
+
         // ユーザ情情追加
         state.userAddUseCase.execute(email, password);
 
@@ -140,11 +147,19 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
     Function buildOnSubmit() {
       return ({
         required BuildContext context,
-        required String email,
-        required String password,
       }) {
+        final userId = user.userId;
+        final email = ref
+            .read(state.loginIdFieldStateProvider)
+            .loginIdFieldController
+            .text;
+        final password = ref
+            .read(state.passwordFieldStateProvider)
+            .passwordFieldController
+            .text;
+
         // ユーザ情情更新
-        state.userUpdateUseCase.execute(user.userId, email, password);
+        state.userUpdateUseCase.execute(userId, email, password);
 
         // 戻る
         Navigator.pop(context);

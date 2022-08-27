@@ -36,16 +36,8 @@ class UserSubmitWidget extends HookConsumerWidget {
             onPressed: loginIdFieldState.loginIdIsValidate.isValid &&
                     passwordFieldState.passwordIsValidate.isValid
                 ? () {
-                    final String email =
-                        loginIdFieldState.loginIdFieldController.text;
-
-                    final String password =
-                        passwordFieldState.passwordFieldController.text;
-
                     userSubmitState.onSubmit(
                       context: context,
-                      email: email,
-                      password: password,
                     );
                   }
                 : null,
