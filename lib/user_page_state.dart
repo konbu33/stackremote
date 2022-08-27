@@ -29,8 +29,8 @@ class UserPageState with _$UserPageState {
     // User Add Button
     required String userAddButtonName,
 
-    // SignOut Button
-    required String signOutButtonName,
+    // SignOutIcon Button
+    required String signOutIconButtonName,
 
     // User List Widget
     required StreamProvider<Users> usersStreamProvider,
@@ -47,7 +47,7 @@ class UserPageState with _$UserPageState {
         userAddButtonName: "ユーザ追加",
 
         // Sign Out Button
-        signOutButtonName: "サインアウト",
+        signOutIconButtonName: "サインアウト",
 
         // User List Widget
         usersStreamProvider: StreamProvider<Users>(

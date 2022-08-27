@@ -20,7 +20,7 @@ class UserPage extends HookConsumerWidget {
         title: UserPageWidgets.pageTitleWidget(state),
         actions: [
           UserPageWidgets.userAddButton(state, notifier),
-          UserPageWidgets.signOutButton(),
+          UserPageWidgets.signOutIconButton(),
         ],
       ),
       body: Column(
@@ -55,13 +55,14 @@ class UserPageWidgets {
     return widget;
   }
 
-  // signOutButton
-  static Widget signOutButton() {
+  // signOutIconButton
+  static Widget signOutIconButton() {
     const Widget widget = SignOutIconWidget();
 
     return widget;
   }
 
+  // userListWidget
   static Widget userListWidget(
     UserPageState state,
   ) {
