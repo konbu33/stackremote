@@ -102,11 +102,6 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
   // ref
   final Ref ref;
 
-  // initial
-  void initial() {
-    state = UserDetailPageState.create();
-  }
-
   void setUserEmailAndPassword(User user) {
     // User Id Field Controller text set
     ref.read(state.loginIdFieldStateProvider.notifier).setUserEmail(user.email);
@@ -126,10 +121,10 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
         required String email,
         required String password,
       }) {
+        // ユーザ情情追加
         state.userAddUseCase.execute(email, password);
 
-        initial();
-
+        // 戻る
         Navigator.pop(context);
       };
     }
@@ -148,10 +143,10 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
         required String email,
         required String password,
       }) {
+        // ユーザ情情更新
         state.userUpdateUseCase.execute(user.userId, email, password);
 
-        initial();
-
+        // 戻る
         Navigator.pop(context);
       };
     }
