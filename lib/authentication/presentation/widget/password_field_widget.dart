@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'password_field_state.dart';
+
 class PasswordFieldWidget extends HookConsumerWidget {
   const PasswordFieldWidget({
     Key? key,
     required this.passwordFieldStateProvider,
   }) : super(key: key);
 
-  final passwordFieldStateProvider;
+  final PasswordFieldStateProvider passwordFieldStateProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

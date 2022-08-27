@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'loginid_field_state.dart';
+
 class LoginIdFieldWidget extends HookConsumerWidget {
   const LoginIdFieldWidget({
     Key? key,
     required this.loginIdFieldStateProvider,
   }) : super(key: key);
 
-  final loginIdFieldStateProvider;
+  final LoginIdFieldStateProvider loginIdFieldStateProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
