@@ -5,15 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'custom_mouse_cursor.dart';
-import '../providers.dart';
+import 'custom_mouse_cursor_overlayer_state_notifier.dart';
 
 class CustomMouseCursorPositioned extends HookConsumerWidget {
   const CustomMouseCursorPositioned({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state =
-        ref.watch(Providers.CustomMouseCursorOverlayerStateNotifierProvider);
+    final state = ref.watch(customMouseCursorOverlayerStateNotifierProvider);
     // print(" y : ${state.positionDy - CustomMouseCursor.radius / 2}");
     // print(" x : ${state.positionDx - CustomMouseCursor.radius / 2}");
 

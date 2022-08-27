@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'custom_mouse_cursor_overlayer_state_notifier.dart';
 import 'custom_mouse_cursor_positioned.dart';
-import '../providers.dart';
 
 class CustomMouseCursorOverlayer extends HookConsumerWidget {
   const CustomMouseCursorOverlayer({
@@ -16,11 +16,10 @@ class CustomMouseCursorOverlayer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state =
-        ref.watch(Providers.CustomMouseCursorOverlayerStateNotifierProvider);
+    final state = ref.watch(customMouseCursorOverlayerStateNotifierProvider);
 
-    final notifier = ref.read(
-        Providers.CustomMouseCursorOverlayerStateNotifierProvider.notifier);
+    final notifier =
+        ref.read(customMouseCursorOverlayerStateNotifierProvider.notifier);
 
     return MouseRegion(
       cursor: SystemMouseCursors.none,

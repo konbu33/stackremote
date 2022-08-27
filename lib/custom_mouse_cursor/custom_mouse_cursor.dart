@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../providers.dart';
+import 'custom_mouse_cursor_overlayer_state_notifier.dart';
 
 class CustomMouseCursor extends HookConsumerWidget {
   const CustomMouseCursor({Key? key}) : super(key: key);
@@ -11,8 +11,8 @@ class CustomMouseCursor extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notifier = ref.read(
-        Providers.CustomMouseCursorOverlayerStateNotifierProvider.notifier);
+    final notifier =
+        ref.read(customMouseCursorOverlayerStateNotifierProvider.notifier);
 
     return
         // IgnorePointer(
