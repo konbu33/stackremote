@@ -56,9 +56,14 @@ class SignInPageState with _$SignInPageState {
 //
 // --------------------------------------------------
 class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
-  SignInPageStateNotifier() : super(SignInPageState.create()) {
+  SignInPageStateNotifier({
+    required this.ref,
+  }) : super(SignInPageState.create()) {
     initial();
   }
+
+  // ref
+  final Ref ref;
 
   // initial
   void initial() {
@@ -89,5 +94,5 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
 // --------------------------------------------------
 final signInPageStateNotifierProvider =
     StateNotifierProvider.autoDispose<SignInPageStateNotifier, SignInPageState>(
-  (ref) => SignInPageStateNotifier(),
+  (ref) => SignInPageStateNotifier(ref: ref),
 );

@@ -56,9 +56,14 @@ class SignUpPageState with _$SignUpPageState {
 //
 // --------------------------------------------------
 class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
-  SignUpPageStateNotifier() : super(SignUpPageState.create()) {
+  SignUpPageStateNotifier({
+    required this.ref,
+  }) : super(SignUpPageState.create()) {
     initial();
   }
+
+  // ref
+  final Ref ref;
 
   // initial
   void initial() {
@@ -89,5 +94,5 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
 // --------------------------------------------------
 final signUpPageStateNotifierProvider =
     StateNotifierProvider.autoDispose<SignUpPageStateNotifier, SignUpPageState>(
-  (ref) => SignUpPageStateNotifier(),
+  (ref) => SignUpPageStateNotifier(ref: ref),
 );
