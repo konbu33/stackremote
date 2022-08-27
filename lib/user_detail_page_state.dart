@@ -102,6 +102,11 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
   // ref
   final Ref ref;
 
+  // initial
+  void initial() {
+    state = UserDetailPageState.create();
+  }
+
   void setUserEmailAndPassword(User user) {
     // User Id Field Controller text set
     ref.read(state.loginIdFieldStateProvider.notifier).setUserEmail(user.email);
@@ -115,35 +120,48 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
   }
 
   void setUserAddOnSubmit() {
-    // User Add Submit Function
-    ref.read(state.userAddSubmitStateProvider.notifier).setOnSubmit(({
-      required BuildContext context,
-      required String email,
-      required String password,
-    }) {
-      state.userAddUseCase.execute(email, password);
+    Function buildOnSubmit() {
+      return ({
+        required BuildContext context,
+        required String email,
+        required String password,
+      }) {
+        state.userAddUseCase.execute(email, password);
 
-      ref.read(state.loginIdFieldStateProvider.notifier).initial();
-      ref.read(state.passwordFieldStateProvider.notifier).initial();
+        initial();
 
-      Navigator.pop(context);
-    });
+        Navigator.pop(context);
+      };
+    }
+
+    state = state.copyWith(
+        userAddSubmitStateProvider: userSubmitStateNotifierProviderCreator(
+      userSubmitWidgetName: "新規登録",
+      onSubmit: buildOnSubmit(),
+    ));
   }
 
   void setUserUpdateOnSubmit(User user) {
-    // User Update Submit Function
-    ref.read(state.userUpdateSubmitStateProvider.notifier).setOnSubmit(({
-      required BuildContext context,
-      required String email,
-      required String password,
-    }) {
-      state.userUpdateUseCase.execute(user.userId, email, password);
+    Function buildOnSubmit() {
+      return ({
+        required BuildContext context,
+        required String email,
+        required String password,
+      }) {
+        state.userUpdateUseCase.execute(user.userId, email, password);
 
-      ref.read(state.loginIdFieldStateProvider.notifier).initial();
-      ref.read(state.passwordFieldStateProvider.notifier).initial();
+        initial();
 
-      Navigator.pop(context);
-    });
+        Navigator.pop(context);
+      };
+    }
+
+    state = state.copyWith(
+      userUpdateSubmitStateProvider: userSubmitStateNotifierProviderCreator(
+        userSubmitWidgetName: "ユーザ更新",
+        onSubmit: buildOnSubmit(),
+      ),
+    );
   }
 
   void clearUserEmailAndPassword() {

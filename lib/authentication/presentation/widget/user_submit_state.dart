@@ -39,10 +39,6 @@ class UserSubmitStateNotifier extends StateNotifier<UserSubmitState> {
           userSubmitWidgetName: userSubmitWidgetName,
           onSubmit: onSubmit,
         ));
-
-  void setOnSubmit(Function onSubmit) {
-    state = state.copyWith(onSubmit: onSubmit);
-  }
 }
 
 // --------------------------------------------------
