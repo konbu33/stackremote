@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'signout_state.dart';
+import 'signout_icon_state.dart';
 
-class SignOutWidget extends HookConsumerWidget {
-  const SignOutWidget({Key? key}) : super(key: key);
+class SignOutIconWidget extends HookConsumerWidget {
+  const SignOutIconWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
