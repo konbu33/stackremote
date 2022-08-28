@@ -15,3 +15,29 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 # stackremote
+
+# setup
+
+1. Add application to Firebase Project
+
+    1. Execute flutterfire configure.
+
+    2. Add application to Firebase Project.
+
+</br>
+</br>
+
+2. Setting .env file
+
+    1. Search "dotenv.get" from all code.
+
+    2. Add key=value in .env file. 
+
+
+        key=value example:
+
+        Token="xxxx" 
+
+
+
+
