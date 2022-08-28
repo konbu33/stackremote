@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/authentication/presentation/widget/appbar_action_icon_widget.dart';
 import 'package:stackremote/user_add_icon_widget.dart';
 import 'package:stackremote/user_list_widget.dart';
 
-import 'authentication/presentation/widget/signout_icon_widget.dart';
 import 'user_detail_page_state.dart';
 import 'user_page_state.dart';
 
@@ -20,7 +20,7 @@ class UserPage extends HookConsumerWidget {
         title: UserPageWidgets.pageTitleWidget(state),
         actions: [
           UserPageWidgets.userAddButton(state, notifier),
-          UserPageWidgets.signOutIconButton(),
+          UserPageWidgets.signOutIconButton(state),
         ],
       ),
       body: Column(
@@ -56,8 +56,10 @@ class UserPageWidgets {
   }
 
   // signOutIconButton
-  static Widget signOutIconButton() {
-    const Widget widget = SignOutIconWidget();
+  static Widget signOutIconButton(UserPageState state) {
+    final Widget widget = AppbarAcitonIconWidget(
+      appbarActionIconStateProvider: state.signOutIconStateProvider,
+    );
 
     return widget;
   }
