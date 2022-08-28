@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'appbar_action_icon_state.dart';
+
 class AppbarAcitonIconWidget extends HookConsumerWidget {
   const AppbarAcitonIconWidget({
     Key? key,
-    required this.state,
+    required this.appbarActionIconStateProvider,
   }) : super(key: key);
 
-  final state;
+  final AppbarActionIconStateProvider appbarActionIconStateProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(appbarActionIconStateProvider);
+
     return Builder(builder: (context) {
       return Container(
         alignment: Alignment.center,
@@ -18,10 +22,10 @@ class AppbarAcitonIconWidget extends HookConsumerWidget {
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
         child: IconButton(
           onPressed: () {
-            context.push('/signup');
+            state.onSubmit(context: context);
           },
-          icon: const Icon(Icons.person_add),
-          tooltip: "新規登録",
+          icon: state.icon,
+          tooltip: state.onSubmitWidgetName,
         ),
       );
     });

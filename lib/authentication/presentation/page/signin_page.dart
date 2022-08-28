@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../widget/appbar_action_icon_widget.dart';
 import '../widget/background_image_widget.dart';
 import '../widget/base_layout_widget.dart';
 
 import '../widget/login_submit_widget.dart';
 import '../widget/loginid_field_widget.dart';
 import '../widget/password_field_widget.dart';
-import '../widget/go_to_signup_icon_widget.dart';
 import 'signin_page_state.dart';
 
 class SignInPage extends HookConsumerWidget {
@@ -22,7 +22,7 @@ class SignInPage extends HookConsumerWidget {
         appBar: AppBar(
           title: Text(state.loginSubmitWidgetName),
           actions: [
-            SignInPageWidgets.singUpWidget(state),
+            SignInPageWidgets.goToSignUpWidget(state),
           ],
         ),
         body: BaseLayoutWidget(
@@ -47,9 +47,11 @@ class SignInPage extends HookConsumerWidget {
 }
 
 class SignInPageWidgets {
-  // SignUp Widget
-  static Widget singUpWidget(SignInPageState state) {
-    const Widget widget = GoToSignUpWidget();
+  // GoTo SignUp Icon Widget
+  static Widget goToSignUpWidget(SignInPageState state) {
+    final Widget widget = AppbarAcitonIconWidget(
+      appbarActionIconStateProvider: state.goToSignUpIconStateProvider,
+    );
     return widget;
   }
 
