@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/authentication/presentation/widget/appbar_action_icon_widget.dart';
-import 'package:stackremote/user_add_icon_widget.dart';
 import 'package:stackremote/user_list_widget.dart';
 
 import 'user_detail_page_state.dart';
