@@ -10,7 +10,9 @@ import 'package:flutter/foundation.dart';
 import 'package:stackremote/authentication/presentation/authentication_service_firebase.dart';
 import 'package:stackremote/authentication/presentation/widget/appbar_action_icon_state.dart';
 import 'package:stackremote/authentication/usecase/authentication_service_signout_usecase.dart';
+import 'package:stackremote/user_detail_page_state.dart';
 
+import 'user_detail_page.dart';
 import 'user_fetch_all_usecase.dart';
 import 'user_fetch_by_id_usecase.dart';
 import 'user_delete_usecase.dart';
@@ -33,6 +35,7 @@ class UserPageState with _$UserPageState {
 
     // User Add Button
     required String userAddButtonName,
+    required AppbarActionIconStateProvider userAddIconStateProvider,
 
     // SignOutIcon Button
     required String signOutIconButtonName,
@@ -53,6 +56,11 @@ class UserPageState with _$UserPageState {
 
         // User Add Button
         userAddButtonName: "ユーザ追加",
+        userAddIconStateProvider: appbarActionIconStateProviderCreator(
+          onSubmitWidgetName: "",
+          icon: const Icon(null),
+          onSubmit: () {},
+        ),
 
         // Sign Out Button
         signOutIconButtonName: "サインアウト",
@@ -96,13 +104,57 @@ class UserPageState with _$UserPageState {
 //
 // --------------------------------------------------
 class UserPageStateController extends StateNotifier<UserPageState> {
-  UserPageStateController() : super(UserPageState.create()) {
+  UserPageStateController({
+    required this.ref,
+  }) : super(UserPageState.create()) {
     initial();
   }
 
+  // ref
+  Ref ref;
+
   // initial
   void initial() {
+    setUserAddIconOnSubumit();
     setSignOutIconOnSubumit();
+  }
+
+  // setUserAddIconOnSubumit
+  void setUserAddIconOnSubumit() {
+    Function buildOnSubmit() {
+      return ({
+        required BuildContext context,
+      }) async {
+        final notifier =
+            ref.read(userDetailPageStateControllerProvider.notifier);
+
+        // state.authenticationServiceSignOutUsecase.execute();
+        // ModalBottomSheet処理内でのonSubmit処理を最終確定
+        notifier.setUserAddOnSubmit();
+
+        // 初期化処理
+        notifier.clearUserEmailAndPassword();
+
+        // ModalBottomSheetでの処理
+        await showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return const UserDetailPage();
+          },
+        );
+
+        // 初期化処理
+        notifier.clearUserEmailAndPassword();
+      };
+    }
+
+    state = state.copyWith(
+      userAddIconStateProvider: appbarActionIconStateProviderCreator(
+        onSubmitWidgetName: state.userAddButtonName,
+        icon: const Icon(Icons.person_add),
+        onSubmit: buildOnSubmit(),
+      ),
+    );
   }
 
   // setSignOutIconOnSubumit
@@ -132,5 +184,5 @@ class UserPageStateController extends StateNotifier<UserPageState> {
 // --------------------------------------------------
 final userPageStateControllerProvider =
     StateNotifierProvider<UserPageStateController, UserPageState>(
-  (ref) => UserPageStateController(),
+  (ref) => UserPageStateController(ref: ref),
 );
