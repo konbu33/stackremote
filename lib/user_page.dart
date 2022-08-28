@@ -47,9 +47,8 @@ class UserPageWidgets {
     UserPageState state,
     UserDetailPageStateController notifier,
   ) {
-    final Widget widget = UserAddIconWidget(
-      state: state,
-      notifier: notifier,
+    final Widget widget = AppbarAcitonIconWidget(
+      appbarActionIconStateProvider: state.userAddIconStateProvider,
     );
 
     return widget;
