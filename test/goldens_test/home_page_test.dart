@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:stackremote/home_page.dart';
+import 'package:stackremote/presentation/page/home_page.dart';
 
 void main() {
   String title = "home_page";

@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stackremote/user.dart';
-import 'package:stackremote/user_add_usecase.dart';
-import 'package:stackremote/user_repository.dart';
+import 'package:stackremote/domain/user.dart';
+import 'package:stackremote/usecase/user_add_usecase.dart';
+import 'package:stackremote/domain/user_repository.dart';
 
 // UserRepositoryのMockクラス作成
 class MockUserRepository extends Mock implements UserRepository {}
@@ -17,7 +17,12 @@ void main() {
   // Userインスタンス生成
   const email = "aki@test.com";
   const password = "password";
-  final user = User.create(email: email, password: password);
+  const firebaseAuthUid = "firebaeAuthUid";
+  final user = User.create(
+    email: email,
+    password: password,
+    firebaseAuthUid: firebaseAuthUid,
+  );
 
   setUpAll(() {
     /*

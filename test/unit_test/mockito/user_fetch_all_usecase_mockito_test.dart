@@ -3,10 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:stackremote/user.dart';
-import 'package:stackremote/user_fetch_all_usecase.dart';
-import 'package:stackremote/user_repository.dart';
-import 'package:stackremote/users.dart';
+import 'package:stackremote/domain/user.dart';
+import 'package:stackremote/usecase/user_fetch_all_usecase.dart';
+import 'package:stackremote/domain/user_repository.dart';
+import 'package:stackremote/domain/users.dart';
 
 import 'user_fetch_all_usecase_mockito_test.mocks.dart';
 
@@ -21,9 +21,18 @@ void main() {
 
   // Usersインスタンス生成
   final List<User> userList = [
-    User.create(email: "ake@test.com", password: "ake"),
-    User.create(email: "ike@test.com", password: "ike"),
-    User.create(email: "uke@test.com", password: "uke"),
+    User.create(
+        email: "ake@test.com",
+        password: "ake",
+        firebaseAuthUid: "firebaseAuthUid"),
+    User.create(
+        email: "ike@test.com",
+        password: "ike",
+        firebaseAuthUid: "firebaseAuthUid"),
+    User.create(
+        email: "uke@test.com",
+        password: "uke",
+        firebaseAuthUid: "firebaseAuthUid"),
   ];
 
   final Users users = Users.reconstruct(users: userList);

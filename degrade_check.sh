@@ -66,8 +66,8 @@ echo "
 #
 # --------------------------------------------------
 "
-echo flutter drive --driver=test_driver/integration_test.dart --target=integration_test/home_page_test.dart -d "iPhone 13 mini"
-
+echo flutter drive --driver=test_driver/integration_test.dart --target=integration_test/home_page_test.dart -d "7CB4CF43-9637-419A-89CD-6B042DC629EB"
+echo flutter drive --driver=test_driver/integration_test.dart --target=integration_test/home_page_test.dart -d "emulator-5554"
 
 
 # --------------------------------------------------

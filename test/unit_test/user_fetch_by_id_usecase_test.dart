@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stackremote/user.dart';
-import 'package:stackremote/user_fetch_by_id_usecase.dart';
-import 'package:stackremote/user_repository.dart';
-import 'package:stackremote/userid.dart';
+import 'package:stackremote/domain/user.dart';
+import 'package:stackremote/domain/userid.dart';
+import 'package:stackremote/usecase/user_fetch_by_id_usecase.dart';
+import 'package:stackremote/domain/user_repository.dart';
 
 // UserRepositoryのMockクラス作成
 class MockUserRepository extends Mock implements UserRepository {}
@@ -20,7 +20,12 @@ void main() {
   final String userId = UserId.create().value.toString();
   const email = "take@test.com";
   const password = "password";
-  final User user = User.create(email: email, password: password);
+  const firebaseAuthUid = "firebaseAuthUid";
+  final User user = User.create(
+    email: email,
+    password: password,
+    firebaseAuthUid: firebaseAuthUid,
+  );
 
   // モックの戻り値を生成
   final future = Future.value(user);
