@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:stackremote/user_delete_usecase.dart';
-import 'package:stackremote/user_repository.dart';
-import 'package:stackremote/userid.dart';
+import 'package:stackremote/usecase/user_delete_usecase.dart';
+import 'package:stackremote/domain/user_repository.dart';
+import 'package:stackremote/domain/userid.dart';
 import 'user_delete_usecase_mockito_test.mocks.dart';
 
 @GenerateMocks([UserRepository])

@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stackremote/user.dart';
-import 'package:stackremote/user_update_usecase.dart';
-import 'package:stackremote/user_repository.dart';
-import 'package:stackremote/userid.dart';
+import 'package:stackremote/domain/user.dart';
+import 'package:stackremote/usecase/user_update_usecase.dart';
+import 'package:stackremote/domain/user_repository.dart';
+import 'package:stackremote/domain/userid.dart';
 
 // UserRepositoryのMockクラス作成
 class MockUserRepository extends Mock implements UserRepository {}
@@ -18,6 +18,9 @@ class FakeUser extends Fake implements User {
 
   @override
   final String password = "password";
+
+  @override
+  final String firebaseAuthUid = "firebaseAuthUid";
 }
 
 void main() {
@@ -47,6 +50,7 @@ void main() {
       fakeUser.userId,
       fakeUser.email,
       fakeUser.password,
+      fakeUser.firebaseAuthUid,
     );
 
     // then

@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stackremote/user.dart';
-import 'package:stackremote/user_repository.dart';
-import 'package:stackremote/user_repository_firestore.dart';
-import 'package:stackremote/userid.dart';
-import 'package:stackremote/users.dart';
+import 'package:stackremote/domain/user.dart';
+import 'package:stackremote/domain/user_repository.dart';
+import 'package:stackremote/infrastructure/user_repository_firestore.dart';
+import 'package:stackremote/domain/userid.dart';
+import 'package:stackremote/domain/users.dart';
 
 void main() {
   // Firebaseのモック用インスタンス生成
@@ -24,7 +24,11 @@ void main() {
 
   test("ユーザデータを登録可能なこと、かつ、UserId指定でユーザデータを取得可能なこと", () async {
     // given
-    final user = User.create(email: "take@test.com", password: "take");
+    final user = User.create(
+      email: "take@test.com",
+      password: "take",
+      firebaseAuthUid: "firebaseAuthUid",
+    );
     final String userId = user.userId.value.toString();
 
     // when
@@ -53,10 +57,19 @@ void main() {
     // given
 
     // Userインスタンスを複数生成
-    final user1 = User.create(email: "ake@test.com", password: "ake");
-    final user2 = User.create(email: "ike@test.com", password: "ike");
-    // final user3 = User.create(email: "uke@test.com", password: "uke");
-    final user4 = User.create(email: "eke@test.com", password: "eke");
+    final user1 = User.create(
+        email: "ake@test.com",
+        password: "ake",
+        firebaseAuthUid: "firebaseAuthUid");
+    final user2 = User.create(
+        email: "ike@test.com",
+        password: "ike",
+        firebaseAuthUid: "firebaseAuthUid");
+    // final user3 = User.create(email: "uke@test.com", password: "uke", firebaseAuthUid: "firebaseAuthUid");
+    final user4 = User.create(
+        email: "eke@test.com",
+        password: "eke",
+        firebaseAuthUid: "firebaseAuthUid");
 
     // 複数のUserからUsersコレクションオブジェクト生成
     final srcUsers = Users.reconstruct(users: [
@@ -106,7 +119,10 @@ void main() {
 
   test("ユーザデータを登録可能なこと、かつ、UserId指定でユーザデータを更新可能なこと", () async {
     // given
-    final addUser = User.create(email: "take@test.com", password: "take");
+    final addUser = User.create(
+        email: "take@test.com",
+        password: "take",
+        firebaseAuthUid: "firebaseAuthUid");
     final String addUserId = addUser.userId.value.toString();
 
     final UserId resAddUserId = await userRepository.add(addUser);
@@ -125,6 +141,7 @@ void main() {
       userId: resAddUserId,
       email: "take_updated@test.com",
       password: "take_updated",
+      firebaseAuthUid: "firebaseAuthUid",
     );
     final String updateUserId = updateUser.userId.value.toString();
 
@@ -143,7 +160,10 @@ void main() {
 
   test("ユーザデータを登録可能なこと、かつ、UserId指定でユーザデータを削除可能なこと", () async {
     // given
-    final addUser = User.create(email: "take@test.com", password: "take");
+    final addUser = User.create(
+        email: "take@test.com",
+        password: "take",
+        firebaseAuthUid: "firebaseAuthUid");
     final String addUserId = addUser.userId.value.toString();
 
     final UserId resAddUserId = await userRepository.add(addUser);

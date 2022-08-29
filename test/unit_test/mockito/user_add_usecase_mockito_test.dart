@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:stackremote/user.dart';
-import 'package:stackremote/user_add_usecase.dart';
-import 'package:stackremote/user_repository.dart';
+import 'package:stackremote/domain/user.dart';
+import 'package:stackremote/usecase/user_add_usecase.dart';
+import 'package:stackremote/domain/user_repository.dart';
 import 'user_add_usecase_mockito_test.mocks.dart';
 
 // Real class
@@ -20,7 +20,12 @@ void main() {
   // Userインスタンス生成
   const email = "seki@test.com";
   const password = "password";
-  final user = User.create(email: email, password: password);
+  const firebaseAuthUid = "firebaseAuthUid";
+  final user = User.create(
+    email: email,
+    password: password,
+    firebaseAuthUid: firebaseAuthUid,
+  );
 
   // モックの戻り値生成
   final future = Future.value(user.userId);

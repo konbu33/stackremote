@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stackremote/user.dart';
-import 'package:stackremote/users.dart';
+import 'package:stackremote/domain/user.dart';
+import 'package:stackremote/domain/users.dart';
 
 void main() {
   group("usersインスタンス生成テスト", () {
@@ -24,9 +24,18 @@ void main() {
     test('reconstructメソッドでインスタンス生成した場合、users属性の値が引数の値と同じであること', () {
       // given
       final List<User> userList = [
-        User.create(email: "ake@test.com", password: "ake"),
-        User.create(email: "ike@test.com", password: "ike"),
-        User.create(email: "uke@test.com", password: "uke"),
+        User.create(
+            email: "ake@test.com",
+            password: "ake",
+            firebaseAuthUid: "firebaseAuthUid"),
+        User.create(
+            email: "ike@test.com",
+            password: "ike",
+            firebaseAuthUid: "firebaseAuthUid"),
+        User.create(
+            email: "uke@test.com",
+            password: "uke",
+            firebaseAuthUid: "firebaseAuthUid"),
       ];
 
       // when

@@ -1,12 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stackremote/user.dart';
-import 'package:stackremote/userid.dart';
+import 'package:stackremote/domain/user.dart';
+import 'package:stackremote/domain/userid.dart';
 import 'package:ulid/ulid.dart';
 
 void main() {
   group("userインスタンス生成テスト", () {
     const String email = "xxxx@example.com";
     const String password = "password";
+    const String firebaseAuthUid = "firebaseAuthUid";
 
     test(
         "userのファクトリメソッドでインスタンス生成すると、userId属性にulidが採番され、userId以外の属性に引数の値が設定されていること",
@@ -15,6 +16,7 @@ void main() {
       final user = User.create(
         email: email,
         password: password,
+        firebaseAuthUid: firebaseAuthUid,
       );
 
       // then
@@ -31,10 +33,15 @@ void main() {
       final userId = UserId.create();
       const email = "test@test.com";
       const password = "password";
+      const firebaseAuthUid = "firebaseAuthUid";
 
       // when
-      final user =
-          User.reconstruct(userId: userId, email: email, password: password);
+      final user = User.reconstruct(
+        userId: userId,
+        email: email,
+        password: password,
+        firebaseAuthUid: firebaseAuthUid,
+      );
 
       // then
       expect(user.userId, userId);
@@ -57,6 +64,7 @@ void main() {
       final user = User.create(
         email: email,
         password: password,
+        firebaseAuthUid: firebaseAuthUid,
       );
 
       // when
