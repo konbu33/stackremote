@@ -6,8 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../pointer/pointer.dart';
 import '../widget/token_create_widget.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -121,61 +123,80 @@ class _AgoraVideoPageState extends State<AgoraVideoPage> {
         appBar: AppBar(
           title: Text('Flutter example app ${_joined}'),
         ),
-        body: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                    onPressed: () async {
-                      await initPlatformState();
-                    },
-                    child: const Text("join channel")),
-                ElevatedButton(
-                    onPressed: () async {
-                      await leaveChannel();
-                    },
-                    child: const Text("leave channel")),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                // ChannelCreateWidget(),
-                TokenCreateWidget(),
-              ],
-            ),
-            Flexible(
-              child: Stack(
+        body: PointerOverlayWidget(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Center(
-                    child:
-                        _switch ? _renderRemoteVideo() : _renderLocalPreview(),
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      color: Colors.blue,
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _switch = !_switch;
-                          });
-                        },
-                        child: Center(
-                          child: _switch
-                              ? _renderLocalPreview()
-                              : _renderRemoteVideo(),
+                  ElevatedButton(
+                      onPressed: () async {
+                        await initPlatformState();
+                      },
+                      child: const Text("join channel")),
+                  ElevatedButton(
+                      onPressed: () async {
+                        await leaveChannel();
+                      },
+                      child: const Text("leave channel")),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: const [
+                  // ChannelCreateWidget(),
+                  TokenCreateWidget(),
+                ],
+              ),
+              Flexible(
+                child: Stack(
+                  children: [
+                    Center(
+                      child: _switch
+                          ? _renderRemoteVideo()
+                          : _renderLocalPreview(),
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        color: Colors.blue,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _switch = !_switch;
+                            });
+                          },
+                          child: Center(
+                            child: _switch
+                                ? _renderLocalPreview()
+                                : _renderRemoteVideo(),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              // PointerOverlayWidget(
+              //   child: Container(
+              //     height: 300,
+              //     color: Colors.green[100],
+              //     width: double.infinity,
+              //     child: () {
+              //       return HookConsumer(
+              //         builder: ((context, ref, child) {
+              //           final state =
+              //               ref.watch(pointerOverlayStateNotifierProvider);
+              //           return Text("state : ${state}");
+              //         }),
+              //       );
+              //     }(),
+              //   ),
+              // ),
+            ],
+          ),
         ),
       ),
     );

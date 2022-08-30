@@ -12,15 +12,19 @@ part 'pointer_overlay_state.freezed.dart';
 // --------------------------------------------------
 @freezed
 class PointerOerlayerState with _$PointerOerlayerState {
-  const factory PointerOerlayerState({
+  const factory PointerOerlayerState._({
     required String name,
     required Offset pointerPosition,
+    required Offset displayPointerPosition,
     @Default(false) bool isOnLongPressing,
+    required TextEditingController commentController,
   }) = _PointerOerlayerState;
 
-  factory PointerOerlayerState.initial() => const PointerOerlayerState(
-        name: "Custom Mouse",
-        pointerPosition: Offset(30, 10),
+  factory PointerOerlayerState.create() => PointerOerlayerState._(
+        name: "鈴木直樹",
+        pointerPosition: const Offset(0, 0),
+        displayPointerPosition: const Offset(0, 0),
+        commentController: TextEditingController(text: ""),
       );
 }
 
@@ -30,14 +34,34 @@ class PointerOerlayerState with _$PointerOerlayerState {
 //
 // --------------------------------------------------
 class PointerOverlayStateNotifier extends StateNotifier<PointerOerlayerState> {
-  PointerOverlayStateNotifier() : super(PointerOerlayerState.initial());
+  PointerOverlayStateNotifier() : super(PointerOerlayerState.create());
 
-  void updatePosition(Offset offset) {
-    state = state.copyWith(pointerPosition: offset);
+  void updatePosition(Offset pointerPosition) {
+    // 0以下の位置は0とする
+    final Offset newPointerPosition = Offset(
+      pointerPosition.dx < 0 ? 0 : pointerPosition.dx,
+      pointerPosition.dy < 0 ? 0 : pointerPosition.dy,
+    );
+
+    final displayPointerPosition =
+        calcDisplayPointerPosition(newPointerPosition);
+
+    state = state.copyWith(
+      pointerPosition: newPointerPosition,
+      displayPointerPosition: displayPointerPosition,
+    );
   }
 
   void changeOnLongPress({required bool isOnLongPressing}) {
     state = state.copyWith(isOnLongPressing: isOnLongPressing);
+  }
+
+  Offset calcDisplayPointerPosition(Offset pointerPosition) {
+    // Pointerが指に被るため、ずらす
+    return Offset(
+      pointerPosition.dx - 55,
+      pointerPosition.dy + 5,
+    );
   }
 }
 

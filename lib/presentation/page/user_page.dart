@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/presentation/widget/user_list_widget.dart';
 
@@ -25,6 +26,7 @@ class UserPage extends HookConsumerWidget {
       body: Column(
         children: [
           UserPageWidgets.userListWidget(state),
+          UserPageWidgets.goToAgoraVideoPage(),
         ],
       ),
     );
@@ -68,6 +70,20 @@ class UserPageWidgets {
   ) {
     final widget = UserListWidget(
       state: state,
+    );
+
+    return widget;
+  }
+
+  // goToAgoraVideoPage
+  static Widget goToAgoraVideoPage() {
+    final widget = Builder(
+      builder: (context) => ElevatedButton(
+        onPressed: () {
+          context.push("/agoravideo");
+        },
+        child: const Text("Go To Agora Video"),
+      ),
     );
 
     return widget;

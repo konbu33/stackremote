@@ -9,15 +9,17 @@ class PointerPositionedWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const pointerRadiusHalf = PointerWidget.radius / 2;
     final state = ref.watch(pointerOverlayStateNotifierProvider);
 
     // print(
     //     " x : ${state.pointerPosition.dx - pointerRadiusHalf}, y : ${state.pointerPosition.dy - pointerRadiusHalf} ");
 
+    final top = state.displayPointerPosition.dy;
+    final left = state.displayPointerPosition.dx;
+
     return Positioned(
-      top: state.pointerPosition.dy - pointerRadiusHalf,
-      left: state.pointerPosition.dx - pointerRadiusHalf,
+      top: top,
+      left: left,
       child: const PointerWidget(),
     );
   }

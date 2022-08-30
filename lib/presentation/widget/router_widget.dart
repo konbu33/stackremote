@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/presentation/page/agora_video_page.dart';
 
 import '../../domain/user.dart';
 import '../page/signin_page.dart';
@@ -66,6 +67,8 @@ final routerProvider = Provider(
         GoRoute(
             path: '/userdetail',
             builder: (context, state) => const UserDetailPage()),
+        GoRoute(
+            path: '/agoravideo', builder: (context, state) => AgoraVideoPage()),
       ],
       redirect: (state) {
         // Firebase Authentication側のログイン状態をwatch。
