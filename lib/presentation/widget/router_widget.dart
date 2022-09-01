@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/presentation/page/agora_video_page.dart';
 
 import '../../domain/user.dart';
+import '../page/agora_video_channel_join_page.dart';
 import '../page/signin_page.dart';
 import '../page/signup_page.dart';
 import '../page/user_detail_page.dart';
@@ -58,7 +59,9 @@ final routerProvider = Provider(
     return GoRouter(
       initialLocation: '/',
       routes: [
-        GoRoute(path: '/', builder: (context, state) => const UserPage()),
+        GoRoute(
+            path: '/',
+            builder: (context, state) => const AgoraVideoChannelJoinPage()),
         GoRoute(
             path: '/signin', builder: (context, state) => const SignInPage()),
         GoRoute(
