@@ -5,7 +5,7 @@ class AuthenticationServiceSignUpUsecase {
     required this.authenticationService,
   });
 
-  late AuthenticationService authenticationService;
+  final AuthenticationService authenticationService;
 
   void execute(String email, String password) {
     authenticationService.signUp(email, password);

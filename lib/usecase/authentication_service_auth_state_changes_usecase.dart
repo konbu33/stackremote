@@ -6,7 +6,7 @@ class AuthenticationServiceAuthStateChangesUsecase {
     required this.authenticationService,
   });
 
-  late AuthenticationService authenticationService;
+  final AuthenticationService authenticationService;
 
   Stream<User> execute() {
     final userStream = authenticationService.authStateChanges();
