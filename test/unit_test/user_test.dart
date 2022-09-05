@@ -8,6 +8,7 @@ void main() {
     const String email = "xxxx@example.com";
     const String password = "password";
     const String firebaseAuthUid = "firebaseAuthUid";
+    const String firebaseAuthIdToken = "firebaseAuthIdToken";
 
     test(
         "userのファクトリメソッドでインスタンス生成すると、userId属性にulidが採番され、userId以外の属性に引数の値が設定されていること",
@@ -17,6 +18,7 @@ void main() {
         email: email,
         password: password,
         firebaseAuthUid: firebaseAuthUid,
+        firebaseAuthIdToken: firebaseAuthIdToken,
       );
 
       // then
@@ -41,6 +43,7 @@ void main() {
         email: email,
         password: password,
         firebaseAuthUid: firebaseAuthUid,
+        firebaseAuthIdToken: firebaseAuthIdToken,
       );
 
       // then
@@ -65,6 +68,7 @@ void main() {
         email: email,
         password: password,
         firebaseAuthUid: firebaseAuthUid,
+        firebaseAuthIdToken: firebaseAuthIdToken,
       );
 
       // when

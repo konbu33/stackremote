@@ -21,10 +21,13 @@ void main() {
   const email = "seki@test.com";
   const password = "password";
   const firebaseAuthUid = "firebaseAuthUid";
+  const firebaseAuthIdToken = "firebaseAuthIdToken";
+
   final user = User.create(
     email: email,
     password: password,
     firebaseAuthUid: firebaseAuthUid,
+    firebaseAuthIdToken: firebaseAuthIdToken,
   );
 
   // モックの戻り値生成

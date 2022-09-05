@@ -18,10 +18,13 @@ void main() {
   const email = "aki@test.com";
   const password = "password";
   const firebaseAuthUid = "firebaeAuthUid";
+  const firebaseAuthIdToken = "firebaeAuthIdToken";
+
   final user = User.create(
     email: email,
     password: password,
     firebaseAuthUid: firebaseAuthUid,
+    firebaseAuthIdToken: firebaseAuthIdToken,
   );
 
   setUpAll(() {

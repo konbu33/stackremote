@@ -23,10 +23,13 @@ void main() {
   const email = "tao@test.com";
   const password = "password";
   const firebaseAuthUid = "firebaseAuthUid";
+  const firebaseAuthIdToken = "firebaseAuthIdToken";
+
   final User user = User.create(
     email: email,
     password: password,
     firebaseAuthUid: firebaseAuthUid,
+    firebaseAuthIdToken: firebaseAuthIdToken,
   );
 
   // モモッの戻り値生成
