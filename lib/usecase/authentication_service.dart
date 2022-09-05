@@ -14,4 +14,6 @@ abstract class AuthenticationService {
   Future<void> signOut();
 
   void signIn(String email, String password);
+
+  Future<String> getIdToken();
 }

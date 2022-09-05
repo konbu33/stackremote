@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/presentation/authentication_service_firebase.dart';
 import 'package:stackremote/presentation/page/agora_video_page.dart';
+import 'package:stackremote/usecase/authentication_service_get_id_token_usecase.dart';
 
 import '../../domain/user.dart';
 import '../page/agora_video_channel_join_page.dart';
@@ -77,6 +79,7 @@ final routerProvider = Provider(
         // Firebase Authentication側のログイン状態をwatch。
         // Firebase Authentication側のログイン状態が変化したら、本アプリ側のログイン状態に反映される。
         ref.read(authStateChangesProvider);
+        ref.read(firebaseAuthGetIdTokenProvider);
 
         // 本アプリ側のログイン状態をwatch。
         // 本アプリ側のログイン状態が変化したら、ルーティングに反映される。
@@ -113,27 +116,48 @@ final authStateChangesProvider = Provider((ref) {
   final notifier = ref.read(userStateNotifierProvider.notifier);
 
   final stream = firebase_auth.FirebaseAuth.instance.authStateChanges();
-  stream.listen((fbuser) {
-    final user;
-    if (fbuser == null) {
-      user = User.create(
-        // userId: UserId.create(value: ""),
-        email: "",
-        password: "",
-        firebaseAuthUid: "",
-        isSignIn: false,
-      );
-    } else {
-      final firebaseAuthUid = fbuser.uid;
-      user = User.create(
-        // userId: UserId.create(value: fbuser.uid),
-        email: "",
-        password: "",
-        firebaseAuthUid: firebaseAuthUid,
-        isSignIn: true,
-      );
-    }
+  stream.listen(
+    (fbuser) {
+      final user;
+      if (fbuser == null) {
+        user = User.create(
+          // userId: UserId.create(value: ""),
+          email: "",
+          password: "",
+          firebaseAuthUid: "",
+          firebaseAuthIdToken: "",
+          isSignIn: false,
+        );
+      } else {
+        final firebaseAuthUid = fbuser.uid;
 
-    notifier.userInformationRegiser(user);
+        user = User.create(
+          // userId: UserId.create(value: fbuser.uid),
+          email: "",
+          password: "",
+          firebaseAuthUid: firebaseAuthUid,
+          firebaseAuthIdToken: "",
+          isSignIn: true,
+        );
+      }
+
+      notifier.userInformationRegiser(user);
+    },
+  );
+});
+
+final firebaseAuthGetIdTokenProvider = Provider((ref) {
+  final notifier = ref.watch(userStateNotifierProvider.notifier);
+
+  final AuthenticationServiceGetIdTokenUsecase
+      authenticationServiceGetIdTokenUsecase =
+      AuthenticationServiceGetIdTokenUsecase(
+    authenticationService: AuthenticationServiceFirebase(
+        instance: firebase_auth.FirebaseAuth.instance),
+  );
+
+  authenticationServiceGetIdTokenUsecase.execute().then((value) {
+    print("value ------------ : $value");
+    notifier.updateFirebaseAuthIdToken(value);
   });
 });

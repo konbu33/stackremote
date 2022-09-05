@@ -34,6 +34,7 @@ class AuthenticationServiceFirebase implements AuthenticationService {
             password: "",
             isSignIn: false,
             firebaseAuthUid: "",
+            firebaseAuthIdToken: "",
           );
 
           yield user;
@@ -57,6 +58,7 @@ class AuthenticationServiceFirebase implements AuthenticationService {
           email: "null",
           password: "null",
           firebaseAuthUid: firebaseAuthUid,
+          firebaseAuthIdToken: "null",
           isSignIn: false,
         );
         rethrow;
@@ -69,6 +71,7 @@ class AuthenticationServiceFirebase implements AuthenticationService {
         email: email,
         password: "",
         firebaseAuthUid: firebaseAuthUid,
+        firebaseAuthIdToken: "",
         isSignIn: true,
       );
 
@@ -100,5 +103,15 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   Future<void> signOut() async {
     await instance.signOut();
     print("signOut : ");
+  }
+
+  @override
+  Future<String> getIdToken() async {
+    final currentUser = instance.currentUser;
+    if (currentUser != null) {
+      final idToken = await currentUser.getIdToken();
+      return idToken;
+    }
+    return "currentUser is null.";
   }
 }

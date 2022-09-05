@@ -21,6 +21,7 @@ class UserAddUseCase {
       email: email,
       password: password,
       firebaseAuthUid: "",
+      firebaseAuthIdToken: "",
     );
 
     // Repository Execute
