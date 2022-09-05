@@ -22,6 +22,7 @@ class User with _$User {
     required String email,
     required String password,
     required String firebaseAuthUid,
+    required String firebaseAuthIdToken,
     @Default(false) bool isSignIn,
     @OffsetConverter() required Offset pointerPosition,
     @Default(false) bool isOnLongPressing,
@@ -31,6 +32,7 @@ class User with _$User {
     required String email,
     required String password,
     required String firebaseAuthUid,
+    required String firebaseAuthIdToken,
     bool? isSignIn,
     Offset? pointerPosition,
     bool? isOnLongPressing,
@@ -40,6 +42,7 @@ class User with _$User {
         email: email,
         password: password,
         firebaseAuthUid: "",
+        firebaseAuthIdToken: "",
         isSignIn: isSignIn ?? false,
         pointerPosition: pointerPosition ?? const Offset(0, 0),
         isOnLongPressing: isOnLongPressing ?? false,
@@ -50,6 +53,7 @@ class User with _$User {
     required String email,
     required String password,
     required String firebaseAuthUid,
+    required String firebaseAuthIdToken,
     bool? isSignIn,
     Offset? pointerPosition,
     bool? isOnLongPressing,
@@ -59,6 +63,7 @@ class User with _$User {
         email: email,
         password: password,
         firebaseAuthUid: firebaseAuthUid,
+        firebaseAuthIdToken: "",
         isSignIn: isSignIn ?? false,
         pointerPosition: pointerPosition ?? const Offset(0, 0),
         isOnLongPressing: isOnLongPressing ?? false,
@@ -107,6 +112,7 @@ class UserStateNotifier extends StateNotifier<User> {
           email: "ini",
           password: "ini",
           firebaseAuthUid: "ini",
+          firebaseAuthIdToken: "ini",
         )) {
     initial();
   }
@@ -116,15 +122,23 @@ class UserStateNotifier extends StateNotifier<User> {
       email: "ini",
       password: "ini",
       firebaseAuthUid: "ini",
+      firebaseAuthIdToken: "ini",
     );
   }
 
   void userInformationRegiser(User user) {
     state = state.copyWith(
       firebaseAuthUid: user.firebaseAuthUid,
+      firebaseAuthIdToken: user.firebaseAuthIdToken,
       email: user.email,
       password: user.password,
       isSignIn: user.isSignIn,
+    );
+  }
+
+  void updateFirebaseAuthIdToken(String firebaseAuthIdToken) {
+    state = state.copyWith(
+      firebaseAuthIdToken: firebaseAuthIdToken,
     );
   }
 }
