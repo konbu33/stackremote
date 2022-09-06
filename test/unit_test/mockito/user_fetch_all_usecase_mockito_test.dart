@@ -22,17 +22,23 @@ void main() {
   // Usersインスタンス生成
   final List<User> userList = [
     User.create(
-        email: "ake@test.com",
-        password: "ake",
-        firebaseAuthUid: "firebaseAuthUid"),
+      email: "ake@test.com",
+      password: "ake",
+      firebaseAuthUid: "firebaseAuthUid",
+      firebaseAuthIdToken: "firebaseAuthIdToken",
+    ),
     User.create(
-        email: "ike@test.com",
-        password: "ike",
-        firebaseAuthUid: "firebaseAuthUid"),
+      email: "ike@test.com",
+      password: "ike",
+      firebaseAuthUid: "firebaseAuthUid",
+      firebaseAuthIdToken: "firebaseAuthIdToken",
+    ),
     User.create(
-        email: "uke@test.com",
-        password: "uke",
-        firebaseAuthUid: "firebaseAuthUid"),
+      email: "uke@test.com",
+      password: "uke",
+      firebaseAuthUid: "firebaseAuthUid",
+      firebaseAuthIdToken: "firebaseAuthIdToken",
+    ),
   ];
 
   final Users users = Users.reconstruct(users: userList);

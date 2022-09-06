@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../domain/user.dart';
 import '../widget/appbar_action_icon_widget.dart';
 import '../widget/background_image_widget.dart';
 import '../widget/base_layout_widget.dart';
@@ -36,6 +37,16 @@ class SignInPage extends HookConsumerWidget {
                   SignInPageWidgets.passwordField(state),
                   const SizedBox(height: 40),
                   SignInPageWidgets.loginSubmitWidget(state),
+                  () {
+                    final user = ref.watch(userStateNotifierProvider);
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Text(
+                        "idToken: ${user}",
+                        maxLines: 10,
+                      ),
+                    );
+                  }(),
                 ],
               ),
             ),

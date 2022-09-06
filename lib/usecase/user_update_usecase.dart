@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stackremote/presentation/widget/router_widget.dart';
 import '../domain/user.dart';
 import '../domain/user_repository.dart';
 import '../domain/userid.dart';
@@ -17,7 +18,8 @@ class UserUpdateUseCase {
     UserId userId,
     String email,
     String password,
-    String firebaseAuthUid, {
+    String firebaseAuthUid,
+    String firebaseAuthGetIdToken, {
     Offset? pointerPosition,
     bool? isOnLongPressing,
   }) {
@@ -27,6 +29,7 @@ class UserUpdateUseCase {
       email: email,
       password: password,
       firebaseAuthUid: firebaseAuthUid,
+      firebaseAuthIdToken: firebaseAuthGetIdToken,
       pointerPosition: pointerPosition,
       isOnLongPressing: isOnLongPressing,
     );

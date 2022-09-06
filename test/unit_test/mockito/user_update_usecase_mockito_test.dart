@@ -20,10 +20,13 @@ void main() {
   const email = "nao@test.com";
   const password = "password";
   const firebaseAuthUid = "firebaseAuthUid";
+  const firebaseAuthIdToken = "firebaseAuthIdToken";
+
   User user = User.create(
     email: email,
     password: password,
     firebaseAuthUid: firebaseAuthUid,
+    firebaseAuthIdToken: firebaseAuthIdToken,
   );
 
   test("ユースケースに渡した引数と同値が、リポジトリのメソッドの引数として利用されていること", () async {
@@ -36,6 +39,7 @@ void main() {
       user.email,
       user.password,
       user.firebaseAuthUid,
+      user.firebaseAuthIdToken,
     );
 
     // then

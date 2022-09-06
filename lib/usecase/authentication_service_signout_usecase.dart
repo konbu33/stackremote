@@ -5,7 +5,7 @@ class AuthenticationServiceSignOutUsecase {
     required this.authenticationService,
   });
 
-  late AuthenticationService authenticationService;
+  final AuthenticationService authenticationService;
 
   void execute() {
     authenticationService.signOut();

@@ -21,6 +21,9 @@ class FakeUser extends Fake implements User {
 
   @override
   final String firebaseAuthUid = "firebaseAuthUid";
+
+  @override
+  final String firebaseAuthIdToken = "firebaseAuthIdToken";
 }
 
 void main() {
@@ -51,6 +54,7 @@ void main() {
       fakeUser.email,
       fakeUser.password,
       fakeUser.firebaseAuthUid,
+      fakeUser.firebaseAuthIdToken,
     );
 
     // then

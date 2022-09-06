@@ -163,6 +163,7 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
           email,
           password,
           user.firebaseAuthUid,
+          user.firebaseAuthIdToken,
         );
 
         // 戻る

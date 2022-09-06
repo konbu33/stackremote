@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/presentation/widget/background_image_widget.dart';
 import 'package:stackremote/presentation/widget/user_list_widget.dart';
 
 import '../widget/appbar_action_icon_widget.dart';
@@ -14,18 +16,21 @@ class UserPage extends HookConsumerWidget {
     final state = ref.watch(userPageStateControllerProvider);
     final notifier = ref.read(userDetailPageStateControllerProvider.notifier);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: UserPageWidgets.pageTitleWidget(state),
-        actions: [
-          UserPageWidgets.userAddButton(state, notifier),
-          UserPageWidgets.signOutIconButton(state),
-        ],
-      ),
-      body: Column(
-        children: [
-          UserPageWidgets.userListWidget(state),
-        ],
+    return BackgroundImageWidget(
+      child: Scaffold(
+        appBar: AppBar(
+          title: UserPageWidgets.pageTitleWidget(state),
+          actions: [
+            UserPageWidgets.userAddButton(state, notifier),
+            UserPageWidgets.signOutIconButton(state),
+          ],
+        ),
+        body: Column(
+          children: [
+            UserPageWidgets.userListWidget(state),
+            UserPageWidgets.goToAgoraVideoPage(),
+          ],
+        ),
       ),
     );
   }
@@ -68,6 +73,20 @@ class UserPageWidgets {
   ) {
     final widget = UserListWidget(
       state: state,
+    );
+
+    return widget;
+  }
+
+  // goToAgoraVideoPage
+  static Widget goToAgoraVideoPage() {
+    final widget = Builder(
+      builder: (context) => ElevatedButton(
+        onPressed: () {
+          context.push("/agoravideo");
+        },
+        child: const Text("Go To Agora Video"),
+      ),
     );
 
     return widget;

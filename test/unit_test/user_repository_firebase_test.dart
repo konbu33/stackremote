@@ -28,6 +28,7 @@ void main() {
       email: "take@test.com",
       password: "take",
       firebaseAuthUid: "firebaseAuthUid",
+      firebaseAuthIdToken: "firebaseAuthIdToken",
     );
     final String userId = user.userId.value.toString();
 
@@ -58,18 +59,24 @@ void main() {
 
     // Userインスタンスを複数生成
     final user1 = User.create(
-        email: "ake@test.com",
-        password: "ake",
-        firebaseAuthUid: "firebaseAuthUid");
+      email: "ake@test.com",
+      password: "ake",
+      firebaseAuthUid: "firebaseAuthUid",
+      firebaseAuthIdToken: "firebaseAuthIdToken",
+    );
     final user2 = User.create(
-        email: "ike@test.com",
-        password: "ike",
-        firebaseAuthUid: "firebaseAuthUid");
+      email: "ike@test.com",
+      password: "ike",
+      firebaseAuthUid: "firebaseAuthUid",
+      firebaseAuthIdToken: "firebaseAuthIdToken",
+    );
     // final user3 = User.create(email: "uke@test.com", password: "uke", firebaseAuthUid: "firebaseAuthUid");
     final user4 = User.create(
-        email: "eke@test.com",
-        password: "eke",
-        firebaseAuthUid: "firebaseAuthUid");
+      email: "eke@test.com",
+      password: "eke",
+      firebaseAuthUid: "firebaseAuthUid",
+      firebaseAuthIdToken: "firebaseAuthIdToken",
+    );
 
     // 複数のUserからUsersコレクションオブジェクト生成
     final srcUsers = Users.reconstruct(users: [
@@ -120,9 +127,11 @@ void main() {
   test("ユーザデータを登録可能なこと、かつ、UserId指定でユーザデータを更新可能なこと", () async {
     // given
     final addUser = User.create(
-        email: "take@test.com",
-        password: "take",
-        firebaseAuthUid: "firebaseAuthUid");
+      email: "take@test.com",
+      password: "take",
+      firebaseAuthUid: "firebaseAuthUid",
+      firebaseAuthIdToken: "firebaseAuthIdToken",
+    );
     final String addUserId = addUser.userId.value.toString();
 
     final UserId resAddUserId = await userRepository.add(addUser);
@@ -142,6 +151,7 @@ void main() {
       email: "take_updated@test.com",
       password: "take_updated",
       firebaseAuthUid: "firebaseAuthUid",
+      firebaseAuthIdToken: "firebaseAuthIdToken",
     );
     final String updateUserId = updateUser.userId.value.toString();
 
@@ -161,9 +171,11 @@ void main() {
   test("ユーザデータを登録可能なこと、かつ、UserId指定でユーザデータを削除可能なこと", () async {
     // given
     final addUser = User.create(
-        email: "take@test.com",
-        password: "take",
-        firebaseAuthUid: "firebaseAuthUid");
+      email: "take@test.com",
+      password: "take",
+      firebaseAuthUid: "firebaseAuthUid",
+      firebaseAuthIdToken: "firebaseAuthIdToken",
+    );
     final String addUserId = addUser.userId.value.toString();
 
     final UserId resAddUserId = await userRepository.add(addUser);

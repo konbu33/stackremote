@@ -11,14 +11,16 @@ class BackgroundImageWidget extends StatelessWidget {
   final Widget child;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          repeat: ImageRepeat.repeat,
-          image: AssetImage(Assets.images.backgroundImageFigma.path),
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            repeat: ImageRepeat.repeat,
+            image: AssetImage(Assets.images.backgroundImageFigma.path),
+          ),
         ),
+        child: child,
       ),
-      child: child,
     );
   }
 }
