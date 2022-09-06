@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/presentation/widget/agora_video_token_create_widget.dart';
+import 'package:stackremote/presentation/widget/channel_leave_submit_icon_state.dart';
+import 'package:stackremote/presentation/widget/channel_leave_submit_icon_widget.dart';
+import 'package:stackremote/usecase/rtc_channel_state.dart';
 import '../../pointer/pointer.dart';
-import '../widget/agora_video_join_channel_widget.dart';
-import '../widget/agora_video_leave_channel_widget.dart';
 import '../widget/agora_video_local_preview_widget.dart';
 import '../widget/agora_video_remote_preview_widget.dart';
 import '../widget/background_image_widget.dart';
@@ -30,33 +30,21 @@ class AgoraVideoPage extends HookConsumerWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Agora Video'),
+          actions: [
+            AgoraVideoPageWidgets.buildLeaveChannelIconWidget(),
+          ],
         ),
         body: PointerOverlayWidget(
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  AgoraVideoPageWidgets.buildJoinChannelWidget(state, notifier),
-                  AgoraVideoPageWidgets.buildLeaveChannelWidget(state),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  AgoraVideoPageWidgets.buildTokenCreateWidget(state, notifier),
-                ],
-              ),
               Text("${state}"),
               Flexible(
                 child: Stack(
                   children: [
                     Center(
                       child: state.viewSwitch
-                          ? AgoraVideoPageWidgets.buildRemotePreviewWidget(
-                              state)
-                          : AgoraVideoPageWidgets.buildLocalPreviewWidget(
-                              state),
+                          ? AgoraVideoPageWidgets.buildRemotePreviewWidget()
+                          : AgoraVideoPageWidgets.buildLocalPreviewWidget(),
                     ),
                     Align(
                       alignment: Alignment.topLeft,
@@ -70,10 +58,10 @@ class AgoraVideoPage extends HookConsumerWidget {
                           },
                           child: Center(
                             child: state.viewSwitch
-                                ? AgoraVideoPageWidgets.buildLocalPreviewWidget(
-                                    state)
+                                ? AgoraVideoPageWidgets
+                                    .buildLocalPreviewWidget()
                                 : AgoraVideoPageWidgets
-                                    .buildRemotePreviewWidget(state),
+                                    .buildRemotePreviewWidget(),
                           ),
                         ),
                       ),
@@ -98,43 +86,41 @@ class AgoraVideoPage extends HookConsumerWidget {
 // ---------------------------------------------------
 
 class AgoraVideoPageWidgets {
-  // Join Channel Widget
-  static Widget buildJoinChannelWidget(
-    AgoraVideoPageState state,
-    AgoraVideoPageStateNotifier notifier,
-  ) {
-    final Widget widget = AgoraVideoJoinChannelWidget(
-      state: state,
-      notifier: notifier,
-    );
-    return widget;
-  }
+  // Leave Channel Icon Widget
+  static Widget buildLeaveChannelIconWidget() {
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      final channelLeaveSubmitIconStateProvider =
+          ChannelLeaveSubmitIconStateProviderList
+              .channelLeaveSubmitIconStateProvider;
 
-  // Leave Channel Widget
-  static Widget buildLeaveChannelWidget(AgoraVideoPageState state) {
-    final Widget widget = AgoraVideoLeaveChannelWidget(state: state);
-    return widget;
-  }
-
-  // Token Create Widget
-  static Widget buildTokenCreateWidget(
-      AgoraVideoPageState state, AgoraVideoPageStateNotifier notifier) {
-    final Widget widget = AgoraVideoTokenCreateWidget(
-      state: state,
-      notifier: notifier,
-    );
+      return ChannelLeaveSubmitIconWidget(
+        channelLeaveSubmitIconStateProvider:
+            channelLeaveSubmitIconStateProvider,
+      );
+    }));
     return widget;
   }
 
   // Local Preview Widget
-  static Widget buildLocalPreviewWidget(AgoraVideoPageState state) {
-    final Widget widget = AgoraVideoLocalPreviewWidget(state: state);
+  static Widget buildLocalPreviewWidget() {
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      final state = ref.watch(
+          RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+
+      return AgoraVideoLocalPreviewWidget(state: state);
+    }));
     return widget;
   }
 
   // Remote Preview Widget
-  static Widget buildRemotePreviewWidget(AgoraVideoPageState state) {
-    final Widget widget = AgoraVideoRemotePreviewWidget(state: state);
+  static Widget buildRemotePreviewWidget() {
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      final state = ref.watch(
+          RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+
+      return AgoraVideoRemotePreviewWidget(state: state);
+    }));
+
     return widget;
   }
 }
