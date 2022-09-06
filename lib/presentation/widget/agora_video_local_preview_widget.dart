@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 
-import '../page/agora_video_page_state.dart';
+import '../../usecase/rtc_channel_state.dart';
 
 class AgoraVideoLocalPreviewWidget extends StatelessWidget {
   const AgoraVideoLocalPreviewWidget({
@@ -11,7 +11,7 @@ class AgoraVideoLocalPreviewWidget extends StatelessWidget {
     required this.state,
   }) : super(key: key);
 
-  final AgoraVideoPageState state;
+  final RtcChannelState state;
 
   @override
   Widget build(BuildContext context) {
