@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 
-import '../page/agora_video_page_state.dart';
+import '../../usecase/rtc_channel_state.dart';
 
 class AgoraVideoRemotePreviewWidget extends StatelessWidget {
   const AgoraVideoRemotePreviewWidget({
@@ -11,7 +11,7 @@ class AgoraVideoRemotePreviewWidget extends StatelessWidget {
     required this.state,
   }) : super(key: key);
 
-  final AgoraVideoPageState state;
+  final RtcChannelState state;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class AgoraVideoRemotePreviewWidget extends StatelessWidget {
         state.remoteUid != 0 && defaultTargetPlatform == TargetPlatform.iOS) {
       return rtc_remote_view.SurfaceView(
         uid: state.remoteUid,
-        channelId: state.roomName,
+        channelId: state.channelName,
       );
     }
 
@@ -29,7 +29,7 @@ class AgoraVideoRemotePreviewWidget extends StatelessWidget {
         state.remoteUid != 0 && defaultTargetPlatform == TargetPlatform.macOS) {
       return rtc_remote_view.TextureView(
         uid: state.remoteUid,
-        channelId: state.roomName,
+        channelId: state.channelName,
       );
     } else {
       return const Text(
