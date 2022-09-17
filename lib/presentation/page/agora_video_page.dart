@@ -24,6 +24,8 @@ class AgoraVideoPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(agoraVideoPageStateNotifierProvider);
+    final rtcChannelState = ref.watch(
+        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
     final notifier = ref.watch(agoraVideoPageStateNotifierProvider.notifier);
 
     return BackgroundImageWidget(
@@ -38,6 +40,7 @@ class AgoraVideoPage extends HookConsumerWidget {
           child: Column(
             children: [
               Text("${state}"),
+              Text("${rtcChannelState}"),
               Flexible(
                 child: Stack(
                   children: [

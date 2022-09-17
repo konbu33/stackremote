@@ -6,6 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:ulid/ulid.dart';
 
 part 'rtc_channel_state.freezed.dart';
 
@@ -19,24 +20,32 @@ class RtcChannelState with _$RtcChannelState {
   const factory RtcChannelState._({
     //
     required String appId,
-    required String token,
+    required String rtcIdToken,
     required String channelName,
-    required String createTokenUrl,
+    required String rtcIdTokenApiUrl,
+    @Default(0) int localUid,
+    required String account,
+    required String rtcIdTokenType,
+    required String role,
+    required int privilegeExpireTime,
     //
     @Default(false) bool joined,
-    @Default(0) int localUid,
     @Default(1) int remoteUid,
     @Default(false) bool viewSwitch,
-
     //
     required LogConfig tempLogConfig,
   }) = _RtcChannelState;
 
   factory RtcChannelState.create() => RtcChannelState._(
         appId: dotenv.get("APP_ID"),
-        token: dotenv.get("Token"),
-        channelName: dotenv.get("ChannelName"),
-        createTokenUrl: dotenv.get("CreateTokenUrl"),
+        rtcIdToken: dotenv.get("RTC_ID_TOKEN"),
+        rtcIdTokenType: "uid",
+        channelName: dotenv.get("CHANNEL_NAME"),
+        role: "publisher",
+        rtcIdTokenApiUrl: dotenv.get("RTC_ID_TOKEN_API_URL"),
+        account: Ulid().toString(),
+        privilegeExpireTime: 4000,
+        localUid: DateTime.now().millisecondsSinceEpoch,
         tempLogConfig: LogConfig(),
       );
 }
@@ -58,7 +67,7 @@ class RtcChannelStateNotifier extends StateNotifier<RtcChannelState> {
   }
 
   void updateToken(String newToken) {
-    state = state.copyWith(token: newToken);
+    state = state.copyWith(rtcIdToken: newToken);
   }
 
   void updateChannelName(String newChannelName) {

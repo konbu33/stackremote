@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/domain/user.dart';
 import 'package:stackremote/usecase/rtc_channel_state.dart';
 
 final rtcTokenCreateProvider = Provider((ref) {
@@ -9,32 +10,34 @@ final rtcTokenCreateProvider = Provider((ref) {
     final state = ref.watch(
         RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
+    final userState = ref.watch(userStateNotifierProvider);
+
     final notifier = ref.read(RtcChannelStateNotifierProviderList
         .rtcChannelStateNotifierProvider.notifier);
 
-    print("create token");
-    // final url = 'http://10.138.100.171:8082/fetch_rtc_token';
-    final url = state.createTokenUrl;
+    // rtcIdToken Create API Endpoint
+    final String baseUrl = state.rtcIdTokenApiUrl;
+    const String queryString = "";
+    final String url = baseUrl + queryString;
 
+    // print("url : ------------------------------------------ ${url}");
+
+    // data in request body
     final data = {
-      "uid": state.localUid,
+      // "uid": state.localUid,
       "channelName": state.channelName,
-      "role": 1
+      "localUid": state.localUid,
+      "account": state.account,
+      "rtcIdTokenType": state.rtcIdTokenType,
+      "role": state.role,
+      "privilegeExpireTime": state.privilegeExpireTime,
+      "firebaseAuthIdToken": userState.firebaseAuthIdToken,
     };
-    print("data : $data");
-    print("data json: ${jsonEncode(data)}");
+
+    // print("data : $data");
+    // print("data json ------------------------------- : ${jsonEncode(data)}");
 
     final formData = FormData.fromMap(data);
-
-    // axios.post('http://localhost:8082/fetch_rtc_token', {
-    //     uid: uid,
-    //     channelName: channelName,
-    //     role: tokenRole
-    // }, {
-    //     headers: {
-    //         'Content-Type': 'application/json; charset=UTF-8'
-    //     }
-    // }
 
     try {
       final res = await Dio().post(url,
@@ -50,9 +53,13 @@ final rtcTokenCreateProvider = Provider((ref) {
               // Headers.contentTypeHeader: 'application/json; charset=UTF-8',
             },
           ));
-      print("res : ${res}");
 
-      final String token = res.data["token"];
+      print("res : ------------------------------------------ ${res}");
+
+      final resJson = jsonDecode(res.data["data"]);
+      final String token = resJson["rtcIdToken"];
+      print(
+          "res rtcIdToken  -------------------------------------- : ${token}");
 
       // state = state.copyWith(token: token);
       notifier.updateToken(token);

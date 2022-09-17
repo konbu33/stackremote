@@ -71,7 +71,7 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
 
         return state.channelNameIsValidate.isValid == false
             ? null
-            : () {
+            : () async {
                 final notifier = ref.read(RtcChannelStateNotifierProviderList
                     .rtcChannelStateNotifierProvider.notifier);
 
@@ -80,12 +80,12 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
 
                 final rtcCreateToken = ref.watch(rtcTokenCreateProvider);
                 print("create token before ------------------------ ");
-                rtcCreateToken();
+                await rtcCreateToken();
                 print("create token after  ------------------------ ");
 
                 final rtcJoinChannel = ref.watch(rtcJoinChannelProvider);
                 print("join channel before ------------------------ ");
-                rtcJoinChannel();
+                await rtcJoinChannel();
                 print("join channel after  ------------------------ ");
 
                 context.push("/agoravideo");
