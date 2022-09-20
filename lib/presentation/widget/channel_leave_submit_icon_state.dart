@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/usecase/rtc_channel_leave_provider.dart';
+import 'package:stackremote/usecase/rtc_channel_state.dart';
 
 part 'channel_leave_submit_icon_state.freezed.dart';
 
@@ -67,6 +68,9 @@ ChannelLeaveSubmitIconStateProvider
   return StateNotifierProvider<ChannelLeaveSubmitIconStateNotifier,
       ChannelLeaveSubmitIconState>(
     (ref) {
+      final notifier = ref.read(RtcChannelStateNotifierProviderList
+          .rtcChannelStateNotifierProvider.notifier);
+
       Function? onSubmit({required BuildContext context}) {
         return () {
           final rtcLeaveChannel = ref.read(rtcLeaveChannelProvider);
@@ -75,8 +79,8 @@ ChannelLeaveSubmitIconStateProvider
           rtcLeaveChannel();
           print(" leave channel after ---------------------------- ");
 
-          Navigator.pop(context);
-          //
+          notifier.changeJoined(false);
+          // context.go("/");
         };
       }
 
