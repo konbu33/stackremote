@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../usecase/authentication_service_mail_link_auth_usecase.dart';
 import '../authentication_service_firebase.dart';
 import '../../usecase/authentication_service_signup_usecase.dart';
 import '../widget/login_submit_state.dart';
@@ -29,6 +30,8 @@ class SignUpPageState with _$SignUpPageState {
     @Default("新規登録") String loginSubmitWidgetName,
     required AuthenticationServiceSignUpUsecase
         authenticationServiceSignUpUsecase,
+    required AuthenticationServiceMailLinkAuthUsecase
+        authenticationServiceMailLinkAuthUsecase,
     required LoginSubmitStateProvider loginSubmitStateProvider,
   }) = _SignUpPageState;
 
@@ -43,6 +46,11 @@ class SignUpPageState with _$SignUpPageState {
         authenticationServiceSignUpUsecase: AuthenticationServiceSignUpUsecase(
             authenticationService: AuthenticationServiceFirebase(
                 instance: firebase_auth.FirebaseAuth.instance)),
+
+        authenticationServiceMailLinkAuthUsecase:
+            AuthenticationServiceMailLinkAuthUsecase(
+                authenticationService: AuthenticationServiceFirebase(
+                    instance: firebase_auth.FirebaseAuth.instance)),
 
         loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
           loginSubmitWidgetName: "",
@@ -86,7 +94,8 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
             .passwordFieldController
             .text;
 
-        state.authenticationServiceSignUpUsecase.execute(email, password);
+        // state.authenticationServiceSignUpUsecase.execute(email, password);
+        state.authenticationServiceMailLinkAuthUsecase.execute(email);
 
         initial();
       };
