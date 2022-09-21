@@ -1,5 +1,6 @@
 // onRequest
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -33,7 +34,11 @@ final rtcTokenCreateOnCallProvider = Provider((ref) {
     FirebaseFunctions instance = FirebaseFunctions.instance;
 
     // Cloud Functinosの関数のホスト先が、ローカル環環のエミュレータの場合
-    instance.useFunctionsEmulator("10.18.146.207", 5001);
+
+    instance.useFunctionsEmulator(
+      dotenv.get("FIREBASE_EMULATOR_IP"),
+      int.parse(dotenv.get("FIREBASE_EMULATOR_PORT")),
+    );
 
     // Cloud Functionsの関数呼び出し。dataを渡す。
     final HttpsCallableResult result =
