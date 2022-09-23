@@ -45,7 +45,8 @@ class RtcChannelState with _$RtcChannelState {
         rtcIdTokenApiUrl: dotenv.get("RTC_ID_TOKEN_API_URL"),
         account: Ulid().toString(),
         privilegeExpireTime: 4000,
-        localUid: DateTime.now().millisecondsSinceEpoch,
+        // localUid: DateTime.now().millisecondsSinceEpoch,
+        localUid: 1,
         tempLogConfig: LogConfig(),
       );
 }

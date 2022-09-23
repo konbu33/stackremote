@@ -35,10 +35,10 @@ final rtcTokenCreateOnCallProvider = Provider((ref) {
 
     // Cloud Functinosの関数のホスト先が、ローカル環環のエミュレータの場合
 
-    instance.useFunctionsEmulator(
-      dotenv.get("FIREBASE_EMULATOR_IP"),
-      int.parse(dotenv.get("FIREBASE_EMULATOR_PORT")),
-    );
+    // instance.useFunctionsEmulator(
+    //   dotenv.get("FIREBASE_EMULATOR_IP"),
+    //   int.parse(dotenv.get("FIREBASE_EMULATOR_PORT")),
+    // );
 
     // Cloud Functionsの関数呼び出し。dataを渡す。
     final HttpsCallableResult result =
@@ -63,7 +63,7 @@ final rtcTokenCreateOnCallProvider = Provider((ref) {
     final rtcIdToken = rtcIdTokenData["rtcIdToken"];
 
     // rtcIdToken を状態として保持する
-    // notifier.updateToken(rtcIdToken);
+    notifier.updateToken(rtcIdToken);
 
     return rtcIdToken;
   }
