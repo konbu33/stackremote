@@ -8,7 +8,8 @@ import 'package:stackremote/presentation/page/agora_video_page.dart';
 import 'package:stackremote/usecase/authentication_service_get_id_token_usecase.dart';
 import 'package:stackremote/usecase/rtc_channel_state.dart';
 
-import '../../domain/user.dart';
+import '../../domain/firebase_auth_user.dart';
+// import '../../domain/user.dart';
 import '../page/agora_video_channel_join_page.dart';
 import '../page/signin_page.dart';
 import '../page/signup_page.dart';
@@ -88,7 +89,8 @@ final routerProvider = Provider(
 
         // 本アプリ側のログイン状態をwatch。
         // 本アプリ側のログイン状態が変化したら、ルーティングに反映される。
-        final userState = ref.watch(userStateNotifierProvider);
+        // final userState = ref.watch(userStateNotifierProvider);
+        final userState = ref.watch(firebaseAuthUserStateNotifierProvider);
         final isSignIn = userState.isSignIn;
 
         // rtc channel join済・未joinの状態監視
@@ -143,14 +145,15 @@ final routerProvider = Provider(
 );
 
 final authStateChangesProvider = Provider((ref) {
-  final notifier = ref.read(userStateNotifierProvider.notifier);
+  // final notifier = ref.read(userStateNotifierProvider.notifier);
+  final notifier = ref.read(firebaseAuthUserStateNotifierProvider.notifier);
 
   final stream = firebase_auth.FirebaseAuth.instance.authStateChanges();
   stream.listen(
     (fbuser) {
       final user;
       if (fbuser == null) {
-        user = User.create(
+        user = FirebaseAuthUser.create(
           // userId: UserId.create(value: ""),
           email: "",
           password: "",
@@ -161,7 +164,7 @@ final authStateChangesProvider = Provider((ref) {
       } else {
         final firebaseAuthUid = fbuser.uid;
 
-        user = User.create(
+        user = FirebaseAuthUser.create(
           // userId: UserId.create(value: fbuser.uid),
           email: "",
           password: "",
@@ -177,7 +180,8 @@ final authStateChangesProvider = Provider((ref) {
 });
 
 final firebaseAuthGetIdTokenProvider = Provider((ref) {
-  final notifier = ref.watch(userStateNotifierProvider.notifier);
+  // final notifier = ref.watch(userStateNotifierProvider.notifier);
+  final notifier = ref.watch(firebaseAuthUserStateNotifierProvider.notifier);
 
   final AuthenticationServiceGetIdTokenUsecase
       authenticationServiceGetIdTokenUsecase =

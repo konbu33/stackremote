@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/domain/user.dart';
+// import 'package:stackremote/domain/user.dart';
 
+import '../../domain/firebase_auth_user.dart';
 import '../widget/appbar_action_icon_widget.dart';
 import '../widget/background_image_widget.dart';
 import '../widget/base_layout_widget.dart';
@@ -37,7 +38,9 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
                   const SizedBox(height: 40),
                   AgoraVideoChannelJoinPageWidgets.channelJoinSubmitWidget(),
                   () {
-                    final user = ref.watch(userStateNotifierProvider);
+                    // final user = ref.watch(userStateNotifierProvider);
+                    final user =
+                        ref.watch(firebaseAuthUserStateNotifierProvider);
                     return SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Text(
