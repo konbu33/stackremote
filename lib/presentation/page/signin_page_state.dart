@@ -100,11 +100,27 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
             .passwordFieldController
             .text;
 
+        try {
           final res = await state.authenticationServiceSignInUsecase
               .execute(email, password);
 
+        } on firebase_auth.FirebaseAuthException catch (e) {
+          print(e);
+          switch (e.code) {
+            case "user-not-found":
+              const SnackBar snackBar = SnackBar(
+                content: Text("メールアドレス未登録です。"),
+              );
+
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              break;
+
+            default:
+          }
+        }
 
         initial();
+        print("initial End    ------------------- : ");
       };
     }
 

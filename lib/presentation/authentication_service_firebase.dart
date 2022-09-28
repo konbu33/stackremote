@@ -92,6 +92,14 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       return res;
     } on firebase_auth.FirebaseAuthException catch (e) {
       print(e);
+      switch (e.code) {
+        case "user-not-found":
+          // [firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.
+          rethrow;
+
+        default:
+          rethrow;
+      }
     }
   }
 
