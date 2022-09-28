@@ -149,6 +149,7 @@ final authStateChangesProvider = Provider((ref) {
   final notifier = ref.read(firebaseAuthUserStateNotifierProvider.notifier);
 
   final stream = firebase_auth.FirebaseAuth.instance.authStateChanges();
+  // final stream = firebase_auth.FirebaseAuth.instance.userChanges();
   stream.listen(
     (fbuser) {
       final user;
@@ -156,6 +157,7 @@ final authStateChangesProvider = Provider((ref) {
         user = FirebaseAuthUser.create(
           // userId: UserId.create(value: ""),
           email: "",
+          emailVerified: false,
           password: "",
           firebaseAuthUid: "",
           firebaseAuthIdToken: "",
@@ -166,7 +168,8 @@ final authStateChangesProvider = Provider((ref) {
 
         user = FirebaseAuthUser.create(
           // userId: UserId.create(value: fbuser.uid),
-          email: "",
+          email: fbuser.email ?? "",
+          emailVerified: fbuser.emailVerified,
           password: "",
           firebaseAuthUid: firebaseAuthUid,
           firebaseAuthIdToken: "",
@@ -175,6 +178,8 @@ final authStateChangesProvider = Provider((ref) {
       }
 
       notifier.userInformationRegiser(user);
+      print("userInformationRegiser fbUser: --------------: $fbuser");
+      print("userInformationRegiser user: --------------: $user");
     },
   );
 });

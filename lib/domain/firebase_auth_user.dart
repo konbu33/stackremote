@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,6 +23,7 @@ class FirebaseAuthUser with _$FirebaseAuthUser {
 
   factory FirebaseAuthUser.create({
     required String email,
+    required bool emailVerified,
     required String password,
     required String firebaseAuthUid,
     required String firebaseAuthIdToken,
@@ -31,9 +31,10 @@ class FirebaseAuthUser with _$FirebaseAuthUser {
   }) =>
       FirebaseAuthUser._(
         email: email,
+        emailVerified: emailVerified,
         password: password,
-        firebaseAuthUid: "",
-        firebaseAuthIdToken: "",
+        firebaseAuthUid: firebaseAuthUid,
+        firebaseAuthIdToken: firebaseAuthIdToken,
         isSignIn: isSignIn ?? false,
       );
 
@@ -67,6 +68,7 @@ class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
   FirebaseAuthUserStateNotifier()
       : super(FirebaseAuthUser.create(
           email: "ini",
+          emailVerified: false,
           password: "ini",
           firebaseAuthUid: "ini",
           firebaseAuthIdToken: "ini",
@@ -77,6 +79,7 @@ class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
   void initial() {
     state = FirebaseAuthUser.create(
       email: "ini",
+      emailVerified: false,
       password: "ini",
       firebaseAuthUid: "ini",
       firebaseAuthIdToken: "ini",
@@ -88,6 +91,7 @@ class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
       firebaseAuthUid: user.firebaseAuthUid,
       firebaseAuthIdToken: user.firebaseAuthIdToken,
       email: user.email,
+      emailVerified: user.emailVerified,
       password: user.password,
       isSignIn: user.isSignIn,
     );
