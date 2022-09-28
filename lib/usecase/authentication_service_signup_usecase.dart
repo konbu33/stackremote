@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+
 import 'authentication_service.dart';
 
 class AuthenticationServiceSignUpUsecase {
@@ -7,7 +9,9 @@ class AuthenticationServiceSignUpUsecase {
 
   final AuthenticationService authenticationService;
 
-  void execute(String email, String password) {
-    authenticationService.signUp(email, password);
+  Future<firebase_auth.UserCredential> execute(
+      String email, String password) async {
+    final res = await authenticationService.signUp(email, password);
+    return res;
   }
 }

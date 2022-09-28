@@ -11,7 +11,7 @@ abstract class AuthenticationService {
 
   Stream<User> authStateChanges();
 
-  void signUp(String email, String password);
+  Future<firebase_auth.UserCredential> signUp(String email, String password);
 
   Future<void> signOut();
 
