@@ -107,12 +107,24 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   Future<firebase_auth.UserCredential> signUp(
       String email, String password) async {
     print("email : ${email}, password : ${password} ");
+    try {
       final res = await instance.createUserWithEmailAndPassword(
           email: email, password: password);
 
       print("signUp : ${res}");
 
       return res;
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      print("e.code : ${e.code}");
+      switch (e.code) {
+        case "email-already-in-use":
+          // FirebaseAuthException ([firebase_auth/email-already-in-use] The email address is already in use by another account.)
+          rethrow;
+
+        default:
+          rethrow;
+      }
+    }
   }
 
   @override

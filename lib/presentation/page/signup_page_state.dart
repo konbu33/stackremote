@@ -95,13 +95,34 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
             .text;
 
         state.authenticationServiceMailLinkAuthUsecase.execute(email);
+        try {
           // User情報登録
           final firebase_auth.UserCredential res = await state
               .authenticationServiceSignUpUsecase
               .execute(email, password);
 
+        } on firebase_auth.FirebaseAuthException catch (e) {
+          print("e.code : ${e.code}");
+          switch (e.code) {
+            // User情報が登録済みでエラーになった場合
+            case "email-already-in-use":
+              const SnackBar snackBar = SnackBar(
+                content: Text("メールアドレス登録済みです。"),
+              );
+
+              // User情報が登録済みでエラーになった場合、SnackBarで通知
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+              // final checkEmailVerified = ref.read(checkEmailVerifiedProvider);
+              // checkEmailVerified();
+
+              break;
+            default:
+          }
+        }
 
         initial();
+        print("initial End    ------------------- : ");
       };
     }
 
