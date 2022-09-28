@@ -81,11 +81,15 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   }
 
   @override
-  void signIn(String email, String password) async {
+  Future<firebase_auth.UserCredential> signIn(
+      String email, String password) async {
     print("email : ${email}, password : ${password} ");
     try {
       final res = await instance.signInWithEmailAndPassword(
           email: email, password: password);
+
+      print("signIn : ${res}");
+      return res;
     } on firebase_auth.FirebaseAuthException catch (e) {
       print(e);
     }
