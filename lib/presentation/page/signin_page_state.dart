@@ -90,7 +90,7 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
     Function buildOnSubmit() {
       return ({
         required BuildContext context,
-      }) {
+      }) async {
         final email = ref
             .read(state.loginIdFieldStateProvider)
             .loginIdFieldController
@@ -100,7 +100,9 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
             .passwordFieldController
             .text;
 
-        state.authenticationServiceSignInUsecase.execute(email, password);
+          final res = await state.authenticationServiceSignInUsecase
+              .execute(email, password);
+
 
         initial();
       };
