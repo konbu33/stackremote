@@ -1,21 +1,23 @@
 // onRequest
 import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/domain/user.dart';
-import 'package:stackremote/usecase/rtc_channel_state.dart';
 
 // onCall
 import 'package:cloud_functions/cloud_functions.dart';
+
+import '../domain/firebase_auth_user.dart';
+// import '../domain/user.dart';
+import 'rtc_channel_state.dart';
 
 final rtcTokenCreateOnCallProvider = Provider((ref) {
   Future<String> rtcCreateToken() async {
     final state = ref.watch(
         RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
-    final userState = ref.watch(userStateNotifierProvider);
+    // final userState = ref.watch(userStateNotifierProvider);
+    final userState = ref.watch(firebaseAuthUserStateNotifierProvider);
 
     final notifier = ref.read(RtcChannelStateNotifierProviderList
         .rtcChannelStateNotifierProvider.notifier);
@@ -76,7 +78,8 @@ final rtcTokenCreateOnRequestProvider = Provider((ref) {
     final state = ref.watch(
         RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
-    final userState = ref.watch(userStateNotifierProvider);
+    // final userState = ref.watch(userStateNotifierProvider);
+    final userState = ref.watch(firebaseAuthUserStateNotifierProvider);
 
     final notifier = ref.read(RtcChannelStateNotifierProviderList
         .rtcChannelStateNotifierProvider.notifier);

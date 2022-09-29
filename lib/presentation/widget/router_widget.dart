@@ -5,10 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/presentation/authentication_service_firebase.dart';
 import 'package:stackremote/presentation/page/agora_video_page.dart';
+import 'package:stackremote/presentation/page/wait_email_verified_page.dart';
 import 'package:stackremote/usecase/authentication_service_get_id_token_usecase.dart';
 import 'package:stackremote/usecase/rtc_channel_state.dart';
 
-import '../../domain/user.dart';
+import '../../domain/firebase_auth_user.dart';
+// import '../../domain/user.dart';
 import '../page/agora_video_channel_join_page.dart';
 import '../page/signin_page.dart';
 import '../page/signup_page.dart';
@@ -79,6 +81,9 @@ final routerProvider = Provider(
         GoRoute(
             path: '/agoravideo',
             builder: (context, state) => const AgoraVideoPage()),
+        GoRoute(
+            path: '/waitmailverified',
+            builder: (context, state) => const WaitEmailVerifiedPage()),
       ],
       redirect: (state) {
         // Firebase Authentication側のログイン状態をwatch。
@@ -88,18 +93,20 @@ final routerProvider = Provider(
 
         // 本アプリ側のログイン状態をwatch。
         // 本アプリ側のログイン状態が変化したら、ルーティングに反映される。
-        final userState = ref.watch(userStateNotifierProvider);
+        // final userState = ref.watch(userStateNotifierProvider);
+        final userState = ref.watch(firebaseAuthUserStateNotifierProvider);
         final isSignIn = userState.isSignIn;
+        final isEmailVerified = userState.emailVerified;
 
         // rtc channel join済・未joinの状態監視
         final RtcChannelState rtcChannelState = ref.watch(
             RtcChannelStateNotifierProviderList
                 .rtcChannelStateNotifierProvider);
 
-        // サインイン済みの場合のリダイレクト動作
+        // サインイン済み & メールアドレス検証済みの場合のリダイレクト動作
         // rtc channel join済・未joinの状態を監視し、
         // 状態が変化した場合、リダイレクト操作が実施される。
-        if (isSignIn) {
+        if (isSignIn && isEmailVerified) {
           if (rtcChannelState.joined) {
             if (state.subloc == '/agoravideo') {
               return null;
@@ -111,6 +118,23 @@ final routerProvider = Provider(
               return null;
             } else {
               return '/agoravideochanneljoin';
+            }
+          }
+        }
+
+        // サインイン済み & メールアドレス未検証の場合のリダイレクト動作
+        if (isSignIn) {
+          if (isEmailVerified) {
+            if (state.subloc == '/agoravideochanneljoin') {
+              return null;
+            } else {
+              return '/agoravideochanneljoin';
+            }
+          } else {
+            if (state.subloc == '/waitmailverified') {
+              return null;
+            } else {
+              return '/waitmailverified';
             }
           }
         }
@@ -143,16 +167,19 @@ final routerProvider = Provider(
 );
 
 final authStateChangesProvider = Provider((ref) {
-  final notifier = ref.read(userStateNotifierProvider.notifier);
+  // final notifier = ref.read(userStateNotifierProvider.notifier);
+  final notifier = ref.read(firebaseAuthUserStateNotifierProvider.notifier);
 
   final stream = firebase_auth.FirebaseAuth.instance.authStateChanges();
+  // final stream = firebase_auth.FirebaseAuth.instance.userChanges();
   stream.listen(
     (fbuser) {
       final user;
       if (fbuser == null) {
-        user = User.create(
+        user = FirebaseAuthUser.create(
           // userId: UserId.create(value: ""),
           email: "",
+          emailVerified: false,
           password: "",
           firebaseAuthUid: "",
           firebaseAuthIdToken: "",
@@ -161,9 +188,10 @@ final authStateChangesProvider = Provider((ref) {
       } else {
         final firebaseAuthUid = fbuser.uid;
 
-        user = User.create(
+        user = FirebaseAuthUser.create(
           // userId: UserId.create(value: fbuser.uid),
-          email: "",
+          email: fbuser.email ?? "",
+          emailVerified: fbuser.emailVerified,
           password: "",
           firebaseAuthUid: firebaseAuthUid,
           firebaseAuthIdToken: "",
@@ -172,12 +200,15 @@ final authStateChangesProvider = Provider((ref) {
       }
 
       notifier.userInformationRegiser(user);
+      print("userInformationRegiser fbUser: --------------: $fbuser");
+      print("userInformationRegiser user: --------------: $user");
     },
   );
 });
 
 final firebaseAuthGetIdTokenProvider = Provider((ref) {
-  final notifier = ref.watch(userStateNotifierProvider.notifier);
+  // final notifier = ref.watch(userStateNotifierProvider.notifier);
+  final notifier = ref.watch(firebaseAuthUserStateNotifierProvider.notifier);
 
   final AuthenticationServiceGetIdTokenUsecase
       authenticationServiceGetIdTokenUsecase =
