@@ -142,24 +142,4 @@ class AuthenticationServiceFirebase implements AuthenticationService {
     }
     return "currentUser is null.";
   }
-
-  @override
-  Future<void> mailLinkAuth(String email) async {
-    final actionCodeSettings = firebase_auth.ActionCodeSettings(
-      url: 'https://stackremote.firebaseapp.com',
-      androidPackageName: 'com.shintaisousa.stackremote',
-      iOSBundleId: 'com.shintaisousa.stackremote',
-      handleCodeInApp: true,
-      androidInstallApp: true,
-      androidMinimumVersion: '12',
-      // dynamicLinkDomain: 'https://stackremote.page.link/y1E4',
-    );
-
-    await instance.sendSignInLinkToEmail(
-      email: email,
-      actionCodeSettings: actionCodeSettings,
-    );
-
-    print(" mailLinkAuth : ----------------------- ");
-  }
 }

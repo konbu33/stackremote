@@ -18,6 +18,4 @@ abstract class AuthenticationService {
   Future<firebase_auth.UserCredential> signIn(String email, String password);
 
   Future<String> getIdToken();
-
-  Future<void> mailLinkAuth(String email);
 }
