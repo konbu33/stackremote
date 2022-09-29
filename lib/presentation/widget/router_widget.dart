@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/presentation/authentication_service_firebase.dart';
 import 'package:stackremote/presentation/page/agora_video_page.dart';
+import 'package:stackremote/presentation/page/wait_email_verified_page.dart';
 import 'package:stackremote/usecase/authentication_service_get_id_token_usecase.dart';
 import 'package:stackremote/usecase/rtc_channel_state.dart';
 
@@ -80,6 +81,9 @@ final routerProvider = Provider(
         GoRoute(
             path: '/agoravideo',
             builder: (context, state) => const AgoraVideoPage()),
+        GoRoute(
+            path: '/waitmailverified',
+            builder: (context, state) => const WaitEmailVerifiedPage()),
       ],
       redirect: (state) {
         // Firebase Authentication側のログイン状態をwatch。
