@@ -4,6 +4,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/presentation/verify_email.dart';
+import '../../domain/firebase_auth_user.dart';
 import '../authentication_service_firebase.dart';
 import '../../usecase/authentication_service_signin_usecase.dart';
 import '../widget/appbar_action_icon_state.dart';
@@ -104,6 +106,17 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
           final res = await state.authenticationServiceSignInUsecase
               .execute(email, password);
 
+          final firebase_auth.User? user = res.user;
+          if (user != null) {
+            print("sendVeryfyEmail Start  ------------------- : ");
+            final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
+            sendVerifyEmail(user: user);
+            print("sendVeryfyEmail End    ------------------- : ");
+
+            final notifier =
+                ref.read(firebaseAuthUserStateNotifierProvider.notifier);
+            notifier.updateEmailVerified(user.emailVerified);
+          }
         } on firebase_auth.FirebaseAuthException catch (e) {
           print(e);
           switch (e.code) {

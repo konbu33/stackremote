@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/presentation/verify_email.dart';
+import '../../domain/firebase_auth_user.dart';
 import '../../usecase/authentication_service_mail_link_auth_usecase.dart';
 import '../authentication_service_firebase.dart';
 import '../../usecase/authentication_service_signup_usecase.dart';
@@ -101,6 +103,21 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
               .authenticationServiceSignUpUsecase
               .execute(email, password);
 
+          // 登録したUser情報を受取る。
+          final firebase_auth.User? user = res.user;
+
+          // User情報取得成功した場合、メールアドレス検証メールを送信
+          if (user != null) {
+            print("sendVeryfyEmail Start  ------------------- : ");
+            final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
+            sendVerifyEmail(user: user);
+            print("sendVeryfyEmail End    ------------------- : ");
+
+            // Userのメールアドレス検証結果を状態で保持する
+            final notifier =
+                ref.read(firebaseAuthUserStateNotifierProvider.notifier);
+            notifier.updateEmailVerified(user.emailVerified);
+          }
         } on firebase_auth.FirebaseAuthException catch (e) {
           print("e.code : ${e.code}");
           switch (e.code) {
