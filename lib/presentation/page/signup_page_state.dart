@@ -84,7 +84,7 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
     Function buildOnSubmit() {
       return ({
         required BuildContext context,
-      }) {
+      }) async {
         final email = ref
             .read(state.loginIdFieldStateProvider)
             .loginIdFieldController
@@ -94,8 +94,12 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
             .passwordFieldController
             .text;
 
-        // state.authenticationServiceSignUpUsecase.execute(email, password);
         state.authenticationServiceMailLinkAuthUsecase.execute(email);
+          // User情報登録
+          final firebase_auth.UserCredential res = await state
+              .authenticationServiceSignUpUsecase
+              .execute(email, password);
+
 
         initial();
       };
