@@ -96,16 +96,17 @@ final routerProvider = Provider(
         // final userState = ref.watch(userStateNotifierProvider);
         final userState = ref.watch(firebaseAuthUserStateNotifierProvider);
         final isSignIn = userState.isSignIn;
+        final isEmailVerified = userState.emailVerified;
 
         // rtc channel join済・未joinの状態監視
         final RtcChannelState rtcChannelState = ref.watch(
             RtcChannelStateNotifierProviderList
                 .rtcChannelStateNotifierProvider);
 
-        // サインイン済みの場合のリダイレクト動作
+        // サインイン済み & メールアドレス検証済みの場合のリダイレクト動作
         // rtc channel join済・未joinの状態を監視し、
         // 状態が変化した場合、リダイレクト操作が実施される。
-        if (isSignIn) {
+        if (isSignIn && isEmailVerified) {
           if (rtcChannelState.joined) {
             if (state.subloc == '/agoravideo') {
               return null;
@@ -117,6 +118,23 @@ final routerProvider = Provider(
               return null;
             } else {
               return '/agoravideochanneljoin';
+            }
+          }
+        }
+
+        // サインイン済み & メールアドレス未検証の場合のリダイレクト動作
+        if (isSignIn) {
+          if (isEmailVerified) {
+            if (state.subloc == '/agoravideochanneljoin') {
+              return null;
+            } else {
+              return '/agoravideochanneljoin';
+            }
+          } else {
+            if (state.subloc == '/waitmailverified') {
+              return null;
+            } else {
+              return '/waitmailverified';
             }
           }
         }
