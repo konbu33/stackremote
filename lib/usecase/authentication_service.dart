@@ -16,4 +16,6 @@ abstract class AuthenticationService {
   void signIn(String email, String password);
 
   Future<String> getIdToken();
+
+  Future<void> mailLinkAuth(String email);
 }

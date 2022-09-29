@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/presentation/authentication_service_firebase.dart';
 import 'package:stackremote/presentation/page/agora_video_page.dart';
 import 'package:stackremote/usecase/authentication_service_get_id_token_usecase.dart';
+import 'package:stackremote/usecase/rtc_channel_state.dart';
 
 import '../../domain/user.dart';
 import '../page/agora_video_channel_join_page.dart';
@@ -73,7 +74,11 @@ final routerProvider = Provider(
             path: '/userdetail',
             builder: (context, state) => const UserDetailPage()),
         GoRoute(
-            path: '/agoravideo', builder: (context, state) => AgoraVideoPage()),
+            path: '/agoravideochanneljoin',
+            builder: (context, state) => const AgoraVideoChannelJoinPage()),
+        GoRoute(
+            path: '/agoravideo',
+            builder: (context, state) => const AgoraVideoPage()),
       ],
       redirect: (state) {
         // Firebase Authentication側のログイン状態をwatch。
@@ -86,6 +91,31 @@ final routerProvider = Provider(
         final userState = ref.watch(userStateNotifierProvider);
         final isSignIn = userState.isSignIn;
 
+        // rtc channel join済・未joinの状態監視
+        final RtcChannelState rtcChannelState = ref.watch(
+            RtcChannelStateNotifierProviderList
+                .rtcChannelStateNotifierProvider);
+
+        // サインイン済みの場合のリダイレクト動作
+        // rtc channel join済・未joinの状態を監視し、
+        // 状態が変化した場合、リダイレクト操作が実施される。
+        if (isSignIn) {
+          if (rtcChannelState.joined) {
+            if (state.subloc == '/agoravideo') {
+              return null;
+            } else {
+              return '/agoravideo';
+            }
+          } else {
+            if (state.subloc == '/agoravideochanneljoin') {
+              return null;
+            } else {
+              return '/agoravideochanneljoin';
+            }
+          }
+        }
+
+        // 未サインインの場合のリダイレクト動作
         if (!isSignIn) {
           if (state.subloc == '/') {
             return '/signin';

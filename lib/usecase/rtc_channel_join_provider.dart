@@ -64,10 +64,10 @@ final rtcJoinChannelProvider = Provider((ref) {
     // チャンネル参加
     try {
       await engine.joinChannel(
-        state.token,
+        state.rtcIdToken,
         state.channelName,
         null,
-        0,
+        state.localUid,
       );
     } catch (e) {
       print("${e.toString()}");
