@@ -40,6 +40,9 @@ PODS:
     - FirebaseAuth (~> 9.5.0)
   - Firebase/CoreOnly (9.5.0):
     - FirebaseCore (= 9.5.0)
+  - Firebase/DynamicLinks (9.5.0):
+    - Firebase/CoreOnly
+    - FirebaseDynamicLinks (~> 9.5.0)
   - Firebase/Firestore (9.5.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 9.5.0)
@@ -52,6 +55,10 @@ PODS:
     - Flutter
   - firebase_core (1.22.0):
     - Firebase/CoreOnly (= 9.5.0)
+    - Flutter
+  - firebase_dynamic_links (4.3.8):
+    - Firebase/DynamicLinks (= 9.5.0)
+    - firebase_core
     - Flutter
   - FirebaseAppCheckInterop (9.6.0)
   - FirebaseAuth (9.5.0):
@@ -74,6 +81,8 @@ PODS:
     - FirebaseCore (~> 9.0)
   - FirebaseCoreInternal (9.6.0):
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
+  - FirebaseDynamicLinks (9.5.0):
+    - FirebaseCore (~> 9.0)
   - FirebaseFirestore (9.5.0):
     - FirebaseFirestore/AutodetectLeveldb (= 9.5.0)
   - FirebaseFirestore/AutodetectLeveldb (9.5.0):
@@ -132,6 +141,7 @@ DEPENDENCIES:
   - cloud_functions (from `.symlinks/plugins/cloud_functions/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `9.5.0`)
   - Flutter (from `Flutter`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
@@ -150,6 +160,7 @@ SPEC REPOS:
     - FirebaseCoreDiagnostics
     - FirebaseCoreExtension
     - FirebaseCoreInternal
+    - FirebaseDynamicLinks
     - FirebaseFunctions
     - FirebaseMessagingInterop
     - FirebaseSharedSwift
@@ -170,6 +181,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
+  firebase_dynamic_links:
+    :path: ".symlinks/plugins/firebase_dynamic_links/ios"
   FirebaseFirestore:
     :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
     :tag: 9.5.0
@@ -196,6 +209,7 @@ SPEC CHECKSUMS:
   Firebase: 800f16f07af493d98d017446a315c27af0552f41
   firebase_auth: c070c7e5b66037cddb73a68ca4bf4728b063680b
   firebase_core: 31872a49ffe0bf6f834e7044c7334e433536735a
+  firebase_dynamic_links: b0af2c239ff0e223fcfcf08ac6db1c5ae4b1d32b
   FirebaseAppCheckInterop: d5ecda0c09f8069406643d6e0fa12c09d1b736e3
   FirebaseAuth: 741918f1fa62ed23246a509279f91d42d79a713f
   FirebaseAuthInterop: b6cf02117f13a8400c8c8b4421e12c6e850bcaf3
@@ -203,6 +217,7 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: 99a495094b10a57eeb3ae8efa1665700ad0bdaa6
   FirebaseCoreExtension: e83465d1236b166d1d445bbf0e82b65acb30b73b
   FirebaseCoreInternal: bca76517fe1ed381e989f5e7d8abb0da8d85bed3
+  FirebaseDynamicLinks: e2805928aefebd742288161f99469ab84d4aa8c8
   FirebaseFirestore: e83d2906874871b21c1dae3ea7ad56efcb9de943
   FirebaseFunctions: 9f6b1ae15651fff0107ef3abd2ee885b9c103236
   FirebaseMessagingInterop: 348785028509e1a5a9af277123e7fc08b2d17306
