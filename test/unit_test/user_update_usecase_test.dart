@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stackremote/domain/user.dart';
-import 'package:stackremote/usecase/user_update_usecase.dart';
-import 'package:stackremote/domain/user_repository.dart';
-import 'package:stackremote/domain/userid.dart';
+import 'package:stackremote/user/domain/user.dart';
+import 'package:stackremote/user/domain/user_repository.dart';
+import 'package:stackremote/user/domain/userid.dart';
+import 'package:stackremote/user/usecace/user_update_usecase.dart';
 
 // UserRepositoryのMockクラス作成
 class MockUserRepository extends Mock implements UserRepository {}

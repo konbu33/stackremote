@@ -3,10 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:stackremote/domain/user.dart';
-import 'package:stackremote/usecase/user_fetch_all_usecase.dart';
-import 'package:stackremote/domain/user_repository.dart';
-import 'package:stackremote/domain/users.dart';
+import 'package:stackremote/user/domain/user.dart';
+import 'package:stackremote/user/usecace/user_fetch_all_usecase.dart';
+import 'package:stackremote/user/domain/user_repository.dart';
+import 'package:stackremote/user/domain/users.dart';
 
 import 'user_fetch_all_usecase_mockito_test.mocks.dart';
 
@@ -56,7 +56,7 @@ void main() {
     // then
     final resUsers = await res.single;
     final resUserList = resUsers.users;
-    print("resUserList : $resUserList");
+    // print("resUserList : $resUserList");
 
     expect(listEquals(resUserList, userList), isTrue);
     expect(const ListEquality().equals(resUserList, userList), isTrue);

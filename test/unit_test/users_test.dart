@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stackremote/domain/user.dart';
-import 'package:stackremote/domain/users.dart';
+import 'package:stackremote/user/domain/user.dart';
+import 'package:stackremote/user/domain/users.dart';
 
 void main() {
   group("usersインスタンス生成テスト", () {

@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:stackremote/domain/user.dart';
-import 'package:stackremote/usecase/user_fetch_by_id_usecase.dart';
-import 'package:stackremote/domain/user_repository.dart';
-import 'package:stackremote/domain/userid.dart';
+import 'package:stackremote/user/domain/user.dart';
+import 'package:stackremote/user/usecace/user_fetch_by_id_usecase.dart';
+import 'package:stackremote/user/domain/user_repository.dart';
+import 'package:stackremote/user/domain/userid.dart';
 
 import 'user_add_usecase_mockito_test.mocks.dart';
 
@@ -45,12 +45,12 @@ void main() {
     // then
     final captured = verify(userRepository.fetchById(captureAny)).captured;
     final String d = captured.last;
-    print("userId : ${userId}");
-    print("d : ${d}");
+    // print("userId : ${userId}");
+    // print("d : ${d}");
     expect(d, userId);
 
-    print("user : ${user}");
-    print("res: ${res}");
+    // print("user : ${user}");
+    // print("res: ${res}");
     expect(res, user);
   });
 }

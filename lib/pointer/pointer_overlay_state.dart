@@ -16,6 +16,7 @@ class PointerOerlayerState with _$PointerOerlayerState {
     required String name,
     required Offset pointerPosition,
     required Offset displayPointerPosition,
+    // ignore: unused_element
     @Default(false) bool isOnLongPressing,
     required TextEditingController commentController,
   }) = _PointerOerlayerState;

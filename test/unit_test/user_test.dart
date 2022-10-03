@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stackremote/domain/user.dart';
-import 'package:stackremote/domain/userid.dart';
+import 'package:stackremote/user/domain/user.dart';
+import 'package:stackremote/user/domain/userid.dart';
 import 'package:ulid/ulid.dart';
 
 void main() {
