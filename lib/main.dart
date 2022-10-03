@@ -1,19 +1,18 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:logger/logger.dart';
+import 'authentication_layer.dart';
 import 'firebase_options.dart';
-import 'presentation/widget/router_widget.dart';
 
 void main() async {
   // Firebase初期化
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await firebaseInitialize();
 
   // flutter_dotenvで変数読み込み
-  await dotenv.load(fileName: ".env");
+  await loadDotEnv();
 
   // riverpod範囲指定
   runApp(
@@ -21,6 +20,8 @@ void main() async {
       child: MyApp(),
     ),
   );
+
+  log();
 }
 
 class MyApp extends StatelessWidget {
@@ -28,13 +29,65 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const RouterWidget(),
-    );
+    return const AuthenticationLayer();
   }
+}
+
+// --------------------------------------------------
+//
+// Firebase初期化
+//
+// --------------------------------------------------
+Future<void> firebaseInitialize() async {
+  final logger = Logger();
+  logger.d("start: Firebase Initialize");
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  logger.d("end: Firebase Initialize");
+}
+
+// --------------------------------------------------
+//
+// .env読み込み
+//
+// --------------------------------------------------
+Future<void> loadDotEnv() async {
+  final logger = Logger(printer: PrettyPrinter());
+  logger.d("start: load .env");
+  await dotenv.load(fileName: ".env");
+  logger.d("end: load .env");
+}
+
+FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.instance;
+
+var logger = Logger(
+  printer: PrettyPrinter(),
+);
+
+var loggerNoStack = Logger(
+  printer: PrettyPrinter(
+    methodCount: 0,
+    printTime: true,
+  ),
+);
+
+void log() {
+  Logger.level = Level.warning;
+  logger.d("Log message with 2 methods");
+
+  loggerNoStack.i("Info message");
+
+  loggerNoStack.w("Just a warning!");
+
+  logger.e("Error! Something bad happened", "Test Error");
+  loggerNoStack.e("Error! Something bad happened", "Test Error");
+
+  loggerNoStack.v({"key": 5, "value": "something"});
+
+  firebaseAnalytics.logSelectContent(
+      contentType: "image", itemId: "20221003-1025");
+
+  Future.delayed(Duration(seconds: 5), log);
 }

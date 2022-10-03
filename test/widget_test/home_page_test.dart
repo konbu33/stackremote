@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stackremote/presentation/page/home_page.dart';
+import 'package:stackremote/home_page.dart';
 
 void main() {
   testWidgets("+ボタン押下時、1カウントアップされること", (WidgetTester tester) async {

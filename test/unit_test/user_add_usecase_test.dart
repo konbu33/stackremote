@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stackremote/domain/user.dart';
-import 'package:stackremote/usecase/user_add_usecase.dart';
-import 'package:stackremote/domain/user_repository.dart';
+import 'package:stackremote/user/domain/user.dart';
+import 'package:stackremote/user/usecace/user_add_usecase.dart';
+import 'package:stackremote/user/domain/user_repository.dart';
 
 // UserRepositoryのMockクラス作成
 class MockUserRepository extends Mock implements UserRepository {}
@@ -41,7 +41,8 @@ void main() {
         .thenAnswer((invocation) => Future.value(user.userId));
 
     // when
-    final res = await userAddUseCase.execute(email, password);
+    // final res = await userAddUseCase.execute(email, password);
+    await userAddUseCase.execute(email, password);
 
     // then
     final captured = verify(() => userRepository.add(captureAny())).captured;

@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:stackremote/usecase/user_delete_usecase.dart';
-import 'package:stackremote/domain/user_repository.dart';
-import 'package:stackremote/domain/userid.dart';
+import 'package:stackremote/user/usecace/user_delete_usecase.dart';
+import 'package:stackremote/user/domain/user_repository.dart';
+import 'package:stackremote/user/domain/userid.dart';
 import 'user_delete_usecase_mockito_test.mocks.dart';
 
 @GenerateMocks([UserRepository])
@@ -34,9 +32,9 @@ void main() {
     // then
     final captured = verify(userRepository.delete(captureAny)).captured;
     final d = captured.last;
-    print("userId :  ${userId}");
-    print("res :  ${res}");
-    print("captured:  ${d}");
+    // print("userId :  ${userId}");
+    // print("res :  ${res}");
+    // print("captured:  ${d}");
     expect(d, userId);
     expect(res, returnMessage);
   });

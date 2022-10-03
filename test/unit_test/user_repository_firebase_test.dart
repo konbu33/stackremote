@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stackremote/domain/user.dart';
-import 'package:stackremote/domain/user_repository.dart';
-import 'package:stackremote/infrastructure/user_repository_firestore.dart';
-import 'package:stackremote/domain/userid.dart';
-import 'package:stackremote/domain/users.dart';
+import 'package:stackremote/user/domain/user.dart';
+import 'package:stackremote/user/domain/user_repository.dart';
+import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
+import 'package:stackremote/user/domain/userid.dart';
+import 'package:stackremote/user/domain/users.dart';
 
 void main() {
   // Firebaseのモック用インスタンス生成
@@ -87,10 +87,15 @@ void main() {
     ]);
 
     // when
-    final UserId resUserId1 = await userRepository.add(user1);
-    final UserId resUserId2 = await userRepository.add(user2);
-    // final UserId resUserId3 = await userRepository.add(user3);
-    final UserId resUserId4 = await userRepository.add(user4);
+    // final UserId resUserId1 = await userRepository.add(user1);
+    // final UserId resUserId2 = await userRepository.add(user2);
+    // // final UserId resUserId3 = await userRepository.add(user3);
+    // final UserId resUserId4 = await userRepository.add(user4);
+
+    await userRepository.add(user1);
+    await userRepository.add(user2);
+    // await userRepository.add(user3);
+    await userRepository.add(user4);
 
     final Stream<Users> resUsers = userRepository.fetchAll();
 

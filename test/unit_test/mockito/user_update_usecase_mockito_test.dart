@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:stackremote/domain/user.dart';
-import 'package:stackremote/domain/user_repository.dart';
-import 'package:stackremote/usecase/user_update_usecase.dart';
+import 'package:stackremote/user/domain/user.dart';
+import 'package:stackremote/user/domain/user_repository.dart';
+import 'package:stackremote/user/usecace/user_update_usecase.dart';
 
 import 'user_add_usecase_mockito_test.mocks.dart';
 
@@ -45,8 +45,8 @@ void main() {
     // then
     final captured = verify(userRepository.update(captureAny)).captured;
     final User d = captured.last;
-    print("user : ${user}");
-    print("captured d: ${d}");
+    // print("user : ${user}");
+    // print("captured d: ${d}");
 
     expect(d.userId.value.toString(), user.userId.value.toString());
     expect(d.email, user.email);
