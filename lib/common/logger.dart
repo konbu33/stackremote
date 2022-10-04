@@ -7,11 +7,12 @@ import 'common.dart';
 // ロギングのインスタンス生成し、保持
 //
 // --------------------------------------------------
+LogPrinter logPrinter = PrettyPrinter(
+  printTime: true,
+);
+
 Logger logger = Logger(
-  level: null,
-  printer: PrettyPrinter(
-    printTime: true,
-  ),
+  printer: logPrinter,
 );
 
 // --------------------------------------------------
@@ -20,27 +21,24 @@ Logger logger = Logger(
 //
 // --------------------------------------------------
 void setLogLevel(ReleaseEnv releaseEnv) {
+  Level level = Level.debug;
+
   switch (releaseEnv) {
     case ReleaseEnv.stg:
-      logger = Logger(
-        level: Level.info,
-        printer: PrettyPrinter(
-          printTime: true,
-        ),
-      );
+      level = Level.info;
 
       break;
 
     case ReleaseEnv.prd:
-      logger = Logger(
-        level: Level.warning,
-        printer: PrettyPrinter(
-          printTime: true,
-        ),
-      );
+      level = Level.warning;
 
       break;
 
     default:
   }
+
+  logger = Logger(
+    level: level,
+    printer: logPrinter,
+  );
 }
