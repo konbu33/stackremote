@@ -5,6 +5,9 @@ import 'authentication_layer.dart';
 import 'common/common.dart';
 
 void main() async {
+  // ロギング設定・ログレベル設定
+  setLogLevel(releaseEnv);
+
   // Firebase初期化
   await firebaseInitialize();
 
