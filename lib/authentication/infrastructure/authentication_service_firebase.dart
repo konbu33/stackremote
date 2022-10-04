@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 import '../../user/domain/user.dart';
@@ -88,6 +89,13 @@ class AuthenticationServiceFirebase implements AuthenticationService {
     try {
       final res = await instance.signInWithEmailAndPassword(
           email: email, password: password);
+
+      await FirebaseAnalytics.instance.logEvent(
+        name: 'login',
+        parameters: {
+          'method': 'signIn',
+        },
+      );
 
       // print("signIn : ${res}");
       return res;
