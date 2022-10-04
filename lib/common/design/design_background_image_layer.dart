@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nested/nested.dart';
 
-import '../../../common/assets.gen.dart';
+import '../assets.gen.dart';
 
 class DesignBackgroundImageLayer extends SingleChildStatelessWidget {
   const DesignBackgroundImageLayer({

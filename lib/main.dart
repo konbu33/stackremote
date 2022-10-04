@@ -1,13 +1,16 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:logger/logger.dart';
+
 import 'authentication_layer.dart';
-import 'firebase_options.dart';
+import 'common/common.dart';
 
 void main() async {
+  // リリース環境設定
+  setByReleaseEnv();
+
+  // ロギング設定・ログレベル設定
+  setLogLevel(releaseEnv);
+
   // Firebase初期化
   await firebaseInitialize();
 
@@ -20,8 +23,6 @@ void main() async {
       child: MyApp(),
     ),
   );
-
-  log();
 }
 
 class MyApp extends StatelessWidget {
@@ -31,63 +32,4 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const AuthenticationLayer();
   }
-}
-
-// --------------------------------------------------
-//
-// Firebase初期化
-//
-// --------------------------------------------------
-Future<void> firebaseInitialize() async {
-  final logger = Logger();
-  logger.d("start: Firebase Initialize");
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  logger.d("end: Firebase Initialize");
-}
-
-// --------------------------------------------------
-//
-// .env読み込み
-//
-// --------------------------------------------------
-Future<void> loadDotEnv() async {
-  final logger = Logger(printer: PrettyPrinter());
-  logger.d("start: load .env");
-  await dotenv.load(fileName: ".env");
-  logger.d("end: load .env");
-}
-
-FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.instance;
-
-var logger = Logger(
-  printer: PrettyPrinter(),
-);
-
-var loggerNoStack = Logger(
-  printer: PrettyPrinter(
-    methodCount: 0,
-    printTime: true,
-  ),
-);
-
-void log() {
-  Logger.level = Level.warning;
-  logger.d("Log message with 2 methods");
-
-  loggerNoStack.i("Info message");
-
-  loggerNoStack.w("Just a warning!");
-
-  logger.e("Error! Something bad happened", "Test Error");
-  loggerNoStack.e("Error! Something bad happened", "Test Error");
-
-  loggerNoStack.v({"key": 5, "value": "something"});
-
-  firebaseAnalytics.logSelectContent(
-      contentType: "image", itemId: "20221003-1025");
-
-  Future.delayed(Duration(seconds: 5), log);
 }

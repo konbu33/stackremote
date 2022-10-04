@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../common/design/design.dart';
+import '../common/common.dart';
 import 'domain/rtc_channel_state.dart';
 import 'presentation/page/agora_video_channel_join_page.dart';
 import 'presentation/page/agora_video_page.dart';
