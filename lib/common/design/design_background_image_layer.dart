@@ -14,8 +14,6 @@ class DesignBackgroundImageLayer extends SingleChildStatelessWidget {
 
   @override
   Widget buildWithChild(BuildContext context, Widget? child) {
-    // return SafeArea(
-    // child: Container(
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
