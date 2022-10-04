@@ -5,6 +5,9 @@ import 'authentication_layer.dart';
 import 'common/common.dart';
 
 void main() async {
+  // リリース環境設定
+  setByReleaseEnv();
+
   // ロギング設定・ログレベル設定
   setLogLevel(releaseEnv);
 
