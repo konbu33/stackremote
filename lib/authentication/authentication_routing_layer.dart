@@ -6,8 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/authentication/presentation/page/wait_email_verified_page.dart';
 // import 'package:stackremote/authentication/usecase/authentication_service_get_id_token_usecase.dart';
 
-import '../common/design/design.dart';
 // import 'infrastructure/auth_state_changes_provider.dart';
+import '../common/common.dart';
 import 'domain/firebase_auth_user.dart';
 import 'presentation/page/signin_page.dart';
 import 'presentation/page/signup_page.dart';
