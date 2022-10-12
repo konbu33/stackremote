@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/presentation/page/wait_email_verified_page.dart';
 
 import '../common/common.dart';
 import 'domain/firebase_auth_user.dart';
 import 'presentation/page/signin_page.dart';
 import 'presentation/page/signup_page.dart';
+import 'presentation/page/wait_email_verified_page.dart';
 
 class AuthenticationRoutingLayer extends HookConsumerWidget {
   const AuthenticationRoutingLayer({Key? key}) : super(key: key);
@@ -19,7 +19,7 @@ class AuthenticationRoutingLayer extends HookConsumerWidget {
       debugShowCheckedModeBanner: false,
 
       // go_router設定
-      // go_router 5.0以降は、routerConfig属性でまとめて設設可能そう。
+      // improve: go_router 5.0以降は、routerConfig属性でまとめて設設可能そう。
       routerDelegate: router.routerDelegate,
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
