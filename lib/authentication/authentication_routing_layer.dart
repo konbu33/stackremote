@@ -1,12 +1,8 @@
-// import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-// import 'package:stackremote/authentication/infrastructure/authentication_service_firebase.dart';
 import 'package:stackremote/authentication/presentation/page/wait_email_verified_page.dart';
-// import 'package:stackremote/authentication/usecase/authentication_service_get_id_token_usecase.dart';
 
-// import 'infrastructure/auth_state_changes_provider.dart';
 import '../common/common.dart';
 import 'domain/firebase_auth_user.dart';
 import 'presentation/page/signin_page.dart';
@@ -60,35 +56,11 @@ final routerProvider = Provider(
         GoRoute(
             path: '/waitmailverified',
             builder: (context, state) => const WaitEmailVerifiedPage()),
-        // GoRoute(
-        //   path: '/waitmailverified',
-        //   builder: (context, state) {
-        //     return Navigator(
-        //       onPopPage: (route, result) {
-        //         if (!route.didPop(result)) {
-        //           return false;
-        //         }
-        //         return true;
-        //       },
-        //       pages: const [
-        //         MaterialPage(child: SignInPage()),
-        //         MaterialPage(child: WaitEmailVerifiedPage()),
-        //       ],
-        //     );
-        //   },
-        // ),
       ],
 
       // リダイレクト設定
       // improve：if文での分岐を抽象化したい。
       redirect: (state) {
-        // Firebase Authentication側のログイン状態をwatch。
-        // Firebase Authentication側のログイン状態が変化したら、本アプリ側のログイン状態に反映される。
-        // ref.read(authStateChangesProvider);
-
-        // Firebase AuthenticationのToken取得
-        // ref.read(firebaseAuthGetIdTokenProvider);
-
         // 「本アプリ側のログイン状態 + メールアドレス検証済・未検証」をwatch。
         // 本アプリ側のログイン状態が変化したら、ルーティングに反映される。
         final isSignIn = ref.watch(firebaseAuthUserStateNotifierProvider
@@ -97,7 +69,7 @@ final routerProvider = Provider(
         final isEmailVerified = ref.watch(firebaseAuthUserStateNotifierProvider
             .select((value) => value.emailVerified));
 
-        // // サインイン済み & メールアドレス未検証の場合のリダイレクト動作
+        // サインイン済み & メールアドレス未検証の場合のリダイレクト動作
         if (isSignIn) {
           if (!isEmailVerified) {
             if (state.subloc == '/waitmailverified') {
@@ -108,46 +80,6 @@ final routerProvider = Provider(
           }
         }
         return null;
-
-        // // サインイン済み & メールアドレス未検証の場合のリダイレクト動作
-        // if (isSignIn) {
-        //   if (isEmailVerified) {
-        //     if (state.subloc == '/agoravideochanneljoin') {
-        //       return null;
-        //     } else {
-        //       return '/agoravideochanneljoin';
-        //     }
-        //   } else {
-        //     if (state.subloc == '/waitmailverified') {
-        //       return null;
-        //     } else {
-        //       return '/waitmailverified';
-        //     }
-        //   }
-        // }
-
-        // // 未サインインの場合のリダイレクト動作
-        // if (!isSignIn) {
-        //   if (state.subloc == '/') {
-        //     return '/signin';
-        //   } else if (state.subloc == '/signin') {
-        //     return null;
-        //   } else if (state.subloc == '/signup') {
-        //     return null;
-        //   } else {
-        //     return '/signin';
-        //   }
-        // } else {
-        //   if (state.subloc == '/') {
-        //     return null;
-        //   } else if (state.subloc == '/signin') {
-        //     return '/';
-        //   } else if (state.subloc == '/signup') {
-        //     return '/';
-        //   } else {
-        //     return null;
-        //   }
-        // }
       },
     );
   },
