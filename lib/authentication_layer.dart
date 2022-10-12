@@ -35,6 +35,8 @@ class AuthenticationLayer extends SingleChildStatelessWidget {
           ref.read(firebaseAuthGetIdTokenProvider);
         }
 
+        // 「サインイン済み、かつ、メールアドレス検証済み」の場合、RTC VIDEOのルーティングへ移行。
+        // 「サインイン済み、かつ、メールアドレス検証済み」でない場合、Authenticationのルーティングへ移行。
         return isSignIn && isEmailVerified
             ? const RtcVideoRoutingLayer()
             : const AuthenticationRoutingLayer();
