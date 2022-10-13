@@ -7,6 +7,7 @@ import 'common.dart';
 // ロギングのインスタンス生成し、保持
 //
 // --------------------------------------------------
+// improve: グローバル変変になっている？
 LogPrinter logPrinter = PrettyPrinter(
   printTime: true,
 );
