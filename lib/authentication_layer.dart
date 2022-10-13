@@ -5,6 +5,7 @@ import 'package:nested/nested.dart';
 import 'authentication/authentication.dart';
 import 'rtc_video/rtc_video.dart';
 
+// improve:　このlayerはauthentication側に凝集した方が良い可能性あり。
 class AuthenticationLayer extends SingleChildStatelessWidget {
   const AuthenticationLayer({
     Key? key,
