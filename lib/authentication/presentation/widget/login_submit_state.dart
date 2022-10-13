@@ -54,7 +54,7 @@ typedef LoginSubmitStateProvider
 // StateNotifierProviderCreator
 //
 // --------------------------------------------------
-Function loginSubmitStateNotifierProviderCreator = ({
+LoginSubmitStateProvider loginSubmitStateNotifierProviderCreator({
   required String loginSubmitWidgetName,
   required Function onSubmit,
 }) {
@@ -64,4 +64,4 @@ Function loginSubmitStateNotifierProviderCreator = ({
       onSubmit: onSubmit,
     ),
   );
-};
+}
