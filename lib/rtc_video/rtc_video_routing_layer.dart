@@ -6,8 +6,6 @@ import '../common/common.dart';
 import 'domain/rtc_channel_state.dart';
 import 'presentation/page/agora_video_channel_join_page.dart';
 import 'presentation/page/agora_video_page.dart';
-// import 'presentation/page/user_detail_page.dart';
-// import 'presentation/page/user_page.dart';
 
 class RtcVideoRoutingLayer extends HookConsumerWidget {
   const RtcVideoRoutingLayer({Key? key}) : super(key: key);
@@ -28,6 +26,11 @@ class RtcVideoRoutingLayer extends HookConsumerWidget {
   }
 }
 
+// --------------------------------------------------
+//
+// go_router
+//
+// --------------------------------------------------
 final routerProvider = Provider(
   (ref) {
     // improve：肥大化しそうなため、分割を検討
@@ -50,12 +53,6 @@ final routerProvider = Provider(
         GoRoute(
             path: '/',
             builder: (context, state) => const AgoraVideoChannelJoinPage()),
-
-        // // User情報
-        // GoRoute(path: '/user', builder: (context, state) => const UserPage()),
-        // GoRoute(
-        //     path: '/userdetail',
-        //     builder: (context, state) => const UserDetailPage()),
 
         // RTC 関連
         GoRoute(
