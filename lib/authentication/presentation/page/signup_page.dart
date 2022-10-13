@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../common/design/base_layout_widget.dart';
+// import '../../../common/widget/scaffold_body_base_layout_widget.dart';
 
+import '../../../common/common.dart';
 import '../widget/login_submit_widget.dart';
 import '../widget/loginid_field_widget.dart';
 import '../widget/password_field_widget.dart';
@@ -22,7 +23,7 @@ class SignUpPage extends HookConsumerWidget {
       appBar: AppBar(
         title: Text(loginSubmitWidgetName),
       ),
-      body: BaseLayoutWidget(
+      body: ScaffoldBodyBaseLayoutWidget(
         children: [
           Form(
             key: GlobalKey<FormState>(),

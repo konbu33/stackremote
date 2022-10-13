@@ -4,8 +4,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // import '../../../authentication/domain/firebase_auth_user.dart';
 import '../../../authentication/presentation/widget/appbar_action_icon_widget.dart';
-import '../../../common/design/base_layout_widget.dart';
+// import '../../../authentication/presentation/widget/scaffold_body_base_layout_widget.dart';
 
+import '../../../common/common.dart';
 import '../widget/channel_join_submit_state.dart';
 import '../widget/channel_join_submit_widget.dart';
 import '../widget/channel_name_field_state.dart';
@@ -26,7 +27,7 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
           AgoraVideoChannelJoinPageWidgets.signOutIconButton(),
         ],
       ),
-      body: BaseLayoutWidget(
+      body: ScaffoldBodyBaseLayoutWidget(
         children: [
           Form(
             key: GlobalKey<FormState>(),
