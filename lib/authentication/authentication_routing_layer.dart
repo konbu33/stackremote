@@ -13,7 +13,7 @@ class AuthenticationRoutingLayer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
+    final router = ref.watch(authenticationRouterProvider);
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
@@ -32,7 +32,7 @@ class AuthenticationRoutingLayer extends HookConsumerWidget {
 // go_router
 //
 // --------------------------------------------------
-final routerProvider = Provider(
+final authenticationRouterProvider = Provider(
   (ref) {
     // improve：肥大化しそうなため、分割を検討
     return GoRouter(

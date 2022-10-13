@@ -12,7 +12,7 @@ class RtcVideoRoutingLayer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
+    final router = ref.watch(rtcVideoRouterProvider);
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
@@ -31,7 +31,7 @@ class RtcVideoRoutingLayer extends HookConsumerWidget {
 // go_router
 //
 // --------------------------------------------------
-final routerProvider = Provider(
+final rtcVideoRouterProvider = Provider(
   (ref) {
     // improve：肥大化しそうなため、分割を検討
     return GoRouter(
