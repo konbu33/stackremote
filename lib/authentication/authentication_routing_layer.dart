@@ -27,6 +27,11 @@ class AuthenticationRoutingLayer extends HookConsumerWidget {
   }
 }
 
+// --------------------------------------------------
+//
+// go_router
+//
+// --------------------------------------------------
 final routerProvider = Provider(
   (ref) {
     // improve：肥大化しそうなため、分割を検討
