@@ -7,6 +7,7 @@ import '../../../authentication/presentation/widget/appbar_action_icon_widget.da
 // import '../../../authentication/presentation/widget/scaffold_body_base_layout_widget.dart';
 
 import '../../../common/common.dart';
+import '../../../menu/menu.dart';
 import '../widget/channel_join_submit_state.dart';
 import '../widget/channel_join_submit_widget.dart';
 import '../widget/channel_name_field_state.dart';
@@ -21,6 +22,7 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
     final state = ref.watch(agoraVideoChannelJoinPageStateNotifierProvider);
 
     return Scaffold(
+      drawer: AgoraVideoChannelJoinPageWidgets.menuWidget(),
       appBar: AppBar(
         title: Text(state.pageTitle),
         actions: [
@@ -69,6 +71,17 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
 }
 
 class AgoraVideoChannelJoinPageWidgets {
+  // menu
+  static Widget menuWidget() {
+    final Widget widget = Consumer(
+      builder: (context, ref, child) {
+        return const MenuWidget();
+      },
+    );
+
+    return widget;
+  }
+
   // signOutIconButton
   static Widget signOutIconButton() {
     final Widget widget = Consumer(
