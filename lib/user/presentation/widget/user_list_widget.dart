@@ -65,7 +65,7 @@ class UserListWidget extends StatelessWidget {
                       notifier.setUserEmailAndPassword(user);
 
                       //ModalBottomSheet処理内でのonSubmit処理を最終確定
-                      notifier.setUserUpdateOnSubmit(user);
+                      notifier.setUserUpdateOnSubmit();
 
                       // ModalBottomSheetでの処理
                       await showModalBottomSheet(

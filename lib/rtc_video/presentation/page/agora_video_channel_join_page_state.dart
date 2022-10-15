@@ -58,7 +58,7 @@ class AgoraVideoChannelJoinPageState with _$AgoraVideoChannelJoinPageState {
         signOutIconStateProvider: appbarActionIconStateProviderCreator(
           onSubmitWidgetName: "",
           icon: const Icon(null),
-          onSubmit: () {},
+          onSubmit: null,
         ),
 
         // // Login Id Field Widget
@@ -125,9 +125,10 @@ class AgoraVideoChannelJoinPageStateNotifier
     Function buildOnSubmit() {
       return ({
         required BuildContext context,
-      }) {
-        state.authenticationServiceSignOutUsecase.execute();
-      };
+      }) =>
+          () {
+            state.authenticationServiceSignOutUsecase.execute();
+          };
     }
 
     state = state.copyWith(

@@ -33,7 +33,9 @@ class LoginSubmitWidget extends HookConsumerWidget {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
             )),
-            onPressed: loginSubmitState.onSubmit(),
+            onPressed: loginSubmitState.onSubmit == null
+                ? null
+                : loginSubmitState.onSubmit!(context: context),
             // onPressed: loginIdFieldState.loginIdIsValidate.isValid &&
             //         passwordFieldState.passwordIsValidate.isValid
             //     ? () {

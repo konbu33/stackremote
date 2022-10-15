@@ -1,5 +1,6 @@
 // StateNotifier
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Freezed
@@ -47,6 +48,7 @@ class UserDetailPageState with _$UserDetailPageState {
     // User Update Button
     required UserUpdateUseCase userUpdateUseCase,
     required LoginSubmitStateProvider userUpdateSubmitStateProvider,
+    @Default(false) bool isOnSubmitable,
   }) = _UserDetailPageState;
 
   // Factory Constructor
@@ -73,7 +75,7 @@ class UserDetailPageState with _$UserDetailPageState {
 
         userAddSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
           loginSubmitWidgetName: "新規登録",
-          onSubmit: () {},
+          onSubmit: null,
         ),
 
         // User Update Button
@@ -83,7 +85,7 @@ class UserDetailPageState with _$UserDetailPageState {
 
         userUpdateSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
           loginSubmitWidgetName: "ユーザ更新",
-          onSubmit: () {},
+          onSubmit: null,
         ),
       );
 }
@@ -113,26 +115,35 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
     state = state.copyWith(currentUser: user);
   }
 
+  void updateIsOnSubmitable(bool isOnSubmitable) {
+    state = state.copyWith(isOnSubmitable: isOnSubmitable);
+  }
+
   void setUserAddOnSubmit() {
-    Function buildOnSubmit() {
+    Function? buildOnSubmit() {
+      if (!state.isOnSubmitable) {
+        return null;
+      }
+
       return ({
         required BuildContext context,
-      }) {
-        final email = ref
-            .read(state.loginIdFieldStateProvider)
-            .loginIdFieldController
-            .text;
-        final password = ref
-            .read(state.passwordFieldStateProvider)
-            .passwordFieldController
-            .text;
+      }) =>
+          () {
+            final email = ref
+                .read(state.loginIdFieldStateProvider)
+                .loginIdFieldController
+                .text;
+            final password = ref
+                .read(state.passwordFieldStateProvider)
+                .passwordFieldController
+                .text;
 
-        // ユーザ情情追加
-        state.userAddUseCase.execute(email, password);
+            // ユーザ情情追加
+            state.userAddUseCase.execute(email, password);
 
-        // 戻る
-        Navigator.pop(context);
-      };
+            // 戻る
+            Navigator.pop(context);
+          };
     }
 
     state = state.copyWith(
@@ -142,33 +153,42 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
     ));
   }
 
-  void setUserUpdateOnSubmit(User user) {
-    Function buildOnSubmit() {
+  void setUserUpdateOnSubmit() {
+    // void setUserUpdateOnSubmit(User user) {
+    Function? buildOnSubmit() {
+      if (!state.isOnSubmitable) {
+        return null;
+      }
+
       return ({
         required BuildContext context,
-      }) {
-        final userId = user.userId;
-        final email = ref
-            .read(state.loginIdFieldStateProvider)
-            .loginIdFieldController
-            .text;
-        final password = ref
-            .read(state.passwordFieldStateProvider)
-            .passwordFieldController
-            .text;
+      }) =>
+          () {
+            // improve : !で問題あある可能ある。"
+            final User user = state.currentUser!;
 
-        // ユーザ情情更新
-        state.userUpdateUseCase.execute(
-          userId,
-          email,
-          password,
-          user.firebaseAuthUid,
-          user.firebaseAuthIdToken,
-        );
+            final userId = user.userId;
+            final email = ref
+                .read(state.loginIdFieldStateProvider)
+                .loginIdFieldController
+                .text;
+            final password = ref
+                .read(state.passwordFieldStateProvider)
+                .passwordFieldController
+                .text;
 
-        // 戻る
-        Navigator.pop(context);
-      };
+            // ユーザ情情更新
+            state.userUpdateUseCase.execute(
+              userId,
+              email,
+              password,
+              user.firebaseAuthUid,
+              user.firebaseAuthIdToken,
+            );
+
+            // 戻る
+            Navigator.pop(context);
+          };
     }
 
     state = state.copyWith(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/home_page.dart';
+import 'package:stackremote/user/presentation/page/user_page.dart';
 
 import '../common/common.dart';
 import 'domain/rtc_channel_state.dart';
@@ -61,6 +63,8 @@ final rtcVideoRouterProvider = Provider(
         GoRoute(
             path: '/agoravideo',
             builder: (context, state) => const AgoraVideoPage()),
+
+        GoRoute(path: '/home', builder: (context, state) => const HomePage()),
       ],
 
       // リダイレクト設定

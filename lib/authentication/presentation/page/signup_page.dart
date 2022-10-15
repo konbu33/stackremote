@@ -62,11 +62,29 @@ class SignUpPageWidgets {
 
   // Login Submit Widget
   static Widget loginSubmitWidget(SignUpPageState state) {
-    final Widget widget = LoginSubmitWidget(
-      loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-      passwordFieldStateProvider: state.passwordFieldStateProvider,
-      loginSubmitStateProvider: state.loginSubmitStateProvider,
-    );
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      final loginIdIsValidate = ref.watch(state.loginIdFieldStateProvider
+          .select((value) => value.loginIdIsValidate.isValid));
+
+      final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
+          .select((value) => value.passwordIsValidate.isValid));
+
+      if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          final notifier = ref.read(signUpPageStateNotifierProvider.notifier);
+          notifier
+              .updateIsOnSubmitable(passwordIsValidate && loginIdIsValidate);
+          notifier.setSignUpOnSubmit();
+        });
+      }
+
+      return LoginSubmitWidget(
+        // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
+        // passwordFieldStateProvider: state.passwordFieldStateProvider,
+        loginSubmitStateProvider: state.loginSubmitStateProvider,
+      );
+    }));
+
     return widget;
   }
 }
