@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/home_page.dart';
+import 'package:stackremote/user/presentation/page/user_page.dart';
 
 import '../common/common.dart';
 import 'domain/rtc_channel_state.dart';
 import 'presentation/page/agora_video_channel_join_page.dart';
 import 'presentation/page/agora_video_page.dart';
-// import 'presentation/page/user_detail_page.dart';
-// import 'presentation/page/user_page.dart';
 
 class RtcVideoRoutingLayer extends HookConsumerWidget {
   const RtcVideoRoutingLayer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
+    final router = ref.watch(rtcVideoRouterProvider);
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
@@ -28,7 +28,12 @@ class RtcVideoRoutingLayer extends HookConsumerWidget {
   }
 }
 
-final routerProvider = Provider(
+// --------------------------------------------------
+//
+// go_router
+//
+// --------------------------------------------------
+final rtcVideoRouterProvider = Provider(
   (ref) {
     // improve：肥大化しそうなため、分割を検討
     return GoRouter(
@@ -51,12 +56,6 @@ final routerProvider = Provider(
             path: '/',
             builder: (context, state) => const AgoraVideoChannelJoinPage()),
 
-        // // User情報
-        // GoRoute(path: '/user', builder: (context, state) => const UserPage()),
-        // GoRoute(
-        //     path: '/userdetail',
-        //     builder: (context, state) => const UserDetailPage()),
-
         // RTC 関連
         GoRoute(
             path: '/agoravideochanneljoin',
@@ -64,6 +63,8 @@ final routerProvider = Provider(
         GoRoute(
             path: '/agoravideo',
             builder: (context, state) => const AgoraVideoPage()),
+
+        GoRoute(path: '/home', builder: (context, state) => const HomePage()),
       ],
 
       // リダイレクト設定

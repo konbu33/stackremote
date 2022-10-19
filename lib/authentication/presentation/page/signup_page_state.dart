@@ -33,6 +33,7 @@ class SignUpPageState with _$SignUpPageState {
     required AuthenticationServiceSignUpUsecase
         authenticationServiceSignUpUsecase,
     required LoginSubmitStateProvider loginSubmitStateProvider,
+    @Default(false) bool isOnSubmitable,
   }) = _SignUpPageState;
 
   factory SignUpPageState.create() => SignUpPageState._(
@@ -49,7 +50,7 @@ class SignUpPageState with _$SignUpPageState {
 
         loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
           loginSubmitWidgetName: "",
-          onSubmit: () {},
+          onSubmit: null,
         ),
       );
 }
@@ -72,67 +73,76 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
   // initial
   void initial() {
     state = SignUpPageState.create();
-    setOnSubmit();
+    setSignUpOnSubmit();
   }
 
-  void setOnSubmit() {
-    Function buildOnSubmit() {
+  void updateIsOnSubmitable(bool isOnSubmitable) {
+    state = state.copyWith(isOnSubmitable: isOnSubmitable);
+  }
+
+  void setSignUpOnSubmit() {
+    Function? buildOnSubmit() {
+      if (!state.isOnSubmitable) {
+        return null;
+      }
+
       return ({
         required BuildContext context,
-      }) async {
-        final email = ref
-            .read(state.loginIdFieldStateProvider)
-            .loginIdFieldController
-            .text;
-        final password = ref
-            .read(state.passwordFieldStateProvider)
-            .passwordFieldController
-            .text;
+      }) =>
+          () async {
+            final email = ref
+                .read(state.loginIdFieldStateProvider)
+                .loginIdFieldController
+                .text;
+            final password = ref
+                .read(state.passwordFieldStateProvider)
+                .passwordFieldController
+                .text;
 
-        try {
-          // User情報登録
-          final firebase_auth.UserCredential res = await state
-              .authenticationServiceSignUpUsecase
-              .execute(email, password);
+            try {
+              // User情報登録
+              final firebase_auth.UserCredential res = await state
+                  .authenticationServiceSignUpUsecase
+                  .execute(email, password);
 
-          // 登録したUser情報を受取る。
-          final firebase_auth.User? user = res.user;
+              // 登録したUser情報を受取る。
+              final firebase_auth.User? user = res.user;
 
-          // User情報取得成功した場合、メールアドレス検証メールを送信
-          if (user != null) {
-            // print("sendVeryfyEmail Start  ------------------- : ");
-            final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
-            sendVerifyEmail(user: user);
-            // print("sendVeryfyEmail End    ------------------- : ");
+              // User情報取得成功した場合、メールアドレス検証メールを送信
+              if (user != null) {
+                // print("sendVeryfyEmail Start  ------------------- : ");
+                final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
+                sendVerifyEmail(user: user);
+                // print("sendVeryfyEmail End    ------------------- : ");
 
-            // Userのメールアドレス検証結果を状態で保持する
-            final notifier =
-                ref.read(firebaseAuthUserStateNotifierProvider.notifier);
-            notifier.updateEmailVerified(user.emailVerified);
-          }
-        } on firebase_auth.FirebaseAuthException catch (e) {
-          // print("e.code : ${e.code}");
-          switch (e.code) {
-            // User情報が登録済みでエラーになった場合
-            case "email-already-in-use":
-              const SnackBar snackBar = SnackBar(
-                content: Text("メールアドレス登録済みです。"),
-              );
+                // Userのメールアドレス検証結果を状態で保持する
+                final notifier =
+                    ref.read(firebaseAuthUserStateNotifierProvider.notifier);
+                notifier.updateEmailVerified(user.emailVerified);
+              }
+            } on firebase_auth.FirebaseAuthException catch (e) {
+              // print("e.code : ${e.code}");
+              switch (e.code) {
+                // User情報が登録済みでエラーになった場合
+                case "email-already-in-use":
+                  const SnackBar snackBar = SnackBar(
+                    content: Text("メールアドレス登録済みです。"),
+                  );
 
-              // User情報が登録済みでエラーになった場合、SnackBarで通知
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  // User情報が登録済みでエラーになった場合、SnackBarで通知
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-              // final checkEmailVerified = ref.read(checkEmailVerifiedProvider);
-              // checkEmailVerified();
+                  // final checkEmailVerified = ref.read(checkEmailVerifiedProvider);
+                  // checkEmailVerified();
 
-              break;
-            default:
-          }
-        }
+                  break;
+                default:
+              }
+            }
 
-        initial();
-        // print("initial End    ------------------- : ");
-      };
+            initial();
+            // print("initial End    ------------------- : ");
+          };
     }
 
     state = state.copyWith(

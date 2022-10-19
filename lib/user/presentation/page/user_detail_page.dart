@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../authentication/presentation/widget/login_submit_widget.dart';
 import '../../../authentication/presentation/widget/loginid_field_widget.dart';
 import '../../../authentication/presentation/widget/password_field_widget.dart';
+import '../../../common/logger.dart';
 import 'user_detail_page_state.dart';
 
 class UserDetailPage extends HookConsumerWidget {
@@ -61,22 +62,61 @@ class UserDetailPageWidgets {
 
   // User Add Button
   static Widget userAddButton(UserDetailPageState state) {
-    final Widget widget = LoginSubmitWidget(
-      loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-      passwordFieldStateProvider: state.passwordFieldStateProvider,
-      loginSubmitStateProvider: state.userAddSubmitStateProvider,
-    );
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      final loginIdIsValidate = ref.watch(state.loginIdFieldStateProvider
+          .select((value) => value.loginIdIsValidate.isValid));
+
+      final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
+          .select((value) => value.passwordIsValidate.isValid));
+
+      if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          final notifier =
+              ref.read(userDetailPageStateControllerProvider.notifier);
+          notifier
+              .updateIsOnSubmitable(passwordIsValidate && loginIdIsValidate);
+          notifier.setUserAddOnSubmit();
+        });
+      }
+
+      return LoginSubmitWidget(
+        // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
+        // passwordFieldStateProvider: state.passwordFieldStateProvider,
+        loginSubmitStateProvider: state.userAddSubmitStateProvider,
+      );
+    }));
 
     return widget;
   }
 
   // User Update Button
   static Widget userUpdateButton(UserDetailPageState state) {
-    final Widget widget = LoginSubmitWidget(
-      loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-      passwordFieldStateProvider: state.passwordFieldStateProvider,
-      loginSubmitStateProvider: state.userUpdateSubmitStateProvider,
-    );
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      final loginIdIsValidate = ref.watch(state.loginIdFieldStateProvider
+          .select((value) => value.loginIdIsValidate.isValid));
+
+      final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
+          .select((value) => value.passwordIsValidate.isValid));
+
+      // logger.d(
+      //     "$loginIdIsValidate, $passwordIsValidate, ${state.isOnSubmitable}");
+
+      if ((loginIdIsValidate || passwordIsValidate) != state.isOnSubmitable) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          final notifier =
+              ref.read(userDetailPageStateControllerProvider.notifier);
+          notifier
+              .updateIsOnSubmitable(loginIdIsValidate || passwordIsValidate);
+          notifier.setUserUpdateOnSubmit();
+        });
+      }
+
+      return LoginSubmitWidget(
+        // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
+        // passwordFieldStateProvider: state.passwordFieldStateProvider,
+        loginSubmitStateProvider: state.userUpdateSubmitStateProvider,
+      );
+    }));
 
     return widget;
   }

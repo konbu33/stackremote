@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class BaseLayoutWidget extends StatelessWidget {
-  const BaseLayoutWidget({
+class ScaffoldBodyBaseLayoutWidget extends StatelessWidget {
+  const ScaffoldBodyBaseLayoutWidget({
     Key? key,
     required this.children,
   }) : super(key: key);

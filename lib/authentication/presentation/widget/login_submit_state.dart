@@ -13,12 +13,12 @@ part 'login_submit_state.freezed.dart';
 class LoginSubmitState with _$LoginSubmitState {
   const factory LoginSubmitState._({
     required String loginSubmitWidgetName,
-    required Function onSubmit,
+    required Function? onSubmit,
   }) = _LoginSubmitState;
 
   factory LoginSubmitState.create({
     required String loginSubmitWidgetName,
-    required Function onSubmit,
+    required Function? onSubmit,
   }) =>
       LoginSubmitState._(
         loginSubmitWidgetName: loginSubmitWidgetName,
@@ -34,7 +34,7 @@ class LoginSubmitState with _$LoginSubmitState {
 class LoginSubmitStateNotifier extends StateNotifier<LoginSubmitState> {
   LoginSubmitStateNotifier({
     required String loginSubmitWidgetName,
-    required Function onSubmit,
+    required Function? onSubmit,
   }) : super(LoginSubmitState.create(
           loginSubmitWidgetName: loginSubmitWidgetName,
           onSubmit: onSubmit,
@@ -54,9 +54,9 @@ typedef LoginSubmitStateProvider
 // StateNotifierProviderCreator
 //
 // --------------------------------------------------
-Function loginSubmitStateNotifierProviderCreator = ({
+LoginSubmitStateProvider loginSubmitStateNotifierProviderCreator({
   required String loginSubmitWidgetName,
-  required Function onSubmit,
+  required Function? onSubmit,
 }) {
   return StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>(
     (ref) => LoginSubmitStateNotifier(
@@ -64,4 +64,4 @@ Function loginSubmitStateNotifierProviderCreator = ({
       onSubmit: onSubmit,
     ),
   );
-};
+}

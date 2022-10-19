@@ -59,7 +59,7 @@ class UserPageState with _$UserPageState {
         userAddIconStateProvider: appbarActionIconStateProviderCreator(
           onSubmitWidgetName: "",
           icon: const Icon(null),
-          onSubmit: () {},
+          onSubmit: null,
         ),
 
         // Sign Out Button
@@ -73,7 +73,7 @@ class UserPageState with _$UserPageState {
         signOutIconStateProvider: appbarActionIconStateProviderCreator(
           onSubmitWidgetName: "",
           icon: const Icon(null),
-          onSubmit: () {},
+          onSubmit: null,
         ),
 
         // User List Widget
@@ -124,28 +124,29 @@ class UserPageStateController extends StateNotifier<UserPageState> {
     Function buildOnSubmit() {
       return ({
         required BuildContext context,
-      }) async {
-        final notifier =
-            ref.read(userDetailPageStateControllerProvider.notifier);
+      }) =>
+          () async {
+            final notifier =
+                ref.read(userDetailPageStateControllerProvider.notifier);
 
-        // state.authenticationServiceSignOutUsecase.execute();
-        // ModalBottomSheet処理内でのonSubmit処理を最終確定
-        notifier.setUserAddOnSubmit();
+            // state.authenticationServiceSignOutUsecase.execute();
+            // ModalBottomSheet処理内でのonSubmit処理を最終確定
+            notifier.setUserAddOnSubmit();
 
-        // 初期化処理
-        notifier.clearUserEmailAndPassword();
+            // 初期化処理
+            notifier.clearUserEmailAndPassword();
 
-        // ModalBottomSheetでの処理
-        await showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return const UserDetailPage();
-          },
-        );
+            // ModalBottomSheetでの処理
+            await showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return const UserDetailPage();
+              },
+            );
 
-        // 初期化処理
-        notifier.clearUserEmailAndPassword();
-      };
+            // 初期化処理
+            notifier.clearUserEmailAndPassword();
+          };
     }
 
     state = state.copyWith(
@@ -162,9 +163,10 @@ class UserPageStateController extends StateNotifier<UserPageState> {
     Function buildOnSubmit() {
       return ({
         required BuildContext context,
-      }) {
-        state.authenticationServiceSignOutUsecase.execute();
-      };
+      }) =>
+          () {
+            state.authenticationServiceSignOutUsecase.execute();
+          };
     }
 
     state = state.copyWith(

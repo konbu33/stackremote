@@ -15,13 +15,13 @@ class AppbarActionIconState with _$AppbarActionIconState {
   const factory AppbarActionIconState._({
     required String onSubmitWidgetName,
     required Icon icon,
-    required Function onSubmit,
+    required Function? onSubmit,
   }) = _AppbarActionIconState;
 
   factory AppbarActionIconState.create({
     required String onSubmitWidgetName,
     required Icon icon,
-    required Function onSubmit,
+    required Function? onSubmit,
   }) =>
       AppbarActionIconState._(
         onSubmitWidgetName: onSubmitWidgetName,
@@ -40,7 +40,7 @@ class AppbarActionIconStateNotifier
   AppbarActionIconStateNotifier({
     required String onSubmitWidgetName,
     required Icon icon,
-    required Function onSubmit,
+    required Function? onSubmit,
   }) : super(AppbarActionIconState.create(
           onSubmitWidgetName: onSubmitWidgetName,
           icon: icon,
@@ -64,7 +64,7 @@ typedef AppbarActionIconStateProvider = StateNotifierProvider<
 AppbarActionIconStateProvider appbarActionIconStateProviderCreator({
   required String onSubmitWidgetName,
   required Icon icon,
-  required Function onSubmit,
+  required Function? onSubmit,
 }) {
   return StateNotifierProvider<AppbarActionIconStateNotifier,
       AppbarActionIconState>(

@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/common/logger.dart';
 // import 'package:stackremote/authentication/usecase/verify_email.dart';
 import '../../domain/firebase_auth_user.dart';
 import '../../infrastructure/authentication_service_firebase.dart';
@@ -40,6 +41,7 @@ class SignInPageState with _$SignInPageState {
     required AuthenticationServiceSignInUsecase
         authenticationServiceSignInUsecase,
     required LoginSubmitStateProvider loginSubmitStateProvider,
+    @Default(false) bool isOnSubmitable,
   }) = _SignInPageState;
 
   factory SignInPageState.create() => SignInPageState._(
@@ -47,7 +49,7 @@ class SignInPageState with _$SignInPageState {
         goToSignUpIconStateProvider: appbarActionIconStateProviderCreator(
           onSubmitWidgetName: "",
           icon: const Icon(null),
-          onSubmit: () {},
+          onSubmit: null,
         ),
 
         // Login Id Field Widget
@@ -63,7 +65,7 @@ class SignInPageState with _$SignInPageState {
 
         loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
           loginSubmitWidgetName: "",
-          onSubmit: () {},
+          onSubmit: null,
         ),
       );
 }
@@ -90,69 +92,81 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
     setGoToSignUpIconOnSubmit();
   }
 
+  void updateIsOnSubmitable(
+    bool isOnSubmitable,
+  ) {
+    logger.d("updateIsOnSubmitable : ----------------- ${isOnSubmitable}");
+    state = state.copyWith(isOnSubmitable: isOnSubmitable);
+  }
+
   void setSignInOnSubmit() {
-    Function buildOnSubmit() {
+    Function? buildOnSubmit() {
+      if (!state.isOnSubmitable) {
+        return null;
+      }
+
       return ({
         required BuildContext context,
-      }) async {
-        final email = ref
-            .read(state.loginIdFieldStateProvider)
-            .loginIdFieldController
-            .text;
-        final password = ref
-            .read(state.passwordFieldStateProvider)
-            .passwordFieldController
-            .text;
+      }) =>
+          () async {
+            final email = ref
+                .read(state.loginIdFieldStateProvider)
+                .loginIdFieldController
+                .text;
+            final password = ref
+                .read(state.passwordFieldStateProvider)
+                .passwordFieldController
+                .text;
 
-        try {
-          final res = await state.authenticationServiceSignInUsecase
-              .execute(email, password);
+            try {
+              final res = await state.authenticationServiceSignInUsecase
+                  .execute(email, password);
 
-          final firebase_auth.User? user = res.user;
-          if (user != null) {
-            if (user.emailVerified == false) {
-              // print("sendVeryfyEmail Start  ------------------- : ");
+              final firebase_auth.User? user = res.user;
+              if (user != null) {
+                if (user.emailVerified == false) {
+                  // print("sendVeryfyEmail Start  ------------------- : ");
 
-              // メール送信頻度が多いと、下記のエラーが発生するため、サインインと同時にメール送信は行わない。
-              // E/flutter (24396): [ERROR:flutter/lib/ui/ui_dart_state.cc(198)] Unhandled Exception: [firebase_auth/too-many-requests] We have blocked all requests from this device due to unusual activity. Try again later.
+                  // メール送信頻度が多いと、下記のエラーが発生するため、サインインと同時にメール送信は行わない。
+                  // E/flutter (24396): [ERROR:flutter/lib/ui/ui_dart_state.cc(198)] Unhandled Exception: [firebase_auth/too-many-requests] We have blocked all requests from this device due to unusual activity. Try again later.
 
-              // final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
-              // sendVerifyEmail(user: user);
+                  // final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
+                  // sendVerifyEmail(user: user);
 
-              // print("sendVeryfyEmail End    ------------------- : ");
+                  // print("sendVeryfyEmail End    ------------------- : ");
+                }
+
+                final notifier =
+                    ref.read(firebaseAuthUserStateNotifierProvider.notifier);
+                notifier.updateEmailVerified(user.emailVerified);
+              }
+            } on firebase_auth.FirebaseAuthException catch (e) {
+              // print(e);
+              switch (e.code) {
+                case "user-not-found":
+                  const SnackBar snackBar = SnackBar(
+                    content: Text("メールアドレス未登録です。"),
+                  );
+
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  break;
+
+                case "too-many-requests":
+                  // print("e ------------------------ : $e");
+                  const SnackBar snackBar = SnackBar(
+                    content: Text("認証回数が上限に達しました。"),
+                  );
+
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  break;
+
+                default:
+              }
             }
 
-            final notifier =
-                ref.read(firebaseAuthUserStateNotifierProvider.notifier);
-            notifier.updateEmailVerified(user.emailVerified);
-          }
-        } on firebase_auth.FirebaseAuthException catch (e) {
-          // print(e);
-          switch (e.code) {
-            case "user-not-found":
-              const SnackBar snackBar = SnackBar(
-                content: Text("メールアドレス未登録です。"),
-              );
-
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              break;
-
-            case "too-many-requests":
-              // print("e ------------------------ : $e");
-              const SnackBar snackBar = SnackBar(
-                content: Text("認証回数が上限に達しました。"),
-              );
-
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              break;
-
-            default:
-          }
-        }
-
-        initial();
-        // print("initial End    ------------------- : ");
-      };
+            initial();
+            // print("initial End    ------------------- : ");
+          };
     }
 
     state = state.copyWith(
@@ -162,12 +176,14 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
   }
 
   void setGoToSignUpIconOnSubmit() {
-    Function buildOnSubmit() {
+    Function? buildOnSubmit() {
       return ({
         required BuildContext context,
-      }) {
-        context.push('/signup');
-      };
+      }) =>
+          () {
+            logger.d("go to signup.");
+            context.push('/signup');
+          };
     }
 
     state = state.copyWith(

@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // import '../../domain/firebase_auth_user.dart';
+import '../../../common/common.dart';
 import '../widget/appbar_action_icon_widget.dart';
-import '../../../common/design/base_layout_widget.dart';
+// import '../../../common/widget/scaffold_body_base_layout_widget.dart';
 
 import '../widget/login_submit_widget.dart';
 import '../widget/loginid_field_widget.dart';
@@ -18,6 +19,7 @@ class SignInPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(signInPageStateNotifierProvider);
 
+    // logger.d("rebuild --------------------------------");
     return Scaffold(
       appBar: AppBar(
         title: Text(state.loginSubmitWidgetName),
@@ -25,7 +27,7 @@ class SignInPage extends HookConsumerWidget {
           SignInPageWidgets.goToSignUpWidget(state),
         ],
       ),
-      body: BaseLayoutWidget(
+      body: ScaffoldBodyBaseLayoutWidget(
         children: [
           Form(
             key: GlobalKey<FormState>(),
@@ -93,11 +95,31 @@ class SignInPageWidgets {
 
   // Login Submit Widget
   static Widget loginSubmitWidget(SignInPageState state) {
-    final Widget widget = LoginSubmitWidget(
-      loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-      passwordFieldStateProvider: state.passwordFieldStateProvider,
-      loginSubmitStateProvider: state.loginSubmitStateProvider,
-    );
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final loginIdIsValidate = ref.watch(state.loginIdFieldStateProvider
+          .select((value) => value.loginIdIsValidate.isValid));
+
+      final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
+          .select((value) => value.passwordIsValidate.isValid));
+
+      // logger.d(
+      //     "$loginIdIsValidate, $passwordIsValidate, ${state.isOnSubmitable}");
+
+      if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          final notifier = ref.read(signInPageStateNotifierProvider.notifier);
+          notifier
+              .updateIsOnSubmitable(passwordIsValidate && loginIdIsValidate);
+          notifier.setSignInOnSubmit();
+        });
+      }
+
+      return LoginSubmitWidget(
+        // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
+        // passwordFieldStateProvider: state.passwordFieldStateProvider,
+        loginSubmitStateProvider: state.loginSubmitStateProvider,
+      );
+    });
     return widget;
   }
 }

@@ -6,9 +6,10 @@ import 'package:stackremote/authentication/presentation/page/wait_email_verified
 // import 'package:stackremote/authentication/domain/firebase_auth_user.dart';
 // import 'package:stackremote/authentication/usecase/verify_email.dart';
 
+import '../../../common/common.dart';
 import '../../usecase/verify_email.dart';
 import '../widget/appbar_action_icon_widget.dart';
-import '../../../common/design/base_layout_widget.dart';
+// import '../../../common/widget/scaffold_body_base_layout_widget.dart';
 
 class WaitEmailVerifiedPage extends HookConsumerWidget {
   const WaitEmailVerifiedPage({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
           WaitEmailVerifiedPageWidgets.signOutIconWidget(),
         ],
       ),
-      body: BaseLayoutWidget(
+      body: ScaffoldBodyBaseLayoutWidget(
         children: [
           Column(
             children: [

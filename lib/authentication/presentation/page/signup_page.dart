@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../common/design/base_layout_widget.dart';
+// import '../../../common/widget/scaffold_body_base_layout_widget.dart';
 
+import '../../../common/common.dart';
 import '../widget/login_submit_widget.dart';
 import '../widget/loginid_field_widget.dart';
 import '../widget/password_field_widget.dart';
@@ -22,7 +23,7 @@ class SignUpPage extends HookConsumerWidget {
       appBar: AppBar(
         title: Text(loginSubmitWidgetName),
       ),
-      body: BaseLayoutWidget(
+      body: ScaffoldBodyBaseLayoutWidget(
         children: [
           Form(
             key: GlobalKey<FormState>(),
@@ -61,11 +62,29 @@ class SignUpPageWidgets {
 
   // Login Submit Widget
   static Widget loginSubmitWidget(SignUpPageState state) {
-    final Widget widget = LoginSubmitWidget(
-      loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-      passwordFieldStateProvider: state.passwordFieldStateProvider,
-      loginSubmitStateProvider: state.loginSubmitStateProvider,
-    );
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      final loginIdIsValidate = ref.watch(state.loginIdFieldStateProvider
+          .select((value) => value.loginIdIsValidate.isValid));
+
+      final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
+          .select((value) => value.passwordIsValidate.isValid));
+
+      if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          final notifier = ref.read(signUpPageStateNotifierProvider.notifier);
+          notifier
+              .updateIsOnSubmitable(passwordIsValidate && loginIdIsValidate);
+          notifier.setSignUpOnSubmit();
+        });
+      }
+
+      return LoginSubmitWidget(
+        // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
+        // passwordFieldStateProvider: state.passwordFieldStateProvider,
+        loginSubmitStateProvider: state.loginSubmitStateProvider,
+      );
+    }));
+
     return widget;
   }
 }
