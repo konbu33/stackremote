@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/common/common.dart';
 
+import '../../../common/logger.dart';
 import '../widget/login_submit_widget.dart';
 import '../widget/password_field_widget.dart';
 import 'change_password_page_state.dart';
@@ -16,16 +18,20 @@ class ChangePasswordPage extends HookConsumerWidget {
       appBar: AppBar(
         title: ChangePasswordPageWidgets.pageTitleWidget(state),
       ),
-      body: Form(
-        key: state.formKey,
-        child: Column(
-          children: [
-            const SizedBox(height: 40),
-            ChangePasswordPageWidgets.passwordField(state),
-            const SizedBox(height: 40),
-            ChangePasswordPageWidgets.changePasswordButton(state),
-          ],
-        ),
+      body: ScaffoldBodyBaseLayoutWidget(
+        children: [
+          Form(
+            key: state.formKey,
+            child: Column(
+              children: [
+                const SizedBox(height: 40),
+                ChangePasswordPageWidgets.passwordField(state),
+                const SizedBox(height: 40),
+                ChangePasswordPageWidgets.changePasswordButton(state),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -48,10 +54,30 @@ class ChangePasswordPageWidgets {
 
   // Submit Button
   static Widget changePasswordButton(ChangePasswordPageState state) {
-    final Widget widget = LoginSubmitWidget(
-      // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-      // passwordFieldStateProvider: state.passwordFieldStateProvider,
-      loginSubmitStateProvider: state.onSubmitStateProvider,
+    final Widget widget = Consumer(
+      builder: (context, ref, child) {
+        final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
+            .select((value) => value.passwordIsValidate.isValid));
+
+        logger.d("----------- $passwordIsValidate, ${state.isOnSubmitable}");
+
+        if (passwordIsValidate != state.isOnSubmitable) {
+          //
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            final notifier = ref.read(changePasswordPageStateProvider.notifier);
+            notifier.updateIsOnSubmitable(passwordIsValidate);
+            notifier.setChangePasswordOnSubmit();
+          });
+        }
+        final a = ref.watch(state.onSubmitStateProvider).onSubmit;
+        logger.d(" ---- $a");
+
+        return LoginSubmitWidget(
+          // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
+          // passwordFieldStateProvider: state.passwordFieldStateProvider,
+          loginSubmitStateProvider: state.onSubmitStateProvider,
+        );
+      },
     );
 
     return widget;

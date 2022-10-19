@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stackremote/authentication/presentation/page/change_password_page.dart';
 import 'package:stackremote/user/user_routing_layer.dart';
 
 import '../../../home_page.dart';
@@ -17,9 +18,31 @@ class MenuWidget extends StatelessWidget {
             child: Text("Header"),
           ),
           ListTile(
+            title: const Text("パスワード変更"),
+            onTap: () {
+              // context.push("/changepassword");
+
+              // Drawerを閉じる
+              Navigator.pop(context);
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const ChangePasswordPage();
+                  },
+                ),
+              );
+            },
+          ),
+          ListTile(
             title: const Text("User"),
             onTap: () {
               // context.go("/home");
+              // context.push("/user");
+
+              // Drawerを閉じる
+              Navigator.pop(context);
 
               Navigator.push(
                 context,
