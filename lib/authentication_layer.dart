@@ -3,9 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nested/nested.dart';
 
 import 'authentication/authentication.dart';
-import 'common/logger.dart';
-import 'menu/menu_routing_layer.dart';
-// import 'rtc_video/rtc_video.dart';
+import 'menu/menu.dart';
 
 // improve:　このlayerはauthentication側に凝集した方が良い可能性あり。
 class AuthenticationLayer extends SingleChildStatelessWidget {
@@ -38,12 +36,9 @@ class AuthenticationLayer extends SingleChildStatelessWidget {
           ref.read(firebaseAuthGetIdTokenProvider);
         }
 
-        // logger.d("isSignIn : $isSignIn,  isEmailVerified : $isEmailVerified");
-
         // 「サインイン済み、かつ、メールアドレス検証済み」の場合、Menuのルーティングへ移行。
         // 「サインイン済み、かつ、メールアドレス検証済み」でない場合、Authenticationのルーティングへ移行。
         return isSignIn && isEmailVerified
-            // ? const RtcVideoRoutingLayer()
             ? const MenuRoutingLayer()
             : const AuthenticationRoutingLayer();
       },

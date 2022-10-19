@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../authentication/presentation/page/change_password_page.dart';
-import '../../../common/design/design_background_image_layer.dart';
-import '../../../user/presentation/page/user_page.dart';
+import '../../../authentication/authentication.dart';
+import '../../../common/common.dart';
+import '../../../user/user.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({Key? key}) : super(key: key);
