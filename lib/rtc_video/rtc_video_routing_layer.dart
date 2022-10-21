@@ -23,6 +23,16 @@ class RtcVideoRoutingLayer extends HookConsumerWidget {
       routerDelegate: router.routerDelegate,
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
+
+      // NestedLayerの最深部にchildとしてルーティング先を配置
+      // improve: navigatorBuilderでネストするこの設計は、
+      // go_routerのnavigatorBuilderを知っていないと、
+      // 理解できないので、他の方法で代替可能か検討の余地あり。
+      builder: (context, child) {
+        return child == null
+            ? const Text("Child null")
+            : DesignNestedLayer(child: child);
+      },
     );
   }
 }
@@ -39,13 +49,13 @@ final rtcVideoRouterProvider = Provider(
       // デフォルト表示されるルーティング先
       initialLocation: '/',
 
-      // NestedLayerの最深部にchildとしてルーティング先を配置
-      // improve: navigatorBuilderでネストするこの設計は、
-      // go_routerのnavigatorBuilderを知っていないと、
-      // 理解できないので、他の方法で代替可能か検討の余地あり。
-      navigatorBuilder: (context, state, child) {
-        return DesignNestedLayer(child: child);
-      },
+      // // NestedLayerの最深部にchildとしてルーティング先を配置
+      // // improve: navigatorBuilderでネストするこの設計は、
+      // // go_routerのnavigatorBuilderを知っていないと、
+      // // 理解できないので、他の方法で代替可能か検討の余地あり。
+      // navigatorBuilder: (context, state, child) {
+      //   return DesignNestedLayer(child: child);
+      // },
 
       // ルーティング先
       // improve：ルーティング先をグループ化してコンポーネント化し、着脱容易にしたい。
@@ -68,7 +78,7 @@ final rtcVideoRouterProvider = Provider(
 
       // リダイレクト設定
       // improve：if文での分岐を抽象化したい。
-      redirect: (state) {
+      redirect: (context, state) {
         // rtc channel join済・未joinの状態監視
         final RtcChannelState rtcChannelState = ref.watch(
             RtcChannelStateNotifierProviderList
