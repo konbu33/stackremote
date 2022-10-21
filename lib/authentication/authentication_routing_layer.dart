@@ -75,7 +75,7 @@ final authenticationRouterProvider = Provider(
 
       // リダイレクト設定
       // improve：if文での分岐を抽象化したい。
-      redirect: (context, state) {
+      redirect: (state) {
         // 「本アプリ側のログイン状態 + メールアドレス検証済・未検証」をwatch。
         // 本アプリ側のログイン状態が変化したら、ルーティングに反映される。
         final isSignIn = ref.watch(firebaseAuthUserStateNotifierProvider

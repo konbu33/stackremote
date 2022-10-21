@@ -78,7 +78,7 @@ final rtcVideoRouterProvider = Provider(
 
       // リダイレクト設定
       // improve：if文での分岐を抽象化したい。
-      redirect: (context, state) {
+      redirect: (state) {
         // rtc channel join済・未joinの状態監視
         final RtcChannelState rtcChannelState = ref.watch(
             RtcChannelStateNotifierProviderList
