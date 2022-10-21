@@ -1,3 +1,4 @@
+// import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,16 @@ class AgoraVideoLocalPreviewWidget extends StatelessWidget {
   }) : super(key: key);
 
   final RtcChannelState state;
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return AgoraVideoView(
+  //     controller: VideoViewController(
+  //       rtcEngine: createAgoraRtcEngine(),
+  //       canvas: VideoCanvas(uid: state.localUid),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

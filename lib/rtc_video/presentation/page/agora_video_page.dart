@@ -106,6 +106,13 @@ class AgoraVideoPageWidgets {
       final state = ref.watch(
           RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
+      // return AgoraVideoView(
+      //   controller: VideoViewController(
+      //     rtcEngine: createAgoraRtcEngine(),
+      //     canvas: VideoCanvas(uid: state.localUid),
+      //   ),
+      // );
+
       return AgoraVideoLocalPreviewWidget(state: state);
     }));
     return widget;
@@ -116,6 +123,24 @@ class AgoraVideoPageWidgets {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       final state = ref.watch(
           RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+
+      // // if (_remoteUid != null) {
+      // return AgoraVideoView(
+      //   controller: VideoViewController.remote(
+      //     rtcEngine: createAgoraRtcEngine(),
+      //     canvas: VideoCanvas(uid: state.remoteUid),
+      //     connection: RtcConnection(
+      //       channelId: state.channelName,
+      //       localUid: state.localUid,
+      //     ),
+      //   ),
+      // );
+      // // } else {
+      // //   return const Text(
+      // //     'Please wait for remote user to join',
+      // //     textAlign: TextAlign.center,
+      // //   );
+      // // }
 
       return AgoraVideoRemotePreviewWidget(state: state);
     }));
