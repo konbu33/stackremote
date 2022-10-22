@@ -5,10 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // improve: authenticationのモジュールをimportしている点、疎結合に改善可能か検討の余地あり。
-import '../../../authentication/usecase/authentication_service_signout_usecase.dart';
-import '../../../authentication/infrastructure/authentication_service_firebase.dart';
+import '../../../authentication/authentication.dart';
 // import '../../usecase/authentication_service_signup_usecase.dart';
-import '../../../authentication/presentation/widget/appbar_action_icon_state.dart';
 // import '../widget/login_submit_state.dart';
 // import '../widget/loginid_field_state.dart';
 
