@@ -16,6 +16,13 @@ class MenuRoutingLayer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(menuRouterProvider);
 
+    final currentMenuItem = ref.watch(
+        menuStateNotifierProvider.select((value) => value.currentMmenuItem));
+
+    logger.d("currentMenuItem : $currentMenuItem");
+
+    final notifier = ref.read(menuStateNotifierProvider.notifier);
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
 
@@ -28,7 +35,24 @@ class MenuRoutingLayer extends HookConsumerWidget {
       builder: (context, child) {
         return child == null
             ? const Text("Child null")
-            : DesignNestedLayer(child: child);
+            : DesignNestedLayer(
+                child: Navigator(
+                    onPopPage: (route, result) {
+                      if (!route.didPop(result)) {
+                        return false;
+                      }
+                      notifier.changeCurrentMenu(OperationMenu.start);
+                      return true;
+                    },
+                    pages: [
+                    MaterialPage(child: child),
+                    if (currentMenuItem == OperationMenu.changePassword)
+                      const MaterialPage(child: ChangePasswordPage()),
+
+                    //
+                    if (currentMenuItem == OperationMenu.user)
+                      const MaterialPage(child: UserPage()),
+                  ]));
       },
     );
   }
@@ -68,26 +92,28 @@ final menuRouterProvider = Provider(
         GoRoute(
           path: '/',
           builder: (context, state) {
-            return Navigator(
-              onPopPage: (route, result) {
-                if (!route.didPop(result)) {
-                  return false;
-                }
-                notifier.changeCurrentMenu(OperationMenu.start);
-                return true;
-              },
-              pages: [
-                const MaterialPage(child: RtcVideoRoutingLayer()),
+            return const RtcVideoRoutingLayer();
 
-                //
-                if (currentMenuItem == OperationMenu.changePassword)
-                  const MaterialPage(child: ChangePasswordPage()),
+            // return Navigator(
+            //   onPopPage: (route, result) {
+            //     if (!route.didPop(result)) {
+            //       return false;
+            //     }
+            //     notifier.changeCurrentMenu(OperationMenu.start);
+            //     return true;
+            //   },
+            //   pages: [
+            //     const MaterialPage(child: RtcVideoRoutingLayer()),
 
-                //
-                if (currentMenuItem == OperationMenu.user)
-                  const MaterialPage(child: UserPage()),
-              ],
-            );
+            //     //
+            //     if (currentMenuItem == OperationMenu.changePassword)
+            //       const MaterialPage(child: ChangePasswordPage()),
+
+            //     //
+            //     if (currentMenuItem == OperationMenu.user)
+            //       const MaterialPage(child: UserPage()),
+            //   ],
+            // );
           },
         ),
         // RTC 関連
