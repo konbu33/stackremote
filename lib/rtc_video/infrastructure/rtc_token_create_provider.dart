@@ -7,8 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // onCall
 import 'package:cloud_functions/cloud_functions.dart';
 
-import '../../authentication/domain/firebase_auth_user.dart';
 // import '../domain/user.dart';
+import '../../authentication/authentication.dart';
 import '../domain/rtc_channel_state.dart';
 
 // --------------------------------------------------
