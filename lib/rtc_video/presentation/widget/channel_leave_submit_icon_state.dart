@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/infrastructure/rtc_channel_leave_provider.dart';
-import 'package:stackremote/rtc_video/domain/rtc_channel_state.dart';
+
+import '../../domain/rtc_channel_state.dart';
+import '../../infrastructure/rtc_channel_leave_provider.dart';
 
 part 'channel_leave_submit_icon_state.freezed.dart';
 
