@@ -61,6 +61,7 @@ class AgoraVideoChannelJoinPageWidgets {
   static Widget signOutIconButton() {
     final Widget widget = Consumer(
       builder: ((context, ref, child) {
+        // imporve : state.dartにまとめた方が良いか？ProviderListで定義して利用する方が良いか？
         final state = ref.watch(agoraVideoChannelJoinPageStateNotifierProvider);
 
         return AppbarAcitonIconWidget(
@@ -74,6 +75,7 @@ class AgoraVideoChannelJoinPageWidgets {
 
   // Login Id Field Widget
   static Widget channelNameFieldWidget() {
+    // imporve : state.dartにまとめた方が良いか？ProviderListで定義して利用する方が良いか？
     final channelNameFieldStateProvider =
         ChannelNameFieldStateNotifierProviderList
             .channelNameFieldStateNotifierProvider;
@@ -87,6 +89,7 @@ class AgoraVideoChannelJoinPageWidgets {
 
   // Login Submit Widget
   static Widget channelJoinSubmitWidget() {
+    // imporve : state.dartにまとめた方が良いか？ProviderListで定義して利用する方が良いか？
     final channelJoinSubmitStateProvider = ChannelJoinSubmitStateProviderList
         .channelJoinSubmitStateNotifierProvider;
 
