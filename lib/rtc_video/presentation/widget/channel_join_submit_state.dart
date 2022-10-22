@@ -1,7 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/rtc_video/presentation/widget/channel_name_field_state.dart';
 import 'package:stackremote/rtc_video/infrastructure/rtc_channel_join_provider.dart';
@@ -79,9 +78,7 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
                     .updateChannelName(state.channelNameFieldController.text);
 
                 final rtcCreateToken = ref.watch(rtcTokenCreateOnCallProvider);
-                // final rtcCreateToken =
-                //     ref.watch(rtcTokenCreateOnRequestProvider);
-                // print("create token before ------------------------ ");
+
                 try {
                   await rtcCreateToken();
                 } on FirebaseFunctionsException catch (error) {
@@ -102,15 +99,10 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
                   return;
                 }
 
-                // print("create token after  ------------------------ ");
-
                 final rtcJoinChannel = ref.watch(rtcJoinChannelProvider);
-                // print("join channel before ------------------------ ");
                 await rtcJoinChannel();
-                // print("join channel after  ------------------------ ");
 
                 notifier.changeJoined(true);
-                // context.go("/agoravideo");
               };
       }
 
