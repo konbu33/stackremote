@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/menu/menu.dart';
 
@@ -41,8 +42,10 @@ class MenuWidget extends StatelessWidget {
                         // Drawerを閉じる
                         Navigator.pop(context);
 
-                        notifier
-                            .changeCurrentMenu(OperationMenu.changePassword);
+                        context.push('/changepassword');
+
+                        // notifier
+                        //     .changeCurrentMenu(OperationMenu.changePassword);
 
                         // Navigator.push(
                         //   context,
@@ -67,7 +70,9 @@ class MenuWidget extends StatelessWidget {
                       // Drawerを閉じる
                       Navigator.pop(context);
 
-                      notifier.changeCurrentMenu(OperationMenu.user);
+                      context.push('/user');
+
+                      // notifier.changeCurrentMenu(OperationMenu.user);
                       // currentMmenuItem = MenuItem.userPage;
 
                       // context.go("/agoravideochanneljoin/user");
