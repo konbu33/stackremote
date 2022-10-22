@@ -11,6 +11,11 @@ import '../../authentication/domain/firebase_auth_user.dart';
 // import '../domain/user.dart';
 import '../domain/rtc_channel_state.dart';
 
+// --------------------------------------------------
+//
+//  Firebase Functions OnCall用
+//
+// --------------------------------------------------
 final rtcTokenCreateOnCallProvider = Provider((ref) {
   Future<String> rtcCreateToken() async {
     final state = ref.watch(
@@ -73,6 +78,11 @@ final rtcTokenCreateOnCallProvider = Provider((ref) {
   return rtcCreateToken;
 });
 
+// --------------------------------------------------
+//
+//  Firebase Functions OnRequest用
+//
+// --------------------------------------------------
 final rtcTokenCreateOnRequestProvider = Provider((ref) {
   Future<String> rtcCreateToken() async {
     final state = ref.watch(
