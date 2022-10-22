@@ -24,15 +24,6 @@ class AgoraVideoChannelJoinPageState with _$AgoraVideoChannelJoinPageState {
     required AuthenticationServiceSignOutUsecase
         authenticationServiceSignOutUsecase,
     required AppbarActionIconStateProvider signOutIconStateProvider,
-
-    // // Login Id Field Widget
-    // required LoginIdFieldStateProvider loginIdFieldStateProvider,
-
-    // Login Submit Widget
-    // @Default("新規登録") String loginSubmitWidgetName,
-    // required AuthenticationServiceSignUpUsecase
-    //     authenticationServiceSignUpUsecase,
-    // required LoginSubmitStateProvider loginSubmitStateProvider,
   }) = _AgoraVideoChannelJoinPageState;
 
   factory AgoraVideoChannelJoinPageState.create() =>
@@ -54,19 +45,6 @@ class AgoraVideoChannelJoinPageState with _$AgoraVideoChannelJoinPageState {
           icon: const Icon(null),
           onSubmit: null,
         ),
-
-        // // Login Id Field Widget
-        // loginIdFieldStateProvider: loginIdFieldStateNotifierProviderCreator(),
-
-        // // Login Submit
-        // authenticationServiceSignUpUsecase: AuthenticationServiceSignUpUsecase(
-        //     authenticationService: AuthenticationServiceFirebase(
-        //         instance: firebase_auth.FirebaseAuth.instance)),
-
-        // loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
-        //   loginSubmitWidgetName: "",
-        //   onSubmit: () {},
-        // ),
       );
 }
 
@@ -92,27 +70,6 @@ class AgoraVideoChannelJoinPageStateNotifier
     // setOnSubmit();
     setSignOutIconOnSubumit();
   }
-
-  // void setOnSubmit() {
-  //   Function buildOnSubmit() {
-  //     return ({
-  //       required BuildContext context,
-  //     }) {
-  //       final email = ref
-  //           .read(state.loginIdFieldStateProvider)
-  //           .loginIdFieldController
-  //           .text;
-  //       // state.authenticationServiceSignUpUsecase.execute(email);
-
-  //       initial();
-  //     };
-  //   }
-
-  //   state = state.copyWith(
-  //       loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
-  //           loginSubmitWidgetName: state.loginSubmitWidgetName,
-  //           onSubmit: buildOnSubmit()));
-  // }
 
   // setSignOutIconOnSubumit
   void setSignOutIconOnSubumit() {
