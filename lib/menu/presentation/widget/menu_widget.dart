@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
@@ -28,30 +27,24 @@ class MenuWidget extends StatelessWidget {
                 const DrawerHeader(
                   child: Text("メニュー"),
                 ),
-                Consumer(
-                  builder: ((context, ref, child) {
-                    return ListTile(
-                      title: const Text("パスワード変更"),
-                      onTap: () {
-                        // Drawerを閉じる
-                        Navigator.pop(context);
+                ListTile(
+                  title: const Text("パスワード変更"),
+                  onTap: () {
+                    // Drawerを閉じる
+                    Navigator.pop(context);
 
-                        context.push('/changepassword');
-                      },
-                    );
-                  }),
+                    context.push('/changepassword');
+                  },
                 ),
-                Consumer(builder: ((context, ref, child) {
-                  return ListTile(
-                    title: const Text("ユーザ情報"),
-                    onTap: () {
-                      // Drawerを閉じる
-                      Navigator.pop(context);
+                ListTile(
+                  title: const Text("ユーザ情報"),
+                  onTap: () {
+                    // Drawerを閉じる
+                    Navigator.pop(context);
 
-                      context.push('/user');
-                    },
-                  );
-                })),
+                    context.push('/user');
+                  },
+                ),
               ],
             ),
           ),
