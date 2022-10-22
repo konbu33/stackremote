@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/presentation/widget/channel_leave_submit_icon_state.dart';
-import 'package:stackremote/rtc_video/presentation/widget/channel_leave_submit_icon_widget.dart';
-import 'package:stackremote/rtc_video/domain/rtc_channel_state.dart';
+
 import '../../../pointer/pointer.dart';
+import '../../domain/rtc_channel_state.dart';
 import '../widget/agora_video_local_preview_widget.dart';
 import '../widget/agora_video_remote_preview_widget.dart';
+import '../widget/channel_leave_submit_icon_state.dart';
+import '../widget/channel_leave_submit_icon_widget.dart';
 import 'agora_video_page_state.dart';
 
 class AgoraVideoPage extends HookConsumerWidget {
