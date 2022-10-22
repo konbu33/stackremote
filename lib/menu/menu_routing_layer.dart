@@ -92,6 +92,8 @@ final menuRouterProvider = Provider(
             return '/agoravideochanneljoin/agoravideo';
           }
         }
+
+        return null;
       },
     );
   },
