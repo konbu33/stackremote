@@ -43,7 +43,7 @@ class PointerOverlayWidget extends HookConsumerWidget {
               // childの上位レイヤーにポインを表示
               if (state.isOnLongPressing) const PointerPositionedWidget(),
 
-              // debug: ポポインの位置を表示
+              // debug: ポインタの位置を表示
               Text(
                   "x:${(state.pointerPosition.dx.round())}, y:${state.pointerPosition.dy.round()}"),
             ],
