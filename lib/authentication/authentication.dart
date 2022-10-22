@@ -7,3 +7,5 @@ export './presentation/page/change_password_page.dart';
 export './presentation/widget/appbar_action_icon_state.dart';
 export './usecase/authentication_service_signout_usecase.dart';
 export './infrastructure/authentication_service_firebase.dart';
+
+export './presentation/widget/appbar_action_icon_widget.dart';

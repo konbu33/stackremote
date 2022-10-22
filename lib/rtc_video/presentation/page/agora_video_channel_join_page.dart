@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // import '../../../authentication/domain/firebase_auth_user.dart';
-import '../../../authentication/presentation/widget/appbar_action_icon_widget.dart';
+// import '../../../authentication/presentation/widget/appbar_action_icon_widget.dart';
 // import '../../../authentication/presentation/widget/scaffold_body_base_layout_widget.dart';
 
+import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
 import '../../../menu/menu.dart';
 import '../widget/channel_join_submit_state.dart';
