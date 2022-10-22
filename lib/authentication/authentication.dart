@@ -15,3 +15,6 @@ export './infrastructure/authentication_service_firebase.dart';
 // agora_video_channel_join_page.dart
 export './presentation/widget/appbar_action_icon_state.dart';
 export './presentation/widget/appbar_action_icon_widget.dart';
+
+// channel_name_field_state.dart
+export './common/validation.dart';
