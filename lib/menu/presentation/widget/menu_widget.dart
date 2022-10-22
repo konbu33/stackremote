@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/menu/menu.dart';
 
-import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
-import 'menu_state.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({Key? key}) : super(key: key);
@@ -33,9 +30,6 @@ class MenuWidget extends StatelessWidget {
                 ),
                 Consumer(
                   builder: ((context, ref, child) {
-                    final notifier =
-                        ref.read(menuStateNotifierProvider.notifier);
-
                     return ListTile(
                       title: const Text("パスワード変更"),
                       onTap: () {
@@ -43,77 +37,18 @@ class MenuWidget extends StatelessWidget {
                         Navigator.pop(context);
 
                         context.push('/changepassword');
-
-                        // notifier
-                        //     .changeCurrentMenu(OperationMenu.changePassword);
-
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) {
-                        //       return const ChangePasswordPage();
-                        //     },
-                        //   ),
-                        // );
                       },
                     );
                   }),
                 ),
                 Consumer(builder: ((context, ref, child) {
-                  final notifier = ref.read(menuStateNotifierProvider.notifier);
-
                   return ListTile(
                     title: const Text("ユーザ情報"),
                     onTap: () {
-                      // context.push("/user");
-
                       // Drawerを閉じる
                       Navigator.pop(context);
 
                       context.push('/user');
-
-                      // notifier.changeCurrentMenu(OperationMenu.user);
-                      // currentMmenuItem = MenuItem.userPage;
-
-                      // context.go("/agoravideochanneljoin/user");
-                      // context.push("/agoravideochanneljoin/user");
-                      // context.go("/user");
-                      // context.push("/user");
-
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) {
-                      //       return const UserPage();
-                      //     },
-                      //   ),
-                      // );
-
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) {
-                      //       return const HomePage();
-                      //     },
-                      //   ),
-                      // );
-
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) {
-                      //       return const UserRoutingLayer();
-                      //     },
-                      //   ),
-                      // );
-
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) {
-                      //       return const UserRoutingLayer();
-                      //     },
-                      //   ),
-                      // );
                     },
                   );
                 })),
