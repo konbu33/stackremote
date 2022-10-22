@@ -1,14 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // improve: authenticationのモジュールをimportしている点、疎結合に改善可能か検討の余地あり。
 import '../../../authentication/authentication.dart';
-// import '../../usecase/authentication_service_signup_usecase.dart';
-// import '../widget/login_submit_state.dart';
-// import '../widget/loginid_field_state.dart';
 
 part 'agora_video_channel_join_page_state.freezed.dart';
 
