@@ -100,7 +100,6 @@ final menuRouterProvider = Provider(
             RtcChannelStateNotifierProviderList
                 .rtcChannelStateNotifierProvider);
 
-        // サインイン済み & メールアドレス検証済みの場合のリダイレクト動作
         // rtc channel join済・未joinの状態を監視し、
         // 状態が変化した場合、リダイレクト操作が実施される。
         if (rtcChannelState.joined) {
@@ -109,12 +108,6 @@ final menuRouterProvider = Provider(
           } else {
             return '/agoravideochanneljoin/agoravideo';
           }
-          // } else {
-          //   if (state.subloc == '/agoravideochanneljoin') {
-          //     return null;
-          //   } else {
-          //     return '/agoravideochanneljoin';
-          //   }
         }
       },
     );
