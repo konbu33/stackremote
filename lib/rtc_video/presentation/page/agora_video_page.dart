@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+// improve: pointerのモジュールをimportしている点、疎結合に改善可能か検討の余地あり。
 import '../../../pointer/pointer.dart';
+
 import '../../domain/rtc_channel_state.dart';
 
 import '../widget/agora_video_local_preview_widget.dart';
