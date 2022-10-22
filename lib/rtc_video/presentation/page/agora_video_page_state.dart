@@ -12,6 +12,7 @@ part 'agora_video_page_state.freezed.dart';
 @freezed
 class AgoraVideoPageState with _$AgoraVideoPageState {
   const factory AgoraVideoPageState._({
+    // ignore: unused_element
     @Default(false) bool viewSwitch,
   }) = _AgoraVideoPageState;
 
