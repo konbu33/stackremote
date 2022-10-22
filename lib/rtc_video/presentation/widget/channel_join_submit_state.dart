@@ -2,10 +2,12 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/presentation/widget/channel_name_field_state.dart';
-import 'package:stackremote/rtc_video/infrastructure/rtc_channel_join_provider.dart';
-import 'package:stackremote/rtc_video/domain/rtc_channel_state.dart';
-import 'package:stackremote/rtc_video/infrastructure/rtc_token_create_provider.dart';
+
+import '../../domain/rtc_channel_state.dart';
+import '../../infrastructure/rtc_channel_join_provider.dart';
+import '../../infrastructure/rtc_token_create_provider.dart';
+
+import 'channel_name_field_state.dart';
 
 part 'channel_join_submit_state.freezed.dart';
 
