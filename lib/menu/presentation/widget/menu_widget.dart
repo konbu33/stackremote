@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/menu/menu.dart';
 
 import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
-import '../../../user/user.dart';
+import 'menu_state.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({Key? key}) : super(key: key);
@@ -28,67 +30,88 @@ class MenuWidget extends StatelessWidget {
                 const DrawerHeader(
                   child: Text("メニュー"),
                 ),
-                ListTile(
-                  title: const Text("パスワード変更"),
-                  onTap: () {
-                    // Drawerを閉じる
-                    Navigator.pop(context);
+                Consumer(
+                  builder: ((context, ref, child) {
+                    final notifier =
+                        ref.read(menuStateNotifierProvider.notifier);
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const ChangePasswordPage();
-                        },
-                      ),
+                    return ListTile(
+                      title: const Text("パスワード変更"),
+                      onTap: () {
+                        // Drawerを閉じる
+                        Navigator.pop(context);
+
+                        notifier
+                            .changeCurrentMenu(OperationMenu.changePassword);
+
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) {
+                        //       return const ChangePasswordPage();
+                        //     },
+                        //   ),
+                        // );
+                      },
                     );
-                  },
+                  }),
                 ),
-                ListTile(
-                  title: const Text("ユーザ情報"),
-                  onTap: () {
-                    // context.go("/home");
-                    // context.push("/user");
+                Consumer(builder: ((context, ref, child) {
+                  final notifier = ref.read(menuStateNotifierProvider.notifier);
 
-                    // Drawerを閉じる
-                    Navigator.pop(context);
+                  return ListTile(
+                    title: const Text("ユーザ情報"),
+                    onTap: () {
+                      // context.push("/user");
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const UserPage();
-                        },
-                      ),
-                    );
+                      // Drawerを閉じる
+                      Navigator.pop(context);
 
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) {
-                    //       return const HomePage();
-                    //     },
-                    //   ),
-                    // );
+                      notifier.changeCurrentMenu(OperationMenu.user);
+                      // currentMmenuItem = MenuItem.userPage;
 
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) {
-                    //       return const UserRoutingLayer();
-                    //     },
-                    //   ),
-                    // );
+                      // context.go("/agoravideochanneljoin/user");
+                      // context.push("/agoravideochanneljoin/user");
+                      // context.go("/user");
+                      // context.push("/user");
 
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) {
-                    //       return const UserRoutingLayer();
-                    //     },
-                    //   ),
-                    // );
-                  },
-                ),
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) {
+                      //       return const UserPage();
+                      //     },
+                      //   ),
+                      // );
+
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) {
+                      //       return const HomePage();
+                      //     },
+                      //   ),
+                      // );
+
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) {
+                      //       return const UserRoutingLayer();
+                      //     },
+                      //   ),
+                      // );
+
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) {
+                      //       return const UserRoutingLayer();
+                      //     },
+                      //   ),
+                      // );
+                    },
+                  );
+                })),
               ],
             ),
           ),

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/menu/menu.dart';
 
 import '../authentication/authentication.dart';
+import '../common/common.dart';
 import '../rtc_video/rtc_video.dart';
 import '../user/user.dart';
+import 'presentation/widget/menu_state.dart';
 
 class MenuRoutingLayer extends HookConsumerWidget {
   const MenuRoutingLayer({Key? key}) : super(key: key);
@@ -21,6 +24,12 @@ class MenuRoutingLayer extends HookConsumerWidget {
       routerDelegate: router.routerDelegate,
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
+
+      builder: (context, child) {
+        return child == null
+            ? const Text("Child null")
+            : DesignNestedLayer(child: child);
+      },
     );
   }
 }
@@ -32,6 +41,13 @@ class MenuRoutingLayer extends HookConsumerWidget {
 // --------------------------------------------------
 final menuRouterProvider = Provider(
   (ref) {
+    final currentMenuItem = ref.watch(
+        menuStateNotifierProvider.select((value) => value.currentMmenuItem));
+
+    logger.d("currentMenuItem : $currentMenuItem");
+
+    final notifier = ref.read(menuStateNotifierProvider.notifier);
+
     // improve：肥大化しそうなため、分割を検討
     return GoRouter(
       // デフォルト表示されるルーティング先
@@ -50,20 +66,41 @@ final menuRouterProvider = Provider(
       routes: [
         //  デフォルト表示
         GoRoute(
-            path: '/',
-            builder: (context, state) => const RtcVideoRoutingLayer()),
+          path: '/',
+          builder: (context, state) {
+            return Navigator(
+              onPopPage: (route, result) {
+                if (!route.didPop(result)) {
+                  return false;
+                }
+                notifier.changeCurrentMenu(OperationMenu.start);
+                return true;
+              },
+              pages: [
+                const MaterialPage(child: RtcVideoRoutingLayer()),
 
+                //
+                if (currentMenuItem == OperationMenu.changePassword)
+                  const MaterialPage(child: ChangePasswordPage()),
+
+                //
+                if (currentMenuItem == OperationMenu.user)
+                  const MaterialPage(child: UserPage()),
+              ],
+            );
+          },
+        ),
         // RTC 関連
         // GoRoute(path: '/user', builder: (context, state) => const UserPage()),
 
         // GoRoute(path: '/user', builder: (context, state) => const UserPage()),
-        GoRoute(
-            path: '/user',
-            builder: (context, state) => const UserRoutingLayer()),
+        // GoRoute(
+        //     path: '/user',
+        //     builder: (context, state) => const UserRoutingLayer()),
 
-        GoRoute(
-            path: '/changepassword',
-            builder: (context, state) => const ChangePasswordPage()),
+        // GoRoute(
+        //     path: '/changepassword',
+        //     builder: (context, state) => const ChangePasswordPage()),
 
         // GoRoute(
         //     path: '/userdetail',
