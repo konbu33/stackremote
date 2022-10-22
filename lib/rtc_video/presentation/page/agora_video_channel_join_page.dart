@@ -1,10 +1,5 @@
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-// import '../../../authentication/domain/firebase_auth_user.dart';
-// import '../../../authentication/presentation/widget/appbar_action_icon_widget.dart';
-// import '../../../authentication/presentation/widget/scaffold_body_base_layout_widget.dart';
 
 import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
@@ -39,29 +34,6 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
                 AgoraVideoChannelJoinPageWidgets.channelNameFieldWidget(),
                 const SizedBox(height: 40),
                 AgoraVideoChannelJoinPageWidgets.channelJoinSubmitWidget(),
-                // const Divider(),
-                // () {
-                //   // final user = ref.watch(userStateNotifierProvider);
-                //   final user = ref.watch(firebaseAuthUserStateNotifierProvider);
-                //   return SingleChildScrollView(
-                //     scrollDirection: Axis.vertical,
-                //     child: Text(
-                //       "firebaseAuthUser: $user",
-                //       maxLines: 10,
-                //     ),
-                //   );
-                // }(),
-                // const Divider(),
-                // () {
-                //   final user = FirebaseAuth.instance.currentUser;
-                //   return SingleChildScrollView(
-                //     scrollDirection: Axis.vertical,
-                //     child: Text(
-                //       "currentUser: $user",
-                //       maxLines: 10,
-                //     ),
-                //   );
-                // }(),
               ],
             ),
           ),
@@ -77,7 +49,6 @@ class AgoraVideoChannelJoinPageWidgets {
     final Widget widget = Consumer(
       builder: (context, ref, child) {
         return const MenuWidget();
-        // return const MenuRoutingLayer();
       },
     );
 
