@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../authentication/authentication.dart';
+import '../common/common.dart';
 import '../rtc_video/rtc_video.dart';
 import '../user/user.dart';
 
@@ -21,6 +22,13 @@ class MenuRoutingLayer extends HookConsumerWidget {
       routerDelegate: router.routerDelegate,
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
+
+      // NestedLayerの最深部にchildとしてルーティング先を配置
+      builder: (context, child) {
+        return child == null
+            ? const Text("Child null")
+            : DesignNestedLayer(child: child);
+      },
     );
   }
 }
@@ -35,66 +43,58 @@ final menuRouterProvider = Provider(
     // improve：肥大化しそうなため、分割を検討
     return GoRouter(
       // デフォルト表示されるルーティング先
-      initialLocation: '/',
-
-      // // NestedLayerの最深部にchildとしてルーティング先を配置
-      // // improve: navigatorBuilderでネストするこの設計は、
-      // // go_routerのnavigatorBuilderを知っていないと、
-      // // 理解できないので、他の方法で代替可能か検討の余地あり。
-      // navigatorBuilder: (context, state, child) {
-      //   return DesignNestedLayer(child: child);
-      // },
+      initialLocation: '/agoravideochanneljoin',
 
       // ルーティング先
       // improve：ルーティング先をグループ化してコンポーネント化し、着脱容易にしたい。
       routes: [
         //  デフォルト表示
         GoRoute(
-            path: '/',
-            builder: (context, state) => const RtcVideoRoutingLayer()),
+          path: '/agoravideochanneljoin',
+          builder: (context, state) {
+            return const AgoraVideoChannelJoinPage();
+          },
+          routes: [
+            GoRoute(
+              path: 'agoravideo',
+              builder: (context, state) {
+                return const AgoraVideoPage();
+              },
+            )
+          ],
+        ),
 
-        // RTC 関連
-        // GoRoute(path: '/user', builder: (context, state) => const UserPage()),
-
-        // GoRoute(path: '/user', builder: (context, state) => const UserPage()),
         GoRoute(
-            path: '/user',
-            builder: (context, state) => const UserRoutingLayer()),
+          path: '/changepassword',
+          builder: (context, state) => const ChangePasswordPage(),
+        ),
 
         GoRoute(
-            path: '/changepassword',
-            builder: (context, state) => const ChangePasswordPage()),
-
-        // GoRoute(
-        //     path: '/userdetail',
-        //     builder: (context, state) => const UserDetailPage()),
+          path: '/user',
+          builder: (context, state) => const UserPage(),
+        ),
       ],
 
-      // // リダイレクト設定
-      // // improve：if文での分岐を抽象化したい。
-      // redirect: (state) {
-      //   // rtc channel join済・未joinの状態監視
-      //   final RtcChannelState rtcChannelState = ref.watch(
-      //       RtcChannelStateNotifierProviderList
-      //           .rtcChannelStateNotifierProvider);
+      // リダイレクト設定
+      // improve：if文での分岐を抽象化したい。
+      redirect: (state) {
+        // rtc channel join済・未joinの状態監視
+        final RtcChannelState rtcChannelState = ref.watch(
+            RtcChannelStateNotifierProviderList
+                .rtcChannelStateNotifierProvider);
 
-      //   // サインイン済み & メールアドレス検証済みの場合のリダイレクト動作
-      //   // rtc channel join済・未joinの状態を監視し、
-      //   // 状態が変化した場合、リダイレクト操作が実施される。
-      //   if (rtcChannelState.joined) {
-      //     if (state.subloc == '/agoravideo') {
-      //       return null;
-      //     } else {
-      //       return '/agoravideo';
-      //     }
-      //   } else {
-      //     if (state.subloc == '/agoravideochanneljoin') {
-      //       return null;
-      //     } else {
-      //       return '/agoravideochanneljoin';
-      //     }
-      //   }
-      // },
+        // rtc channel join済・未joinの状態を監視し、
+        // 状態が変化した場合、リダイレクト操作が実施される。
+        if (rtcChannelState.joined) {
+          if (state.subloc == '/agoravideochanneljoin/agoravideo') {
+            return null;
+          } else {
+            return '/agoravideochanneljoin/agoravideo';
+          }
+        }
+
+        return null;
+      },
     );
   },
 );

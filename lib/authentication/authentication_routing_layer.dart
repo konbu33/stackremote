@@ -25,9 +25,6 @@ class AuthenticationRoutingLayer extends HookConsumerWidget {
       routeInformationProvider: router.routeInformationProvider,
 
       // NestedLayerの最深部にchildとしてルーティング先を配置
-      // improve: navigatorBuilderでネストするこの設計は、
-      // go_routerのnavigatorBuilderを知っていないと、
-      // 理解できないので、他の方法で代替可能か検討の余地あり。
       builder: (context, child) {
         return child == null
             ? const Text("Child null")
@@ -48,14 +45,6 @@ final authenticationRouterProvider = Provider(
     return GoRouter(
       // デフォルト表示されるルーティング先
       initialLocation: '/',
-
-      // // NestedLayerの最深部にchildとしてルーティング先を配置
-      // // improve: navigatorBuilderでネストするこの設計は、
-      // // go_routerのnavigatorBuilderを知っていないと、
-      // // 理解できないので、他の方法で代替可能か検討の余地あり。
-      // navigatorBuilder: (context, state, child) {
-      //   return DesignNestedLayer(child: child);
-      // },
 
       // ルーティング先
       // improve：ルーティング先をグループ化してコンポーネント化し、着脱容易にしたい。

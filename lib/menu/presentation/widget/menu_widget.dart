@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
-import '../../../user/user.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({Key? key}) : super(key: key);
@@ -34,59 +33,16 @@ class MenuWidget extends StatelessWidget {
                     // Drawerを閉じる
                     Navigator.pop(context);
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const ChangePasswordPage();
-                        },
-                      ),
-                    );
+                    context.push('/changepassword');
                   },
                 ),
                 ListTile(
                   title: const Text("ユーザ情報"),
                   onTap: () {
-                    // context.go("/home");
-                    // context.push("/user");
-
                     // Drawerを閉じる
                     Navigator.pop(context);
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const UserPage();
-                        },
-                      ),
-                    );
-
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) {
-                    //       return const HomePage();
-                    //     },
-                    //   ),
-                    // );
-
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) {
-                    //       return const UserRoutingLayer();
-                    //     },
-                    //   ),
-                    // );
-
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) {
-                    //       return const UserRoutingLayer();
-                    //     },
-                    //   ),
-                    // );
+                    context.push('/user');
                   },
                 ),
               ],
