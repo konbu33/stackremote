@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/rtc_video/infrastructure/rtc_channel_leave_provider.dart';
 import 'package:stackremote/rtc_video/domain/rtc_channel_state.dart';
@@ -75,12 +74,9 @@ ChannelLeaveSubmitIconStateProvider
         return () {
           final rtcLeaveChannel = ref.read(rtcLeaveChannelProvider);
 
-          // print(" leave channel before ---------------------------- ");
           rtcLeaveChannel();
-          // print(" leave channel after ---------------------------- ");
 
           notifier.changeJoined(false);
-          // context.go("/");
         };
       }
 
