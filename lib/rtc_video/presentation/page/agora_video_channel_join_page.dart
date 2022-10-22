@@ -4,10 +4,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
 import '../../../menu/menu.dart';
+
 import '../widget/channel_join_submit_state.dart';
 import '../widget/channel_join_submit_widget.dart';
 import '../widget/channel_name_field_state.dart';
 import '../widget/channel_name_field_widget.dart';
+
 import 'agora_video_channel_join_page_state.dart';
 
 class AgoraVideoChannelJoinPage extends HookConsumerWidget {
