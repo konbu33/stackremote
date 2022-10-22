@@ -8,7 +8,6 @@ import '../authentication/authentication.dart';
 import '../common/common.dart';
 import '../rtc_video/domain/rtc_channel_state.dart';
 import '../user/user.dart';
-import 'presentation/widget/menu_state.dart';
 
 class MenuRoutingLayer extends HookConsumerWidget {
   const MenuRoutingLayer({Key? key}) : super(key: key);
@@ -42,13 +41,6 @@ class MenuRoutingLayer extends HookConsumerWidget {
 // --------------------------------------------------
 final menuRouterProvider = Provider(
   (ref) {
-    final currentMenuItem = ref.watch(
-        menuStateNotifierProvider.select((value) => value.currentMmenuItem));
-
-    logger.d("currentMenuItem : $currentMenuItem");
-
-    final notifier = ref.read(menuStateNotifierProvider.notifier);
-
     // improve：肥大化しそうなため、分割を検討
     return GoRouter(
       // デフォルト表示されるルーティング先
