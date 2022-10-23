@@ -28,7 +28,5 @@ class UserAddUseCase {
     await userRepository.add(user);
 
     return user.userId;
-
-    // Construct View Model Object
   }
 }
