@@ -49,6 +49,8 @@ class UserDetailPageState with _$UserDetailPageState {
     // User Update Button
     required UserUpdateUseCase userUpdateUseCase,
     required LoginSubmitStateProvider userUpdateSubmitStateProvider,
+
+    // ignore: unused_element
     @Default(false) bool isOnSubmitable,
   }) = _UserDetailPageState;
 
