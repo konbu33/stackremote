@@ -100,7 +100,7 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
   void updateIsOnSubmitable(
     bool isOnSubmitable,
   ) {
-    logger.d("updateIsOnSubmitable : ----------------- ${isOnSubmitable}");
+    logger.d("updateIsOnSubmitable : ----------------- $isOnSubmitable");
     state = state.copyWith(isOnSubmitable: isOnSubmitable);
   }
 
@@ -130,15 +130,11 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
               final firebase_auth.User? user = res.user;
               if (user != null) {
                 if (user.emailVerified == false) {
-                  // print("sendVeryfyEmail Start  ------------------- : ");
-
                   // メール送信頻度が多いと、下記のエラーが発生するため、サインインと同時にメール送信は行わない。
                   // E/flutter (24396): [ERROR:flutter/lib/ui/ui_dart_state.cc(198)] Unhandled Exception: [firebase_auth/too-many-requests] We have blocked all requests from this device due to unusual activity. Try again later.
 
                   // final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
                   // sendVerifyEmail(user: user);
-
-                  // print("sendVeryfyEmail End    ------------------- : ");
                 }
 
                 final notifier =
@@ -146,7 +142,6 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
                 notifier.updateEmailVerified(user.emailVerified);
               }
             } on firebase_auth.FirebaseAuthException catch (e) {
-              // print(e);
               switch (e.code) {
                 case "user-not-found":
                   const SnackBar snackBar = SnackBar(
@@ -157,7 +152,6 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
                   break;
 
                 case "too-many-requests":
-                  // print("e ------------------------ : $e");
                   const SnackBar snackBar = SnackBar(
                     content: Text("認証回数が上限に達しました。"),
                   );
@@ -170,7 +164,6 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
             }
 
             initial();
-            // print("initial End    ------------------- : ");
           };
     }
 
