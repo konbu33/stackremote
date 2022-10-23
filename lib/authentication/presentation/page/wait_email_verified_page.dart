@@ -76,7 +76,6 @@ class WaitEmailVerifiedPageWidgets {
 
       return ElevatedButton(
         onPressed: () {
-          // print("メール送信");
           if (user != null) {
             sendVerifyEmail(user: user);
           }
@@ -100,7 +99,6 @@ class WaitEmailVerifiedPageWidgets {
         checkEmailVerified;
         return checkEmailVerified.cancel;
       }, [checkEmailVerified]);
-      // print("state : ---------------------- $state");
 
       // final state = ref.watch(firebaseAuthUserStateNotifierProvider);
       return Column(
