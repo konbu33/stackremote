@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../domain/firebase_auth_user.dart';
 
 final authStateChangesProvider = Provider((ref) {
-  // final notifier = ref.read(userStateNotifierProvider.notifier);
   final notifier = ref.read(firebaseAuthUserStateNotifierProvider.notifier);
 
   final stream = firebase_auth.FirebaseAuth.instance.authStateChanges();
@@ -14,7 +13,6 @@ final authStateChangesProvider = Provider((ref) {
       final FirebaseAuthUser user;
       if (fbuser == null) {
         user = FirebaseAuthUser.create(
-          // userId: UserId.create(value: ""),
           email: "",
           emailVerified: false,
           password: "",
@@ -26,7 +24,6 @@ final authStateChangesProvider = Provider((ref) {
         final firebaseAuthUid = fbuser.uid;
 
         user = FirebaseAuthUser.create(
-          // userId: UserId.create(value: fbuser.uid),
           email: fbuser.email ?? "",
           emailVerified: fbuser.emailVerified,
           password: "",
@@ -37,8 +34,6 @@ final authStateChangesProvider = Provider((ref) {
       }
 
       notifier.userInformationRegiser(user);
-      // print("userInformationRegiser fbUser: --------------: $fbuser");
-      // print("userInformationRegiser user: --------------: $user");
     },
   );
 });
