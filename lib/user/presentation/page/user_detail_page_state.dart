@@ -1,6 +1,5 @@
 // StateNotifier
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Freezed
@@ -156,7 +155,6 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
   }
 
   void setUserUpdateOnSubmit() {
-    // void setUserUpdateOnSubmit(User user) {
     Function? buildOnSubmit() {
       if (!state.isOnSubmitable) {
         return null;
