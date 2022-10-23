@@ -1,8 +1,10 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
+// improve: user関連への依存関係を無くしたい。
 import '../../user/domain/user.dart';
 import '../../user/domain/userid.dart';
+
 import 'authentication_service.dart';
 
 class AuthenticationServiceFirebase implements AuthenticationService {
