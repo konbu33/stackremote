@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/user/presentation/widget/user_list_widget.dart';
 
 import '../../../authentication/authentication.dart';
+
+import '../widget/user_list_widget.dart';
 
 import 'user_detail_page_state.dart';
 import 'user_page_state.dart';
