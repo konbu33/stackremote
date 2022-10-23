@@ -70,6 +70,7 @@ class SignUpPageWidgets {
           .select((value) => value.passwordIsValidate.isValid));
 
       if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
+        // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final notifier = ref.read(signUpPageStateNotifierProvider.notifier);
           notifier

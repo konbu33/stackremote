@@ -70,6 +70,7 @@ class UserDetailPageWidgets {
           .select((value) => value.passwordIsValidate.isValid));
 
       if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
+        // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final notifier =
               ref.read(userDetailPageStateControllerProvider.notifier);
@@ -102,6 +103,7 @@ class UserDetailPageWidgets {
       //     "$loginIdIsValidate, $passwordIsValidate, ${state.isOnSubmitable}");
 
       if ((loginIdIsValidate || passwordIsValidate) != state.isOnSubmitable) {
+        // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final notifier =
               ref.read(userDetailPageStateControllerProvider.notifier);
