@@ -18,6 +18,11 @@ class UserRepositoryFireBase implements UserRepository {
   @override
   late CollectionReference<JsonMap> ref;
 
+  // --------------------------------------------------
+  //
+  //   fetchAll
+  //
+  // --------------------------------------------------
   @override
   Stream<Users> fetchAll() {
     // Firestore Data Stream Listen
@@ -47,6 +52,12 @@ class UserRepositoryFireBase implements UserRepository {
     }
   }
 
+  // --------------------------------------------------
+  //
+  //   fetchById
+  //
+  // --------------------------------------------------
+
   @override
   Future<User> fetchById(String userId) async {
     try {
@@ -66,6 +77,11 @@ class UserRepositoryFireBase implements UserRepository {
     }
   }
 
+  // --------------------------------------------------
+  //
+  //   add
+  //
+  // --------------------------------------------------
   @override
   Future<UserId> add(User user) async {
     final userJson = user.toJson();
@@ -74,12 +90,22 @@ class UserRepositoryFireBase implements UserRepository {
     return user.userId;
   }
 
+  // --------------------------------------------------
+  //
+  //   delete
+  //
+  // --------------------------------------------------
   @override
   Future<String> delete(String userId) async {
     await ref.doc(userId).delete();
     return "Delete Complete.";
   }
 
+  // --------------------------------------------------
+  //
+  //   update
+  //
+  // --------------------------------------------------
   @override
   void update(User user) async {
     final userJson = user.toJson();
