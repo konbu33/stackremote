@@ -80,8 +80,6 @@ class UserDetailPageWidgets {
       }
 
       return LoginSubmitWidget(
-        // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-        // passwordFieldStateProvider: state.passwordFieldStateProvider,
         loginSubmitStateProvider: state.userAddSubmitStateProvider,
       );
     }));
@@ -98,9 +96,6 @@ class UserDetailPageWidgets {
       final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
           .select((value) => value.passwordIsValidate.isValid));
 
-      // logger.d(
-      //     "$loginIdIsValidate, $passwordIsValidate, ${state.isOnSubmitable}");
-
       if ((loginIdIsValidate || passwordIsValidate) != state.isOnSubmitable) {
         // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -113,8 +108,6 @@ class UserDetailPageWidgets {
       }
 
       return LoginSubmitWidget(
-        // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-        // passwordFieldStateProvider: state.passwordFieldStateProvider,
         loginSubmitStateProvider: state.userUpdateSubmitStateProvider,
       );
     }));
