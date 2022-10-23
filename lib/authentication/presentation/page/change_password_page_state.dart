@@ -6,7 +6,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../common/logger.dart';
+import '../../../common/common.dart';
+
 import '../widget/login_submit_state.dart';
 import '../widget/password_field_state.dart';
 
