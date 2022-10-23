@@ -2,11 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/presentation/page/wait_email_verified_page_state.dart';
 
 import '../../../common/common.dart';
+
 import '../../usecase/verify_email.dart';
+
 import '../widget/appbar_action_icon_widget.dart';
+
+import 'wait_email_verified_page_state.dart';
 
 class WaitEmailVerifiedPage extends HookConsumerWidget {
   const WaitEmailVerifiedPage({Key? key}) : super(key: key);
