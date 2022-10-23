@@ -45,6 +45,7 @@ class SignInPageState with _$SignInPageState {
     required AuthenticationServiceSignInUsecase
         authenticationServiceSignInUsecase,
     required LoginSubmitStateProvider loginSubmitStateProvider,
+    // ignore: unused_element
     @Default(false) bool isOnSubmitable,
   }) = _SignInPageState;
 
