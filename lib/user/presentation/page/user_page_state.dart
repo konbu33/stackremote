@@ -10,6 +10,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // ignore: unused_import
 import 'package:flutter/foundation.dart';
 
+// improve: authentication関連への依存関係を無くしたい。
 import '../../../authentication/authentication.dart';
 
 import '../../domain/users.dart';
