@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../authentication/presentation/widget/login_submit_widget.dart';
-import '../../../authentication/presentation/widget/loginid_field_widget.dart';
-import '../../../authentication/presentation/widget/password_field_widget.dart';
+import '../../../authentication/authentication.dart';
 
 import 'user_detail_page_state.dart';
 
