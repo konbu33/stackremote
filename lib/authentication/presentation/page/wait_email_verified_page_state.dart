@@ -1,10 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+// ignore: unused_import
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import '../../infrastructure/authentication_service_firebase.dart';
 import '../../usecase/authentication_service_signout_usecase.dart';
+
 import '../widget/appbar_action_icon_state.dart';
 
 part 'wait_email_verified_page_state.freezed.dart';
