@@ -92,6 +92,7 @@ class ChangePasswordPageStateNotifier
 
             if (user != null) {
               user.updatePassword(newPassword);
+              // imporve: 下記のエラーが発生する懸念がある。深堀り必要そう。
               // Unhandled Exception: [firebase_auth/requires-recent-login] This operation is sensitive and requires recent authentication. Log in again before retrying this request.
             }
 
