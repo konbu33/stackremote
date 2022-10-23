@@ -19,7 +19,5 @@ class UserFetchByIdUseCase {
 
     // return users;
     return data;
-
-    // Construct View Model Object
   }
 }
