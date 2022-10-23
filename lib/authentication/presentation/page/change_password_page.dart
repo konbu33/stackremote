@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/common/common.dart';
 
-import '../../../common/logger.dart';
+import '../../../common/common.dart';
+
 import '../widget/login_submit_widget.dart';
 import '../widget/password_field_widget.dart';
+
 import 'change_password_page_state.dart';
 
 class ChangePasswordPage extends HookConsumerWidget {
