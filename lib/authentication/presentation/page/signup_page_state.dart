@@ -115,10 +115,8 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
 
               // User情報取得成功した場合、メールアドレス検証メールを送信
               if (user != null) {
-                // print("sendVeryfyEmail Start  ------------------- : ");
                 final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
                 sendVerifyEmail(user: user);
-                // print("sendVeryfyEmail End    ------------------- : ");
 
                 // Userのメールアドレス検証結果を状態で保持する
                 final notifier =
@@ -126,7 +124,6 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
                 notifier.updateEmailVerified(user.emailVerified);
               }
             } on firebase_auth.FirebaseAuthException catch (e) {
-              // print("e.code : ${e.code}");
               switch (e.code) {
                 // User情報が登録済みでエラーになった場合
                 case "email-already-in-use":
@@ -146,7 +143,6 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
             }
 
             initial();
-            // print("initial End    ------------------- : ");
           };
     }
 
