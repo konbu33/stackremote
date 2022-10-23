@@ -5,7 +5,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // ignore: unused_import
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/authentication.dart';
 
 import '../../../common/logger.dart';
 import '../widget/login_submit_state.dart';
@@ -79,6 +78,7 @@ class ChangePasswordPageStateNotifier
       }) =>
           () {
             // メールアドレスにURLを送信し、そのURLを押下してもらい、Firebase側のUIからパスワード変更する。
+            // imporve: この方法の方が良い可能性あるため検討の余地あり。
             // final email = ref.read(firebaseAuthUserStateNotifierProvider).email;
             // FirebaseAuth.instance.sendPasswordResetEmail(email: email);
 
