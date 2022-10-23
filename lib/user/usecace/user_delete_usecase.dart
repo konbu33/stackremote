@@ -19,7 +19,5 @@ class UserDeleteUseCase {
     final data = await userRepository.delete(userId);
 
     return data;
-
-    // Construct View Model Object
   }
 }
