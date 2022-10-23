@@ -15,9 +15,13 @@ abstract class UserRepository {
 
   late CollectionReference<JsonMap> ref;
 
-  Future<UserId> add(User user);
-  Future<String> delete(String userId);
-  void update(User user);
   Stream<Users> fetchAll();
+
   Future<User> fetchById(String userId);
+
+  Future<UserId> add(User user);
+
+  Future<String> delete(String userId);
+
+  void update(User user);
 }
