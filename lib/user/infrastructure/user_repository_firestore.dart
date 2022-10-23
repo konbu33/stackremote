@@ -47,7 +47,6 @@ class UserRepositoryFireBase implements UserRepository {
 
       return transferStream(snapshotStream);
     } catch (e) {
-      // print("error: $e");
       rethrow;
     }
   }
@@ -64,7 +63,6 @@ class UserRepositoryFireBase implements UserRepository {
       final DocumentSnapshot<Map<String, dynamic>> doc =
           await ref.doc(userId).get();
       final docData = doc.data();
-      // if (docData == null) throw FirebaseException;
       if (docData == null) {
         throw FirebaseException(
             plugin: "userRepository", code: "fetchById", message: "ユーザが存在しません");
@@ -72,7 +70,6 @@ class UserRepositoryFireBase implements UserRepository {
       final user = User.fromJson(docData);
       return user;
     } on FirebaseException catch (_) {
-      // print(" error code : ${e.code}, error message : ${e.message}");
       rethrow;
     }
   }
