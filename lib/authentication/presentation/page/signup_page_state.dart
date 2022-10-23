@@ -134,9 +134,6 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
                   // User情報が登録済みでエラーになった場合、SnackBarで通知
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-                  // final checkEmailVerified = ref.read(checkEmailVerifiedProvider);
-                  // checkEmailVerified();
-
                   break;
                 default:
               }
