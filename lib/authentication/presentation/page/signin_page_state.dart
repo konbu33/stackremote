@@ -6,7 +6,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-// import 'package:stackremote/authentication/usecase/verify_email.dart';
 
 import '../../../common/common.dart';
 import '../../domain/firebase_auth_user.dart';
