@@ -5,10 +5,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // ignore: unused_import
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/usecase/verify_email.dart';
+
 import '../../domain/firebase_auth_user.dart';
 import '../../infrastructure/authentication_service_firebase.dart';
 import '../../usecase/authentication_service_signup_usecase.dart';
+import '../../usecase/verify_email.dart';
+
 import '../widget/login_submit_state.dart';
 import '../widget/loginid_field_state.dart';
 import '../widget/password_field_state.dart';
