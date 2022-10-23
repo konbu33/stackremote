@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../domain/user.dart';
 import '../domain/user_repository.dart';
 import '../domain/userid.dart';
@@ -35,7 +36,5 @@ class UserUpdateUseCase {
 
     // Repository Execute
     userRepository.update(user);
-
-    // Construct View Model Object
   }
 }
