@@ -85,7 +85,6 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   @override
   Future<firebase_auth.UserCredential> signIn(
       String email, String password) async {
-    // print("email : ${email}, password : ${password} ");
     try {
       final res = await instance.signInWithEmailAndPassword(
           email: email, password: password);
@@ -97,10 +96,8 @@ class AuthenticationServiceFirebase implements AuthenticationService {
         },
       );
 
-      // print("signIn : ${res}");
       return res;
     } on firebase_auth.FirebaseAuthException catch (e) {
-      // print(e);
       switch (e.code) {
         case "user-not-found":
           // [firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.
@@ -119,16 +116,12 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   @override
   Future<firebase_auth.UserCredential> signUp(
       String email, String password) async {
-    // print("email : ${email}, password : ${password} ");
     try {
       final res = await instance.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      // print("signUp : ${res}");
-
       return res;
     } on firebase_auth.FirebaseAuthException catch (e) {
-      // print("e.code : ${e.code}");
       switch (e.code) {
         case "email-already-in-use":
           // FirebaseAuthException ([firebase_auth/email-already-in-use] The email address is already in use by another account.)
@@ -143,7 +136,6 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   @override
   Future<void> signOut() async {
     await instance.signOut();
-    // print("signOut : ");
   }
 
   @override
