@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// import '../../../common/widget/scaffold_body_base_layout_widget.dart';
-
 import '../../../common/common.dart';
+
 import '../widget/login_submit_widget.dart';
 import '../widget/loginid_field_widget.dart';
 import '../widget/password_field_widget.dart';
+
 import 'signup_page_state.dart';
 
 class SignUpPage extends HookConsumerWidget {
@@ -70,6 +70,7 @@ class SignUpPageWidgets {
           .select((value) => value.passwordIsValidate.isValid));
 
       if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
+        // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final notifier = ref.read(signUpPageStateNotifierProvider.notifier);
           notifier
@@ -79,8 +80,6 @@ class SignUpPageWidgets {
       }
 
       return LoginSubmitWidget(
-        // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-        // passwordFieldStateProvider: state.passwordFieldStateProvider,
         loginSubmitStateProvider: state.loginSubmitStateProvider,
       );
     }));

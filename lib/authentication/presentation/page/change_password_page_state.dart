@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+// ignore: unused_import
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/authentication.dart';
 
-import '../../../common/logger.dart';
+import '../../../common/common.dart';
+
 import '../widget/login_submit_state.dart';
 import '../widget/password_field_state.dart';
 
@@ -19,10 +21,13 @@ part 'change_password_page_state.freezed.dart';
 @freezed
 class ChangePasswordPageState with _$ChangePasswordPageState {
   factory ChangePasswordPageState._({
+    // ignore: unused_element
     @Default("パスワード変更") String pageTitle,
     required GlobalKey<FormState> formKey,
     required PasswordFieldStateProvider passwordFieldStateProvider,
     required LoginSubmitStateProvider onSubmitStateProvider,
+
+    // ignore: unused_element
     @Default(false) bool isOnSubmitable,
   }) = _ChangePasswordPageState;
 
@@ -74,6 +79,7 @@ class ChangePasswordPageStateNotifier
       }) =>
           () {
             // メールアドレスにURLを送信し、そのURLを押下してもらい、Firebase側のUIからパスワード変更する。
+            // imporve: この方法の方が良い可能性あるため検討の余地あり。
             // final email = ref.read(firebaseAuthUserStateNotifierProvider).email;
             // FirebaseAuth.instance.sendPasswordResetEmail(email: email);
 
@@ -87,6 +93,7 @@ class ChangePasswordPageStateNotifier
 
             if (user != null) {
               user.updatePassword(newPassword);
+              // imporve: 下記のエラーが発生する懸念がある。深堀り必要そう。
               // Unhandled Exception: [firebase_auth/requires-recent-login] This operation is sensitive and requires recent authentication. Log in again before retrying this request.
             }
 

@@ -1,16 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+// ignore: unused_import
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // improve: authenticationのモジュールをimportしている点、疎結合に改善可能か検討の余地あり。
-import '../../../authentication/usecase/authentication_service_signout_usecase.dart';
-import '../../../authentication/infrastructure/authentication_service_firebase.dart';
-// import '../../usecase/authentication_service_signup_usecase.dart';
-import '../../../authentication/presentation/widget/appbar_action_icon_state.dart';
-// import '../widget/login_submit_state.dart';
-// import '../widget/loginid_field_state.dart';
+import '../../../authentication/authentication.dart';
 
 part 'agora_video_channel_join_page_state.freezed.dart';
 
@@ -30,15 +26,6 @@ class AgoraVideoChannelJoinPageState with _$AgoraVideoChannelJoinPageState {
     required AuthenticationServiceSignOutUsecase
         authenticationServiceSignOutUsecase,
     required AppbarActionIconStateProvider signOutIconStateProvider,
-
-    // // Login Id Field Widget
-    // required LoginIdFieldStateProvider loginIdFieldStateProvider,
-
-    // Login Submit Widget
-    // @Default("新規登録") String loginSubmitWidgetName,
-    // required AuthenticationServiceSignUpUsecase
-    //     authenticationServiceSignUpUsecase,
-    // required LoginSubmitStateProvider loginSubmitStateProvider,
   }) = _AgoraVideoChannelJoinPageState;
 
   factory AgoraVideoChannelJoinPageState.create() =>
@@ -60,19 +47,6 @@ class AgoraVideoChannelJoinPageState with _$AgoraVideoChannelJoinPageState {
           icon: const Icon(null),
           onSubmit: null,
         ),
-
-        // // Login Id Field Widget
-        // loginIdFieldStateProvider: loginIdFieldStateNotifierProviderCreator(),
-
-        // // Login Submit
-        // authenticationServiceSignUpUsecase: AuthenticationServiceSignUpUsecase(
-        //     authenticationService: AuthenticationServiceFirebase(
-        //         instance: firebase_auth.FirebaseAuth.instance)),
-
-        // loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
-        //   loginSubmitWidgetName: "",
-        //   onSubmit: () {},
-        // ),
       );
 }
 
@@ -98,27 +72,6 @@ class AgoraVideoChannelJoinPageStateNotifier
     // setOnSubmit();
     setSignOutIconOnSubumit();
   }
-
-  // void setOnSubmit() {
-  //   Function buildOnSubmit() {
-  //     return ({
-  //       required BuildContext context,
-  //     }) {
-  //       final email = ref
-  //           .read(state.loginIdFieldStateProvider)
-  //           .loginIdFieldController
-  //           .text;
-  //       // state.authenticationServiceSignUpUsecase.execute(email);
-
-  //       initial();
-  //     };
-  //   }
-
-  //   state = state.copyWith(
-  //       loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
-  //           loginSubmitWidgetName: state.loginSubmitWidgetName,
-  //           onSubmit: buildOnSubmit()));
-  // }
 
   // setSignOutIconOnSubumit
   void setSignOutIconOnSubumit() {

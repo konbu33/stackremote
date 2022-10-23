@@ -7,16 +7,19 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // onCall
 import 'package:cloud_functions/cloud_functions.dart';
 
-import '../../authentication/domain/firebase_auth_user.dart';
-// import '../domain/user.dart';
+import '../../authentication/authentication.dart';
 import '../domain/rtc_channel_state.dart';
 
+// --------------------------------------------------
+//
+//  Firebase Functions OnCall用
+//
+// --------------------------------------------------
 final rtcTokenCreateOnCallProvider = Provider((ref) {
   Future<String> rtcCreateToken() async {
     final state = ref.watch(
         RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
-    // final userState = ref.watch(userStateNotifierProvider);
     final userState = ref.watch(firebaseAuthUserStateNotifierProvider);
 
     final notifier = ref.read(RtcChannelStateNotifierProviderList
@@ -73,19 +76,22 @@ final rtcTokenCreateOnCallProvider = Provider((ref) {
   return rtcCreateToken;
 });
 
+// --------------------------------------------------
+//
+//  Firebase Functions OnRequest用
+//
+// --------------------------------------------------
 final rtcTokenCreateOnRequestProvider = Provider((ref) {
   Future<String> rtcCreateToken() async {
     final state = ref.watch(
         RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
-    // final userState = ref.watch(userStateNotifierProvider);
     final userState = ref.watch(firebaseAuthUserStateNotifierProvider);
 
     final notifier = ref.read(RtcChannelStateNotifierProviderList
         .rtcChannelStateNotifierProvider.notifier);
 
     // rtcIdToken Create API Endpoint
-    // final String baseUrl = state.rtcIdTokenApiUrl;
     final String baseUrl = state.rtcIdTokenApiUrl;
     const String onRequestFunctionName = "createRtcIdTokenOnRequest";
     const String queryString = "";

@@ -11,9 +11,6 @@ class PointerPositionedWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(pointerOverlayStateNotifierProvider);
 
-    // print(
-    //     " x : ${state.pointerPosition.dx - pointerRadiusHalf}, y : ${state.pointerPosition.dy - pointerRadiusHalf} ");
-
     final top = state.displayPointerPosition.dy;
     final left = state.displayPointerPosition.dx;
 

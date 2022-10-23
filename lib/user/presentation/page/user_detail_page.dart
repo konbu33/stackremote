@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../authentication/presentation/widget/login_submit_widget.dart';
-import '../../../authentication/presentation/widget/loginid_field_widget.dart';
-import '../../../authentication/presentation/widget/password_field_widget.dart';
-import '../../../common/logger.dart';
+// improve: authentication関連への依存関係を無くしたい。
+import '../../../authentication/authentication.dart';
+
 import 'user_detail_page_state.dart';
 
 class UserDetailPage extends HookConsumerWidget {
@@ -70,6 +69,7 @@ class UserDetailPageWidgets {
           .select((value) => value.passwordIsValidate.isValid));
 
       if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
+        // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final notifier =
               ref.read(userDetailPageStateControllerProvider.notifier);
@@ -80,8 +80,6 @@ class UserDetailPageWidgets {
       }
 
       return LoginSubmitWidget(
-        // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-        // passwordFieldStateProvider: state.passwordFieldStateProvider,
         loginSubmitStateProvider: state.userAddSubmitStateProvider,
       );
     }));
@@ -98,10 +96,8 @@ class UserDetailPageWidgets {
       final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
           .select((value) => value.passwordIsValidate.isValid));
 
-      // logger.d(
-      //     "$loginIdIsValidate, $passwordIsValidate, ${state.isOnSubmitable}");
-
       if ((loginIdIsValidate || passwordIsValidate) != state.isOnSubmitable) {
+        // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final notifier =
               ref.read(userDetailPageStateControllerProvider.notifier);
@@ -112,8 +108,6 @@ class UserDetailPageWidgets {
       }
 
       return LoginSubmitWidget(
-        // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-        // passwordFieldStateProvider: state.passwordFieldStateProvider,
         loginSubmitStateProvider: state.userUpdateSubmitStateProvider,
       );
     }));

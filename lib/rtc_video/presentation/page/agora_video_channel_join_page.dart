@@ -1,17 +1,16 @@
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// import '../../../authentication/domain/firebase_auth_user.dart';
-import '../../../authentication/presentation/widget/appbar_action_icon_widget.dart';
-// import '../../../authentication/presentation/widget/scaffold_body_base_layout_widget.dart';
-
+// improve: authentication, common, menuのモジュールをimportしている点、疎結合に改善可能か検討の余地あり。
+import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
 import '../../../menu/menu.dart';
+
 import '../widget/channel_join_submit_state.dart';
 import '../widget/channel_join_submit_widget.dart';
 import '../widget/channel_name_field_state.dart';
 import '../widget/channel_name_field_widget.dart';
+
 import 'agora_video_channel_join_page_state.dart';
 
 class AgoraVideoChannelJoinPage extends HookConsumerWidget {
@@ -38,29 +37,6 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
                 AgoraVideoChannelJoinPageWidgets.channelNameFieldWidget(),
                 const SizedBox(height: 40),
                 AgoraVideoChannelJoinPageWidgets.channelJoinSubmitWidget(),
-                // const Divider(),
-                // () {
-                //   // final user = ref.watch(userStateNotifierProvider);
-                //   final user = ref.watch(firebaseAuthUserStateNotifierProvider);
-                //   return SingleChildScrollView(
-                //     scrollDirection: Axis.vertical,
-                //     child: Text(
-                //       "firebaseAuthUser: $user",
-                //       maxLines: 10,
-                //     ),
-                //   );
-                // }(),
-                // const Divider(),
-                // () {
-                //   final user = FirebaseAuth.instance.currentUser;
-                //   return SingleChildScrollView(
-                //     scrollDirection: Axis.vertical,
-                //     child: Text(
-                //       "currentUser: $user",
-                //       maxLines: 10,
-                //     ),
-                //   );
-                // }(),
               ],
             ),
           ),
@@ -76,7 +52,6 @@ class AgoraVideoChannelJoinPageWidgets {
     final Widget widget = Consumer(
       builder: (context, ref, child) {
         return const MenuWidget();
-        // return const MenuRoutingLayer();
       },
     );
 
@@ -87,6 +62,7 @@ class AgoraVideoChannelJoinPageWidgets {
   static Widget signOutIconButton() {
     final Widget widget = Consumer(
       builder: ((context, ref, child) {
+        // imporve : state.dartにまとめた方が良いか？ProviderListで定義して利用する方が良いか？
         final state = ref.watch(agoraVideoChannelJoinPageStateNotifierProvider);
 
         return AppbarAcitonIconWidget(
@@ -100,6 +76,7 @@ class AgoraVideoChannelJoinPageWidgets {
 
   // Login Id Field Widget
   static Widget channelNameFieldWidget() {
+    // imporve : state.dartにまとめた方が良いか？ProviderListで定義して利用する方が良いか？
     final channelNameFieldStateProvider =
         ChannelNameFieldStateNotifierProviderList
             .channelNameFieldStateNotifierProvider;
@@ -113,6 +90,7 @@ class AgoraVideoChannelJoinPageWidgets {
 
   // Login Submit Widget
   static Widget channelJoinSubmitWidget() {
+    // imporve : state.dartにまとめた方が良いか？ProviderListで定義して利用する方が良いか？
     final channelJoinSubmitStateProvider = ChannelJoinSubmitStateProviderList
         .channelJoinSubmitStateNotifierProvider;
 

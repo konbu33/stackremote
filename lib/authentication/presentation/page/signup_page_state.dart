@@ -1,12 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+// ignore: unused_import
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/usecase/verify_email.dart';
+
 import '../../domain/firebase_auth_user.dart';
 import '../../infrastructure/authentication_service_firebase.dart';
 import '../../usecase/authentication_service_signup_usecase.dart';
+import '../../usecase/verify_email.dart';
+
 import '../widget/login_submit_state.dart';
 import '../widget/loginid_field_state.dart';
 import '../widget/password_field_state.dart';
@@ -33,6 +37,7 @@ class SignUpPageState with _$SignUpPageState {
     required AuthenticationServiceSignUpUsecase
         authenticationServiceSignUpUsecase,
     required LoginSubmitStateProvider loginSubmitStateProvider,
+    // ignore: unused_element
     @Default(false) bool isOnSubmitable,
   }) = _SignUpPageState;
 
@@ -110,10 +115,8 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
 
               // User情報取得成功した場合、メールアドレス検証メールを送信
               if (user != null) {
-                // print("sendVeryfyEmail Start  ------------------- : ");
                 final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
                 sendVerifyEmail(user: user);
-                // print("sendVeryfyEmail End    ------------------- : ");
 
                 // Userのメールアドレス検証結果を状態で保持する
                 final notifier =
@@ -121,7 +124,6 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
                 notifier.updateEmailVerified(user.emailVerified);
               }
             } on firebase_auth.FirebaseAuthException catch (e) {
-              // print("e.code : ${e.code}");
               switch (e.code) {
                 // User情報が登録済みでエラーになった場合
                 case "email-already-in-use":
@@ -132,16 +134,12 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
                   // User情報が登録済みでエラーになった場合、SnackBarで通知
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-                  // final checkEmailVerified = ref.read(checkEmailVerifiedProvider);
-                  // checkEmailVerified();
-
                   break;
                 default:
               }
             }
 
             initial();
-            // print("initial End    ------------------- : ");
           };
     }
 

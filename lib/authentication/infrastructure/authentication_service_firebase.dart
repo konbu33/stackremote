@@ -1,8 +1,10 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
+// improve: user関連への依存関係を無くしたい。
 import '../../user/domain/user.dart';
 import '../../user/domain/userid.dart';
+
 import 'authentication_service.dart';
 
 class AuthenticationServiceFirebase implements AuthenticationService {
@@ -13,6 +15,12 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   @override
   final firebase_auth.FirebaseAuth instance;
 
+  // --------------------------------------------------
+  //
+  //   authStateChanges
+  //
+  // --------------------------------------------------
+  // improve: 未使用？
   @override
   Stream<User> authStateChanges() async* {
     final Stream<firebase_auth.User?> resStream;
@@ -82,10 +90,14 @@ class AuthenticationServiceFirebase implements AuthenticationService {
     }
   }
 
+  // --------------------------------------------------
+  //
+  //   signIn
+  //
+  // --------------------------------------------------
   @override
   Future<firebase_auth.UserCredential> signIn(
       String email, String password) async {
-    // print("email : ${email}, password : ${password} ");
     try {
       final res = await instance.signInWithEmailAndPassword(
           email: email, password: password);
@@ -97,10 +109,8 @@ class AuthenticationServiceFirebase implements AuthenticationService {
         },
       );
 
-      // print("signIn : ${res}");
       return res;
     } on firebase_auth.FirebaseAuthException catch (e) {
-      // print(e);
       switch (e.code) {
         case "user-not-found":
           // [firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.
@@ -116,19 +126,20 @@ class AuthenticationServiceFirebase implements AuthenticationService {
     }
   }
 
+  // --------------------------------------------------
+  //
+  //   signUp
+  //
+  // --------------------------------------------------
   @override
   Future<firebase_auth.UserCredential> signUp(
       String email, String password) async {
-    // print("email : ${email}, password : ${password} ");
     try {
       final res = await instance.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      // print("signUp : ${res}");
-
       return res;
     } on firebase_auth.FirebaseAuthException catch (e) {
-      // print("e.code : ${e.code}");
       switch (e.code) {
         case "email-already-in-use":
           // FirebaseAuthException ([firebase_auth/email-already-in-use] The email address is already in use by another account.)
@@ -140,12 +151,22 @@ class AuthenticationServiceFirebase implements AuthenticationService {
     }
   }
 
+  // --------------------------------------------------
+  //
+  //   signOut
+  //
+  // --------------------------------------------------
   @override
   Future<void> signOut() async {
     await instance.signOut();
-    // print("signOut : ");
   }
 
+  // --------------------------------------------------
+  //
+  //   getIdToken
+  //
+  // --------------------------------------------------
+  // improve: 未使用？
   @override
   Future<String> getIdToken() async {
     final currentUser = instance.currentUser;

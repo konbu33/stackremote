@@ -1,11 +1,12 @@
 // StateNotifier
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Freezed
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+// ignore: unused_import
 import 'package:flutter/foundation.dart';
 import '../../domain/user.dart';
 import '../../infrastructure/user_repository_firestore.dart';
@@ -48,6 +49,8 @@ class UserDetailPageState with _$UserDetailPageState {
     // User Update Button
     required UserUpdateUseCase userUpdateUseCase,
     required LoginSubmitStateProvider userUpdateSubmitStateProvider,
+
+    // ignore: unused_element
     @Default(false) bool isOnSubmitable,
   }) = _UserDetailPageState;
 
@@ -154,7 +157,6 @@ class UserDetailPageStateController extends StateNotifier<UserDetailPageState> {
   }
 
   void setUserUpdateOnSubmit() {
-    // void setUserUpdateOnSubmit(User user) {
     Function? buildOnSubmit() {
       if (!state.isOnSubmitable) {
         return null;

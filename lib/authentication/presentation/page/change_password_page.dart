@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/common/common.dart';
 
-import '../../../common/logger.dart';
+import '../../../common/common.dart';
+
 import '../widget/login_submit_widget.dart';
 import '../widget/password_field_widget.dart';
+
 import 'change_password_page_state.dart';
 
 class ChangePasswordPage extends HookConsumerWidget {
@@ -62,7 +63,7 @@ class ChangePasswordPageWidgets {
         logger.d("----------- $passwordIsValidate, ${state.isOnSubmitable}");
 
         if (passwordIsValidate != state.isOnSubmitable) {
-          //
+          // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
           WidgetsBinding.instance.addPostFrameCallback((_) {
             final notifier = ref.read(changePasswordPageStateProvider.notifier);
             notifier.updateIsOnSubmitable(passwordIsValidate);
@@ -73,8 +74,6 @@ class ChangePasswordPageWidgets {
         logger.d(" ---- $a");
 
         return LoginSubmitWidget(
-          // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-          // passwordFieldStateProvider: state.passwordFieldStateProvider,
           loginSubmitStateProvider: state.onSubmitStateProvider,
         );
       },

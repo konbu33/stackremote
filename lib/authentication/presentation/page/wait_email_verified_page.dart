@@ -2,14 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/presentation/page/wait_email_verified_page_state.dart';
-// import 'package:stackremote/authentication/domain/firebase_auth_user.dart';
-// import 'package:stackremote/authentication/usecase/verify_email.dart';
 
 import '../../../common/common.dart';
+
 import '../../usecase/verify_email.dart';
+
 import '../widget/appbar_action_icon_widget.dart';
-// import '../../../common/widget/scaffold_body_base_layout_widget.dart';
+
+import 'wait_email_verified_page_state.dart';
 
 class WaitEmailVerifiedPage extends HookConsumerWidget {
   const WaitEmailVerifiedPage({Key? key}) : super(key: key);
@@ -34,8 +34,6 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
               WaitEmailVerifiedPageWidgets.sendVerifiyEmailWidget(),
               const SizedBox(height: 30),
               WaitEmailVerifiedPageWidgets.verifiyEmailStateWidget(),
-              // const SizedBox(height: 30),
-              // WaitEmailVerifiedPageWidgets.userReloadWidget(),
             ],
           ),
         ],
@@ -78,7 +76,6 @@ class WaitEmailVerifiedPageWidgets {
 
       return ElevatedButton(
         onPressed: () {
-          // print("メール送信");
           if (user != null) {
             sendVerifyEmail(user: user);
           }
@@ -89,26 +86,6 @@ class WaitEmailVerifiedPageWidgets {
 
     return widget;
   }
-
-  // static Widget userReloadWidget() {
-  //   final Widget widget = Consumer(builder: (context, ref, child) {
-  //     final firebase_auth.User? user =
-  //         firebase_auth.FirebaseAuth.instance.currentUser;
-
-  //     return ElevatedButton(
-  //       onPressed: () {
-  //         // print("ユーザリロード");
-  //         if (user != null) {
-  //           user.reload();
-  //           // print("user reload : ----------------- $user");
-  //         }
-  //       },
-  //       child: const Text("ユーザリロード"),
-  //     );
-  //   });
-
-  //   return widget;
-  // }
 
   static Widget verifiyEmailStateWidget() {
     final Widget widget = HookConsumer(builder: (context, ref, child) {
@@ -122,7 +99,6 @@ class WaitEmailVerifiedPageWidgets {
         checkEmailVerified;
         return checkEmailVerified.cancel;
       }, [checkEmailVerified]);
-      // print("state : ---------------------- $state");
 
       // final state = ref.watch(firebaseAuthUserStateNotifierProvider);
       return Column(

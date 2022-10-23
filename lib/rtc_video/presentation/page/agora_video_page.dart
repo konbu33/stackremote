@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/presentation/widget/channel_leave_submit_icon_state.dart';
-import 'package:stackremote/rtc_video/presentation/widget/channel_leave_submit_icon_widget.dart';
-import 'package:stackremote/rtc_video/domain/rtc_channel_state.dart';
+
+// improve: pointerのモジュールをimportしている点、疎結合に改善可能か検討の余地あり。
 import '../../../pointer/pointer.dart';
+
+import '../../domain/rtc_channel_state.dart';
+
 import '../widget/agora_video_local_preview_widget.dart';
 import '../widget/agora_video_remote_preview_widget.dart';
+import '../widget/channel_leave_submit_icon_state.dart';
+import '../widget/channel_leave_submit_icon_widget.dart';
+
 import 'agora_video_page_state.dart';
 
 class AgoraVideoPage extends HookConsumerWidget {
@@ -23,8 +28,6 @@ class AgoraVideoPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(agoraVideoPageStateNotifierProvider);
-    // final rtcChannelState = ref.watch(
-    //     RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
     final notifier = ref.watch(agoraVideoPageStateNotifierProvider.notifier);
 
     return Scaffold(
@@ -37,8 +40,6 @@ class AgoraVideoPage extends HookConsumerWidget {
       body: PointerOverlayWidget(
         child: Column(
           children: [
-            // Text("$state"),
-            // Text("$rtcChannelState"),
             Flexible(
               child: Stack(
                 children: [

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../domain/user.dart';
+
 import '../page/user_detail_page.dart';
 import '../page/user_detail_page_state.dart';
 import '../page/user_page_state.dart';

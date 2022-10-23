@@ -1,10 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import '../../../authentication/common/validation.dart';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// improve: authenticationのモジュールをimportしている点、疎結合に改善可能か検討の余地あり。
+import '../../../authentication/authentication.dart';
 
 part 'channel_name_field_state.freezed.dart';
 
