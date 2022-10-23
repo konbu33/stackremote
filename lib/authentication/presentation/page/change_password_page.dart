@@ -74,8 +74,6 @@ class ChangePasswordPageWidgets {
         logger.d(" ---- $a");
 
         return LoginSubmitWidget(
-          // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-          // passwordFieldStateProvider: state.passwordFieldStateProvider,
           loginSubmitStateProvider: state.onSubmitStateProvider,
         );
       },
