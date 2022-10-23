@@ -1,15 +1,13 @@
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// import '../../domain/firebase_auth_user.dart';
 import '../../../common/common.dart';
-import '../widget/appbar_action_icon_widget.dart';
-// import '../../../common/widget/scaffold_body_base_layout_widget.dart';
 
+import '../widget/appbar_action_icon_widget.dart';
 import '../widget/login_submit_widget.dart';
 import '../widget/loginid_field_widget.dart';
 import '../widget/password_field_widget.dart';
+
 import 'signin_page_state.dart';
 
 class SignInPage extends HookConsumerWidget {
@@ -19,7 +17,6 @@ class SignInPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(signInPageStateNotifierProvider);
 
-    // logger.d("rebuild --------------------------------");
     return Scaffold(
       appBar: AppBar(
         title: Text(state.loginSubmitWidgetName),
@@ -38,27 +35,6 @@ class SignInPage extends HookConsumerWidget {
                 SignInPageWidgets.passwordField(state),
                 const SizedBox(height: 40),
                 SignInPageWidgets.loginSubmitWidget(state),
-                // () {
-                //   // final user = ref.watch(userStateNotifierProvider);
-                //   final user = ref.watch(firebaseAuthUserStateNotifierProvider);
-                //   return SingleChildScrollView(
-                //     scrollDirection: Axis.vertical,
-                //     child: Text(
-                //       "firebaseAuthUser: $user",
-                //       maxLines: 10,
-                //     ),
-                //   );
-                // }(),
-                // () {
-                //   final user = FirebaseAuth.instance.currentUser;
-                //   return SingleChildScrollView(
-                //     scrollDirection: Axis.vertical,
-                //     child: Text(
-                //       "currentUser: $user",
-                //       maxLines: 10,
-                //     ),
-                //   );
-                // }(),
               ],
             ),
           ),
@@ -102,9 +78,6 @@ class SignInPageWidgets {
       final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
           .select((value) => value.passwordIsValidate.isValid));
 
-      // logger.d(
-      //     "$loginIdIsValidate, $passwordIsValidate, ${state.isOnSubmitable}");
-
       if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
         // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -116,8 +89,6 @@ class SignInPageWidgets {
       }
 
       return LoginSubmitWidget(
-        // loginIdFieldStateProvider: state.loginIdFieldStateProvider,
-        // passwordFieldStateProvider: state.passwordFieldStateProvider,
         loginSubmitStateProvider: state.loginSubmitStateProvider,
       );
     });
