@@ -10,14 +10,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // ignore: unused_import
 import 'package:flutter/foundation.dart';
 
+import '../../../authentication/authentication.dart';
+
 import '../../domain/users.dart';
 import '../../infrastructure/user_repository_firestore.dart';
-import '../../../authentication/usecase/authentication_service_signout_usecase.dart';
 import '../../usecace/user_delete_usecase.dart';
 import '../../usecace/user_fetch_all_usecase.dart';
 import '../../usecace/user_fetch_by_id_usecase.dart';
-import '../../../authentication/infrastructure/authentication_service_firebase.dart';
-import '../../../authentication/presentation/widget/appbar_action_icon_state.dart';
+
 import 'user_detail_page.dart';
 import 'user_detail_page_state.dart';
 

@@ -7,7 +7,7 @@ export './domain/firebase_auth_user.dart';
 // menu_routing_layer.dart
 export './presentation/page/change_password_page.dart';
 
-// agora_video_channel_join_page_state.dart
+// agora_video_channel_join_page_state.dart, user_page_state.dart
 export './presentation/widget/appbar_action_icon_state.dart';
 export './usecase/authentication_service_signout_usecase.dart';
 export './infrastructure/authentication_service_firebase.dart';
