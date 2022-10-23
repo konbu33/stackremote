@@ -21,10 +21,13 @@ part 'change_password_page_state.freezed.dart';
 @freezed
 class ChangePasswordPageState with _$ChangePasswordPageState {
   factory ChangePasswordPageState._({
+    // ignore: unused_element
     @Default("パスワード変更") String pageTitle,
     required GlobalKey<FormState> formKey,
     required PasswordFieldStateProvider passwordFieldStateProvider,
     required LoginSubmitStateProvider onSubmitStateProvider,
+
+    // ignore: unused_element
     @Default(false) bool isOnSubmitable,
   }) = _ChangePasswordPageState;
 
