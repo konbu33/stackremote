@@ -37,6 +37,7 @@ class SignUpPageState with _$SignUpPageState {
     required AuthenticationServiceSignUpUsecase
         authenticationServiceSignUpUsecase,
     required LoginSubmitStateProvider loginSubmitStateProvider,
+    // ignore: unused_element
     @Default(false) bool isOnSubmitable,
   }) = _SignUpPageState;
 
