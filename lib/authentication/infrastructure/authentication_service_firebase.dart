@@ -13,6 +13,12 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   @override
   final firebase_auth.FirebaseAuth instance;
 
+  // --------------------------------------------------
+  //
+  //   authStateChanges
+  //
+  // --------------------------------------------------
+  // improve: 未使用？
   @override
   Stream<User> authStateChanges() async* {
     final Stream<firebase_auth.User?> resStream;
@@ -82,6 +88,11 @@ class AuthenticationServiceFirebase implements AuthenticationService {
     }
   }
 
+  // --------------------------------------------------
+  //
+  //   signIn
+  //
+  // --------------------------------------------------
   @override
   Future<firebase_auth.UserCredential> signIn(
       String email, String password) async {
@@ -113,6 +124,11 @@ class AuthenticationServiceFirebase implements AuthenticationService {
     }
   }
 
+  // --------------------------------------------------
+  //
+  //   signUp
+  //
+  // --------------------------------------------------
   @override
   Future<firebase_auth.UserCredential> signUp(
       String email, String password) async {
@@ -133,11 +149,22 @@ class AuthenticationServiceFirebase implements AuthenticationService {
     }
   }
 
+  // --------------------------------------------------
+  //
+  //   signOut
+  //
+  // --------------------------------------------------
   @override
   Future<void> signOut() async {
     await instance.signOut();
   }
 
+  // --------------------------------------------------
+  //
+  //   getIdToken
+  //
+  // --------------------------------------------------
+  // improve: 未使用？
   @override
   Future<String> getIdToken() async {
     final currentUser = instance.currentUser;
