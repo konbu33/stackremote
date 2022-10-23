@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../authentication/presentation/widget/login_submit_widget.dart';
 import '../../../authentication/presentation/widget/loginid_field_widget.dart';
 import '../../../authentication/presentation/widget/password_field_widget.dart';
-import '../../../common/logger.dart';
+
 import 'user_detail_page_state.dart';
 
 class UserDetailPage extends HookConsumerWidget {
