@@ -21,9 +21,6 @@ part 'wait_email_verified_page_state.freezed.dart';
 @freezed
 class WaitEmailVerifiedPageState with _$WaitEmailVerifiedPageState {
   const factory WaitEmailVerifiedPageState._({
-    // ignore: unused_element
-    // @Default("新規登録") String loginSubmitWidgetName,
-
     // PageTitle
     required String pageTitle,
 
@@ -54,6 +51,7 @@ class WaitEmailVerifiedPageState with _$WaitEmailVerifiedPageState {
         signOutIconStateProvider: appbarActionIconStateProviderCreator(
           onSubmitWidgetName: "",
           icon: const Icon(null),
+          // improve: 初期値nullにする。
           onSubmit: () {},
         ),
       );
