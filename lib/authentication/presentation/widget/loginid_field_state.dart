@@ -97,7 +97,7 @@ typedef LoginIdFieldStateProvider
 //  StateNotifierProviderCreateor
 //
 // --------------------------------------------------
-Function loginIdFieldStateNotifierProviderCreator = () {
+LoginIdFieldStateProvider loginIdFieldStateNotifierProviderCreator() {
   return StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>(
       (ref) => LoginIdFieldStateNotifier());
-};
+}
