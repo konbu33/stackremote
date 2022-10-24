@@ -51,8 +51,7 @@ class WaitEmailVerifiedPageState with _$WaitEmailVerifiedPageState {
         signOutIconStateProvider: appbarActionIconStateProviderCreator(
           onSubmitWidgetName: "",
           icon: const Icon(null),
-          // improve: 初期値nullにする。
-          onSubmit: () {},
+          onSubmit: null,
         ),
       );
 }
@@ -84,9 +83,10 @@ class WaitEmailVerifiedPageStateNotifier
     Function buildOnSubmit() {
       return ({
         required BuildContext context,
-      }) {
-        state.authenticationServiceSignOutUsecase.execute();
-      };
+      }) =>
+          () {
+            state.authenticationServiceSignOutUsecase.execute();
+          };
     }
 
     state = state.copyWith(

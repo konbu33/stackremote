@@ -66,6 +66,7 @@ test/try
 integration_test/try
 
 # goldens_test
+test/goldens_test/failures
 test/goldens_test/goldens
 
 # mockito 
