@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/authentication/authentication.dart';
 
+import '../../../common/common.dart';
 import '../../domain/rtc_channel_state.dart';
 import '../../infrastructure/rtc_channel_join_provider.dart';
 import '../../infrastructure/rtc_token_create_provider.dart';
@@ -76,8 +79,9 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
                 final notifier = ref.read(RtcChannelStateNotifierProviderList
                     .rtcChannelStateNotifierProvider.notifier);
 
-                notifier
-                    .updateChannelName(state.channelNameFieldController.text);
+                final channelName = state.channelNameFieldController.text;
+
+                notifier.updateChannelName(channelName);
 
                 final rtcCreateToken = ref.watch(rtcTokenCreateOnCallProvider);
 
@@ -103,6 +107,97 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
 
                 final rtcJoinChannel = ref.watch(rtcJoinChannelProvider);
                 await rtcJoinChannel();
+
+                final rtcChannelState = ref.watch(
+                    RtcChannelStateNotifierProviderList
+                        .rtcChannelStateNotifierProvider);
+
+                final firebaseAuthUser =
+                    ref.watch(firebaseAuthUserStateNotifierProvider);
+
+                await FirebaseFirestore.instance
+                    .collection('channels')
+                    .doc(rtcChannelState.channelName)
+                    .get()
+                    .then((value) {
+                  if (!value.exists) {
+                    final channelData = {
+                      "createAt": FieldValue.serverTimestamp(),
+                      "hostUserEmail": firebaseAuthUser.email,
+                    };
+
+                    FirebaseFirestore.instance
+                        .collection('channels')
+                        .doc(rtcChannelState.channelName)
+                        .set(channelData);
+
+                    final hostUserData = {
+                      "name": "ホストユーザ",
+                      "isHost": true,
+                      "joinedAt": FieldValue.serverTimestamp(),
+                      "leavedAt": null,
+                      "isOnLongPressing": false,
+                      "pointerPosition": {
+                        "dx": 0.0,
+                        "dy": 0.0,
+                      },
+                    };
+
+                    FirebaseFirestore.instance
+                        .collection('channels')
+                        .doc(rtcChannelState.channelName)
+                        .collection('users')
+                        .doc(firebaseAuthUser.email)
+                        .set(hostUserData);
+                  }
+                });
+
+                await FirebaseFirestore.instance
+                    .collection('channels')
+                    .doc(rtcChannelState.channelName)
+                    .get()
+                    .then((value) {
+                  if (value.exists) {
+                    final data = value.data() ?? {};
+
+                    final hostUserEmail = data["hostUserEmail"];
+
+                    late Map<String, dynamic> userData;
+
+                    if (hostUserEmail == firebaseAuthUser.email) {
+                      userData = {
+                        "name": "ホストユーザ",
+                        "isHost": true,
+                        "joinedAt": FieldValue.serverTimestamp(),
+                        "leavedAt": null,
+                        "isOnLongPressing": false,
+                        "pointerPosition": {
+                          "dx": 0.0,
+                          "dy": 0.0,
+                        },
+                      };
+                    } else {
+                      userData = {
+                        "name": "ゲストユーザ",
+                        "isHost": false,
+                        "joinedAt": FieldValue.serverTimestamp(),
+                        "leavedAt": null,
+                        "isOnLongPressing": false,
+                        "pointerPosition": {
+                          "dx": 0.0,
+                          "dy": 0.0,
+                        },
+                      };
+                    }
+
+                    FirebaseFirestore.instance
+                        .collection('channels')
+                        .doc(rtcChannelState.channelName)
+                        .collection('users')
+                        .doc(firebaseAuthUser.email)
+                        .set(userData);
+                  }
+                });
 
                 notifier.changeJoined(true);
               };

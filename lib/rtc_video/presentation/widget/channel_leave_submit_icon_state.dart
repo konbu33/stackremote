@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../authentication/authentication.dart';
 import '../../domain/rtc_channel_state.dart';
 import '../../infrastructure/rtc_channel_leave_provider.dart';
 
@@ -72,10 +74,27 @@ ChannelLeaveSubmitIconStateProvider
           .rtcChannelStateNotifierProvider.notifier);
 
       Function? onSubmit({required BuildContext context}) {
-        return () {
+        return () async {
           final rtcLeaveChannel = ref.read(rtcLeaveChannelProvider);
 
           rtcLeaveChannel();
+
+          final rtcChannelState = ref.watch(RtcChannelStateNotifierProviderList
+              .rtcChannelStateNotifierProvider);
+
+          final firebaseAuthUser =
+              ref.watch(firebaseAuthUserStateNotifierProvider);
+
+          final data = {
+            "leavedAt": FieldValue.serverTimestamp(),
+          };
+
+          await FirebaseFirestore.instance
+              .collection('channels')
+              .doc(rtcChannelState.channelName)
+              .collection('users')
+              .doc(firebaseAuthUser.email)
+              .update(data);
 
           notifier.changeJoined(false);
         };
