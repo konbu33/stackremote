@@ -1,11 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/authentication.dart';
 
-import '../../../common/common.dart';
+import '../../../authentication/authentication.dart';
+import '../../../channel/channel.dart';
+import '../../../user/user.dart';
+
 import '../../domain/rtc_channel_state.dart';
 import '../../infrastructure/rtc_channel_join_provider.dart';
 import '../../infrastructure/rtc_token_create_provider.dart';
@@ -76,6 +77,11 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
         return state.channelNameIsValidate.isValid == false
             ? null
             : () async {
+                // --------------------------------------------------
+                //
+                // チャンネル名をアプリ内で状態として保持する
+                //
+                // --------------------------------------------------
                 final notifier = ref.read(RtcChannelStateNotifierProviderList
                     .rtcChannelStateNotifierProvider.notifier);
 
@@ -83,6 +89,11 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
 
                 notifier.updateChannelName(channelName);
 
+                // --------------------------------------------------
+                //
+                // rtc_id_token取得
+                //
+                // --------------------------------------------------
                 final rtcCreateToken = ref.watch(rtcTokenCreateOnCallProvider);
 
                 try {
@@ -105,100 +116,69 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
                   return;
                 }
 
+                // --------------------------------------------------
+                //
+                // チャンネル参加
+                //
+                // --------------------------------------------------
                 final rtcJoinChannel = ref.watch(rtcJoinChannelProvider);
                 await rtcJoinChannel();
 
-                final rtcChannelState = ref.watch(
-                    RtcChannelStateNotifierProviderList
-                        .rtcChannelStateNotifierProvider);
+                // --------------------------------------------------
+                //
+                // DBにチャンネル情報とユーザ情報を登録
+                //
+                // --------------------------------------------------
+                final channelGetUsecase = ref.read(channelGetUsecaseProvider);
+                final channel = await channelGetUsecase();
 
+                final channelSetUsecase = ref.read(channelSetUsecaseProvider);
+                final userSetUsecase = ref.read(userSetUsecaseProvider);
+
+                // 本アプリのカレントユーザのemailを取得
                 final firebaseAuthUser =
                     ref.watch(firebaseAuthUserStateNotifierProvider);
 
-                await FirebaseFirestore.instance
-                    .collection('channels')
-                    .doc(rtcChannelState.channelName)
-                    .get()
-                    .then((value) {
-                  if (!value.exists) {
-                    final channelData = {
-                      "createAt": FieldValue.serverTimestamp(),
-                      "hostUserEmail": firebaseAuthUser.email,
-                    };
+                // チャンネルが存在しない場合
+                if (!channel.exists) {
+                  await channelSetUsecase();
+                  await userSetUsecase(
+                    email: firebaseAuthUser.email,
+                    nickName: "ホストユーザ",
+                    isHost: true,
+                  );
 
-                    FirebaseFirestore.instance
-                        .collection('channels')
-                        .doc(rtcChannelState.channelName)
-                        .set(channelData);
+                  // チャンネルが存在する場合
+                } else {
+                  // チャンネルのホストユーザのemailを取得
+                  final data = channel.data() ?? {};
 
-                    final hostUserData = {
-                      "name": "ホストユーザ",
-                      "isHost": true,
-                      "joinedAt": FieldValue.serverTimestamp(),
-                      "leavedAt": null,
-                      "isOnLongPressing": false,
-                      "pointerPosition": {
-                        "dx": 0.0,
-                        "dy": 0.0,
-                      },
-                    };
+                  final channelState = Channel.create(
+                    createAt: data["createAt"],
+                    hostUserEmail: data["hostUserEmail"],
+                  );
 
-                    FirebaseFirestore.instance
-                        .collection('channels')
-                        .doc(rtcChannelState.channelName)
-                        .collection('users')
-                        .doc(firebaseAuthUser.email)
-                        .set(hostUserData);
+                  // ホストユーザとそれ以外のユーザで分岐
+                  if (channelState.hostUserEmail == firebaseAuthUser.email) {
+                    await userSetUsecase(
+                      email: firebaseAuthUser.email,
+                      nickName: "ホストユーザ",
+                      isHost: true,
+                    );
+                  } else {
+                    await userSetUsecase(
+                      email: firebaseAuthUser.email,
+                      nickName: "ゲストユーザ",
+                      isHost: false,
+                    );
                   }
-                });
+                }
 
-                await FirebaseFirestore.instance
-                    .collection('channels')
-                    .doc(rtcChannelState.channelName)
-                    .get()
-                    .then((value) {
-                  if (value.exists) {
-                    final data = value.data() ?? {};
-
-                    final hostUserEmail = data["hostUserEmail"];
-
-                    late Map<String, dynamic> userData;
-
-                    if (hostUserEmail == firebaseAuthUser.email) {
-                      userData = {
-                        "name": "ホストユーザ",
-                        "isHost": true,
-                        "joinedAt": FieldValue.serverTimestamp(),
-                        "leavedAt": null,
-                        "isOnLongPressing": false,
-                        "pointerPosition": {
-                          "dx": 0.0,
-                          "dy": 0.0,
-                        },
-                      };
-                    } else {
-                      userData = {
-                        "name": "ゲストユーザ",
-                        "isHost": false,
-                        "joinedAt": FieldValue.serverTimestamp(),
-                        "leavedAt": null,
-                        "isOnLongPressing": false,
-                        "pointerPosition": {
-                          "dx": 0.0,
-                          "dy": 0.0,
-                        },
-                      };
-                    }
-
-                    FirebaseFirestore.instance
-                        .collection('channels')
-                        .doc(rtcChannelState.channelName)
-                        .collection('users')
-                        .doc(firebaseAuthUser.email)
-                        .set(userData);
-                  }
-                });
-
+                // --------------------------------------------------
+                //
+                // チャンネル参加済みであることをアプリ内で状態として保持する
+                //
+                // --------------------------------------------------
                 notifier.changeJoined(true);
               };
       }

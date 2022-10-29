@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user/usecace/user_update_usecase.dart';
 
 import '../../../authentication/authentication.dart';
 import '../../domain/rtc_channel_state.dart';
@@ -77,25 +78,18 @@ ChannelLeaveSubmitIconStateProvider
         return () async {
           final rtcLeaveChannel = ref.read(rtcLeaveChannelProvider);
 
+          // チャンネル離脱
           rtcLeaveChannel();
 
-          final rtcChannelState = ref.watch(RtcChannelStateNotifierProviderList
-              .rtcChannelStateNotifierProvider);
+          // DBのUser情報更新
+          final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
+          await userUpdateUsecase<FieldValue>(
+            leavedAt: FieldValue.serverTimestamp(),
+            isOnLongPressing: false,
+            pointerPosition: const Offset(0, 0),
+          );
 
-          final firebaseAuthUser =
-              ref.watch(firebaseAuthUserStateNotifierProvider);
-
-          final data = {
-            "leavedAt": FieldValue.serverTimestamp(),
-          };
-
-          await FirebaseFirestore.instance
-              .collection('channels')
-              .doc(rtcChannelState.channelName)
-              .collection('users')
-              .doc(firebaseAuthUser.email)
-              .update(data);
-
+          // チャンネル離脱したことをアプリ内の状態として保持
           notifier.changeJoined(false);
         };
       }
