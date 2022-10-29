@@ -1,11 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 // ignore: unused_import
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../common/common.dart';
 
 part 'pointer_overlay_state.freezed.dart';
 part 'pointer_overlay_state.g.dart';
@@ -40,55 +40,6 @@ class PointerOerlayerState with _$PointerOerlayerState {
 
   factory PointerOerlayerState.fromJson(Map<String, dynamic> json) =>
       _$PointerOerlayerStateFromJson(json);
-}
-
-// --------------------------------------------------
-//
-//  JsonConverter Offset
-//
-// --------------------------------------------------
-class OffsetConverter extends JsonConverter<Offset, String> {
-  const OffsetConverter();
-
-  @override
-  String toJson(Offset object) {
-    final double dx = object.dx;
-    final double dy = object.dy;
-    final Map<String, double> jsonMap = {
-      "dx": dx,
-      "dy": dy,
-    };
-    return jsonEncode(jsonMap);
-  }
-
-  @override
-  Offset fromJson(String json) {
-    final Map<String, dynamic> jsonMap = jsonDecode(json);
-    final double dx = jsonMap["dx"];
-    final double dy = jsonMap["dy"];
-
-    return Offset(dx, dy);
-  }
-}
-
-// --------------------------------------------------
-//
-//  JsonConverter TextEditingController
-//
-// --------------------------------------------------
-class TextEditingControllerConverter
-    extends JsonConverter<TextEditingController, String> {
-  const TextEditingControllerConverter();
-
-  @override
-  String toJson(TextEditingController object) {
-    return object.text;
-  }
-
-  @override
-  TextEditingController fromJson(String json) {
-    return TextEditingController(text: json);
-  }
 }
 
 // --------------------------------------------------
@@ -133,6 +84,6 @@ class PointerOverlayStateNotifier extends StateNotifier<PointerOerlayerState> {
 // StateNotifierProvider
 //
 // --------------------------------------------------
-final pointerOverlayStateNotifierProvider =
-    StateNotifierProvider<PointerOverlayStateNotifier, PointerOerlayerState>(
-        (ref) => PointerOverlayStateNotifier());
+final pointerOverlayStateNotifierProvider = StateNotifierProvider.autoDispose<
+    PointerOverlayStateNotifier,
+    PointerOerlayerState>((ref) => PointerOverlayStateNotifier());

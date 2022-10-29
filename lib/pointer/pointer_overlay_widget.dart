@@ -1,9 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user/domain/users.dart';
 
-import '../authentication/authentication.dart';
-import '../rtc_video/rtc_video.dart';
+import '../user/domain/user.dart';
+import '../user/user.dart';
+
 import 'pointer_overlay_state.dart';
 import 'pointer_positioned_widget.dart';
 
@@ -21,69 +22,77 @@ class PointerOverlayWidget extends HookConsumerWidget {
 
     final notifier = ref.read(pointerOverlayStateNotifierProvider.notifier);
 
+    final usersStream = ref.read(usersStreamProvider);
+
+    final userStreamList = ref.watch(userStreamListProvider) ?? [];
+
+    List<Widget> userWidgetList = [];
+
+    userStreamList.map(
+      (userStream) {
+        return userStream.when<Widget>(
+          loading: () => const Text("usersStream loading..."),
+          error: (error, stackTrace) => const Text("error"),
+          data: (user) {
+            if (user.isOnLongPressing) {
+              final widget = PointerPositionedWidget(
+                dx: user.pointerPosition.dx,
+                dy: user.pointerPosition.dy,
+                nickName: user.nickName,
+                email: user.email,
+                comment: user.comment,
+              );
+
+              userWidgetList.add(widget);
+            }
+            return const Text("success get data");
+          },
+        );
+      },
+    ).toList();
+
     return MouseRegion(
       cursor: SystemMouseCursors.none,
       child: GestureDetector(
         // ロングタップすることで、ポイン表示開始
         onLongPressStart: (event) async {
-          notifier.changeOnLongPress(isOnLongPressing: true);
-          notifier.updatePosition(event.localPosition);
+          // notifier.changeOnLongPress(isOnLongPressing: true);
+          // notifier.updatePosition(event.localPosition);
 
-          final rtcChannelState = ref.watch(RtcChannelStateNotifierProviderList
-              .rtcChannelStateNotifierProvider);
+          // // DBのポインタ情報を更新
+          // final pointerOerlayerState =
+          //     ref.watch(pointerOverlayStateNotifierProvider);
 
-          final firebaseAuthUser =
-              ref.watch(firebaseAuthUserStateNotifierProvider);
+          final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
 
-          final pointerOerlayerState =
-              ref.watch(pointerOverlayStateNotifierProvider);
+          userUpdateUsecase(
+            isOnLongPressing: true,
+            pointerPosition: event.localPosition,
+          );
 
-          final data = {
-            "isOnLongPressing": pointerOerlayerState.isOnLongPressing,
-            // "pointerPosition": event.localPosition.toString(),
-            // "pointerPosition": pointerOerlayerState.pointerPosition.toString(),
-            "pointerPosition": {
-              "dx": pointerOerlayerState.pointerPosition.dx,
-              "dy": pointerOerlayerState.pointerPosition.dy
-            },
-          };
-
-          await FirebaseFirestore.instance
-              .collection('channels')
-              .doc(rtcChannelState.channelName)
-              .collection('users')
-              .doc(firebaseAuthUser.email)
-              .update(data);
+          // userUpdateUsecase(
+          //   isOnLongPressing: pointerOerlayerState.isOnLongPressing,
+          //   pointerPosition: pointerOerlayerState.pointerPosition,
+          // );
         },
 
         // ロングタップ中は、ポインタ表示
         onLongPressMoveUpdate: (event) async {
-          notifier.updatePosition(event.localPosition);
+          // notifier.updatePosition(event.localPosition);
 
-          final rtcChannelState = ref.watch(RtcChannelStateNotifierProviderList
-              .rtcChannelStateNotifierProvider);
+          // // DBのポインタ情報を更新
+          // final pointerOerlayerState =
+          //     ref.watch(pointerOverlayStateNotifierProvider);
 
-          final firebaseAuthUser =
-              ref.watch(firebaseAuthUserStateNotifierProvider);
+          final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
 
-          final pointerOerlayerState =
-              ref.watch(pointerOverlayStateNotifierProvider);
+          userUpdateUsecase(
+            pointerPosition: event.localPosition,
+          );
 
-          final data = {
-            // "pointerPosition": event.localPosition.toString(),
-            // "pointerPosition": pointerOerlayerState.pointerPosition.toString(),
-            "pointerPosition": {
-              "dx": pointerOerlayerState.pointerPosition.dx,
-              "dy": pointerOerlayerState.pointerPosition.dy
-            },
-          };
-
-          await FirebaseFirestore.instance
-              .collection('channels')
-              .doc(rtcChannelState.channelName)
-              .collection('users')
-              .doc(firebaseAuthUser.email)
-              .update(data);
+          // userUpdateUsecase(
+          //   pointerPosition: pointerOerlayerState.pointerPosition,
+          // );
         },
 
         child: Container(
@@ -95,11 +104,98 @@ class PointerOverlayWidget extends HookConsumerWidget {
             children: [
               child,
               // childの上位レイヤーにポインを表示
-              if (state.isOnLongPressing) const PointerPositionedWidget(),
+              // if (state.isOnLongPressing) const PointerPositionedWidget(),
 
-              // debug: ポインタの位置を表示
-              Text(
-                  "x:${(state.pointerPosition.dx.round())}, y:${state.pointerPosition.dy.round()}"),
+              Stack(children: userWidgetList),
+
+              // Stack(
+              //   children: userStreamList.map(
+              //     (userStream) {
+              //       return userStream.when<Widget>(
+              //         loading: () => const Text("usersStream loading..."),
+              //         error: (error, stackTrace) => const Text("error"),
+              //         data: (user) {
+              //           return user.isOnLongPressing
+              //               ? PointerPositionedWidget(
+              //                   dx: user.pointerPosition.dx,
+              //                   dy: user.pointerPosition.dy,
+              //                   nickName: user.nickName,
+              //                 )
+              //               : Container(color: Colors.transparent);
+
+              //           // Text("$data");
+              //         },
+              //       );
+              //     },
+              //   ).toList(),
+              // ),
+
+              // usersStream.when(
+              //   // loading: () => const CircularProgressIndicator(),
+              //   loading: () => const Text("usersStream loading..."),
+              //   error: (error, stackTrace) => const Text("error"),
+              //   data: (data) {
+              //     final pointerPositionedWidgets = data.users.map((user) {
+              //       // 各user単位で更新をサブスクライブ
+              //       final userStream =
+              //           ref.watch(userStreamProviderFiamiy(user.email));
+
+              //       // final userStreamProvider = StreamProvider((ref) {
+              //       //   final rtcChannelState = ref.watch(
+              //       //       RtcChannelStateNotifierProviderList
+              //       //           .rtcChannelStateNotifierProvider);
+
+              //       //   return FirebaseFirestore.instance
+              //       //       .collection('channels')
+              //       //       .doc(rtcChannelState.channelName)
+              //       //       .collection('users')
+              //       //       .doc(user.email)
+              //       //       .snapshots();
+              //       // });
+
+              //       // final userStream = ref.watch(userStreamProvider);
+
+              //       return userStream.when(
+              //         // loading: () => const CircularProgressIndicator(),
+              //         loading: () => const Text("userStream loading..."),
+              //         error: (error, stackTrace) => const Text("error"),
+              //         data: (data) {
+              //           return user.isOnLongPressing
+              //               ? PointerPositionedWidget(
+              //                   dx: user.pointerPosition.dx,
+              //                   dy: user.pointerPosition.dy,
+              //                   nickName: user.nickName,
+              //                 )
+              //               : const SizedBox();
+              //         },
+              //       );
+              //     });
+
+              //     return Stack(
+              //       children: pointerPositionedWidgets.toList(),
+              //     );
+
+              //     // return ListView.builder(
+              //     //   itemCount: data.users.length,
+              //     //   itemBuilder: (context, index) {
+              //     //     // final i = data.users.length - (index + 1);
+              //     //     final user = data.users[index];
+
+              //     //     return user.isOnLongPressing
+              //     //         ? PointerPositionedWidget(
+              //     //             dx: user.pointerPosition.dx,
+              //     //             dy: user.pointerPosition.dy,
+              //     //             nickName: user.nickName,
+              //     //           )
+              //     //         : const SizedBox();
+              //     //   },
+              //     // );
+              //   },
+              // ),
+
+              // // debug: ポインタの位置を表示
+              // Text(
+              //     "x:${(state.pointerPosition.dx.round())}, y:${state.pointerPosition.dy.round()}"),
             ],
           ),
         ),
