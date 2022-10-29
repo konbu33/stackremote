@@ -82,11 +82,11 @@ class ChannelRepositoryFireBase implements ChannelRepository {
   //
   // --------------------------------------------------
   @override
-  Future<ChannelId> add(Channel channel) async {
+  Future<Channel> add(Channel channel) async {
     final channelJson = channel.toJson();
-    final String docId = channel.channelId.value.toString();
-    await ref.doc(docId).set(channelJson);
-    return channel.channelId;
+    // final String docId = channel.channelId.value.toString();
+    // await ref.doc(docId).set(channelJson);
+    return channel;
   }
 
   // --------------------------------------------------
@@ -108,7 +108,7 @@ class ChannelRepositoryFireBase implements ChannelRepository {
   @override
   void update(Channel channel) async {
     final channelJson = channel.toJson();
-    final String docId = channel.channelId.value.toString();
-    await ref.doc(docId).set(channelJson);
+    // final String docId = channel.channelId.value.toString();
+    // await ref.doc(docId).set(channelJson);
   }
 }

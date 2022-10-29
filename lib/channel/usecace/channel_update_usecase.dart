@@ -16,9 +16,7 @@ class ChannelUpdateUseCase {
     ChannelId channelId,
   ) {
     // Construct Dimain Model Object
-    final Channel channel = Channel.reconstruct(
-      channelId: channelId,
-    );
+    final Channel channel = Channel.create();
 
     // Repository Execute
     channelRepository.update(channel);

@@ -19,7 +19,7 @@ abstract class ChannelRepository {
 
   Future<Channel> fetchById(String channelId);
 
-  Future<ChannelId> add(Channel channel);
+  Future<Channel> add(Channel channel);
 
   Future<String> delete(String channelId);
 

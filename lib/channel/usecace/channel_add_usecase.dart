@@ -12,13 +12,13 @@ class ChannelAddUseCase {
   final ChannelRepository channelRepository;
 
   // UseCase Execute
-  Future<ChannelId> execute(String channelName) async {
+  Future<Channel> execute(String channelName) async {
     // Construct Dimain Model Object
-    final Channel channel = Channel.create(channelName: channelName);
+    final Channel channel = Channel.create();
 
     // Repository Execute
     await channelRepository.add(channel);
 
-    return channel.channelId;
+    return channel;
   }
 }
