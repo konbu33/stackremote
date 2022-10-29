@@ -9,7 +9,7 @@ class UserRepositoryFireBase implements UserRepository {
   UserRepositoryFireBase({
     required this.firebaseFirestoreInstance,
   }) {
-    ref = firebaseFirestoreInstance.collection('users');
+    ref = firebaseFirestoreInstance.collection('channels');
   }
 
   @override
@@ -76,15 +76,32 @@ class UserRepositoryFireBase implements UserRepository {
 
   // --------------------------------------------------
   //
+  //  set
+  //
+  // --------------------------------------------------
+  @override
+  Future<User> set({
+    required String docId,
+    required User user,
+  }) async {
+    final userJson = user.toJson();
+    // final String docId = user.userId.value.toString();
+    await ref.doc(docId).set(userJson);
+    return user;
+  }
+
+  // --------------------------------------------------
+  //
   //   add
   //
   // --------------------------------------------------
   @override
   Future<UserId> add(User user) async {
-    final userJson = user.toJson();
-    final String docId = user.userId.value.toString();
-    await ref.doc(docId).set(userJson);
-    return user.userId;
+    // final userJson = user.toJson();
+    // final String docId = user.userId.value.toString();
+    // await ref.doc(docId).set(userJson);
+    // return user.userId;
+    return UserId.create();
   }
 
   // --------------------------------------------------
@@ -105,8 +122,8 @@ class UserRepositoryFireBase implements UserRepository {
   // --------------------------------------------------
   @override
   void update(User user) async {
-    final userJson = user.toJson();
-    final String docId = user.userId.value.toString();
-    await ref.doc(docId).set(userJson);
+    // final userJson = user.toJson();
+    // final String docId = user.userId.value.toString();
+    // await ref.doc(docId).set(userJson);
   }
 }

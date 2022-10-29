@@ -19,8 +19,8 @@ import '../../usecace/user_delete_usecase.dart';
 import '../../usecace/user_fetch_all_usecase.dart';
 import '../../usecace/user_fetch_by_id_usecase.dart';
 
-import 'user_detail_page.dart';
-import 'user_detail_page_state.dart';
+// import 'user_detail_page.dart';
+// import 'user_detail_page_state.dart';
 
 part 'user_page_state.freezed.dart';
 
@@ -47,9 +47,9 @@ class UserPageState with _$UserPageState {
     required AppbarActionIconStateProvider signOutIconStateProvider,
 
     // User List Widget
-    required StreamProvider<Users> usersStreamProvider,
-    required UserFetchByIdUseCase userFindByIdUseCase,
-    required UserDeleteUseCase userDeleteUseCase,
+    // required StreamProvider<Users> usersStreamProvider,
+    // required UserFetchByIdUseCase userFindByIdUseCase,
+    // required UserDeleteUseCase userDeleteUseCase,
   }) = _UserPageState;
 
   // Factory Constructor
@@ -79,25 +79,27 @@ class UserPageState with _$UserPageState {
           onSubmit: null,
         ),
 
-        // User List Widget
-        usersStreamProvider: StreamProvider<Users>(
-          (ref) {
-            return UserFetchAllUseCase(
-              userRepository: UserRepositoryFireBase(
-                  firebaseFirestoreInstance: FirebaseFirestore.instance),
-            ).execute();
-          },
-        ),
+        // // User List Widget
+        // usersStreamProvider: StreamProvider<Users>(
+        //   (ref) {
+        //     final userFetchAllUseCase = ref.watch(userFetchAllUsecaseProvider);
+        //     return userFetchAllUseCase();
+        //     // return UserFetchAllUseCase(
+        //     //   userRepository: UserRepositoryFireBase(
+        //     //       firebaseFirestoreInstance: FirebaseFirestore.instance),
+        //     // ).execute();
+        //   },
+        // ),
 
-        userFindByIdUseCase: UserFetchByIdUseCase(
-          userRepository: UserRepositoryFireBase(
-              firebaseFirestoreInstance: FirebaseFirestore.instance),
-        ),
+        // userFindByIdUseCase: UserFetchByIdUseCase(
+        //   userRepository: UserRepositoryFireBase(
+        //       firebaseFirestoreInstance: FirebaseFirestore.instance),
+        // ),
 
-        userDeleteUseCase: UserDeleteUseCase(
-          userRepository: UserRepositoryFireBase(
-              firebaseFirestoreInstance: FirebaseFirestore.instance),
-        ),
+        // userDeleteUseCase: UserDeleteUseCase(
+        //   userRepository: UserRepositoryFireBase(
+        //       firebaseFirestoreInstance: FirebaseFirestore.instance),
+        // ),
       );
 }
 
@@ -118,68 +120,68 @@ class UserPageStateController extends StateNotifier<UserPageState> {
 
   // initial
   void initial() {
-    setUserAddIconOnSubumit();
-    setSignOutIconOnSubumit();
+    // setUserAddIconOnSubumit();
+    // setSignOutIconOnSubumit();
   }
 
-  // setUserAddIconOnSubumit
-  void setUserAddIconOnSubumit() {
-    Function buildOnSubmit() {
-      return ({
-        required BuildContext context,
-      }) =>
-          () async {
-            final notifier =
-                ref.read(userDetailPageStateControllerProvider.notifier);
+  // // setUserAddIconOnSubumit
+  // void setUserAddIconOnSubumit() {
+  //   Function buildOnSubmit() {
+  //     return ({
+  //       required BuildContext context,
+  //     }) =>
+  //         () async {
+  //           // final notifier =
+  //           //     ref.read(userDetailPageStateControllerProvider.notifier);
 
-            // state.authenticationServiceSignOutUsecase.execute();
-            // ModalBottomSheet処理内でのonSubmit処理を最終確定
-            notifier.setUserAddOnSubmit();
+  //           // // state.authenticationServiceSignOutUsecase.execute();
+  //           // // ModalBottomSheet処理内でのonSubmit処理を最終確定
+  //           // notifier.setUserAddOnSubmit();
 
-            // 初期化処理
-            notifier.clearUserEmailAndPassword();
+  //           // // 初期化処理
+  //           // notifier.clearUserEmailAndPassword();
 
-            // ModalBottomSheetでの処理
-            await showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return const UserDetailPage();
-              },
-            );
+  //           // // ModalBottomSheetでの処理
+  //           // await showModalBottomSheet(
+  //           //   context: context,
+  //           //   builder: (context) {
+  //           //     return const UserDetailPage();
+  //           //   },
+  //           // );
 
-            // 初期化処理
-            notifier.clearUserEmailAndPassword();
-          };
-    }
+  //           // // 初期化処理
+  //           // notifier.clearUserEmailAndPassword();
+  //         };
+  //   }
 
-    state = state.copyWith(
-      userAddIconStateProvider: appbarActionIconStateProviderCreator(
-        onSubmitWidgetName: state.userAddButtonName,
-        icon: const Icon(Icons.person_add),
-        onSubmit: buildOnSubmit(),
-      ),
-    );
-  }
+  //   state = state.copyWith(
+  //     userAddIconStateProvider: appbarActionIconStateProviderCreator(
+  //       onSubmitWidgetName: state.userAddButtonName,
+  //       icon: const Icon(Icons.person_add),
+  //       onSubmit: buildOnSubmit(),
+  //     ),
+  //   );
+  // }
 
-  // setSignOutIconOnSubumit
-  void setSignOutIconOnSubumit() {
-    Function buildOnSubmit() {
-      return ({
-        required BuildContext context,
-      }) =>
-          () {
-            state.authenticationServiceSignOutUsecase.execute();
-          };
-    }
+  // // setSignOutIconOnSubumit
+  // void setSignOutIconOnSubumit() {
+  //   Function buildOnSubmit() {
+  //     return ({
+  //       required BuildContext context,
+  //     }) =>
+  //         () {
+  //           state.authenticationServiceSignOutUsecase.execute();
+  //         };
+  //   }
 
-    state = state.copyWith(
-      signOutIconStateProvider: appbarActionIconStateProviderCreator(
-        onSubmitWidgetName: state.signOutIconButtonName,
-        icon: const Icon(Icons.logout),
-        onSubmit: buildOnSubmit(),
-      ),
-    );
-  }
+  //   state = state.copyWith(
+  //     signOutIconStateProvider: appbarActionIconStateProviderCreator(
+  //       onSubmitWidgetName: state.signOutIconButtonName,
+  //       icon: const Icon(Icons.logout),
+  //       onSubmit: buildOnSubmit(),
+  //     ),
+  //   );
+  // }
 }
 
 // --------------------------------------------------

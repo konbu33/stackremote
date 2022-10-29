@@ -1,13 +1,14 @@
-import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 // ignore: unused_import
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user/domain/users.dart';
 
-import 'userid.dart';
+import '../../common/common.dart';
+import '../usecace/user_fetch_by_id_usecase.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
@@ -20,87 +21,59 @@ part 'user.g.dart';
 @freezed
 class User with _$User {
   const factory User._({
-    @UserIdConverter() required UserId userId,
     required String email,
-    required String password,
-    required String firebaseAuthUid,
-    required String firebaseAuthIdToken,
-    @Default(false) bool isSignIn,
+    required String nickName,
+    required String comment,
+    required bool isHost,
+    @FirestoreTimestampConverter() required Timestamp? joinedAt,
+    @FirestoreTimestampConverter() required Timestamp? leavedAt,
+    required bool isOnLongPressing,
     @OffsetConverter() required Offset pointerPosition,
-    @Default(false) bool isOnLongPressing,
   }) = _User;
 
   factory User.create({
-    required String email,
-    required String password,
-    required String firebaseAuthUid,
-    required String firebaseAuthIdToken,
-    bool? isSignIn,
-    Offset? pointerPosition,
+    String? email,
+    String? nickName,
+    String? comment,
+    bool? isHost,
+    Timestamp? joinedAt,
+    Timestamp? leavedAt,
     bool? isOnLongPressing,
+    Offset? pointerPosition,
   }) =>
       User._(
-        userId: UserId.create(),
-        email: email,
-        password: password,
-        firebaseAuthUid: "",
-        firebaseAuthIdToken: "",
-        isSignIn: isSignIn ?? false,
-        pointerPosition: pointerPosition ?? const Offset(0, 0),
+        email: email ?? "",
+        nickName: nickName ?? "",
+        comment: comment ?? "",
+        isHost: isHost ?? false,
+        joinedAt: joinedAt,
+        leavedAt: leavedAt,
         isOnLongPressing: isOnLongPressing ?? false,
+        pointerPosition: pointerPosition ?? const Offset(0, 0),
       );
 
   factory User.reconstruct({
-    required UserId userId,
-    required String email,
-    required String password,
-    required String firebaseAuthUid,
-    required String firebaseAuthIdToken,
-    bool? isSignIn,
-    Offset? pointerPosition,
+    String? email,
+    String? nickName,
+    String? comment,
+    bool? isHost,
+    Timestamp? joinedAt,
+    Timestamp? leavedAt,
     bool? isOnLongPressing,
+    Offset? pointerPosition,
   }) =>
       User._(
-        userId: userId,
-        email: email,
-        password: password,
-        firebaseAuthUid: firebaseAuthUid,
-        firebaseAuthIdToken: "",
-        isSignIn: isSignIn ?? false,
-        pointerPosition: pointerPosition ?? const Offset(0, 0),
+        email: email ?? "",
+        nickName: nickName ?? "",
+        comment: comment ?? "",
+        isHost: isHost ?? false,
+        joinedAt: joinedAt,
+        leavedAt: leavedAt,
         isOnLongPressing: isOnLongPressing ?? false,
+        pointerPosition: pointerPosition ?? const Offset(0, 0),
       );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-}
-
-// --------------------------------------------------
-//
-//  JsonConverter
-//
-// --------------------------------------------------
-class OffsetConverter extends JsonConverter<Offset, String> {
-  const OffsetConverter();
-
-  @override
-  String toJson(Offset object) {
-    final double dx = object.dx;
-    final double dy = object.dy;
-    final Map<String, double> jsonMap = {
-      "dx": dx,
-      "dy": dy,
-    };
-    return jsonEncode(jsonMap);
-  }
-
-  @override
-  Offset fromJson(String json) {
-    final Map<String, dynamic> jsonMap = jsonDecode(json);
-    final double dx = jsonMap["dx"];
-    final double dy = jsonMap["dy"];
-
-    return Offset(dx, dy);
-  }
 }
 
 // --------------------------------------------------
@@ -109,39 +82,12 @@ class OffsetConverter extends JsonConverter<Offset, String> {
 //
 // --------------------------------------------------
 class UserStateNotifier extends StateNotifier<User> {
-  UserStateNotifier()
-      : super(User.create(
-          email: "ini",
-          password: "ini",
-          firebaseAuthUid: "ini",
-          firebaseAuthIdToken: "ini",
-        )) {
+  UserStateNotifier() : super(User.create()) {
     initial();
   }
 
   void initial() {
-    state = User.create(
-      email: "ini",
-      password: "ini",
-      firebaseAuthUid: "ini",
-      firebaseAuthIdToken: "ini",
-    );
-  }
-
-  void userInformationRegiser(User user) {
-    state = state.copyWith(
-      firebaseAuthUid: user.firebaseAuthUid,
-      firebaseAuthIdToken: user.firebaseAuthIdToken,
-      email: user.email,
-      password: user.password,
-      isSignIn: user.isSignIn,
-    );
-  }
-
-  void updateFirebaseAuthIdToken(String firebaseAuthIdToken) {
-    state = state.copyWith(
-      firebaseAuthIdToken: firebaseAuthIdToken,
-    );
+    state = User.create();
   }
 }
 
@@ -154,3 +100,48 @@ final userStateNotifierProvider =
     StateNotifierProvider<UserStateNotifier, User>(
   (ref) => UserStateNotifier(),
 );
+
+// --------------------------------------------------
+//
+// StreamProvider
+//
+// --------------------------------------------------
+final userStreamProviderFamily =
+    StreamProvider.family<User, String>((ref, email) {
+  final userStream = ref.watch(userFetchByIdUsecaseProvider);
+  return userStream(email: email);
+});
+
+// --------------------------------------------------
+//
+// Provider
+//
+// --------------------------------------------------
+final userStreamListProvider = Provider<List<AsyncValue<User>>?>((ref) {
+// final usersStreamProvider = StreamProvider<QuerySnapshot>((ref) {
+  final usersStream = ref.watch(usersStreamProvider);
+  // final userStream = ref.watch(userFetchByIdUsecaseProvider);
+
+  final userStreamList =
+      usersStream.when<List<AsyncValue<User>>?>(data: ((data) {
+    return data.users.map((user) {
+      final userStream = ref.watch(userStreamProviderFamily(user.email));
+      return userStream;
+    }).toList();
+  }), error: ((error, stackTrace) {
+    return null;
+  }), loading: (() {
+    return null;
+  }));
+
+  // final rtcChannelState = ref.watch(
+  //     RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+
+  // return FirebaseFirestore.instance
+  //     .collection('channels')
+  //     .doc(rtcChannelState.channelName)
+  //     .collection('users')
+  //     .snapshots();
+
+  return userStreamList;
+});

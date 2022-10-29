@@ -19,6 +19,11 @@ abstract class UserRepository {
 
   Future<User> fetchById(String userId);
 
+  Future<User> set({
+    required String docId,
+    required User user,
+  });
+
   Future<UserId> add(User user);
 
   Future<String> delete(String userId);

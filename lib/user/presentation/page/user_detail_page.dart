@@ -1,117 +1,117 @@
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+// import 'package:flutter/material.dart';
+// import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// improve: authentication関連への依存関係を無くしたい。
-import '../../../authentication/authentication.dart';
+// // improve: authentication関連への依存関係を無くしたい。
+// import '../../../authentication/authentication.dart';
 
-import 'user_detail_page_state.dart';
+// import 'user_detail_page_state.dart';
 
-class UserDetailPage extends HookConsumerWidget {
-  const UserDetailPage({Key? key}) : super(key: key);
+// class UserDetailPage extends HookConsumerWidget {
+//   const UserDetailPage({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(userDetailPageStateControllerProvider);
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final state = ref.watch(userDetailPageStateControllerProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: UserDetailPageWidgets.pageTitleWidget(state),
-      ),
-      body: Form(
-        key: state.userPageformValueKey,
-        child: Column(
-          children: [
-            const SizedBox(height: 40),
-            UserDetailPageWidgets.userNameField(state),
-            const SizedBox(height: 40),
-            UserDetailPageWidgets.passwordField(state),
-            const SizedBox(height: 40),
-            state.currentUser == null
-                ? UserDetailPageWidgets.userAddButton(state)
-                : UserDetailPageWidgets.userUpdateButton(state),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: UserDetailPageWidgets.pageTitleWidget(state),
+//       ),
+//       body: Form(
+//         key: state.userPageformValueKey,
+//         child: Column(
+//           children: [
+//             const SizedBox(height: 40),
+//             UserDetailPageWidgets.userNameField(state),
+//             const SizedBox(height: 40),
+//             UserDetailPageWidgets.passwordField(state),
+//             const SizedBox(height: 40),
+//             state.currentUser == null
+//                 ? UserDetailPageWidgets.userAddButton(state)
+//                 : UserDetailPageWidgets.userUpdateButton(state),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-class UserDetailPageWidgets {
-  // Page Title
-  static Widget pageTitleWidget(UserDetailPageState state) {
-    final Widget widget = Text(state.pageTitle);
-    return widget;
-  }
+// class UserDetailPageWidgets {
+//   // Page Title
+//   static Widget pageTitleWidget(UserDetailPageState state) {
+//     final Widget widget = Text(state.pageTitle);
+//     return widget;
+//   }
 
-  // User Name Field
-  static Widget userNameField(UserDetailPageState state) {
-    final Widget widget = LoginIdFieldWidget(
-        loginIdFieldStateProvider: state.loginIdFieldStateProvider);
+//   // User Name Field
+//   static Widget userNameField(UserDetailPageState state) {
+//     final Widget widget = LoginIdFieldWidget(
+//         loginIdFieldStateProvider: state.loginIdFieldStateProvider);
 
-    return widget;
-  }
+//     return widget;
+//   }
 
-  // Password Field
-  static Widget passwordField(UserDetailPageState state) {
-    final Widget widget = PasswordFieldWidget(
-        passwordFieldStateProvider: state.passwordFieldStateProvider);
+//   // Password Field
+//   static Widget passwordField(UserDetailPageState state) {
+//     final Widget widget = PasswordFieldWidget(
+//         passwordFieldStateProvider: state.passwordFieldStateProvider);
 
-    return widget;
-  }
+//     return widget;
+//   }
 
-  // User Add Button
-  static Widget userAddButton(UserDetailPageState state) {
-    final Widget widget = Consumer(builder: ((context, ref, child) {
-      final loginIdIsValidate = ref.watch(state.loginIdFieldStateProvider
-          .select((value) => value.loginIdIsValidate.isValid));
+//   // User Add Button
+//   static Widget userAddButton(UserDetailPageState state) {
+//     final Widget widget = Consumer(builder: ((context, ref, child) {
+//       final loginIdIsValidate = ref.watch(state.loginIdFieldStateProvider
+//           .select((value) => value.loginIdIsValidate.isValid));
 
-      final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
-          .select((value) => value.passwordIsValidate.isValid));
+//       final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
+//           .select((value) => value.passwordIsValidate.isValid));
 
-      if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
-        // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          final notifier =
-              ref.read(userDetailPageStateControllerProvider.notifier);
-          notifier
-              .updateIsOnSubmitable(passwordIsValidate && loginIdIsValidate);
-          notifier.setUserAddOnSubmit();
-        });
-      }
+//       if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
+//         // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
+//         WidgetsBinding.instance.addPostFrameCallback((_) {
+//           final notifier =
+//               ref.read(userDetailPageStateControllerProvider.notifier);
+//           notifier
+//               .updateIsOnSubmitable(passwordIsValidate && loginIdIsValidate);
+//           notifier.setUserAddOnSubmit();
+//         });
+//       }
 
-      return LoginSubmitWidget(
-        loginSubmitStateProvider: state.userAddSubmitStateProvider,
-      );
-    }));
+//       return LoginSubmitWidget(
+//         loginSubmitStateProvider: state.userAddSubmitStateProvider,
+//       );
+//     }));
 
-    return widget;
-  }
+//     return widget;
+//   }
 
-  // User Update Button
-  static Widget userUpdateButton(UserDetailPageState state) {
-    final Widget widget = Consumer(builder: ((context, ref, child) {
-      final loginIdIsValidate = ref.watch(state.loginIdFieldStateProvider
-          .select((value) => value.loginIdIsValidate.isValid));
+//   // User Update Button
+//   static Widget userUpdateButton(UserDetailPageState state) {
+//     final Widget widget = Consumer(builder: ((context, ref, child) {
+//       final loginIdIsValidate = ref.watch(state.loginIdFieldStateProvider
+//           .select((value) => value.loginIdIsValidate.isValid));
 
-      final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
-          .select((value) => value.passwordIsValidate.isValid));
+//       final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
+//           .select((value) => value.passwordIsValidate.isValid));
 
-      if ((loginIdIsValidate || passwordIsValidate) != state.isOnSubmitable) {
-        // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          final notifier =
-              ref.read(userDetailPageStateControllerProvider.notifier);
-          notifier
-              .updateIsOnSubmitable(loginIdIsValidate || passwordIsValidate);
-          notifier.setUserUpdateOnSubmit();
-        });
-      }
+//       if ((loginIdIsValidate || passwordIsValidate) != state.isOnSubmitable) {
+//         // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
+//         WidgetsBinding.instance.addPostFrameCallback((_) {
+//           final notifier =
+//               ref.read(userDetailPageStateControllerProvider.notifier);
+//           notifier
+//               .updateIsOnSubmitable(loginIdIsValidate || passwordIsValidate);
+//           notifier.setUserUpdateOnSubmit();
+//         });
+//       }
 
-      return LoginSubmitWidget(
-        loginSubmitStateProvider: state.userUpdateSubmitStateProvider,
-      );
-    }));
+//       return LoginSubmitWidget(
+//         loginSubmitStateProvider: state.userUpdateSubmitStateProvider,
+//       );
+//     }));
 
-    return widget;
-  }
-}
+//     return widget;
+//   }
+// }
