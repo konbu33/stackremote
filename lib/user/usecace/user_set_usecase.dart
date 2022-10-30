@@ -39,7 +39,7 @@ final userSetUsecaseProvider = Provider((ref) {
 
     await userRepository.set(
       channelName: rtcChannelState.channelName,
-      email: firebaseAuthUser.email,
+      email: user.email,
       user: user,
     );
 
