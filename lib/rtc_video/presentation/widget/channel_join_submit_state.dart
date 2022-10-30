@@ -143,7 +143,7 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
                 if (!channel.exists) {
                   await channelSetUsecase();
                   await userSetUsecase(
-                    email: firebaseAuthUser.email,
+                    // email: firebaseAuthUser.email,
                     nickName: "ホストユーザ",
                     isHost: true,
                   );
@@ -161,13 +161,13 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
                   // ホストユーザとそれ以外のユーザで分岐
                   if (channelState.hostUserEmail == firebaseAuthUser.email) {
                     await userSetUsecase(
-                      email: firebaseAuthUser.email,
+                      // email: firebaseAuthUser.email,
                       nickName: "ホストユーザ",
                       isHost: true,
                     );
                   } else {
                     await userSetUsecase(
-                      email: firebaseAuthUser.email,
+                      // email: firebaseAuthUser.email,
                       nickName: "ゲストユーザ",
                       isHost: false,
                     );

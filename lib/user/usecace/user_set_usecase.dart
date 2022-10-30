@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user/domain/user_repository.dart';
 
 import '../../authentication/authentication.dart';
 import '../../rtc_video/rtc_video.dart';
 
 import '../domain/user.dart';
+import '../infrastructure/user_repository_firestore.dart';
 
 final userSetUsecaseProvider = Provider((ref) {
   final rtcChannelState = ref.watch(
@@ -13,8 +15,11 @@ final userSetUsecaseProvider = Provider((ref) {
 
   final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);
 
+  final UserRepository userRepository =
+      ref.watch(userRepositoryFirebaseProvider);
+
   Future<void> execute({
-    required String email,
+    // required String email,
     required String nickName,
     required bool isHost,
     Timestamp? joinedAt,
@@ -23,7 +28,7 @@ final userSetUsecaseProvider = Provider((ref) {
     Offset? pointerPosition,
   }) async {
     final User user = User.create(
-      email: email,
+      email: firebaseAuthUser.email,
       nickName: nickName,
       isHost: isHost,
       joinedAt: joinedAt,
@@ -32,12 +37,18 @@ final userSetUsecaseProvider = Provider((ref) {
       pointerPosition: pointerPosition ?? const Offset(0, 0),
     );
 
-    await FirebaseFirestore.instance
-        .collection('channels')
-        .doc(rtcChannelState.channelName)
-        .collection('users')
-        .doc(firebaseAuthUser.email)
-        .set({...user.toJson(), "joinedAt": FieldValue.serverTimestamp()});
+    await userRepository.set(
+      channelName: rtcChannelState.channelName,
+      email: firebaseAuthUser.email,
+      user: user,
+    );
+
+    // await FirebaseFirestore.instance
+    //     .collection('channels')
+    //     .doc(rtcChannelState.channelName)
+    //     .collection('users')
+    //     .doc(firebaseAuthUser.email)
+    //     .set({...user.toJson(), "joinedAt": FieldValue.serverTimestamp()});
   }
 
   return execute;

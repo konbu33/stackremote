@@ -19,8 +19,9 @@ abstract class UserRepository {
 
   Future<User> fetchById(String userId);
 
-  Future<User> set({
-    required String docId,
+  Future<void> set({
+    required String channelName,
+    required String email,
     required User user,
   });
 

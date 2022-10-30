@@ -1,15 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../domain/user.dart';
 import '../domain/user_repository.dart';
 import '../domain/userid.dart';
 import '../domain/users.dart';
 
+final userRepositoryFirebaseProvider = Provider<UserRepository>((ref) {
+  return UserRepositoryFireBase(
+      firebaseFirestoreInstance: FirebaseFirestore.instance);
+});
+
 class UserRepositoryFireBase implements UserRepository {
   UserRepositoryFireBase({
     required this.firebaseFirestoreInstance,
   }) {
-    ref = firebaseFirestoreInstance.collection('channels');
+    // ref = firebaseFirestoreInstance.collection('channels');
   }
 
   @override
@@ -80,14 +86,23 @@ class UserRepositoryFireBase implements UserRepository {
   //
   // --------------------------------------------------
   @override
-  Future<User> set({
-    required String docId,
+  Future<void> set({
+    required String channelName,
+    required String email,
     required User user,
   }) async {
-    final userJson = user.toJson();
-    // final String docId = user.userId.value.toString();
-    await ref.doc(docId).set(userJson);
-    return user;
+    // final userJson = user.toJson();
+    // // final String docId = user.userId.value.toString();
+    // await ref.doc(docId).set(userJson);
+    // return user;
+
+    // await FirebaseFirestore.instance
+    await firebaseFirestoreInstance
+        .collection('channels')
+        .doc(channelName)
+        .collection('users')
+        .doc(email)
+        .set({...user.toJson(), "joinedAt": FieldValue.serverTimestamp()});
   }
 
   // --------------------------------------------------
