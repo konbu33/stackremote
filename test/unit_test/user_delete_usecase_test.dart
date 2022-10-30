@@ -1,42 +1,74 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:stackremote/rtc_video/rtc_video.dart';
+import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
 import 'package:stackremote/user/usecace/user_delete_usecase.dart';
-import 'package:stackremote/user/domain/user_repository.dart';
-import 'package:stackremote/user/domain/userid.dart';
 
-// UserRepositoryのMockクラス作成
-class MockUserRepository extends Mock implements UserRepository {}
+import '../common/dotenvtest.dart';
+import 'user_mock.dart';
 
 void main() {
   // UserRepositoryのMockインスタンス生成
   final userRepository = MockUserRepository();
 
-  // ユースケースのインスタンス生成
-  final userDeleteUseCase = UserDeleteUseCase(userRepository: userRepository);
-
-  // 削除対象のUserId生成
-  final String userId = UserId.create().value.toString();
-
   // モックの戻り値を生成
-  const String returnMessage = "Delete Complete.";
-  final Future<String> future = Future.value(returnMessage);
+  final Future<void> mockResponse = Future.value();
+
+  setUpAll(() {
+    // dotenv読み込み
+    dotEnvTestLoad();
+
+    // path_providerのFake作成
+    createFakePathProviderPlatform();
+  });
 
   test("ユースケースに渡した引数と同値が、リポジトリのメソッドの引数として利用されていること", () async {
     // given
-    when(() => userRepository.delete(any())).thenAnswer((invocation) => future);
+    // ユースケース内で利用している、該当ProviderをMock,Fakeで上書き
+    // override対象のプロバイダーが、Providerの場合は、overrideWithValue メソッドで済みそう。
+    // 一方、StateNotifierProviderの場合は、overrideWithProvider メソッドを利用する必要がありそう。
+    final container = ProviderContainer(overrides: [
+      userRepositoryFirebaseProvider.overrideWithValue(userRepository),
+      RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider
+          .overrideWithProvider(fakeRtcChannelStateNotifierProvider),
+    ]);
+
+    // ユースケースのインスタンス生成
+    final userDeleteUsecase = container.read(userDeleteUsecaseProvider);
+
+    // ユースケース内で該当するリポジトリのメソッドが呼ばれた場合、引数をキャプチャするように指定
+    when(() => userRepository.delete(
+          channelName: any(named: "channelName"),
+          email: any(named: "email"),
+        )).thenAnswer((invocation) => mockResponse);
 
     // when
-    final res = await userDeleteUseCase.execute(userId);
+    // ユースケース実行
+    const String email = "xxx@text.com";
+    await userDeleteUsecase(email: email);
 
     // then
-    final captured = verify(() => userRepository.delete(captureAny())).captured;
-    final String capturedUserId = captured.single;
+    // キャプチャされた値を変数に取得。
+    // この時点で必須ではないが試しに、that引数で指定したマッチャーで検証
+    final captured = verify(() => userRepository.delete(
+          channelName: captureAny(
+            named: "channelName",
+            that: equals(FakeRtcChannelState().channelName),
+          ),
+          email: captureAny(
+            named: "email",
+            that: equals(email),
+          ),
+        )).captured;
 
-    expect(capturedUserId, userId);
-    expect(res, returnMessage);
+    // キャプチャされた値が配列で格納されているため、それぞれ変数に詰め直し
+    final String capturedChannelName = captured[0];
+    final String capturedEmail = captured[1];
 
-    // print("capturedUserId : $capturedUserId");
-    // print("userId: $userId");
-    // print("res: $res");
+    // キャプチャされた値毎に期待する値になっているか否か検証
+    expect(capturedChannelName, FakeRtcChannelState().channelName);
+
+    expect(capturedEmail, email);
   });
 }

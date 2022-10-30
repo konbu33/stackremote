@@ -125,9 +125,19 @@ class UserRepositoryFireBase implements UserRepository {
   //
   // --------------------------------------------------
   @override
-  Future<String> delete(String userId) async {
-    await ref.doc(userId).delete();
-    return "Delete Complete.";
+  Future<void> delete({
+    required String channelName,
+    required String email,
+  }) async {
+    // await ref.doc(userId).delete();
+    // return "Delete Complete.";
+
+    await FirebaseFirestore.instance
+        .collection('channels')
+        .doc(channelName)
+        .collection('users')
+        .doc(email)
+        .delete();
   }
 
   // --------------------------------------------------

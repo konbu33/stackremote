@@ -1,21 +1,33 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user/domain/user_repository.dart';
+import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
 
+// import '../../authentication/authentication.dart';
 import '../../rtc_video/rtc_video.dart';
 
 final userDeleteUsecaseProvider = Provider((ref) {
   final rtcChannelState = ref.watch(
       RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
+  // final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);
+
+  final UserRepository userRepository =
+      ref.read(userRepositoryFirebaseProvider);
+
   Future<void> execute({
     required String email,
   }) async {
-    await FirebaseFirestore.instance
-        .collection('channels')
-        .doc(rtcChannelState.channelName)
-        .collection('users')
-        .doc(email)
-        .delete();
+    userRepository.delete(
+      channelName: rtcChannelState.channelName,
+      email: email,
+    );
+
+    // await FirebaseFirestore.instance
+    //     .collection('channels')
+    //     .doc(rtcChannelState.channelName)
+    //     .collection('users')
+    //     .doc(email)
+    //     .delete();
   }
 
   return execute;
