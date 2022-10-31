@@ -46,7 +46,7 @@ void main() {
 
     // when
     // ユースケース実行
-    userFetchByIdUsecase(
+    final res = userFetchByIdUsecase(
       email: FakeFirebaseAuthUser().email,
     );
 
@@ -72,5 +72,10 @@ void main() {
     expect(capturedCnannelName, FakeRtcChannelState().channelName);
 
     expect(capturedeEmail, FakeFirebaseAuthUser().email);
+
+    // responseの値も確認
+    final resUser = await res.single;
+
+    expect(resUser, equals(user));
   });
 }

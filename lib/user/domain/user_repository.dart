@@ -15,7 +15,9 @@ abstract class UserRepository {
 
   late CollectionReference<JsonMap> ref;
 
-  Stream<Users> fetchAll();
+  Stream<Users> fetchAll({
+    required String channelName,
+  });
 
   Stream<User> fetchById({
     required String channelName,

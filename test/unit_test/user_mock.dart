@@ -16,6 +16,7 @@ import 'package:stackremote/rtc_video/rtc_video.dart';
 import 'package:stackremote/user/domain/user.dart';
 
 import 'package:stackremote/user/domain/user_repository.dart';
+import 'package:stackremote/user/domain/users.dart';
 
 // --------------------------------------------------
 //
@@ -43,6 +44,48 @@ final user = User.create(
   isOnLongPressing: isOnLongPressing,
   pointerPosition: pointerPosition,
 );
+
+// --------------------------------------------------
+//
+// User
+//
+// --------------------------------------------------
+// Userインスタンスの配列生成
+final List<User> userList = [
+  User.create(
+    email: "ake@test.com",
+    nickName: nickName,
+    comment: comment,
+    isHost: isHost,
+    joinedAt: joinedAt,
+    leavedAt: leavedAt,
+    isOnLongPressing: isOnLongPressing,
+    pointerPosition: pointerPosition,
+  ),
+  User.create(
+    email: "ike@test.com",
+    nickName: nickName,
+    comment: comment,
+    isHost: isHost,
+    joinedAt: joinedAt,
+    leavedAt: leavedAt,
+    isOnLongPressing: isOnLongPressing,
+    pointerPosition: pointerPosition,
+  ),
+  User.create(
+    email: "uke@test.com",
+    nickName: nickName,
+    comment: comment,
+    isHost: isHost,
+    joinedAt: joinedAt,
+    leavedAt: leavedAt,
+    isOnLongPressing: isOnLongPressing,
+    pointerPosition: pointerPosition,
+  ),
+];
+
+// Usersコレクションオブジェクト生成
+final Users users = Users.reconstruct(users: userList);
 
 // --------------------------------------------------
 //

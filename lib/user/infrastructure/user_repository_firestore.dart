@@ -30,12 +30,41 @@ class UserRepositoryFireBase implements UserRepository {
   //
   // --------------------------------------------------
   @override
-  Stream<Users> fetchAll() {
+  Stream<Users> fetchAll({
+    required String channelName,
+  }) {
     // Firestore Data Stream Listen
     try {
-      final Stream<QuerySnapshot<JsonMap>> snapshotStream = ref.snapshots();
+      // final Stream<QuerySnapshot<JsonMap>> snapshotStream = ref.snapshots();
 
-      // Stream Data Transfar from Firestore Stream to Object Stream
+      // // Stream Data Transfar from Firestore Stream to Object Stream
+      // Stream<Users> transferStream(
+      //     Stream<QuerySnapshot<JsonMap>> snapshotStream) async* {
+      //   // Out snapshot from Stream
+      //   await for (final snapshot in snapshotStream) {
+      //     // from Firestore Snapshot to User Type Object Collection.
+      //     final docDatas = snapshot.docs.map(((doc) {
+      //       final docData = doc.data();
+      //       return User.fromJson(docData);
+      //     })).toList();
+
+      //     final Users users = Users.reconstruct(users: docDatas);
+      //     yield users;
+      //   }
+      // }
+
+      // return transferStream(snapshotStream);
+
+      // Stream<QuerySnapshot> execute() {
+      final Stream<QuerySnapshot<JsonMap>> snapshotStream = FirebaseFirestore
+          .instance
+          .collection('channels')
+          .doc(channelName)
+          .collection('users')
+          .snapshots();
+
+      // logger.d("execute : ");
+
       Stream<Users> transferStream(
           Stream<QuerySnapshot<JsonMap>> snapshotStream) async* {
         // Out snapshot from Stream
@@ -43,6 +72,27 @@ class UserRepositoryFireBase implements UserRepository {
           // from Firestore Snapshot to User Type Object Collection.
           final docDatas = snapshot.docs.map(((doc) {
             final docData = doc.data();
+            // final User user = User.create(
+            //   nickName: docData["nickName"],
+            //   isHost: docData["isHost"],
+            //   joinedAt: const TimestampConverter().fromJson(docData["joinedAt"]),
+            //   leavedAt: docData["leavedAt"],
+            //   isOnLongPressing: docData["isOnLongPressing"],
+            //   pointerPosition:
+            //       const OffsetConverter().fromJson(docData["pointerPosition"]),
+            // );
+            // return user;
+            // logger.d("$docData");
+
+            // final manualData = {
+            //   "isHost": true,
+            //   "nickName": "ホストユーザ",
+            //   "joinedAt": Timestamp(1666833125, 741000000),
+            //   "leavedAt": null,
+            //   "pointerPosition": {"dx": 0.0, "dy": 0.0},
+            //   "isOnLongPressing": false,
+            // };
+            // return User.fromJson(manualData);
             return User.fromJson(docData);
           })).toList();
 
@@ -51,6 +101,7 @@ class UserRepositoryFireBase implements UserRepository {
         }
       }
 
+      // logger.d("transferStream :  ");
       return transferStream(snapshotStream);
     } catch (e) {
       rethrow;
