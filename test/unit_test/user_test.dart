@@ -101,14 +101,14 @@ void main() {
       // expect(user.password, password);
     });
 
-    test("userの生成的コンストラクタ,プライベートコンストラクタを利用したインスタンス生成が不可なこと", () {
-      // when
-      // final user = User(userId: Ulid());
-      // final user = User._(userId: Ulid());
+    // test("userの生成的コンストラクタ,プライベートコンストラクタを利用したインスタンス生成が不可なこと", () {
+    //   // when
+    //   // final user = User(userId: Ulid());
+    //   // final user = User._(userId: Ulid());
 
-      // then
-      // print("userId : ${userId.value}");
-    });
+    //   // then
+    //   // print("userId : ${userId.value}");
+    // });
 
     test("userインスタンスからtoJsonでjson変換し、fromJsonでオブジェクトに戻した場合、各属性の値が変わっていないこと",
         () {

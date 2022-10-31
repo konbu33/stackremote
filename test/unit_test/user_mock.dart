@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
@@ -12,8 +13,36 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'package:stackremote/authentication/authentication.dart';
 import 'package:stackremote/rtc_video/rtc_video.dart';
+import 'package:stackremote/user/domain/user.dart';
 
 import 'package:stackremote/user/domain/user_repository.dart';
+
+// --------------------------------------------------
+//
+// User
+//
+// --------------------------------------------------
+
+// const String email = "xxx@test.com";
+const String nickName = "test_user";
+const String comment = "";
+const bool isHost = true;
+const Timestamp? joinedAt = null;
+const Timestamp? leavedAt = null;
+const bool isOnLongPressing = false;
+const Offset pointerPosition = Offset(0, 0);
+
+final user = User.create(
+  // email: email,
+  email: FakeFirebaseAuthUser().email,
+  nickName: nickName,
+  comment: comment,
+  isHost: isHost,
+  joinedAt: joinedAt,
+  leavedAt: leavedAt,
+  isOnLongPressing: isOnLongPressing,
+  pointerPosition: pointerPosition,
+);
 
 // --------------------------------------------------
 //
@@ -50,6 +79,9 @@ void createFakePathProviderPlatform() {
 // UserRepositoryのMockクラス作成
 // メソッドを利用する場合は、Mockで済みそう。メンバ変数を利用する場合は、Fakeが必要そう。
 class MockUserRepository extends Mock implements UserRepository {}
+
+// UserRepositoryのMockインスタンス生成
+final MockUserRepository userRepository = MockUserRepository();
 
 // --------------------------------------------------
 //

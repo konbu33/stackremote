@@ -146,7 +146,18 @@ class UserRepositoryFireBase implements UserRepository {
   //
   // --------------------------------------------------
   @override
-  void update(User user) async {
+  void update({
+    required String channelName,
+    required String email,
+    required Map<String, dynamic> data,
+  }) async {
+    await FirebaseFirestore.instance
+        .collection('channels')
+        .doc(channelName)
+        .collection('users')
+        .doc(email)
+        .update(data);
+
     // final userJson = user.toJson();
     // final String docId = user.userId.value.toString();
     // await ref.doc(docId).set(userJson);

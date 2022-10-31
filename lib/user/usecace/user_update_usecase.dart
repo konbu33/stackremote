@@ -1,6 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user/domain/user_repository.dart';
+import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
 
 import '../../authentication/authentication.dart';
 import '../../common/common.dart';
@@ -11,6 +13,9 @@ final userUpdateUsecaseProvider = Provider((ref) {
       RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
   final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);
+
+  final UserRepository userRepository =
+      ref.watch(userRepositoryFirebaseProvider);
 
   Future<void> execute<T>({
     String? email,
@@ -51,12 +56,18 @@ final userUpdateUsecaseProvider = Provider((ref) {
       );
     }
 
-    await FirebaseFirestore.instance
-        .collection('channels')
-        .doc(rtcChannelState.channelName)
-        .collection('users')
-        .doc(firebaseAuthUser.email)
-        .update(data);
+    userRepository.update(
+      channelName: rtcChannelState.channelName,
+      email: firebaseAuthUser.email,
+      data: data,
+    );
+
+    // await FirebaseFirestore.instance
+    //     .collection('channels')
+    //     .doc(rtcChannelState.channelName)
+    //     .collection('users')
+    //     .doc(firebaseAuthUser.email)
+    //     .update(data);
   }
 
   return execute;

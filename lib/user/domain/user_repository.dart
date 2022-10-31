@@ -32,5 +32,9 @@ abstract class UserRepository {
     required String email,
   });
 
-  void update(User user);
+  void update({
+    required String channelName,
+    required String email,
+    required Map<String, dynamic> data,
+  });
 }

@@ -9,12 +9,6 @@ import '../common/dotenvtest.dart';
 import 'user_mock.dart';
 
 void main() {
-  // UserRepositoryのMockインスタンス生成
-  final userRepository = MockUserRepository();
-
-  // モックの戻り値を生成
-  final Future<void> mockResponse = Future.value();
-
   setUpAll(() {
     // dotenv読み込み
     dotEnvTestLoad();
@@ -29,13 +23,18 @@ void main() {
     // override対象のプロバイダーが、Providerの場合は、overrideWithValue メソッドで済みそう。
     // 一方、StateNotifierProviderの場合は、overrideWithProvider メソッドを利用する必要がありそう。
     final container = ProviderContainer(overrides: [
-      userRepositoryFirebaseProvider.overrideWithValue(userRepository),
+      //
       RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider
           .overrideWithProvider(fakeRtcChannelStateNotifierProvider),
+      //
+      userRepositoryFirebaseProvider.overrideWithValue(userRepository),
     ]);
 
     // ユースケースのインスタンス生成
     final userDeleteUsecase = container.read(userDeleteUsecaseProvider);
+
+    // モックの戻り値を生成
+    final Future<void> mockResponse = Future.value();
 
     // ユースケース内で該当するリポジトリのメソッドが呼ばれた場合、引数をキャプチャするように指定
     when(() => userRepository.delete(

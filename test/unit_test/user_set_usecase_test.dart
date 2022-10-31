@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
@@ -14,33 +13,6 @@ import '../common/dotenvtest.dart';
 import 'user_mock.dart';
 
 void main() {
-  // UserRepositoryのMockインスタンス生成
-  final userRepository = MockUserRepository();
-
-  // モックの戻り値を生成
-  final Future<void> mockResponse = Future.value();
-
-  // const String email = "xxx@test.com";
-  const String nickName = "test_user";
-  const String comment = "";
-  const bool isHost = true;
-  const Timestamp? joinedAt = null;
-  const Timestamp? leavedAt = null;
-  const bool isOnLongPressing = false;
-  const Offset pointerPosition = Offset(0, 0);
-
-  final user = User.create(
-    // email: email,
-    email: FakeFirebaseAuthUser().email,
-    nickName: nickName,
-    comment: comment,
-    isHost: isHost,
-    joinedAt: joinedAt,
-    leavedAt: leavedAt,
-    isOnLongPressing: isOnLongPressing,
-    pointerPosition: pointerPosition,
-  );
-
   setUpAll(() {
     // dotenv読み込み
     dotEnvTestLoad();
@@ -62,11 +34,14 @@ void main() {
     // override対象のプロバイダーが、Providerの場合は、overrideWithValue メソッドで済みそう。
     // 一方、StateNotifierProviderの場合は、overrideWithProvider メソッドを利用する必要がありそう。
     final container = ProviderContainer(overrides: [
-      userRepositoryFirebaseProvider.overrideWithValue(userRepository),
-      firebaseAuthUserStateNotifierProvider
-          .overrideWithProvider(fakeFirebaseAuthUserStateNotifierProvider),
+      //
       RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider
           .overrideWithProvider(fakeRtcChannelStateNotifierProvider),
+      //
+      firebaseAuthUserStateNotifierProvider
+          .overrideWithProvider(fakeFirebaseAuthUserStateNotifierProvider),
+      //
+      userRepositoryFirebaseProvider.overrideWithValue(userRepository),
     ]);
 
     // ユースケースのインスタンス生成
@@ -77,6 +52,9 @@ void main() {
     // FakeのgetTemporaryDirectoryメソッドが実行されているか確認
     // final Directory dir = await getTemporaryDirectory();
     // print("dir : ------------------ : ${dir.path}");
+
+    // モックの戻り値を生成
+    final Future<void> mockResponse = Future.value();
 
     // ユースケース内で該当するリポジトリのメソッドが呼ばれた場合、引数をキャプチャするように指定
     when(() => userRepository.set(
