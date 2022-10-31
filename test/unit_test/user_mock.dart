@@ -116,15 +116,15 @@ void createFakePathProviderPlatform() {
 
 // --------------------------------------------------
 //
-// MockUserRepository
+// MocktailUserRepository
 //
 // --------------------------------------------------
 // UserRepositoryのMockクラス作成
 // メソッドを利用する場合は、Mockで済みそう。メンバ変数を利用する場合は、Fakeが必要そう。
-class MockUserRepository extends Mock implements UserRepository {}
+class MocktailUserRepository extends Mock implements UserRepository {}
 
 // UserRepositoryのMockインスタンス生成
-final MockUserRepository userRepository = MockUserRepository();
+final MocktailUserRepository userRepository = MocktailUserRepository();
 
 // --------------------------------------------------
 //
