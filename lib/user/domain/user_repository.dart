@@ -17,7 +17,10 @@ abstract class UserRepository {
 
   Stream<Users> fetchAll();
 
-  Future<User> fetchById(String userId);
+  Stream<User> fetchById({
+    required String channelName,
+    required String email,
+  });
 
   Future<void> set({
     required String channelName,

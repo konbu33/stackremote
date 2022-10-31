@@ -64,17 +64,45 @@ class UserRepositoryFireBase implements UserRepository {
   // --------------------------------------------------
 
   @override
-  Future<User> fetchById(String userId) async {
+  Stream<User> fetchById({
+    required String channelName,
+    required String email,
+  }) {
     try {
-      final DocumentSnapshot<Map<String, dynamic>> doc =
-          await ref.doc(userId).get();
-      final docData = doc.data();
-      if (docData == null) {
-        throw FirebaseException(
-            plugin: "userRepository", code: "fetchById", message: "ユーザが存在しません");
+      // final DocumentSnapshot<Map<String, dynamic>> doc =
+      //     await ref.doc(userId).get();
+      // final docData = doc.data();
+      // if (docData == null) {
+      //   throw FirebaseException(
+      //       plugin: "userRepository", code: "fetchById", message: "ユーザが存在しません");
+      // }
+      // final user = User.fromJson(docData);
+      // return user;
+
+      final Stream<DocumentSnapshot<JsonMap>> snapshotStream = FirebaseFirestore
+          .instance
+          .collection('channels')
+          .doc(channelName)
+          .collection('users')
+          .doc(email)
+          .snapshots();
+
+      // logger.d("execute : ");
+
+      Stream<User> transferStream(
+          Stream<DocumentSnapshot<JsonMap>> snapshotStream) async* {
+        await for (final snapshot in snapshotStream) {
+          if (snapshot.data() != null) {
+            final docData = snapshot.data() as JsonMap;
+            yield User.fromJson(docData);
+          }
+        }
       }
-      final user = User.fromJson(docData);
-      return user;
+
+      // logger.d("transferStream :  ");
+      return transferStream(snapshotStream);
+      //
+
     } on FirebaseException catch (_) {
       rethrow;
     }

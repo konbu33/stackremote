@@ -1,57 +1,76 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:stackremote/rtc_video/rtc_video.dart';
 import 'package:stackremote/user/domain/user.dart';
-import 'package:stackremote/user/domain/userid.dart';
+import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
 import 'package:stackremote/user/usecace/user_fetch_by_id_usecase.dart';
-import 'package:stackremote/user/domain/user_repository.dart';
 
-// UserRepositoryのMockクラス作成
-class MockUserRepository extends Mock implements UserRepository {}
+import '../common/dotenvtest.dart';
+import 'user_mock.dart';
 
 void main() {
-  // UserRepositoryのMockインスタンス生成
-  final MockUserRepository userRepository = MockUserRepository();
+  setUpAll(() {
+    // dotenv読み込み
+    dotEnvTestLoad();
 
-  // ユースケースのインスタンス生成
-  final UserFetchByIdUseCase userFetchByIdUseCase =
-      UserFetchByIdUseCase(userRepository: userRepository);
-
-  // Userインスタンス生成
-  final String userId = UserId.create().value.toString();
-  const email = "take@test.com";
-  const password = "password";
-  const firebaseAuthUid = "firebaseAuthUid";
-  const firebaseAuthIdToken = "firebaseAuthIdToken";
-
-  final User user = User.create(
-    email: email,
-    password: password,
-    firebaseAuthUid: firebaseAuthUid,
-    firebaseAuthIdToken: firebaseAuthIdToken,
-  );
-
-  // モックの戻り値を生成
-  final future = Future.value(user);
+    // path_providerのFake作成
+    createFakePathProviderPlatform();
+  });
 
   test("ユースケースに渡した引数と同値が、リポジトリのメソッドの引数として利用されていること", () async {
     // given
-    when(() => userRepository.fetchById(any()))
-        .thenAnswer((invocation) => future);
+
+    // ユースケース内で利用している、該当ProviderをMock,Fakeで上書き
+    // override対象のプロバイダーが、Providerの場合は、overrideWithValue メソッドで済みそう。
+    // 一方、StateNotifierProviderの場合は、overrideWithProvider メソッドを利用する必要がありそう。
+    final container = ProviderContainer(overrides: [
+      //
+      RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider
+          .overrideWithProvider(fakeRtcChannelStateNotifierProvider),
+      //
+      userRepositoryFirebaseProvider.overrideWithValue(userRepository),
+    ]);
+
+    // ユースケースのインスタンス生成
+    final userFetchByIdUsecase = container.read(userFetchByIdUsecaseProvider);
+
+    // モックの戻り値を生成
+    final Stream<User> mockResponse = Stream.value(user);
+
+    // ユースケース内で該当するリポジトリのメソッドが呼ばれた場合、引数をキャプチャするように指定
+    when(() => userRepository.fetchById(
+          channelName: any(named: "channelName"),
+          email: any(named: "email"),
+        )).thenAnswer((invocation) => mockResponse);
 
     // when
-    final resUser = await userFetchByIdUseCase.execute(userId);
+    // ユースケース実行
+    userFetchByIdUsecase(
+      email: FakeFirebaseAuthUser().email,
+    );
 
     // then
-    final captured =
-        verify(() => userRepository.fetchById(captureAny())).captured;
-    final String capturedUserId = captured.single;
+    // キャプチャされた値を変数に取得。
+    // この時点で必須ではないが試しに、that引数で指定したマッチャーで検証
+    final captured = verify(() => userRepository.fetchById(
+          channelName: captureAny(
+            named: "channelName",
+            that: equals(FakeRtcChannelState().channelName),
+          ),
+          email: captureAny(
+            named: "email",
+            that: equals(FakeFirebaseAuthUser().email),
+          ),
+        )).captured;
 
-    expect(capturedUserId, userId);
-    // print("        userId : $userId");
-    // print("capturedUserId : $capturedUserId");
+    // キャプチャされた値が配列で格納されているため、それぞれ変数に詰め直し
+    final String capturedCnannelName = captured[0];
+    final String capturedeEmail = captured[1];
 
-    expect(resUser, user);
-    // print("   user : $user");
-    // print("resUser : $resUser");
+    // キャプチャされた値毎に期待する値になっているか否か検証
+    expect(capturedCnannelName, FakeRtcChannelState().channelName);
+
+    expect(capturedeEmail, FakeFirebaseAuthUser().email);
   });
 }

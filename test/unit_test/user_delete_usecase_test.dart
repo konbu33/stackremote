@@ -44,8 +44,7 @@ void main() {
 
     // when
     // ユースケース実行
-    const String email = "xxx@text.com";
-    await userDeleteUsecase(email: email);
+    await userDeleteUsecase(email: FakeFirebaseAuthUser().email);
 
     // then
     // キャプチャされた値を変数に取得。
@@ -57,7 +56,7 @@ void main() {
           ),
           email: captureAny(
             named: "email",
-            that: equals(email),
+            that: equals(FakeFirebaseAuthUser().email),
           ),
         )).captured;
 
@@ -68,6 +67,6 @@ void main() {
     // キャプチャされた値毎に期待する値になっているか否か検証
     expect(capturedChannelName, FakeRtcChannelState().channelName);
 
-    expect(capturedEmail, email);
+    expect(capturedEmail, FakeFirebaseAuthUser().email);
   });
 }
