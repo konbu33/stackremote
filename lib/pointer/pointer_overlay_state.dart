@@ -5,7 +5,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../common/common.dart';
+
 part 'pointer_overlay_state.freezed.dart';
+part 'pointer_overlay_state.g.dart';
 
 // --------------------------------------------------
 //
@@ -16,11 +19,16 @@ part 'pointer_overlay_state.freezed.dart';
 class PointerOerlayerState with _$PointerOerlayerState {
   const factory PointerOerlayerState._({
     required String name,
-    required Offset pointerPosition,
-    required Offset displayPointerPosition,
+    // required Offset pointerPosition,
+    // required Offset displayPointerPosition,
+
+    @OffsetConverter() required Offset pointerPosition,
+    @OffsetConverter() required Offset displayPointerPosition,
+
     // ignore: unused_element
     @Default(false) bool isOnLongPressing,
-    required TextEditingController commentController,
+    @TextEditingControllerConverter()
+        required TextEditingController commentController,
   }) = _PointerOerlayerState;
 
   factory PointerOerlayerState.create() => PointerOerlayerState._(
@@ -29,6 +37,9 @@ class PointerOerlayerState with _$PointerOerlayerState {
         displayPointerPosition: const Offset(0, 0),
         commentController: TextEditingController(text: ""),
       );
+
+  factory PointerOerlayerState.fromJson(Map<String, dynamic> json) =>
+      _$PointerOerlayerStateFromJson(json);
 }
 
 // --------------------------------------------------
@@ -73,6 +84,6 @@ class PointerOverlayStateNotifier extends StateNotifier<PointerOerlayerState> {
 // StateNotifierProvider
 //
 // --------------------------------------------------
-final pointerOverlayStateNotifierProvider =
-    StateNotifierProvider<PointerOverlayStateNotifier, PointerOerlayerState>(
-        (ref) => PointerOverlayStateNotifier());
+final pointerOverlayStateNotifierProvider = StateNotifierProvider.autoDispose<
+    PointerOverlayStateNotifier,
+    PointerOerlayerState>((ref) => PointerOverlayStateNotifier());

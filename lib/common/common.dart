@@ -16,3 +16,5 @@ export './design/design_background_image_layer.dart';
 
 // agora_video_channel_join_page.dart
 export './widget/scaffold_body_base_layout_widget.dart';
+
+export './json_converter.dart';

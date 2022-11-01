@@ -3,7 +3,8 @@
 
 // Freezed
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user/usecace/user_fetch_all_usecase.dart';
 import 'user.dart';
 
 part 'users.freezed.dart';
@@ -58,3 +59,25 @@ class UsersController extends StateNotifier<Users> {
   }
 }
 */
+
+// --------------------------------------------------
+//
+// StreamProvider
+//
+// --------------------------------------------------
+
+final usersStreamProvider = StreamProvider<Users>((ref) {
+// final usersStreamProvider = StreamProvider<QuerySnapshot>((ref) {
+  final usersStream = ref.watch(userFetchAllUsecaseProvider);
+
+  // final rtcChannelState = ref.watch(
+  //     RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+
+  // return FirebaseFirestore.instance
+  //     .collection('channels')
+  //     .doc(rtcChannelState.channelName)
+  //     .collection('users')
+  //     .snapshots();
+
+  return usersStream();
+});

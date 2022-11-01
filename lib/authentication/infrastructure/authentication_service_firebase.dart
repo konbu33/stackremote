@@ -2,8 +2,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 // improve: user関連への依存関係を無くしたい。
-import '../../user/domain/user.dart';
-import '../../user/domain/userid.dart';
+// import '../../user/domain/user.dart';
+// import '../../user/domain/userid.dart';
 
 import 'authentication_service.dart';
 
@@ -15,80 +15,80 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   @override
   final firebase_auth.FirebaseAuth instance;
 
-  // --------------------------------------------------
-  //
-  //   authStateChanges
-  //
-  // --------------------------------------------------
-  // improve: 未使用？
-  @override
-  Stream<User> authStateChanges() async* {
-    final Stream<firebase_auth.User?> resStream;
+  // // --------------------------------------------------
+  // //
+  // //   authStateChanges
+  // //
+  // // --------------------------------------------------
+  // // improve: 未使用？
+  // @override
+  // Stream<User> authStateChanges() async* {
+  //   final Stream<firebase_auth.User?> resStream;
 
-    // FirebaseAuthからUserのStreamをListen
-    try {
-      resStream = instance.authStateChanges();
-    } on firebase_auth.FirebaseAuthException catch (_) {
-      rethrow;
-    }
+  //   // FirebaseAuthからUserのStreamをListen
+  //   try {
+  //     resStream = instance.authStateChanges();
+  //   } on firebase_auth.FirebaseAuthException catch (_) {
+  //     rethrow;
+  //   }
 
-    // 「FirebaseAuth側のUser型」から「本アプリ側のUser型」へ変換
-    await for (final firebaseUser in resStream) {
-      // Streamから流れてくるFirebaseのUserがnullの場合
-      try {
-        if (firebaseUser == null) {
-          final UserId userId = UserId.create();
-          final User user = User.reconstruct(
-            userId: userId,
-            email: "",
-            password: "",
-            isSignIn: false,
-            firebaseAuthUid: "",
-            firebaseAuthIdToken: "",
-          );
+  //   // 「FirebaseAuth側のUser型」から「本アプリ側のUser型」へ変換
+  //   await for (final firebaseUser in resStream) {
+  //     // Streamから流れてくるFirebaseのUserがnullの場合
+  //     try {
+  //       if (firebaseUser == null) {
+  //         final UserId userId = UserId.create();
+  //         final User user = User.reconstruct(
+  //           userId: userId,
+  //           email: "",
+  //           password: "",
+  //           isSignIn: false,
+  //           firebaseAuthUid: "",
+  //           firebaseAuthIdToken: "",
+  //         );
 
-          yield user;
-          return;
-        }
-      } on firebase_auth.FirebaseAuthException catch (_) {
-        rethrow;
-      }
+  //         yield user;
+  //         return;
+  //       }
+  //     } on firebase_auth.FirebaseAuthException catch (_) {
+  //       rethrow;
+  //     }
 
-      // Streamから流れてくるFirebaseのUserのemail属性の値がnullの場合
-      final firebaseAuthUid = firebaseUser.uid;
-      final email = firebaseUser.email;
+  //     // Streamから流れてくるFirebaseのUserのemail属性の値がnullの場合
+  //     final firebaseAuthUid = firebaseUser.uid;
+  //     final email = firebaseUser.email;
 
-      try {
-        if (email == null) {
-          throw firebase_auth.FirebaseAuthException(code: "email is null.");
-        }
-      } on firebase_auth.FirebaseAuthException catch (_) {
-        // final User user = User.reconstruct(
-        //   userId: UserId.create(),
-        //   email: "null",
-        //   password: "null",
-        //   firebaseAuthUid: firebaseAuthUid,
-        //   firebaseAuthIdToken: "null",
-        //   isSignIn: false,
-        // );
-        rethrow;
-      }
+  //     try {
+  //       if (email == null) {
+  //         throw firebase_auth.FirebaseAuthException(code: "email is null.");
+  //       }
+  //     } on firebase_auth.FirebaseAuthException catch (_) {
+  //       // final User user = User.reconstruct(
+  //       //   userId: UserId.create(),
+  //       //   email: "null",
+  //       //   password: "null",
+  //       //   firebaseAuthUid: firebaseAuthUid,
+  //       //   firebaseAuthIdToken: "null",
+  //       //   isSignIn: false,
+  //       // );
+  //       rethrow;
+  //     }
 
-      // Construct User Object
-      final UserId userId = UserId.create();
-      final User user = User.reconstruct(
-        userId: userId,
-        email: email,
-        password: "",
-        firebaseAuthUid: firebaseAuthUid,
-        firebaseAuthIdToken: "",
-        isSignIn: true,
-      );
+  //     // Construct User Object
+  //     final UserId userId = UserId.create();
+  //     final User user = User.reconstruct(
+  //       userId: userId,
+  //       email: email,
+  //       password: "",
+  //       firebaseAuthUid: firebaseAuthUid,
+  //       firebaseAuthIdToken: "",
+  //       isSignIn: true,
+  //     );
 
-      yield user;
-      return;
-    }
-  }
+  //     yield user;
+  //     return;
+  //   }
+  // }
 
   // --------------------------------------------------
   //
