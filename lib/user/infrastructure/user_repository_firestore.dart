@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -56,12 +58,12 @@ class UserRepositoryFireBase implements UserRepository {
       // return transferStream(snapshotStream);
 
       // Stream<QuerySnapshot> execute() {
-      final Stream<QuerySnapshot<JsonMap>> snapshotStream = FirebaseFirestore
-          .instance
-          .collection('channels')
-          .doc(channelName)
-          .collection('users')
-          .snapshots();
+      final Stream<QuerySnapshot<JsonMap>> snapshotStream =
+          firebaseFirestoreInstance
+              .collection('channels')
+              .doc(channelName)
+              .collection('users')
+              .snapshots();
 
       // logger.d("execute : ");
 
@@ -130,13 +132,13 @@ class UserRepositoryFireBase implements UserRepository {
       // final user = User.fromJson(docData);
       // return user;
 
-      final Stream<DocumentSnapshot<JsonMap>> snapshotStream = FirebaseFirestore
-          .instance
-          .collection('channels')
-          .doc(channelName)
-          .collection('users')
-          .doc(email)
-          .snapshots();
+      final Stream<DocumentSnapshot<JsonMap>> snapshotStream =
+          firebaseFirestoreInstance
+              .collection('channels')
+              .doc(channelName)
+              .collection('users')
+              .doc(email)
+              .snapshots();
 
       // logger.d("execute : ");
 
@@ -145,7 +147,14 @@ class UserRepositoryFireBase implements UserRepository {
         await for (final snapshot in snapshotStream) {
           if (snapshot.data() != null) {
             final docData = snapshot.data() as JsonMap;
+
             yield User.fromJson(docData);
+          } else {
+            throw FirebaseException(
+              plugin: "userRepository",
+              code: "fetchById",
+              message: "ユーザが存在しません",
+            );
           }
         }
       }
@@ -211,7 +220,7 @@ class UserRepositoryFireBase implements UserRepository {
     // await ref.doc(userId).delete();
     // return "Delete Complete.";
 
-    await FirebaseFirestore.instance
+    await firebaseFirestoreInstance
         .collection('channels')
         .doc(channelName)
         .collection('users')
@@ -230,7 +239,7 @@ class UserRepositoryFireBase implements UserRepository {
     required String email,
     required Map<String, dynamic> data,
   }) async {
-    await FirebaseFirestore.instance
+    await firebaseFirestoreInstance
         .collection('channels')
         .doc(channelName)
         .collection('users')
