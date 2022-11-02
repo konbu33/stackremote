@@ -26,6 +26,8 @@ class ChangePasswordPageState with _$ChangePasswordPageState {
     required GlobalKey<FormState> formKey,
     required PasswordFieldStateProvider passwordFieldStateProvider,
     required LoginSubmitStateProvider onSubmitStateProvider,
+    // ignore: unused_element
+    @Default("") String message,
 
     // ignore: unused_element
     @Default(false) bool isOnSubmitable,
@@ -68,6 +70,10 @@ class ChangePasswordPageStateNotifier
     state = state.copyWith(isOnSubmitable: isOnSubmitable);
   }
 
+  void setMessage(String message) {
+    state = state.copyWith(message: message);
+  }
+
   void setChangePasswordOnSubmit() {
     Function? buildOnSubmit() {
       if (!state.isOnSubmitable) {
@@ -77,7 +83,7 @@ class ChangePasswordPageStateNotifier
       return ({
         required BuildContext context,
       }) =>
-          () {
+          () async {
             // メールアドレスにURLを送信し、そのURLを押下してもらい、Firebase側のUIからパスワード変更する。
             // imporve: この方法の方が良い可能性あるため検討の余地あり。
             // final email = ref.read(firebaseAuthUserStateNotifierProvider).email;
@@ -89,15 +95,41 @@ class ChangePasswordPageStateNotifier
                 .passwordFieldController
                 .text;
 
+            // improve: FirebaseAuthへの依存を無くしたい。
             final user = FirebaseAuth.instance.currentUser;
 
-            if (user != null) {
-              user.updatePassword(newPassword);
-              // imporve: 下記のエラーが発生する懸念がある。深堀り必要そう。
-              // Unhandled Exception: [firebase_auth/requires-recent-login] This operation is sensitive and requires recent authentication. Log in again before retrying this request.
-            }
+            final notifier = ref.read(changePasswordPageStateProvider.notifier);
 
-            logger.d(" change password ");
+            if (user != null) {
+              try {
+                await user.updatePassword(newPassword);
+
+                const String message = "パスワード変更しました。";
+                notifier.setMessage(message);
+                //
+
+              } on FirebaseException catch (e) {
+                logger.d("$e");
+
+                // improve: この関数は共通化した方が良さそう。
+                String createErrorMessage(FirebaseException e) {
+                  switch (e.code) {
+                    case "requires-recent-login":
+                      // imporve: 下記のエラーが発生する懸念がある。深堀り必要そう。
+                      // Unhandled Exception: [firebase_auth/requires-recent-login] This operation is sensitive and requires recent authentication. Log in again before retrying this request.
+
+                      const String message =
+                          "前回のログインから一定時間が経過しているため、再ログインした後、改めて操作を行って下さい。";
+                      return message;
+                    default:
+                      return "想定外のエラーが発生しました。再ログインし直して下さい。";
+                  }
+                }
+
+                final String message = createErrorMessage(e);
+                notifier.setMessage(message);
+              }
+            }
           };
     }
 

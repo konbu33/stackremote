@@ -27,6 +27,7 @@ class ChangePasswordPage extends HookConsumerWidget {
             key: state.formKey,
             child: Column(
               children: [
+                ChangePasswordPageWidgets.messageWidget(state),
                 const SizedBox(height: 40),
                 ChangePasswordPageWidgets.passwordField(state),
                 const SizedBox(height: 40),
@@ -44,6 +45,18 @@ class ChangePasswordPageWidgets {
   // Page Title
   static Widget pageTitleWidget(ChangePasswordPageState state) {
     final Widget widget = Text(state.pageTitle);
+    return widget;
+  }
+
+  // Message
+  static Widget messageWidget(ChangePasswordPageState state) {
+    if (state.message.isEmpty) return const SizedBox();
+
+    const style = TextStyle(color: Colors.red);
+    final Widget widget = Text(
+      state.message,
+      style: style,
+    );
     return widget;
   }
 
