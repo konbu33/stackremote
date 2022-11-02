@@ -55,6 +55,7 @@ class PointerWidgetRemote extends HookConsumerWidget {
             child: TextFormField(
               // controller: state.commentController,
               controller: TextEditingController(text: comment),
+              enabled: false,
               readOnly: true,
 
               // 複数行入力
@@ -68,7 +69,7 @@ class PointerWidgetRemote extends HookConsumerWidget {
               ),
 
               // 画面タップすることで、TextFormFieldからフォーカスを外せるようにする。
-              focusNode: state.focusNode,
+              // focusNode: state.focusNode,
             ),
           ),
         ],
