@@ -19,6 +19,7 @@ class PasswordFieldState with _$PasswordFieldState {
     @Default("パスワード") String passwordFieldName,
     required Widget passwordField,
     required GlobalKey<FormFieldState> passwordFieldKey,
+    required FocusNode focusNode,
     required TextEditingController passwordFieldController,
     required Icon passwordIcon,
     required Validation passwordIsValidate,
@@ -34,6 +35,7 @@ class PasswordFieldState with _$PasswordFieldState {
     return PasswordFieldState._(
       passwordField: const Placeholder(),
       passwordFieldKey: GlobalKey<FormFieldState>(),
+      focusNode: FocusNode(),
       passwordFieldController: TextEditingController(),
       passwordIcon: const Icon(Icons.key),
       passwordIsValidate: Validation.create(),

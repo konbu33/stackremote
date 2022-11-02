@@ -14,12 +14,14 @@ class ChangePasswordPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(changePasswordPageStateProvider);
+    final passwordField = ref.watch(state.passwordFieldStateProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: ChangePasswordPageWidgets.pageTitleWidget(state),
       ),
       body: ScaffoldBodyBaseLayoutWidget(
+        focusNodeList: [passwordField.focusNode],
         children: [
           Form(
             key: state.formKey,

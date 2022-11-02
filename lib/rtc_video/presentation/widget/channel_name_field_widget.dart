@@ -19,6 +19,7 @@ class ChannelNameFieldWidget extends HookConsumerWidget {
     return Column(
       children: [
         TextFormField(
+          focusNode: state.focusNode,
           key: state.channelNameFieldKey,
           controller: state.channelNameFieldController,
           onChanged: (text) {

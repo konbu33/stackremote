@@ -19,6 +19,7 @@ class LoginIdFieldWidget extends HookConsumerWidget {
     return Column(
       children: [
         TextFormField(
+          focusNode: state.focusNode,
           key: state.loginIdFieldKey,
           controller: state.loginIdFieldController,
           onChanged: (text) {

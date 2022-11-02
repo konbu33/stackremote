@@ -16,6 +16,10 @@ class SignUpPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(signUpPageStateNotifierProvider);
 
+    final loginIdFieldState = ref.watch(state.loginIdFieldStateProvider);
+
+    final passwordFieldState = ref.watch(state.passwordFieldStateProvider);
+
     final loginSubmitWidgetName =
         ref.read(state.loginSubmitStateProvider).loginSubmitWidgetName;
 
@@ -24,6 +28,10 @@ class SignUpPage extends HookConsumerWidget {
         title: Text(loginSubmitWidgetName),
       ),
       body: ScaffoldBodyBaseLayoutWidget(
+        focusNodeList: [
+          loginIdFieldState.focusNode,
+          passwordFieldState.focusNode,
+        ],
         children: [
           Form(
             key: GlobalKey<FormState>(),

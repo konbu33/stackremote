@@ -66,6 +66,9 @@ class PointerWidgetRemote extends HookConsumerWidget {
                 // labelText: state.name,
                 labelText: nickName ?? "no name",
               ),
+
+              // 画面タップすることで、TextFormFieldからフォーカスを外せるようにする。
+              focusNode: state.focusNode,
             ),
           ),
         ],
