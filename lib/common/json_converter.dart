@@ -128,3 +128,22 @@ class CreatedAtTimestampConverter extends JsonConverter<Timestamp?, dynamic> {
     return null;
   }
 }
+
+// --------------------------------------------------
+//
+//  FocusNodeConverter
+//
+// --------------------------------------------------
+class FocusNodeConverter extends JsonConverter<FocusNode, String> {
+  const FocusNodeConverter();
+
+  @override
+  String toJson(FocusNode object) {
+    return object.toString();
+  }
+
+  @override
+  FocusNode fromJson(String json) {
+    return FocusNode();
+  }
+}

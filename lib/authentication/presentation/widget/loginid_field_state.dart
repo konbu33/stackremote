@@ -19,6 +19,7 @@ class LoginIdFieldState with _$LoginIdFieldState {
     @Default("メールアドレス") String loginIdFieldName,
     required Widget loginIdField,
     required GlobalKey<FormFieldState> loginIdFieldKey,
+    required FocusNode focusNode,
     required TextEditingController loginIdFieldController,
     required Icon loginIdIcon,
     required Validation loginIdIsValidate,
@@ -32,6 +33,7 @@ class LoginIdFieldState with _$LoginIdFieldState {
     return LoginIdFieldState._(
       loginIdField: const Placeholder(),
       loginIdFieldKey: GlobalKey<FormFieldState>(),
+      focusNode: FocusNode(),
       loginIdFieldController: TextEditingController(),
       loginIdIcon: const Icon(Icons.mail),
       loginIdIsValidate: Validation.create(),

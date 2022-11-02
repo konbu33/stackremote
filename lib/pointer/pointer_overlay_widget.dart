@@ -54,6 +54,9 @@ class PointerOverlayWidget extends HookConsumerWidget {
     return MouseRegion(
       cursor: SystemMouseCursors.none,
       child: GestureDetector(
+        // 画面タップすることで、TextFormFieldからフォーカスを外せるようにする。
+        onTap: () => state.focusNode.unfocus(),
+
         // ロングタップすることで、ポイン表示開始
         onLongPressStart: (event) async {
           // notifier.changeOnLongPress(isOnLongPressing: true);

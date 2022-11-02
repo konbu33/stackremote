@@ -89,6 +89,10 @@ class UserStateNotifier extends StateNotifier<User> {
   void initial() {
     state = User.create();
   }
+
+  void setNickName(String nickName) {
+    state = state.copyWith(nickName: nickName);
+  }
 }
 
 // --------------------------------------------------

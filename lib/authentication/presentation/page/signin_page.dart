@@ -16,6 +16,8 @@ class SignInPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(signInPageStateNotifierProvider);
+    final loginIdFieldState = ref.watch(state.loginIdFieldStateProvider);
+    final passwordFieldState = ref.watch(state.passwordFieldStateProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -25,6 +27,10 @@ class SignInPage extends HookConsumerWidget {
         ],
       ),
       body: ScaffoldBodyBaseLayoutWidget(
+        focusNodeList: [
+          loginIdFieldState.focusNode,
+          passwordFieldState.focusNode,
+        ],
         children: [
           Form(
             key: GlobalKey<FormState>(),

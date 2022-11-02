@@ -1,41 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'channel_name_field_state.dart';
+import 'nickname_field_state.dart';
 
-class ChannelNameFieldWidget extends HookConsumerWidget {
-  const ChannelNameFieldWidget({
+class NickNameFieldWidget extends HookConsumerWidget {
+  const NickNameFieldWidget({
     Key? key,
-    required this.channelNameFieldStateProvider,
+    required this.nickNameFieldStateNotifierProvider,
   }) : super(key: key);
 
-  final ChannelNameFieldStateProvider channelNameFieldStateProvider;
+  final NickNameFieldStateNotifierProvider nickNameFieldStateNotifierProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(channelNameFieldStateProvider);
-    final notifier = ref.read(channelNameFieldStateProvider.notifier);
+    final state = ref.watch(nickNameFieldStateNotifierProvider);
+    final notifier = ref.read(nickNameFieldStateNotifierProvider.notifier);
 
     return Column(
       children: [
         TextFormField(
           focusNode: state.focusNode,
-          key: state.channelNameFieldKey,
-          controller: state.channelNameFieldController,
+          key: state.nickNameFieldKey,
+          controller: state.nickNameFieldController,
           onChanged: (text) {
-            state.channelNameFieldKey.currentState!.validate();
+            state.nickNameFieldKey.currentState!.validate();
           },
 
           // 入力値の長さ制限
-          maxLength: state.channelNameMaxLength,
+          maxLength: state.nickNameMaxLength,
 
           // 入力フィールドの装飾
           decoration: InputDecoration(
             // フィールド名
-            label: Text(state.channelNameFieldName),
+            label: Text(state.nickNameFieldName),
 
             // 入力フィールドの色・枠
-            prefixIcon: state.channelNameIcon,
+            prefixIcon: state.nickNameIcon,
 
             // ヘルパー・エラーメッセージ表示
             counterText: "",
@@ -43,11 +43,11 @@ class ChannelNameFieldWidget extends HookConsumerWidget {
 
           // バリデーション
           validator: (value) {
-            notifier.channelNameCustomValidator(value ?? "");
+            notifier.nickNameCustomValidator(value ?? "");
           },
         ),
         Text(
-          state.channelNameIsValidate.message,
+          state.nickNameIsValidate.message,
           style: const TextStyle(color: Colors.red),
         ),
       ],

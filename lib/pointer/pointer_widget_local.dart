@@ -64,6 +64,9 @@ class PointerWidgetLocal extends HookConsumerWidget {
                 final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
                 userUpdateUsecase(comment: state.commentController.text);
               },
+
+              // 画面タップすることで、TextFormFieldからフォーカスを外せるようにする。
+              focusNode: state.focusNode,
             ),
           ),
         ],

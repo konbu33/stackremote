@@ -54,14 +54,21 @@ final menuRouterProvider = Provider(
           builder: (context, state) {
             return const AgoraVideoChannelJoinPage();
           },
-          routes: [
-            GoRoute(
-              path: 'agoravideo',
-              builder: (context, state) {
-                return const AgoraVideoPage();
-              },
-            )
-          ],
+          // routes: [
+          //   GoRoute(
+          //     path: 'agoravideo',
+          //     builder: (context, state) {
+          //       return const AgoraVideoPage();
+          //     },
+          //   )
+          // ],
+        ),
+
+        GoRoute(
+          path: '/agoravideo',
+          builder: (context, state) {
+            return const AgoraVideoPage();
+          },
         ),
 
         GoRoute(
@@ -86,10 +93,10 @@ final menuRouterProvider = Provider(
         // rtc channel join済・未joinの状態を監視し、
         // 状態が変化した場合、リダイレクト操作が実施される。
         if (rtcChannelState.joined) {
-          if (state.subloc == '/agoravideochanneljoin/agoravideo') {
+          if (state.subloc == '/agoravideo') {
             return null;
           } else {
-            return '/agoravideochanneljoin/agoravideo';
+            return '/agoravideo';
           }
         }
 

@@ -20,6 +20,10 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(agoraVideoChannelJoinPageStateNotifierProvider);
 
+    final channelNameFieldState = ref.watch(
+        ChannelNameFieldStateNotifierProviderList
+            .channelNameFieldStateNotifierProvider);
+
     return Scaffold(
       drawer: AgoraVideoChannelJoinPageWidgets.menuWidget(),
       appBar: AppBar(
@@ -29,6 +33,7 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
         ],
       ),
       body: ScaffoldBodyBaseLayoutWidget(
+        focusNodeList: [channelNameFieldState.focusNode],
         children: [
           Form(
             key: GlobalKey<FormState>(),

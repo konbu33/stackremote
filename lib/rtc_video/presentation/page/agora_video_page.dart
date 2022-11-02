@@ -29,10 +29,15 @@ class AgoraVideoPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(agoraVideoPageStateNotifierProvider);
     final notifier = ref.watch(agoraVideoPageStateNotifierProvider.notifier);
+    final rtcChannelState = ref.watch(
+        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agora Video'),
+        title: Tooltip(
+          message: "チャンネル名",
+          child: Text(rtcChannelState.channelName),
+        ),
         actions: [
           AgoraVideoPageWidgets.buildLeaveChannelIconWidget(),
         ],

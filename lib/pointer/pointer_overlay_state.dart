@@ -29,6 +29,7 @@ class PointerOerlayerState with _$PointerOerlayerState {
     @Default(false) bool isOnLongPressing,
     @TextEditingControllerConverter()
         required TextEditingController commentController,
+    @FocusNodeConverter() required FocusNode focusNode,
   }) = _PointerOerlayerState;
 
   factory PointerOerlayerState.create() => PointerOerlayerState._(
@@ -36,6 +37,7 @@ class PointerOerlayerState with _$PointerOerlayerState {
         pointerPosition: const Offset(0, 0),
         displayPointerPosition: const Offset(0, 0),
         commentController: TextEditingController(text: ""),
+        focusNode: FocusNode(),
       );
 
   factory PointerOerlayerState.fromJson(Map<String, dynamic> json) =>

@@ -20,6 +20,7 @@ class PasswordFieldWidget extends HookConsumerWidget {
     return Column(
       children: [
         TextFormField(
+          focusNode: state.focusNode,
           key: state.passwordFieldKey,
           controller: state.passwordFieldController,
           onChanged: (text) {

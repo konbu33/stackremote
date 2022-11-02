@@ -34,14 +34,14 @@ void main() {
 
     // ユースケース内で利用している、該当ProviderをMock,Fakeで上書き
     // override対象のプロバイダーが、Providerの場合は、overrideWithValue メソッドで済みそう。
-    // 一方、StateNotifierProviderの場合は、overrideWithProvider メソッドを利用する必要がありそう。
+    // 一方、StateNotifierProviderの場合は、overrideWith メソッドを利用する必要がありそう。
     final container = ProviderContainer(overrides: [
       //
       RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider
-          .overrideWithProvider(fakeRtcChannelStateNotifierProvider),
+          .overrideWith((ref) => FakeRtcChannelStateNotifier()),
       //
       firebaseAuthUserStateNotifierProvider
-          .overrideWithProvider(fakeFirebaseAuthUserStateNotifierProvider),
+          .overrideWith((ref) => FakeFirebaseAuthUserStateNotifier()),
       //
       userRepositoryFirebaseProvider.overrideWithValue(userRepository),
     ]);
