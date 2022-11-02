@@ -2,6 +2,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user/domain/user.dart';
 
 import '../../../authentication/authentication.dart';
 import '../../../channel/channel.dart';
@@ -139,12 +140,16 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
                 final firebaseAuthUser =
                     ref.watch(firebaseAuthUserStateNotifierProvider);
 
+                final userState = ref.watch(userStateNotifierProvider);
+
                 // チャンネルが存在しない場合
                 if (!channel.exists) {
                   await channelSetUsecase();
                   await userSetUsecase(
                     // email: firebaseAuthUser.email,
-                    nickName: "ホストユーザ",
+                    nickName: userState.nickName.isEmpty
+                        ? "ホストユーザ"
+                        : userState.nickName,
                     isHost: true,
                   );
 
@@ -162,13 +167,19 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
                   if (channelState.hostUserEmail == firebaseAuthUser.email) {
                     await userSetUsecase(
                       // email: firebaseAuthUser.email,
-                      nickName: "ホストユーザ",
+                      nickName: userState.nickName.isEmpty
+                          ? "ホストユーザ"
+                          : userState.nickName,
+
                       isHost: true,
                     );
                   } else {
                     await userSetUsecase(
                       // email: firebaseAuthUser.email,
-                      nickName: "ゲストユーザ",
+                      nickName: userState.nickName.isEmpty
+                          ? "ゲストユーザ"
+                          : userState.nickName,
+
                       isHost: false,
                     );
                   }
