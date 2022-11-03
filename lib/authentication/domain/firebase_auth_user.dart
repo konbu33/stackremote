@@ -97,6 +97,10 @@ class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
     );
   }
 
+  void updateIsSignIn(bool isSignIn) {
+    state = state.copyWith(isSignIn: isSignIn);
+  }
+
   void updatePassword(String password) {
     state = state.copyWith(
       password: password,
