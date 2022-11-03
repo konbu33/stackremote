@@ -25,6 +25,7 @@ class ChangePasswordPageState with _$ChangePasswordPageState {
     @Default("パスワード変更") String pageTitle,
     required GlobalKey<FormState> formKey,
     required PasswordFieldStateProvider passwordFieldStateProvider,
+    required PasswordFieldStateProvider passwordFieldConfirmStateProvider,
     required LoginSubmitStateProvider onSubmitStateProvider,
     // ignore: unused_element
     @Default("") String message,
@@ -37,6 +38,8 @@ class ChangePasswordPageState with _$ChangePasswordPageState {
     return ChangePasswordPageState._(
       formKey: GlobalKey<FormState>(),
       passwordFieldStateProvider: passwordFieldStateNotifierProviderCreator(),
+      passwordFieldConfirmStateProvider:
+          passwordFieldStateNotifierProviderCreator(),
       onSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
         loginSubmitWidgetName: "",
         onSubmit: null,
@@ -119,7 +122,7 @@ class ChangePasswordPageStateNotifier
                       // Unhandled Exception: [firebase_auth/requires-recent-login] This operation is sensitive and requires recent authentication. Log in again before retrying this request.
 
                       const String message =
-                          "前回のログインから一定時間が経過しているため、再ログインした後、改めて操作を行って下さい。";
+                          "パスワード変更失敗 \n 前回のログインから一定時間が経過しているため、再ログインした後、改めて操作を行って下さい。";
                       return message;
                     default:
                       return "想定外のエラーが発生しました。再ログインし直して下さい。";
