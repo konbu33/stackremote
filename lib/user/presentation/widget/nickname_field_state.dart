@@ -24,7 +24,7 @@ class NickNameFieldState with _$NickNameFieldState {
     required Icon nickNameIcon,
     required Validation nickNameIsValidate,
     // ignore: unused_element
-    @Default(8) int nickNameMinLength,
+    @Default(0) int nickNameMinLength,
     // ignore: unused_element
     @Default(20) int nickNameMaxLength,
   }) = _NickNameFieldState;
