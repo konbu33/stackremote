@@ -60,10 +60,15 @@ class WaitEmailVerifiedPageWidgets {
   }
 
   static Widget messageWidget() {
-    const message =
-        "メールアドレス検証待ちの状態です。\nメール本文のリンクをクリックし、メールアドレスの持ち主であことを証明してください。";
+    String message = "";
+    message += "あなたが「サービス利用登録時に登録したメールアドレス」の持ち主かどうか、確認待ちの状態です。";
+    message += "\n\n\n";
+    message += "「サービス利用登録時に登録したメールアドレス」へ、メールを送信しました。";
+    message += "メール本文のリンクをクリックし、あなたがメールアドレスの持ち主であことを証明して下さい。";
+    message += "\n\n\n";
+    message += "もし、メールが届いていない場合、下記からメールを再送信可能です。";
 
-    const Widget widget = Text(message);
+    final Widget widget = Text(message);
 
     return widget;
   }
@@ -81,7 +86,7 @@ class WaitEmailVerifiedPageWidgets {
             sendVerifyEmail(user: user);
           }
         },
-        child: const Text("メール送信"),
+        child: const Text("メール再送信"),
       );
     });
 
