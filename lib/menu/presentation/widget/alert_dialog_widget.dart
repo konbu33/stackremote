@@ -28,10 +28,17 @@ class _AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
         children: [
           const SizedBox(height: 10),
           const Text("「サービス利用登録時に登録したメールアドレス」を削除し、サービスの利用を止めますか？"),
-          Text(
-            message,
-            style: style,
-          ),
+          message.isEmpty
+              ? const SizedBox()
+              : Column(
+                  children: [
+                    const SizedBox(height: 30),
+                    Text(
+                      message,
+                      style: style,
+                    ),
+                  ],
+                ),
         ],
       ),
       actions: [
