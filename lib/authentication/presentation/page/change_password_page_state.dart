@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
+import '../../common/create_firebse_exception_message.dart';
 import '../widget/login_submit_state.dart';
 import '../widget/password_field_state.dart';
 
@@ -114,22 +115,25 @@ class ChangePasswordPageStateNotifier
               } on FirebaseException catch (e) {
                 logger.d("$e");
 
-                // improve: この関数は共通化した方が良さそう。
-                String createErrorMessage(FirebaseException e) {
-                  switch (e.code) {
-                    case "requires-recent-login":
-                      // imporve: 下記のエラーが発生する懸念がある。深堀り必要そう。
-                      // Unhandled Exception: [firebase_auth/requires-recent-login] This operation is sensitive and requires recent authentication. Log in again before retrying this request.
+                final createFirebaseExceptionMessage =
+                    ref.read(createFirebaseExceptionMessageProvider);
 
-                      const String message =
-                          "パスワード変更失敗 \n 前回のログインから一定時間が経過しているため、再ログインした後、改めて操作を行って下さい。";
-                      return message;
-                    default:
-                      return "想定外のエラーが発生しました。再ログインし直して下さい。";
-                  }
-                }
+                // // improve: この関数は共通化した方が良さそう。
+                // String createErrorMessage(FirebaseException e) {
+                //   switch (e.code) {
+                //     case "requires-recent-login":
+                //       // imporve: 下記のエラーが発生する懸念がある。深堀り必要そう。
+                //       // Unhandled Exception: [firebase_auth/requires-recent-login] This operation is sensitive and requires recent authentication. Log in again before retrying this request.
 
-                final String message = createErrorMessage(e);
+                //       const String message =
+                //           "パスワード変更失敗 \n 前回のログインから一定時間が経過しているため、再ログインした後、改めて操作を行って下さい。";
+                //       return message;
+                //     default:
+                //       return "想定外のエラーが発生しました。再ログインし直して下さい。";
+                //   }
+                // }
+
+                final String message = createFirebaseExceptionMessage(e);
                 notifier.setMessage(message);
               }
             }
