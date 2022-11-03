@@ -33,7 +33,7 @@ class SignUpPageState with _$SignUpPageState {
 
     // Login Submit Widget
     // ignore: unused_element
-    @Default("新規登録") String loginSubmitWidgetName,
+    @Default("サービス利用登録") String loginSubmitWidgetName,
     required AuthenticationServiceSignUpUsecase
         authenticationServiceSignUpUsecase,
     required LoginSubmitStateProvider loginSubmitStateProvider,

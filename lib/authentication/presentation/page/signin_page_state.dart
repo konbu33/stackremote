@@ -30,7 +30,7 @@ class SignInPageState with _$SignInPageState {
   const factory SignInPageState._({
     // GoTo SignUp Submit Widget
     // ignore: unused_element
-    @Default("新規登録") String goToSignUpIconOnSubmitWidgetName,
+    @Default("サービス利用登録") String goToSignUpIconOnSubmitWidgetName,
     required AppbarActionIconStateProvider goToSignUpIconStateProvider,
 
     // Login Id Field Widget
