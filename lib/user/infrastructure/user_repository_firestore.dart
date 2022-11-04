@@ -193,20 +193,6 @@ class UserRepositoryFireBase implements UserRepository {
 
   // --------------------------------------------------
   //
-  //   add
-  //
-  // --------------------------------------------------
-  @override
-  Future<UserId> add(User user) async {
-    // final userJson = user.toJson();
-    // final String docId = user.userId.value.toString();
-    // await ref.doc(docId).set(userJson);
-    // return user.userId;
-    return UserId.create();
-  }
-
-  // --------------------------------------------------
-  //
   //   delete
   //
   // --------------------------------------------------

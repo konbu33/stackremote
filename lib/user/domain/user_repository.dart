@@ -30,8 +30,6 @@ abstract class UserRepository {
     required User user,
   });
 
-  Future<UserId> add(User user);
-
   Future<void> delete({
     required String channelName,
     required String email,
