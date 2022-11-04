@@ -74,10 +74,13 @@ class ChangePasswordPageWidgets {
     if (state.message.isEmpty) return const SizedBox();
 
     const style = TextStyle(color: Colors.red);
-    final Widget widget = Text(
-      state.message,
-      style: style,
-    );
+    final Widget widget = Column(children: [
+      const SizedBox(height: 20),
+      Text(
+        state.message,
+        style: style,
+      ),
+    ]);
     return widget;
   }
 

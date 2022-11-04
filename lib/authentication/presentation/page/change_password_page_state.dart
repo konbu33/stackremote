@@ -8,7 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../../common/create_firebse_exception_message.dart';
+import '../../common/create_firebse_auth_exception_message.dart';
 import '../widget/login_submit_state.dart';
 import '../widget/password_field_state.dart';
 
@@ -112,11 +112,11 @@ class ChangePasswordPageStateNotifier
                 notifier.setMessage(message);
                 //
 
-              } on FirebaseException catch (e) {
+              } on FirebaseAuthException catch (e) {
                 logger.d("$e");
 
                 final createFirebaseExceptionMessage =
-                    ref.read(createFirebaseExceptionMessageProvider);
+                    ref.read(createFirebaseAuthExceptionMessageProvider);
 
                 // // improve: この関数は共通化した方が良さそう。
                 // String createErrorMessage(FirebaseException e) {

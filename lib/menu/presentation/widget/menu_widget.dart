@@ -1,12 +1,7 @@
-import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/domain/firebase_auth_user.dart';
 
-import '../../../authentication/common/create_firebse_exception_message.dart';
 import '../../../common/common.dart';
 import 'alert_dialog_widget.dart';
 

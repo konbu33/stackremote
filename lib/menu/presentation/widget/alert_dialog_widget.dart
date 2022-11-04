@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../authentication/authentication.dart';
-import '../../../authentication/common/create_firebse_exception_message.dart';
+import '../../../authentication/common/create_firebse_auth_exception_message.dart';
 import '../../../common/common.dart';
 
 class AlertDialogWidget extends StatefulHookConsumerWidget {
@@ -56,11 +56,11 @@ class _AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
                 final notifier =
                     ref.read(firebaseAuthUserStateNotifierProvider.notifier);
                 notifier.updateIsSignIn(false);
-              } on FirebaseException catch (e) {
+              } on FirebaseAuthException catch (e) {
                 logger.d("$e");
 
                 final createFirebaseExceptionMessage =
-                    ref.read(createFirebaseExceptionMessageProvider);
+                    ref.read(createFirebaseAuthExceptionMessageProvider);
                 message = createFirebaseExceptionMessage(e);
                 setState(() {});
                 // notifier.setMessage(message);

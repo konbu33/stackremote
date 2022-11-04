@@ -6,9 +6,9 @@ final createFirebaseAuthExceptionMessageProvider = Provider((ref) {
 
   String createFirebaseAuthExceptionMessage(FirebaseAuthException e) {
     final String message;
-    //
 
     switch (e.code) {
+
       // SignUp
       // [firebase_auth/email-already-in-use] The email address is already in use by another account.
       case "email-already-in-use":
@@ -35,6 +35,12 @@ final createFirebaseAuthExceptionMessageProvider = Provider((ref) {
       //  [firebase_auth/unknown] com.google.firebase.FirebaseException: An internal error has occurred. [ java.security.cert.CertPathValidatorException:Trust anchor for certification path not found. ]
       case "unknown":
         message = "想定外のエラーが発生しました。ネットワークに接続されていることを確認し、改めて操作して下さい。";
+        break;
+
+      // パスワード変更、FirebaseAuthユーザ削除
+      // Unhandled Exception: [firebase_auth/requires-recent-login] This operation is sensitive and requires recent authentication. Log in again before retrying this request.
+      case "requires-recent-login":
+        message = "前回のログインから一定時間が経過しているため、再ログインした後、改めて操作を行って下さい。";
         break;
 
       default:
