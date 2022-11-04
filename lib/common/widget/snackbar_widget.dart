@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,7 +11,20 @@ part 'snackbar_widget.freezed.dart';
 //
 // --------------------------------------------------
 final snackBarWidgetProvider = Provider((ref) {
-  SnackBar buildSnackBarWidget() {
+  SnackBar buildSnackBarWidget<T>(
+    T e,
+    Function createMessage,
+  ) {
+    final message = createMessage(e);
+
+    // snackbarにメッセージ設定
+    final notifier = ref.read(snackBarStateProvider.notifier);
+    notifier.setMessage(message);
+
+    // // snackbarでメッセージ表示
+    // final buildSnackBarWidget = ref.read(snackBarWidgetProvider);
+    // return buildSnackBarWidget();
+
     final snackBarState = ref.watch(snackBarStateProvider);
 
     final SnackBar snackBar = SnackBar(

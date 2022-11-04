@@ -6,6 +6,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../common/common.dart';
+import '../../common/create_firebse_auth_exception_message.dart';
 import '../../domain/firebase_auth_user.dart';
 import '../../infrastructure/authentication_service_firebase.dart';
 import '../../usecase/authentication_service_signup_usecase.dart';
@@ -124,19 +126,22 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
                 notifier.updateEmailVerified(user.emailVerified);
               }
             } on firebase_auth.FirebaseAuthException catch (e) {
-              switch (e.code) {
-                // User情報が登録済みでエラーになった場合
-                case "email-already-in-use":
-                  const SnackBar snackBar = SnackBar(
-                    content: Text("メールアドレス登録済みです。"),
-                  );
+              void displayNotificationMessage() {
+                final createFirebaseAuthExceptionMessage =
+                    ref.read(createFirebaseAuthExceptionMessageProvider);
 
-                  // User情報が登録済みでエラーになった場合、SnackBarで通知
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                final buildSnackBarWidget = ref.read(snackBarWidgetProvider);
 
-                  break;
-                default:
+                final snackBar =
+                    buildSnackBarWidget<firebase_auth.FirebaseAuthException>(
+                  e,
+                  createFirebaseAuthExceptionMessage,
+                );
+
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
+
+              displayNotificationMessage();
             }
 
             initial();

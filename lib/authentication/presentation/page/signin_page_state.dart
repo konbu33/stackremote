@@ -145,24 +145,22 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
             } on firebase_auth.FirebaseAuthException catch (e) {
               logger.d("$e");
 
-              void notificationMessage() {
-                // メッセージ生成
+              void displayNotificationMessage() {
                 final createFirebaseAuthExceptionMessage =
                     ref.read(createFirebaseAuthExceptionMessageProvider);
 
-                final message = createFirebaseAuthExceptionMessage(e);
-
-                // snackbarにメッセージ設定
-                final notifier = ref.read(snackBarStateProvider.notifier);
-                notifier.setMessage(message);
-
-                // snackbarでメッセージ表示
                 final buildSnackBarWidget = ref.read(snackBarWidgetProvider);
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(buildSnackBarWidget());
+
+                final snackBar =
+                    buildSnackBarWidget<firebase_auth.FirebaseAuthException>(
+                  e,
+                  createFirebaseAuthExceptionMessage,
+                );
+
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
 
-              notificationMessage();
+              displayNotificationMessage();
             }
 
             initial();
