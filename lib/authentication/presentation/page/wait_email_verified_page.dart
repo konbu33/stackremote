@@ -18,6 +18,13 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(waitEmailVerifiedPageStateNotifierProvider);
 
+    // メールアドレス確認が完了したか否かをポーリング開始
+    final checkEmailVerified = ref.read(checkEmailVerifiedProvider);
+    useEffect(() {
+      checkEmailVerified;
+      return checkEmailVerified.cancel;
+    }, [checkEmailVerified]);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(state.pageTitle),
@@ -33,8 +40,6 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
               WaitEmailVerifiedPageWidgets.messageWidget(),
               const SizedBox(height: 30),
               WaitEmailVerifiedPageWidgets.sendVerifiyEmailWidget(),
-              const SizedBox(height: 30),
-              WaitEmailVerifiedPageWidgets.verifiyEmailStateWidget(),
             ],
           ),
         ],
@@ -87,37 +92,6 @@ class WaitEmailVerifiedPageWidgets {
           }
         },
         child: const Text("メール再送信"),
-      );
-    });
-
-    return widget;
-  }
-
-  static Widget verifiyEmailStateWidget() {
-    final Widget widget = HookConsumer(builder: (context, ref, child) {
-      // // サインインしたユーザの情報取得
-      // final firebase_auth.User? user =
-      //     firebase_auth.FirebaseAuth.instance.currentUser;
-
-      // 他画面へ遷移する場合、checkEmailVerifiedのTimerがキャンセルされようにHooks利用する。
-      final checkEmailVerified = ref.read(checkEmailVerifiedProvider);
-      useEffect(() {
-        checkEmailVerified;
-        return checkEmailVerified.cancel;
-      }, [checkEmailVerified]);
-
-      // final state = ref.watch(firebaseAuthUserStateNotifierProvider);
-      return Column(
-        children: const [
-          // Text(
-          //   "firebaseAuthUser: ${DateTime.now()} $state",
-          //   maxLines: 10,
-          // ),
-          // const Divider(),
-          // Text(
-          //   "currentUser  : ${DateTime.now()} $user",
-          // ),
-        ],
       );
     });
 

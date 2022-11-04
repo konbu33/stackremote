@@ -58,8 +58,6 @@ class ChangePasswordPageWidgets {
 
   // Description
   static Widget descriptionWidget(ChangePasswordPageState state) {
-    // if (state.message.isEmpty) return const SizedBox();
-
     const String descriptionMessage = "入力間違い防止のため、2回入力して下さい。";
     const style = TextStyle(color: Colors.grey);
     const Widget widget = Text(
