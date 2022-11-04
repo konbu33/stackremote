@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'channel.dart';
-import 'channels.dart';
 
 typedef JsonMap = Map<String, dynamic>;
 
@@ -14,13 +13,12 @@ abstract class ChannelRepository {
 
   late CollectionReference<JsonMap> ref;
 
-  Stream<Channels> fetchAll();
+  Future<DocumentSnapshot<Map<String, dynamic>>> get({
+    required String channelName,
+  });
 
-  Future<Channel> fetchById(String channelId);
-
-  Future<Channel> add(Channel channel);
-
-  Future<String> delete(String channelId);
-
-  void update(Channel channel);
+  Future<void> set({
+    required String channelName,
+    required Channel channel,
+  });
 }

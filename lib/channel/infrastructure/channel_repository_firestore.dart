@@ -1,8 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../common/common.dart';
 import '../domain/channel.dart';
 import '../domain/channel_repository.dart';
-import '../domain/channels.dart';
+
+final channelRepositoryFireBaseProvider = Provider((ref) {
+  return ChannelRepositoryFireBase(
+    firebaseFirestoreInstance: FirebaseFirestore.instance,
+  );
+});
 
 class ChannelRepositoryFireBase implements ChannelRepository {
   ChannelRepositoryFireBase({
@@ -19,95 +26,50 @@ class ChannelRepositoryFireBase implements ChannelRepository {
 
   // --------------------------------------------------
   //
-  //   fetchAll
+  // get
   //
   // --------------------------------------------------
   @override
-  Stream<Channels> fetchAll() {
+  Future<DocumentSnapshot<Map<String, dynamic>>> get({
+    required String channelName,
+  }) async {
     // Firestore Data Stream Listen
     try {
-      final Stream<QuerySnapshot<JsonMap>> snapshotStream = ref.snapshots();
+      final channel = await firebaseFirestoreInstance
+          .collection('channels')
+          .doc(channelName)
+          .get();
 
-      // Stream Data Transfar from Firestore Stream to Object Stream
-      Stream<Channels> transferStream(
-          Stream<QuerySnapshot<JsonMap>> snapshotStream) async* {
-        // Out snapshot from Stream
-        await for (final snapshot in snapshotStream) {
-          // from Firestore Snapshot to Channel Type Object Collection.
-          final docDatas = snapshot.docs.map(((doc) {
-            final docData = doc.data();
-            return Channel.fromJson(docData);
-          })).toList();
-
-          final Channels channels = Channels.reconstruct(channels: docDatas);
-          yield channels;
-        }
-      }
-
-      return transferStream(snapshotStream);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  // --------------------------------------------------
-  //
-  //   fetchById
-  //
-  // --------------------------------------------------
-
-  @override
-  Future<Channel> fetchById(String channelId) async {
-    try {
-      final DocumentSnapshot<Map<String, dynamic>> doc =
-          await ref.doc(channelId).get();
-      final docData = doc.data();
-      if (docData == null) {
-        throw FirebaseException(
-            plugin: "channelRepository",
-            code: "fetchById",
-            message: "ユーザが存在しません");
-      }
-      final channel = Channel.fromJson(docData);
       return channel;
-    } on FirebaseException catch (_) {
+
+      //
+    } on FirebaseException catch (e) {
+      logger.d("$e");
       rethrow;
     }
   }
 
   // --------------------------------------------------
   //
-  //   add
+  //  set
   //
   // --------------------------------------------------
   @override
-  Future<Channel> add(Channel channel) async {
-    // final channelJson = channel.toJson();
-    // final String docId = channel.channelId.value.toString();
-    // await ref.doc(docId).set(channelJson);
-    return channel;
-  }
+  Future<void> set({
+    required String channelName,
+    required Channel channel,
+  }) async {
+    // Firestore Data Stream Listen
+    try {
+      await firebaseFirestoreInstance
+          .collection('channels')
+          .doc(channelName)
+          .set(channel.toJson());
 
-  // --------------------------------------------------
-  //
-  //   delete
-  //
-  // --------------------------------------------------
-  @override
-  Future<String> delete(String channelId) async {
-    await ref.doc(channelId).delete();
-    return "Delete Complete.";
-  }
-
-  // --------------------------------------------------
-  //
-  //   update
-  //
-  // --------------------------------------------------
-  @override
-  void update(Channel channel) async {
-    // final channelJson = channel.toJson();
-    // final String docId = channel.channelId.value.toString();
-    // await ref.doc(docId).set(channelJson);
+      //
+    } on FirebaseException catch (e) {
+      logger.d("$e");
+      rethrow;
+    }
   }
 }
