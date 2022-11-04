@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../common/common.dart';
 import '../domain/user.dart';
 import '../domain/user_repository.dart';
 import '../domain/users.dart';
@@ -57,9 +58,10 @@ class UserRepositoryFireBase implements UserRepository {
       }
 
       return transferStream(snapshotStream);
-      //
 
-    } catch (e) {
+      //
+    } on FirebaseException catch (e) {
+      logger.d("$e");
       rethrow;
     }
   }
@@ -102,9 +104,10 @@ class UserRepositoryFireBase implements UserRepository {
       }
 
       return transferStream(snapshotStream);
-      //
 
-    } on FirebaseException catch (_) {
+      //
+    } on FirebaseException catch (e) {
+      logger.d("$e");
       rethrow;
     }
   }
@@ -120,12 +123,19 @@ class UserRepositoryFireBase implements UserRepository {
     required String email,
     required User user,
   }) async {
-    await firebaseFirestoreInstance
-        .collection('channels')
-        .doc(channelName)
-        .collection('users')
-        .doc(email)
-        .set({...user.toJson(), "joinedAt": FieldValue.serverTimestamp()});
+    try {
+      await firebaseFirestoreInstance
+          .collection('channels')
+          .doc(channelName)
+          .collection('users')
+          .doc(email)
+          .set({...user.toJson(), "joinedAt": FieldValue.serverTimestamp()});
+
+      //
+    } on FirebaseException catch (e) {
+      logger.d("$e");
+      rethrow;
+    }
   }
 
   // --------------------------------------------------
@@ -138,12 +148,19 @@ class UserRepositoryFireBase implements UserRepository {
     required String channelName,
     required String email,
   }) async {
-    await firebaseFirestoreInstance
-        .collection('channels')
-        .doc(channelName)
-        .collection('users')
-        .doc(email)
-        .delete();
+    try {
+      await firebaseFirestoreInstance
+          .collection('channels')
+          .doc(channelName)
+          .collection('users')
+          .doc(email)
+          .delete();
+
+      //
+    } on FirebaseException catch (e) {
+      logger.d("$e");
+      rethrow;
+    }
   }
 
   // --------------------------------------------------
@@ -157,11 +174,18 @@ class UserRepositoryFireBase implements UserRepository {
     required String email,
     required Map<String, dynamic> data,
   }) async {
-    await firebaseFirestoreInstance
-        .collection('channels')
-        .doc(channelName)
-        .collection('users')
-        .doc(email)
-        .update(data);
+    try {
+      await firebaseFirestoreInstance
+          .collection('channels')
+          .doc(channelName)
+          .collection('users')
+          .doc(email)
+          .update(data);
+
+      //
+    } on FirebaseException catch (e) {
+      logger.d("$e");
+      rethrow;
+    }
   }
 }
