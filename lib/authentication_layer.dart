@@ -3,8 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nested/nested.dart';
 
 import 'authentication/authentication.dart';
-import 'authentication/usecase/authentication_service_auth_state_changes_usecase.dart';
-import 'authentication/usecase/authentication_service_get_id_token_usecase.dart';
 import 'common/common.dart';
 import 'menu/menu.dart';
 
@@ -37,15 +35,13 @@ class AuthenticationLayer extends SingleChildStatelessWidget {
         final isEmailVerified = ref.watch(firebaseAuthUserStateNotifierProvider
             .select((value) => value.emailVerified));
 
-        // サインイン済みの場合、Firebase AuthenticationのToken取得
-
-        // 認証されたユーザの情報のisSignIn属性をwatch開始
+        // 認証されたユーザの情報のfirebaseAuthIdToken属性をwatch開始
         final firebaseAuthIdToken = ref.watch(
             firebaseAuthUserStateNotifierProvider
                 .select((value) => value.firebaseAuthIdToken));
 
+        // サインイン済み、且つ、firebaseAuthIdToken属性の値がEmptyの場合、Firebase AuthenticationのToken取得
         if (isSignIn && firebaseAuthIdToken.isEmpty) {
-          // ref.read(firebaseAuthGetIdTokenProvider);
           final authenticationServiceGetIdTokenUsecase =
               ref.read(authenticationServiceGetIdTokenUsecaseProvider);
           authenticationServiceGetIdTokenUsecase();
@@ -54,7 +50,6 @@ class AuthenticationLayer extends SingleChildStatelessWidget {
         final firebaseAuthUser =
             ref.watch(firebaseAuthUserStateNotifierProvider);
         logger.d("$firebaseAuthUser");
-        // logger.d("Authentication Layer");
 
         // 「サインイン済み、かつ、メールアドレス検証済み」の場合、Menuのルーティングへ移行。
         // 「サインイン済み、かつ、メールアドレス検証済み」でない場合、Authenticationのルーティングへ移行。
