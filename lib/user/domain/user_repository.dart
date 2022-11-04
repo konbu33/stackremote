@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'user.dart';
-import 'userid.dart';
 import 'users.dart';
 
 typedef JsonMap = Map<String, dynamic>;
