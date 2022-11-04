@@ -62,8 +62,12 @@ class NickNameFieldStateNotifier extends StateNotifier<NickNameFieldState> {
   Validation nickNameCustomValidator(String value) {
     const defaultMessage = "";
     const emptyMessage = "";
+
+    // final minMaxLenghtMessage =
+    //     "Min lenght: ${state.nickNameMinLength}, Max length : ${state.nickNameMaxLength}.";
+
     final minMaxLenghtMessage =
-        "Min lenght: ${state.nickNameMinLength}, Max length : ${state.nickNameMaxLength}.";
+        "${state.nickNameMinLength}文字以上、${state.nickNameMaxLength}文字以下で入力して下さい。";
 
     if (value.isEmpty) {
       final validation =
