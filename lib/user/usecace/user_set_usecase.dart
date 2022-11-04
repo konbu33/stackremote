@@ -19,7 +19,6 @@ final userSetUsecaseProvider = Provider((ref) {
       ref.watch(userRepositoryFirebaseProvider);
 
   Future<void> execute({
-    // required String email,
     required String nickName,
     required bool isHost,
     Timestamp? joinedAt,
@@ -42,13 +41,6 @@ final userSetUsecaseProvider = Provider((ref) {
       email: user.email,
       user: user,
     );
-
-    // await FirebaseFirestore.instance
-    //     .collection('channels')
-    //     .doc(rtcChannelState.channelName)
-    //     .collection('users')
-    //     .doc(firebaseAuthUser.email)
-    //     .set({...user.toJson(), "joinedAt": FieldValue.serverTimestamp()});
   }
 
   return execute;
