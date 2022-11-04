@@ -14,19 +14,13 @@ final authStateChangesProvider = Provider((ref) {
       if (fbuser == null) {
         user = FirebaseAuthUser.create(
           email: "",
-          emailVerified: false,
-          password: "",
-          firebaseAuthUid: "",
-          firebaseAuthIdToken: "",
-          isSignIn: false,
         );
       } else {
         final firebaseAuthUid = fbuser.uid;
 
-        user = FirebaseAuthUser.create(
+        user = FirebaseAuthUser.reconstruct(
           email: fbuser.email ?? "",
           emailVerified: fbuser.emailVerified,
-          password: "",
           firebaseAuthUid: firebaseAuthUid,
           firebaseAuthIdToken: "",
           isSignIn: true,
