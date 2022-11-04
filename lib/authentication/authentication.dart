@@ -24,3 +24,5 @@ export './presentation/widget/password_field_widget.dart';
 
 // user_page_state.dart
 export './presentation/widget/appbar_action_icon_widget.dart';
+
+export './infrastructure/authentication_service.dart';

@@ -1,8 +1,9 @@
+// improve: この依存をrepositoryに閉じ込めたい
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/common.dart';
 import '../authentication.dart';
-import '../infrastructure/authentication_service.dart';
 
 final authenticationServiceAuthStateChangesUsecaseProvider = Provider((ref) {
   final AuthenticationService authenticationService =
@@ -11,24 +12,15 @@ final authenticationServiceAuthStateChangesUsecaseProvider = Provider((ref) {
   final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);
   final notifier = ref.read(firebaseAuthUserStateNotifierProvider.notifier);
 
-//   return AuthenticationServiceAuthStateChangesUsecase(
-//       authenticationService: authenticationService);
-// });
-
-// class AuthenticationServiceAuthStateChangesUsecase {
-//   AuthenticationServiceAuthStateChangesUsecase({
-//     required this.authenticationService,
-//   });
-
-  // final AuthenticationService authenticationService;
-
+  // improve: StreamProviderの方が良い？
   void execute() {
-    final stream = authenticationService.authStateChanges();
+    final Stream<firebase_auth.User?> stream =
+        authenticationService.authStateChanges();
 
     logger.d("authenticationServiceAuthStateChangesUsecaseProvider");
 
     stream.listen(
-      (fbuser) {
+      (firebase_auth.User? fbuser) {
         final FirebaseAuthUser user;
         if (fbuser == null) {
           user = FirebaseAuthUser.reconstruct(
