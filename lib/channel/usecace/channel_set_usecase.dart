@@ -1,11 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/authentication.dart';
-import 'package:stackremote/channel/domain/channel.dart';
 
+import '../../authentication/authentication.dart';
 import '../../rtc_video/rtc_video.dart';
+import '../channel.dart';
+import '../domain/channel_repository.dart';
+import '../infrastructure/channel_repository_firestore.dart';
 
 final channelSetUsecaseProvider = Provider((ref) {
+  final ChannelRepository channelRepository =
+      ref.read(channelRepositoryFireBaseProvider);
+
   final rtcChannelState = ref.watch(
       RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
@@ -17,11 +22,10 @@ final channelSetUsecaseProvider = Provider((ref) {
   }) async {
     final channel = Channel.create(hostUserEmail: firebaseAuthUser.email);
 
-    await FirebaseFirestore.instance
-        .collection('channels')
-        .doc(rtcChannelState.channelName)
-        // .set({...channel.toJson(), "createAt": FieldValue.serverTimestamp()});
-        .set(channel.toJson());
+    await channelRepository.set(
+      channelName: rtcChannelState.channelName,
+      channel: channel,
+    );
   }
 
   return execute;

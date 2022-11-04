@@ -11,7 +11,7 @@ abstract class ChannelRepository {
 
   final FirebaseFirestore firebaseFirestoreInstance;
 
-  late CollectionReference<JsonMap> ref;
+  late CollectionReference<JsonMap> collectionRef;
 
   Future<DocumentSnapshot<Map<String, dynamic>>> get({
     required String channelName,

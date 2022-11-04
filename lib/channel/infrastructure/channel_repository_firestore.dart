@@ -15,14 +15,14 @@ class ChannelRepositoryFireBase implements ChannelRepository {
   ChannelRepositoryFireBase({
     required this.firebaseFirestoreInstance,
   }) {
-    ref = firebaseFirestoreInstance.collection('channels');
+    collectionRef = firebaseFirestoreInstance.collection('channels');
   }
 
   @override
   final FirebaseFirestore firebaseFirestoreInstance;
 
   @override
-  late CollectionReference<JsonMap> ref;
+  late CollectionReference<JsonMap> collectionRef;
 
   // --------------------------------------------------
   //
@@ -33,12 +33,8 @@ class ChannelRepositoryFireBase implements ChannelRepository {
   Future<DocumentSnapshot<Map<String, dynamic>>> get({
     required String channelName,
   }) async {
-    // Firestore Data Stream Listen
     try {
-      final channel = await firebaseFirestoreInstance
-          .collection('channels')
-          .doc(channelName)
-          .get();
+      final channel = await collectionRef.doc(channelName).get();
 
       return channel;
 
@@ -59,12 +55,9 @@ class ChannelRepositoryFireBase implements ChannelRepository {
     required String channelName,
     required Channel channel,
   }) async {
-    // Firestore Data Stream Listen
     try {
-      await firebaseFirestoreInstance
-          .collection('channels')
-          .doc(channelName)
-          .set(channel.toJson());
+      final jsonData = channel.toJson();
+      await collectionRef.doc(channelName).set(jsonData);
 
       //
     } on FirebaseException catch (e) {
