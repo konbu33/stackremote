@@ -9,11 +9,8 @@ part 'snackbar_widget.freezed.dart';
 // SnackBarWidget
 //
 // --------------------------------------------------
-class SnackBarWidget extends HookConsumerWidget {
-  const SnackBarWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
+final snackBarWidgetProvider = Provider((ref) {
+  SnackBar buildSnackBarWidget() {
     final snackBarState = ref.watch(snackBarStateProvider);
 
     final SnackBar snackBar = SnackBar(
@@ -22,7 +19,24 @@ class SnackBarWidget extends HookConsumerWidget {
 
     return snackBar;
   }
-}
+
+  return buildSnackBarWidget;
+});
+
+// class SnackBarWidget extends HookConsumerWidget {
+//   const SnackBarWidget({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final snackBarState = ref.watch(snackBarStateProvider);
+
+//     final SnackBar snackBar = SnackBar(
+//       content: Text(snackBarState.message),
+//     );
+
+//     return snackBar;
+//   }
+// }
 
 // --------------------------------------------------
 //

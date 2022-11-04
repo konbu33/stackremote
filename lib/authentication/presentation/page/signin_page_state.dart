@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
+import '../../common/create_firebse_auth_exception_message.dart';
 import '../../domain/firebase_auth_user.dart';
 import '../../infrastructure/authentication_service_firebase.dart';
 import '../../usecase/authentication_service_signin_usecase.dart';
@@ -142,25 +143,26 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
                 notifier.updateEmailVerified(user.emailVerified);
               }
             } on firebase_auth.FirebaseAuthException catch (e) {
-              switch (e.code) {
-                case "user-not-found":
-                  const SnackBar snackBar = SnackBar(
-                    content: Text("メールアドレス未登録です。"),
-                  );
+              logger.d("$e");
 
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  break;
+              void notificationMessage() {
+                // メッセージ生成
+                final createFirebaseAuthExceptionMessage =
+                    ref.read(createFirebaseAuthExceptionMessageProvider);
 
-                case "too-many-requests":
-                  const SnackBar snackBar = SnackBar(
-                    content: Text("認証回数が上限に達しました。"),
-                  );
+                final message = createFirebaseAuthExceptionMessage(e);
 
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  break;
+                // snackbarにメッセージ設定
+                final notifier = ref.read(snackBarStateProvider.notifier);
+                notifier.setMessage(message);
 
-                default:
+                // snackbarでメッセージ表示
+                final buildSnackBarWidget = ref.read(snackBarWidgetProvider);
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(buildSnackBarWidget());
               }
+
+              notificationMessage();
             }
 
             initial();
