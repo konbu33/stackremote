@@ -63,8 +63,6 @@ class _AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
                     ref.read(createFirebaseAuthExceptionMessageProvider);
                 message = createFirebaseExceptionMessage(e);
                 setState(() {});
-                // notifier.setMessage(message);
-
               }
             }
           },

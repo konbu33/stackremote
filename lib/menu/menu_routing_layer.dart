@@ -54,14 +54,6 @@ final menuRouterProvider = Provider(
           builder: (context, state) {
             return const AgoraVideoChannelJoinPage();
           },
-          // routes: [
-          //   GoRoute(
-          //     path: 'agoravideo',
-          //     builder: (context, state) {
-          //       return const AgoraVideoPage();
-          //     },
-          //   )
-          // ],
         ),
 
         GoRoute(
