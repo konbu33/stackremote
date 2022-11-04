@@ -37,7 +37,7 @@ class WaitEmailVerifiedPageState with _$WaitEmailVerifiedPageState {
 
   factory WaitEmailVerifiedPageState.create() => WaitEmailVerifiedPageState._(
         // PageTitle
-        pageTitle: "メールアドレス検証中",
+        pageTitle: "メールアドレス確認待ち",
 
         // SignOutIcon Button
         signOutIconButtonName: "サインアウト",

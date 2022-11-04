@@ -1,6 +1,5 @@
 import '../domain/channel.dart';
 import '../domain/channel_repository.dart';
-import '../domain/channel_id.dart';
 
 class ChannelAddUseCase {
   // Constructor

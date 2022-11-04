@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
+import '../../common/create_firebse_auth_exception_message.dart';
 import '../../domain/firebase_auth_user.dart';
 import '../../infrastructure/authentication_service_firebase.dart';
 import '../../usecase/authentication_service_signin_usecase.dart';
@@ -30,7 +31,7 @@ class SignInPageState with _$SignInPageState {
   const factory SignInPageState._({
     // GoTo SignUp Submit Widget
     // ignore: unused_element
-    @Default("新規登録") String goToSignUpIconOnSubmitWidgetName,
+    @Default("サービス利用登録") String goToSignUpIconOnSubmitWidgetName,
     required AppbarActionIconStateProvider goToSignUpIconStateProvider,
 
     // Login Id Field Widget
@@ -142,28 +143,27 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
                 notifier.updateEmailVerified(user.emailVerified);
               }
             } on firebase_auth.FirebaseAuthException catch (e) {
-              switch (e.code) {
-                case "user-not-found":
-                  const SnackBar snackBar = SnackBar(
-                    content: Text("メールアドレス未登録です。"),
-                  );
+              logger.d("$e");
 
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  break;
+              void displayNotificationMessage() {
+                final createFirebaseAuthExceptionMessage =
+                    ref.read(createFirebaseAuthExceptionMessageProvider);
 
-                case "too-many-requests":
-                  const SnackBar snackBar = SnackBar(
-                    content: Text("認証回数が上限に達しました。"),
-                  );
+                final buildSnackBarWidget = ref.read(snackBarWidgetProvider);
 
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  break;
+                final snackBar =
+                    buildSnackBarWidget<firebase_auth.FirebaseAuthException>(
+                  e,
+                  createFirebaseAuthExceptionMessage,
+                );
 
-                default:
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
+
+              displayNotificationMessage();
             }
 
-            initial();
+            // initial();
           };
     }
 

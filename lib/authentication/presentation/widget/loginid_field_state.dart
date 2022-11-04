@@ -61,8 +61,12 @@ class LoginIdFieldStateNotifier extends StateNotifier<LoginIdFieldState> {
   Validation loginIdCustomValidator(String value) {
     const defaultMessage = "";
     const emptyMessage = "";
+
+    // final minMaxLenghtMessage =
+    //     "Min lenght: ${state.loginIdMinLength}, Max length : ${state.loginIdMaxLength}.";
+
     final minMaxLenghtMessage =
-        "Min lenght: ${state.loginIdMinLength}, Max length : ${state.loginIdMaxLength}.";
+        "${state.loginIdMinLength}文字以上、${state.loginIdMaxLength}文字以下で入力して下さい。";
 
     if (value.isEmpty) {
       final validation =

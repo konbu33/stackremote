@@ -67,8 +67,12 @@ class PasswordFieldStateNotifier extends StateNotifier<PasswordFieldState> {
   Validation passwordCustomValidator(String value) {
     const defaultMessage = "";
     const emptyMessage = "";
+
+    // final minMaxLenghtMessage =
+    //     "Min lenght: ${state.passwordMinLength}, Max length : ${state.passwordMaxLength}.";
+
     final minMaxLenghtMessage =
-        "Min lenght: ${state.passwordMinLength}, Max length : ${state.passwordMaxLength}.";
+        "${state.passwordMinLength}文字以上、${state.passwordMaxLength}文字以下で入力して下さい。";
 
     if (value.isEmpty) {
       final validation =

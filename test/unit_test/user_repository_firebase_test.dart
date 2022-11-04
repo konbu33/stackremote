@@ -209,12 +209,12 @@ void main() {
     );
 
     // 複数のUserからUsersコレクションオブジェクト生成
-    final srcUsers = Users.reconstruct(users: [
-      user1,
-      user2,
-      // user3,
-      user4,
-    ]);
+    // final srcUsers = Users.reconstruct(users: [
+    //   user1,
+    //   user2,
+    //   // user3,
+    //   user4,
+    // ]);
 
     // when
     // final UserId resUserId1 = await userRepository.add(user1);

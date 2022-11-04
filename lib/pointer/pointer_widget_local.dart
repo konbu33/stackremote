@@ -17,7 +17,7 @@ class PointerWidgetLocal extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(pointerOverlayStateNotifierProvider);
-    final notifier = ref.read(pointerOverlayStateNotifierProvider.notifier);
+    // final notifier = ref.read(pointerOverlayStateNotifierProvider.notifier);
 
     return GestureDetector(
       onTap: () async {

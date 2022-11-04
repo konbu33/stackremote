@@ -15,43 +15,30 @@ class FirebaseAuthUser with _$FirebaseAuthUser {
   const factory FirebaseAuthUser._({
     required String email,
     @Default(false) bool emailVerified,
-    required String password,
-    required String firebaseAuthUid,
-    required String firebaseAuthIdToken,
+    @Default("") String firebaseAuthUid,
+    @Default("") String firebaseAuthIdToken,
     @Default(false) bool isSignIn,
   }) = _FirebaseAuthUser;
 
   factory FirebaseAuthUser.create({
     required String email,
-    required bool emailVerified,
-    required String password,
-    required String firebaseAuthUid,
-    required String firebaseAuthIdToken,
-    bool? isSignIn,
   }) =>
       FirebaseAuthUser._(
         email: email,
-        emailVerified: emailVerified,
-        password: password,
-        firebaseAuthUid: firebaseAuthUid,
-        firebaseAuthIdToken: firebaseAuthIdToken,
-        isSignIn: isSignIn ?? false,
       );
 
   factory FirebaseAuthUser.reconstruct({
-    required String email,
-    required bool emailVerified,
-    required String password,
-    required String firebaseAuthUid,
-    required String firebaseAuthIdToken,
+    String? email,
+    bool? emailVerified,
+    String? firebaseAuthUid,
+    String? firebaseAuthIdToken,
     bool? isSignIn,
   }) =>
       FirebaseAuthUser._(
-        email: email,
-        emailVerified: emailVerified,
-        password: password,
-        firebaseAuthUid: firebaseAuthUid,
-        firebaseAuthIdToken: "",
+        email: email ?? "",
+        emailVerified: emailVerified ?? false,
+        firebaseAuthUid: firebaseAuthUid ?? "",
+        firebaseAuthIdToken: firebaseAuthIdToken ?? "",
         isSignIn: isSignIn ?? false,
       );
 
@@ -65,24 +52,17 @@ class FirebaseAuthUser with _$FirebaseAuthUser {
 //
 // --------------------------------------------------
 class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
-  FirebaseAuthUserStateNotifier()
-      : super(FirebaseAuthUser.create(
-          email: "ini",
-          emailVerified: false,
-          password: "ini",
-          firebaseAuthUid: "ini",
-          firebaseAuthIdToken: "ini",
+  FirebaseAuthUserStateNotifier({
+    String? email,
+  }) : super(FirebaseAuthUser.create(
+          email: email ?? "",
         )) {
     initial();
   }
 
   void initial() {
     state = FirebaseAuthUser.create(
-      email: "ini",
-      emailVerified: false,
-      password: "ini",
-      firebaseAuthUid: "ini",
-      firebaseAuthIdToken: "ini",
+      email: "",
     );
   }
 
@@ -92,15 +72,12 @@ class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
       firebaseAuthIdToken: user.firebaseAuthIdToken,
       email: user.email,
       emailVerified: user.emailVerified,
-      password: user.password,
       isSignIn: user.isSignIn,
     );
   }
 
-  void updatePassword(String password) {
-    state = state.copyWith(
-      password: password,
-    );
+  void updateIsSignIn(bool isSignIn) {
+    state = state.copyWith(isSignIn: isSignIn);
   }
 
   void updateFirebaseAuthIdToken(String firebaseAuthIdToken) {

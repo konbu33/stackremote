@@ -63,8 +63,12 @@ class ChannelNameFieldStateNotifier
   Validation channelNameCustomValidator(String value) {
     const defaultMessage = "";
     const emptyMessage = "";
+
+    // final minMaxLenghtMessage =
+    //     "Min lenght: ${state.channelNameMinLength}, Max length : ${state.channelNameMaxLength}.";
+
     final minMaxLenghtMessage =
-        "Min lenght: ${state.channelNameMinLength}, Max length : ${state.channelNameMaxLength}.";
+        "${state.channelNameMinLength}文字以上、${state.channelNameMaxLength}文字以下で入力して下さい。";
 
     if (value.isEmpty) {
       final validation =

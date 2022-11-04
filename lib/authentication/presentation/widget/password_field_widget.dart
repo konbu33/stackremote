@@ -58,6 +58,7 @@ class PasswordFieldWidget extends HookConsumerWidget {
           // バリデーション
           validator: (value) {
             notifier.passwordCustomValidator(value ?? "");
+            return;
           },
         ),
         Text(state.passwordIsValidate.message,

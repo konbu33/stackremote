@@ -7,7 +7,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 // ignore: unused_import
 import 'package:flutter/foundation.dart';
-import 'package:stackremote/user/usecace/user_update_usecase.dart';
 import '../../domain/user.dart';
 import '../../../authentication/presentation/widget/login_submit_state.dart';
 import '../widget/nickname_field_state.dart';

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 // import '../../user/domain/user.dart';
 // import '../../user/domain/userid.dart';
 
+import '../../common/common.dart';
 import 'authentication_service.dart';
 
 class AuthenticationServiceFirebase implements AuthenticationService {
@@ -111,6 +112,7 @@ class AuthenticationServiceFirebase implements AuthenticationService {
 
       return res;
     } on firebase_auth.FirebaseAuthException catch (e) {
+      logger.d("$e");
       switch (e.code) {
         case "user-not-found":
           // [firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.
@@ -140,6 +142,7 @@ class AuthenticationServiceFirebase implements AuthenticationService {
 
       return res;
     } on firebase_auth.FirebaseAuthException catch (e) {
+      logger.d("$e");
       switch (e.code) {
         case "email-already-in-use":
           // FirebaseAuthException ([firebase_auth/email-already-in-use] The email address is already in use by another account.)
@@ -158,7 +161,15 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   // --------------------------------------------------
   @override
   Future<void> signOut() async {
-    await instance.signOut();
+    try {
+      await instance.signOut();
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      logger.d("$e");
+      switch (e.code) {
+        default:
+          rethrow;
+      }
+    }
   }
 
   // --------------------------------------------------

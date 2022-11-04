@@ -1,8 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
-// improve: user関連への依存関係を無くしたい。
-import '../../user/domain/user.dart';
-
 abstract class AuthenticationService {
   AuthenticationService({
     required this.instance,

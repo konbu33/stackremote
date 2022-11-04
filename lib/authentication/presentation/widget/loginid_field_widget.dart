@@ -44,6 +44,7 @@ class LoginIdFieldWidget extends HookConsumerWidget {
           // バリデーション
           validator: (value) {
             notifier.loginIdCustomValidator(value ?? "");
+            return;
           },
         ),
         Text(

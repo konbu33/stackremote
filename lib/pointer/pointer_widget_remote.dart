@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'pointer_overlay_state.dart';
-
 class PointerWidgetRemote extends HookConsumerWidget {
   const PointerWidgetRemote({
     Key? key,
@@ -16,8 +14,8 @@ class PointerWidgetRemote extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(pointerOverlayStateNotifierProvider);
-    final notifier = ref.read(pointerOverlayStateNotifierProvider.notifier);
+    // final state = ref.watch(pointerOverlayStateNotifierProvider);
+    // final notifier = ref.read(pointerOverlayStateNotifierProvider.notifier);
 
     return GestureDetector(
       onTap: () async {
