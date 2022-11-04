@@ -71,6 +71,7 @@ class MenuWidget extends StatelessWidget {
                     );
                   },
                 ),
+                const SizedBox(height: 10),
               ],
             ),
           ),

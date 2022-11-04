@@ -26,7 +26,7 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
         ],
       ),
       body: ScaffoldBodyBaseLayoutWidget(
-        focusNodeList: [],
+        focusNodeList: const [],
         children: [
           Column(
             children: [

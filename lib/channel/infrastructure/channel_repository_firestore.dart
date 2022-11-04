@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../domain/channel.dart';
 import '../domain/channel_repository.dart';
-import '../domain/channel_id.dart';
 import '../domain/channels.dart';
 
 class ChannelRepositoryFireBase implements ChannelRepository {
@@ -83,7 +82,7 @@ class ChannelRepositoryFireBase implements ChannelRepository {
   // --------------------------------------------------
   @override
   Future<Channel> add(Channel channel) async {
-    final channelJson = channel.toJson();
+    // final channelJson = channel.toJson();
     // final String docId = channel.channelId.value.toString();
     // await ref.doc(docId).set(channelJson);
     return channel;
@@ -107,7 +106,7 @@ class ChannelRepositoryFireBase implements ChannelRepository {
   // --------------------------------------------------
   @override
   void update(Channel channel) async {
-    final channelJson = channel.toJson();
+    // final channelJson = channel.toJson();
     // final String docId = channel.channelId.value.toString();
     // await ref.doc(docId).set(channelJson);
   }

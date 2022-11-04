@@ -44,6 +44,7 @@ class ChannelNameFieldWidget extends HookConsumerWidget {
           // バリデーション
           validator: (value) {
             notifier.channelNameCustomValidator(value ?? "");
+            return;
           },
         ),
         Text(

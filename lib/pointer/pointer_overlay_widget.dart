@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/user/domain/users.dart';
 
 import '../user/domain/user.dart';
 import '../user/user.dart';
@@ -20,9 +19,9 @@ class PointerOverlayWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(pointerOverlayStateNotifierProvider);
 
-    final notifier = ref.read(pointerOverlayStateNotifierProvider.notifier);
+    // final notifier = ref.read(pointerOverlayStateNotifierProvider.notifier);
 
-    final usersStream = ref.read(usersStreamProvider);
+    // final usersStream = ref.read(usersStreamProvider);
 
     final userStreamList = ref.watch(userStreamListProvider) ?? [];
 

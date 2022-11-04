@@ -4,7 +4,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/user/usecace/user_update_usecase.dart';
 
-import '../../../authentication/authentication.dart';
 import '../../domain/rtc_channel_state.dart';
 import '../../infrastructure/rtc_channel_leave_provider.dart';
 

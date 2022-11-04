@@ -44,6 +44,7 @@ class NickNameFieldWidget extends HookConsumerWidget {
           // バリデーション
           validator: (value) {
             notifier.nickNameCustomValidator(value ?? "");
+            return;
           },
         ),
         Text(
