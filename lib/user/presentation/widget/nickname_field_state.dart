@@ -63,9 +63,6 @@ class NickNameFieldStateNotifier extends StateNotifier<NickNameFieldState> {
     const defaultMessage = "";
     const emptyMessage = "";
 
-    // final minMaxLenghtMessage =
-    //     "Min lenght: ${state.nickNameMinLength}, Max length : ${state.nickNameMaxLength}.";
-
     final minMaxLenghtMessage =
         "${state.nickNameMinLength}文字以上、${state.nickNameMaxLength}文字以下で入力して下さい。";
 
