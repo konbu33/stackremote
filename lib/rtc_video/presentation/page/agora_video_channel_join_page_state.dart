@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+// import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 // ignore: unused_import
@@ -23,8 +23,8 @@ class AgoraVideoChannelJoinPageState with _$AgoraVideoChannelJoinPageState {
 
     // SignOutIcon Button
     required String signOutIconButtonName,
-    required AuthenticationServiceSignOutUsecase
-        authenticationServiceSignOutUsecase,
+    // required AuthenticationServiceSignOutUsecase
+    //     authenticationServiceSignOutUsecase,
     required AppbarActionIconStateProvider signOutIconStateProvider,
   }) = _AgoraVideoChannelJoinPageState;
 
@@ -35,12 +35,12 @@ class AgoraVideoChannelJoinPageState with _$AgoraVideoChannelJoinPageState {
 
         // Sign Out Button
         signOutIconButtonName: "サインアウト",
-        authenticationServiceSignOutUsecase:
-            AuthenticationServiceSignOutUsecase(
-          authenticationService: AuthenticationServiceFirebase(
-            instance: firebase_auth.FirebaseAuth.instance,
-          ),
-        ),
+        // authenticationServiceSignOutUsecase:
+        //     AuthenticationServiceSignOutUsecase(
+        //   authenticationService: AuthenticationServiceFirebase(
+        //     instance: firebase_auth.FirebaseAuth.instance,
+        //   ),
+        // ),
 
         signOutIconStateProvider: appbarActionIconStateProviderCreator(
           onSubmitWidgetName: "",
@@ -80,7 +80,11 @@ class AgoraVideoChannelJoinPageStateNotifier
         required BuildContext context,
       }) =>
           () {
-            state.authenticationServiceSignOutUsecase.execute();
+            final authenticationServiceSignOutUsecase =
+                ref.read(authenticationServiceSignOutUsecaseProvider);
+
+            authenticationServiceSignOutUsecase.execute();
+            // state.authenticationServiceSignOutUsecase.execute();
           };
     }
 

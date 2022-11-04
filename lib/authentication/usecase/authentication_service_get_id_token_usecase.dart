@@ -1,14 +1,25 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/authentication/authentication.dart';
+
 import '../infrastructure/authentication_service.dart';
 
-class AuthenticationServiceGetIdTokenUsecase {
-  AuthenticationServiceGetIdTokenUsecase({
-    required this.authenticationService,
-  });
+final authenticationServiceGetIdTokenUsecaseProvider = Provider((ref) {
+  final AuthenticationService authenticationService =
+      ref.read(authenticationServiceFirebaseProvider);
 
-  final AuthenticationService authenticationService;
+  final notifier = ref.read(firebaseAuthUserStateNotifierProvider.notifier);
 
-  Future<String> execute() async {
+// class AuthenticationServiceGetIdTokenUsecase {
+//   AuthenticationServiceGetIdTokenUsecase({
+//     required this.authenticationService,
+//   });
+
+//   final AuthenticationService authenticationService;
+
+  void execute() async {
     final idToken = await authenticationService.getIdToken();
-    return idToken;
+    notifier.updateFirebaseAuthIdToken(idToken);
   }
-}
+
+  return execute;
+});

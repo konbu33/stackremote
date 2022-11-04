@@ -11,7 +11,7 @@ import '../../../common/common.dart';
 
 import '../../common/create_firebse_auth_exception_message.dart';
 import '../../domain/firebase_auth_user.dart';
-import '../../infrastructure/authentication_service_firebase.dart';
+// import '../../infrastructure/authentication_service_firebase.dart';
 import '../../usecase/authentication_service_signin_usecase.dart';
 
 import '../widget/appbar_action_icon_state.dart';
@@ -43,8 +43,8 @@ class SignInPageState with _$SignInPageState {
     // Login Submit Widget
     // ignore: unused_element
     @Default("サインイン") String loginSubmitWidgetName,
-    required AuthenticationServiceSignInUsecase
-        authenticationServiceSignInUsecase,
+    // required AuthenticationServiceSignInUsecase
+    //     authenticationServiceSignInUsecase,
     required LoginSubmitStateProvider loginSubmitStateProvider,
     // ignore: unused_element
     @Default(false) bool isOnSubmitable,
@@ -65,9 +65,9 @@ class SignInPageState with _$SignInPageState {
         passwordFieldStateProvider: passwordFieldStateNotifierProviderCreator(),
 
         // Login Submit
-        authenticationServiceSignInUsecase: AuthenticationServiceSignInUsecase(
-            authenticationService: AuthenticationServiceFirebase(
-                instance: firebase_auth.FirebaseAuth.instance)),
+        // authenticationServiceSignInUsecase: AuthenticationServiceSignInUsecase(
+        //     authenticationService: AuthenticationServiceFirebase(
+        //         instance: firebase_auth.FirebaseAuth.instance)),
 
         loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
           loginSubmitWidgetName: "",
@@ -125,8 +125,14 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
                 .text;
 
             try {
-              final res = await state.authenticationServiceSignInUsecase
-                  .execute(email, password);
+              final authenticationServiceSignInUsecase =
+                  ref.read(authenticationServiceSignInUsecaseProvider);
+
+              final res = await authenticationServiceSignInUsecase.execute(
+                  email, password);
+
+              // final res = await state.authenticationServiceSignInUsecase
+              //     .execute(email, password);
 
               final firebase_auth.User? user = res.user;
               if (user != null) {

@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+// import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -6,7 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../infrastructure/authentication_service_firebase.dart';
+// import '../../infrastructure/authentication_service_firebase.dart';
 import '../../usecase/authentication_service_signout_usecase.dart';
 
 import '../widget/appbar_action_icon_state.dart';
@@ -27,9 +27,9 @@ class WaitEmailVerifiedPageState with _$WaitEmailVerifiedPageState {
     // SignOutIcon Button
     required String signOutIconButtonName,
 
-    //
-    required AuthenticationServiceSignOutUsecase
-        authenticationServiceSignOutUsecase,
+    // //
+    // required AuthenticationServiceSignOutUsecase
+    //     authenticationServiceSignOutUsecase,
 
     //
     required AppbarActionIconStateProvider signOutIconStateProvider,
@@ -42,11 +42,11 @@ class WaitEmailVerifiedPageState with _$WaitEmailVerifiedPageState {
         // SignOutIcon Button
         signOutIconButtonName: "サインアウト",
 
-        authenticationServiceSignOutUsecase:
-            AuthenticationServiceSignOutUsecase(
-          authenticationService: AuthenticationServiceFirebase(
-              instance: firebase_auth.FirebaseAuth.instance),
-        ),
+        // authenticationServiceSignOutUsecase:
+        //     AuthenticationServiceSignOutUsecase(
+        //   authenticationService: AuthenticationServiceFirebase(
+        //       instance: firebase_auth.FirebaseAuth.instance),
+        // ),
 
         signOutIconStateProvider: appbarActionIconStateProviderCreator(
           onSubmitWidgetName: "",
@@ -85,7 +85,12 @@ class WaitEmailVerifiedPageStateNotifier
         required BuildContext context,
       }) =>
           () {
-            state.authenticationServiceSignOutUsecase.execute();
+            final authenticationServiceSignOutUsecase =
+                ref.read(authenticationServiceSignOutUsecaseProvider);
+
+            authenticationServiceSignOutUsecase.execute();
+
+            // state.authenticationServiceSignOutUsecase.execute();
           };
     }
 

@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // improve: user関連への依存関係を無くしたい。
 // import '../../user/domain/user.dart';
@@ -8,6 +9,13 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import '../../common/common.dart';
 import 'authentication_service.dart';
 
+final authenticationServiceFirebaseProvider =
+    Provider<AuthenticationService>((ref) {
+  return AuthenticationServiceFirebase(
+    instance: firebase_auth.FirebaseAuth.instance,
+  );
+});
+
 class AuthenticationServiceFirebase implements AuthenticationService {
   AuthenticationServiceFirebase({
     required this.instance,
@@ -15,6 +23,18 @@ class AuthenticationServiceFirebase implements AuthenticationService {
 
   @override
   final firebase_auth.FirebaseAuth instance;
+
+  // --------------------------------------------------
+  //
+  //   authStateChanges
+  //
+  // --------------------------------------------------
+  @override
+  Stream<firebase_auth.User?> authStateChanges() {
+    final stream = firebase_auth.FirebaseAuth.instance.authStateChanges();
+    // final stream = firebase_auth.FirebaseAuth.instance.userChanges();
+    return stream;
+  }
 
   // // --------------------------------------------------
   // //
@@ -180,11 +200,19 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   // improve: 未使用？
   @override
   Future<String> getIdToken() async {
-    final currentUser = instance.currentUser;
-    if (currentUser != null) {
-      final idToken = await currentUser.getIdToken();
-      return idToken;
+    try {
+      final currentUser = instance.currentUser;
+      if (currentUser != null) {
+        final idToken = await currentUser.getIdToken();
+        return idToken;
+      }
+      return "currentUser is null.";
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      logger.d("$e");
+      switch (e.code) {
+        default:
+          rethrow;
+      }
     }
-    return "currentUser is null.";
   }
 }

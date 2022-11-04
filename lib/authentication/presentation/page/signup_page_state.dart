@@ -9,7 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 import '../../common/create_firebse_auth_exception_message.dart';
 import '../../domain/firebase_auth_user.dart';
-import '../../infrastructure/authentication_service_firebase.dart';
+// import '../../infrastructure/authentication_service_firebase.dart';
 import '../../usecase/authentication_service_signup_usecase.dart';
 import '../../usecase/verify_email.dart';
 
@@ -36,8 +36,8 @@ class SignUpPageState with _$SignUpPageState {
     // Login Submit Widget
     // ignore: unused_element
     @Default("サービス利用登録") String loginSubmitWidgetName,
-    required AuthenticationServiceSignUpUsecase
-        authenticationServiceSignUpUsecase,
+    // required AuthenticationServiceSignUpUsecase
+    //     authenticationServiceSignUpUsecase,
     required LoginSubmitStateProvider loginSubmitStateProvider,
     // ignore: unused_element
     @Default(false) bool isOnSubmitable,
@@ -51,9 +51,9 @@ class SignUpPageState with _$SignUpPageState {
         passwordFieldStateProvider: passwordFieldStateNotifierProviderCreator(),
 
         // Login Submit
-        authenticationServiceSignUpUsecase: AuthenticationServiceSignUpUsecase(
-            authenticationService: AuthenticationServiceFirebase(
-                instance: firebase_auth.FirebaseAuth.instance)),
+        // authenticationServiceSignUpUsecase: AuthenticationServiceSignUpUsecase(
+        //     authenticationService: AuthenticationServiceFirebase(
+        //         instance: firebase_auth.FirebaseAuth.instance)),
 
         loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
           loginSubmitWidgetName: "",
@@ -108,9 +108,16 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
 
             try {
               // User情報登録
-              final firebase_auth.UserCredential res = await state
-                  .authenticationServiceSignUpUsecase
-                  .execute(email, password);
+              final authenticationServiceSignUpUsecase =
+                  ref.read(authenticationServiceSignUpUsecaseProvider);
+
+              final firebase_auth.UserCredential res =
+                  await authenticationServiceSignUpUsecase.execute(
+                      email, password);
+
+              // final firebase_auth.UserCredential res = await state
+              //     .authenticationServiceSignUpUsecase
+              //     .execute(email, password);
 
               // 登録したUser情報を受取る。
               final firebase_auth.User? user = res.user;

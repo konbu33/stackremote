@@ -1,6 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../authentication.dart';
 import '../infrastructure/authentication_service.dart';
+
+final authenticationServiceSignUpUsecaseProvider = Provider((ref) {
+  final AuthenticationService authenticationService =
+      ref.read(authenticationServiceFirebaseProvider);
+
+  return AuthenticationServiceSignUpUsecase(
+      authenticationService: authenticationService);
+});
 
 class AuthenticationServiceSignUpUsecase {
   AuthenticationServiceSignUpUsecase({
