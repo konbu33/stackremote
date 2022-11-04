@@ -144,7 +144,7 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
               displayNotificationMessage();
             }
 
-            initial();
+            // initial();
           };
     }
 

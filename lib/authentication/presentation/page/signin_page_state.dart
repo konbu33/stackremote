@@ -163,7 +163,7 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
               displayNotificationMessage();
             }
 
-            initial();
+            // initial();
           };
     }
 
