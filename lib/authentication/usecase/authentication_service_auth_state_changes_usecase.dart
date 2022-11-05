@@ -7,10 +7,10 @@ import '../authentication.dart';
 
 final authenticationServiceAuthStateChangesUsecaseProvider = Provider((ref) {
   final AuthenticationService authenticationService =
-      ref.read(authenticationServiceFirebaseProvider);
+      ref.watch(authenticationServiceFirebaseProvider);
 
   final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);
-  final notifier = ref.read(firebaseAuthUserStateNotifierProvider.notifier);
+  final notifier = ref.watch(firebaseAuthUserStateNotifierProvider.notifier);
 
   // improve: StreamProviderの方が良い？
   void execute() {

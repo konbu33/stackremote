@@ -9,7 +9,7 @@ final userDeleteUsecaseProvider = Provider((ref) {
       RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
   final UserRepository userRepository =
-      ref.read(userRepositoryFirebaseProvider);
+      ref.watch(userRepositoryFirebaseProvider);
 
   Future<void> execute({
     required String email,

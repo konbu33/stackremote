@@ -72,7 +72,7 @@ class UserDetailPageWidgets {
       if (loginIdIsValidate != state.isOnSubmitable) {
         // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          final notifier = ref.read(userPageStateControllerProvider.notifier);
+          final notifier = ref.watch(userPageStateControllerProvider.notifier);
           notifier.updateIsOnSubmitable(loginIdIsValidate);
           notifier.setUserUpdateOnSubmit();
         });

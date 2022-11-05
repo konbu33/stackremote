@@ -22,9 +22,8 @@ class AuthenticationLayer extends SingleChildStatelessWidget {
       child: child,
       builder: (context, ref, child) {
         // 認証状況の変移をwatch開始
-        // ref.read(authStateChangesProvider);
         final authenticationServiceAuthStateChangesUsecase =
-            ref.read(authenticationServiceAuthStateChangesUsecaseProvider);
+            ref.watch(authenticationServiceAuthStateChangesUsecaseProvider);
         authenticationServiceAuthStateChangesUsecase();
 
         // 認証されたユーザの情報のisSignIn属性をwatch開始
@@ -43,7 +42,7 @@ class AuthenticationLayer extends SingleChildStatelessWidget {
         // サインイン済み、且つ、firebaseAuthIdToken属性の値がEmptyの場合、Firebase AuthenticationのToken取得
         if (isSignIn && firebaseAuthIdToken.isEmpty) {
           final authenticationServiceGetIdTokenUsecase =
-              ref.read(authenticationServiceGetIdTokenUsecaseProvider);
+              ref.watch(authenticationServiceGetIdTokenUsecaseProvider);
           authenticationServiceGetIdTokenUsecase();
         }
 

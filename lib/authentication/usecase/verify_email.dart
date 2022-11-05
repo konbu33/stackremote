@@ -54,7 +54,7 @@ final checkEmailVerifiedProvider = Provider.autoDispose((ref) {
 
         if (isEmailVerified) {
           final notifier =
-              ref.read(firebaseAuthUserStateNotifierProvider.notifier);
+              ref.watch(firebaseAuthUserStateNotifierProvider.notifier);
           notifier.updateEmailVerified(isEmailVerified);
 
           timer.cancel();

@@ -4,9 +4,9 @@ import '../authentication.dart';
 
 final authenticationServiceGetIdTokenUsecaseProvider = Provider((ref) {
   final AuthenticationService authenticationService =
-      ref.read(authenticationServiceFirebaseProvider);
+      ref.watch(authenticationServiceFirebaseProvider);
 
-  final notifier = ref.read(firebaseAuthUserStateNotifierProvider.notifier);
+  final notifier = ref.watch(firebaseAuthUserStateNotifierProvider.notifier);
 
   // improve: FutureProviderの方が良い？
   void execute() async {

@@ -6,7 +6,7 @@ import '../authentication.dart';
 
 final authenticationServiceSignInUsecaseProvider = Provider((ref) {
   final AuthenticationService authenticationService =
-      ref.read(authenticationServiceFirebaseProvider);
+      ref.watch(authenticationServiceFirebaseProvider);
 
   return AuthenticationServiceSignInUsecase(
       authenticationService: authenticationService);

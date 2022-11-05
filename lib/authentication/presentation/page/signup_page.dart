@@ -21,7 +21,7 @@ class SignUpPage extends HookConsumerWidget {
     final passwordFieldState = ref.watch(state.passwordFieldStateProvider);
 
     final loginSubmitWidgetName =
-        ref.read(state.loginSubmitStateProvider).loginSubmitWidgetName;
+        ref.watch(state.loginSubmitStateProvider).loginSubmitWidgetName;
 
     return Scaffold(
       appBar: AppBar(
@@ -80,7 +80,7 @@ class SignUpPageWidgets {
       if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
         // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          final notifier = ref.read(signUpPageStateNotifierProvider.notifier);
+          final notifier = ref.watch(signUpPageStateNotifierProvider.notifier);
           notifier
               .updateIsOnSubmitable(passwordIsValidate && loginIdIsValidate);
           notifier.setSignUpOnSubmit();

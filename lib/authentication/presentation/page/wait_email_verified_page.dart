@@ -19,7 +19,7 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
     final state = ref.watch(waitEmailVerifiedPageStateNotifierProvider);
 
     // メールアドレス確認が完了したか否かをポーリング開始
-    final checkEmailVerified = ref.read(checkEmailVerifiedProvider);
+    final checkEmailVerified = ref.watch(checkEmailVerifiedProvider);
     useEffect(() {
       checkEmailVerified;
       return checkEmailVerified.cancel;
@@ -83,11 +83,10 @@ class WaitEmailVerifiedPageWidgets {
       final firebase_auth.User? user =
           firebase_auth.FirebaseAuth.instance.currentUser;
 
-      final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
-
       return ElevatedButton(
         onPressed: () {
           if (user != null) {
+            final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
             sendVerifyEmail(user: user);
           }
         },

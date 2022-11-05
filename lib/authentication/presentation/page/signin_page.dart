@@ -87,7 +87,7 @@ class SignInPageWidgets {
       if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
         // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          final notifier = ref.read(signInPageStateNotifierProvider.notifier);
+          final notifier = ref.watch(signInPageStateNotifierProvider.notifier);
           notifier
               .updateIsOnSubmitable(passwordIsValidate && loginIdIsValidate);
           notifier.setSignInOnSubmit();

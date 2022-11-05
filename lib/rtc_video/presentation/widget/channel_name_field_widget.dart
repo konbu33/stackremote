@@ -14,7 +14,7 @@ class ChannelNameFieldWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(channelNameFieldStateProvider);
-    final notifier = ref.read(channelNameFieldStateProvider.notifier);
+    final notifier = ref.watch(channelNameFieldStateProvider.notifier);
 
     return Column(
       children: [

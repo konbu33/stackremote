@@ -17,7 +17,7 @@ final snackBarWidgetProvider = Provider((ref) {
     final message = createMessage(e);
 
     // snackbarにメッセージ設定
-    final notifier = ref.read(snackBarStateProvider.notifier);
+    final notifier = ref.watch(snackBarStateProvider.notifier);
     notifier.setMessage(message);
 
     final snackBarState = ref.watch(snackBarStateProvider);

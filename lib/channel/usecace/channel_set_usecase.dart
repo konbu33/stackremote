@@ -9,7 +9,7 @@ import '../infrastructure/channel_repository_firestore.dart';
 
 final channelSetUsecaseProvider = Provider((ref) {
   final ChannelRepository channelRepository =
-      ref.read(channelRepositoryFireBaseProvider);
+      ref.watch(channelRepositoryFireBaseProvider);
 
   final rtcChannelState = ref.watch(
       RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);

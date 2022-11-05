@@ -103,7 +103,7 @@ class ChangePasswordPageWidgets {
     final Widget widget = Consumer(
       builder: (context, ref, child) {
         bool checkPasswordIsValidate() {
-          final notifier = ref.read(changePasswordPageStateProvider.notifier);
+          final notifier = ref.watch(changePasswordPageStateProvider.notifier);
           const String disagreementMessage = "入力したパスワードが不一致です。";
 
           // 各TextFormFieldのisValidateを確認
@@ -125,9 +125,10 @@ class ChangePasswordPageWidgets {
           }
 
           // TextFormField間でtextの一致を確認
-          final passwordFieldState = ref.read(state.passwordFieldStateProvider);
+          final passwordFieldState =
+              ref.watch(state.passwordFieldStateProvider);
           final passwordFieldConfirmState =
-              ref.read(state.passwordFieldConfirmStateProvider);
+              ref.watch(state.passwordFieldConfirmStateProvider);
 
           final passwordText = passwordFieldState.passwordFieldController.text;
 
@@ -158,7 +159,8 @@ class ChangePasswordPageWidgets {
         if (passwordIsValidate != state.isOnSubmitable) {
           // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            final notifier = ref.read(changePasswordPageStateProvider.notifier);
+            final notifier =
+                ref.watch(changePasswordPageStateProvider.notifier);
             notifier.updateIsOnSubmitable(passwordIsValidate);
             notifier.setChangePasswordOnSubmit();
           });
