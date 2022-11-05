@@ -37,8 +37,12 @@ class Channel with _$Channel {
 //  StateNotifier
 //
 // --------------------------------------------------
-class ChannelStateNotifier extends StateNotifier<Channel> {
-  ChannelStateNotifier() : super(Channel.create());
+class ChannelStateNotifier extends StateNotifier<AsyncValue<Channel?>> {
+  ChannelStateNotifier() : super(const AsyncLoading());
+
+  void updateChannel(AsyncValue<Channel?> asyncValue) {
+    state = asyncValue;
+  }
 }
 
 // --------------------------------------------------
@@ -47,6 +51,6 @@ class ChannelStateNotifier extends StateNotifier<Channel> {
 //
 // --------------------------------------------------
 final channelStateNotifierProvider =
-    StateNotifierProvider<ChannelStateNotifier, Channel>(
+    StateNotifierProvider<ChannelStateNotifier, AsyncValue<Channel?>>(
   (ref) => ChannelStateNotifier(),
 );

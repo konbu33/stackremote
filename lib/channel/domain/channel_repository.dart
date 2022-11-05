@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'channel.dart';
 
@@ -13,7 +16,8 @@ abstract class ChannelRepository {
 
   late CollectionReference<JsonMap> collectionRef;
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> get({
+  // Future<DocumentSnapshot<Map<String, dynamic>>> get({
+  Future<AsyncValue<Channel?>> get({
     required String channelName,
   });
 

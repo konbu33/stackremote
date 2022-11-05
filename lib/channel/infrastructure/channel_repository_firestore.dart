@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -30,18 +32,39 @@ class ChannelRepositoryFireBase implements ChannelRepository {
   //
   // --------------------------------------------------
   @override
-  Future<DocumentSnapshot<Map<String, dynamic>>> get({
+  // Future<DocumentSnapshot<Map<String, dynamic>>> get({
+  Future<AsyncValue<Channel?>> get({
     required String channelName,
   }) async {
     try {
-      final channel = await collectionRef.doc(channelName).get();
+      final snapshot = await collectionRef.doc(channelName).get();
 
-      return channel;
+      // チャンネルが存在しない場合
+      if (!snapshot.exists) {
+        // throw Exception();
+        return const AsyncData(null);
+
+        // チャンネルが存在する場合
+      } else {
+        // チャンネルのホストユーザのemailを取得
+        final data = snapshot.data();
+
+        if (data == null) {
+          throw Exception();
+        }
+
+        final channel = Channel.fromJson(data);
+        return AsyncData(channel);
+      }
 
       //
-    } on FirebaseException catch (e) {
+    } on FirebaseException catch (e, s) {
       logger.d("$e");
-      rethrow;
+      return AsyncError(e, s);
+      // rethrow;
+    } on Exception catch (e, s) {
+      logger.d("$e");
+      return AsyncError(e, s);
     }
   }
 

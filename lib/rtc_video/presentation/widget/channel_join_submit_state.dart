@@ -1,3 +1,4 @@
+import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -6,6 +7,7 @@ import 'package:stackremote/user/domain/user.dart';
 
 import '../../../authentication/authentication.dart';
 import '../../../channel/channel.dart';
+import '../../../common/common.dart';
 import '../../../user/user.dart';
 
 import '../../domain/rtc_channel_state.dart';
@@ -131,7 +133,12 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
                 //
                 // --------------------------------------------------
                 final channelGetUsecase = ref.read(channelGetUsecaseProvider);
-                final channel = await channelGetUsecase();
+                final asyncValue = await channelGetUsecase();
+
+                final channelStateNotifier =
+                    ref.watch(channelStateNotifierProvider.notifier);
+
+                channelStateNotifier.updateChannel(asyncValue);
 
                 final channelSetUsecase = ref.read(channelSetUsecaseProvider);
                 final userSetUsecase = ref.read(userSetUsecaseProvider);
@@ -142,48 +149,91 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
 
                 final userState = ref.watch(userStateNotifierProvider);
 
-                // チャンネルが存在しない場合
-                if (!channel.exists) {
-                  await channelSetUsecase();
-                  await userSetUsecase(
-                    // email: firebaseAuthUser.email,
-                    nickName: userState.nickName.isEmpty
-                        ? "ホストユーザ"
-                        : userState.nickName,
-                    isHost: true,
-                  );
+                final channelState = ref.watch(channelStateNotifierProvider);
 
-                  // チャンネルが存在する場合
-                } else {
-                  // チャンネルのホストユーザのemailを取得
-                  final data = channel.data() ?? {};
+                logger.d(channelState);
 
-                  final channelState = Channel.create(
-                    createAt: data["createAt"],
-                    hostUserEmail: data["hostUserEmail"],
-                  );
+                channelState.when(
+                  data: (data) async {
+                    // チャンネルが存在しない場合
+                    if (data == null) {
+                      await channelSetUsecase();
+                      await userSetUsecase(
+                        nickName: userState.nickName.isEmpty
+                            ? "ホストユーザ"
+                            : userState.nickName,
+                        isHost: true,
+                      );
+                    } else {
+                      // チャンネルが存在する場合
+                      // ホストユーザとそれ以外のユーザで分岐
+                      if (data.hostUserEmail == firebaseAuthUser.email) {
+                        await userSetUsecase(
+                          nickName: userState.nickName.isEmpty
+                              ? "ホストユーザ"
+                              : userState.nickName,
+                          isHost: true,
+                        );
+                      } else {
+                        await userSetUsecase(
+                          nickName: userState.nickName.isEmpty
+                              ? "ゲストユーザ"
+                              : userState.nickName,
+                          isHost: false,
+                        );
+                      }
+                    }
+                  },
+                  error: (error, stackTrace) {
+                    logger.d("$error, $stackTrace");
+                  },
+                  loading: () {
+                    logger.d("loading...");
+                  },
+                );
 
-                  // ホストユーザとそれ以外のユーザで分岐
-                  if (channelState.hostUserEmail == firebaseAuthUser.email) {
-                    await userSetUsecase(
-                      // email: firebaseAuthUser.email,
-                      nickName: userState.nickName.isEmpty
-                          ? "ホストユーザ"
-                          : userState.nickName,
+                // // チャンネルが存在しない場合
+                // if (!channel.exists) {
+                //   await channelSetUsecase();
+                //   await userSetUsecase(
+                //     // email: firebaseAuthUser.email,
+                //     nickName: userState.nickName.isEmpty
+                //         ? "ホストユーザ"
+                //         : userState.nickName,
+                //     isHost: true,
+                //   );
 
-                      isHost: true,
-                    );
-                  } else {
-                    await userSetUsecase(
-                      // email: firebaseAuthUser.email,
-                      nickName: userState.nickName.isEmpty
-                          ? "ゲストユーザ"
-                          : userState.nickName,
+                //   // チャンネルが存在する場合
+                // } else {
+                //   // チャンネルのホストユーザのemailを取得
+                //   final data = channel.data() ?? {};
 
-                      isHost: false,
-                    );
-                  }
-                }
+                //   final channelState = Channel.create(
+                //     createAt: data["createAt"],
+                //     hostUserEmail: data["hostUserEmail"],
+                //   );
+
+                //   // ホストユーザとそれ以外のユーザで分岐
+                //   if (channelState.hostUserEmail == firebaseAuthUser.email) {
+                //     await userSetUsecase(
+                //       // email: firebaseAuthUser.email,
+                //       nickName: userState.nickName.isEmpty
+                //           ? "ホストユーザ"
+                //           : userState.nickName,
+
+                //       isHost: true,
+                //     );
+                //   } else {
+                //     await userSetUsecase(
+                //       // email: firebaseAuthUser.email,
+                //       nickName: userState.nickName.isEmpty
+                //           ? "ゲストユーザ"
+                //           : userState.nickName,
+
+                //       isHost: false,
+                //     );
+                //   }
+                // }
 
                 // --------------------------------------------------
                 //
