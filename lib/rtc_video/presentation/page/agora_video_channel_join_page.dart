@@ -39,6 +39,8 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
             key: GlobalKey<FormState>(),
             child: Column(
               children: [
+                AgoraVideoChannelJoinPageWidgets.messageWidget(),
+                const SizedBox(height: 40),
                 AgoraVideoChannelJoinPageWidgets.channelNameFieldWidget(),
                 const SizedBox(height: 40),
                 AgoraVideoChannelJoinPageWidgets.channelJoinSubmitWidget(),
@@ -75,6 +77,20 @@ class AgoraVideoChannelJoinPageWidgets {
         );
       }),
     );
+
+    return widget;
+  }
+
+  // Message Widget
+  static Widget messageWidget() {
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final state = ref.watch(agoraVideoChannelJoinPageStateNotifierProvider);
+      const style = TextStyle(color: Colors.red);
+      return Text(
+        state.message,
+        style: style,
+      );
+    });
 
     return widget;
   }

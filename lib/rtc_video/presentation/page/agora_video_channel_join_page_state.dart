@@ -20,6 +20,7 @@ class AgoraVideoChannelJoinPageState with _$AgoraVideoChannelJoinPageState {
   const factory AgoraVideoChannelJoinPageState._({
     // PageTitle
     required String pageTitle,
+    required String message,
 
     // SignOutIcon Button
     required String signOutIconButtonName,
@@ -32,6 +33,8 @@ class AgoraVideoChannelJoinPageState with _$AgoraVideoChannelJoinPageState {
       AgoraVideoChannelJoinPageState._(
         // PageTitle
         pageTitle: "チャンネル参加",
+
+        message: "",
 
         // Sign Out Button
         signOutIconButtonName: "サインアウト",
@@ -71,6 +74,10 @@ class AgoraVideoChannelJoinPageStateNotifier
     state = AgoraVideoChannelJoinPageState.create();
     // setOnSubmit();
     setSignOutIconOnSubumit();
+  }
+
+  void setMessage(String message) {
+    state = state.copyWith(message: message);
   }
 
   // setSignOutIconOnSubumit

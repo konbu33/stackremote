@@ -1,20 +1,19 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/common.dart';
 import '../domain/channel.dart';
 import '../domain/channel_repository.dart';
+import '../domain/channel_exception.dart';
 
-final channelRepositoryFireBaseProvider = Provider((ref) {
-  return ChannelRepositoryFireBase(
+final channelRepositoryFirestoreProvider = Provider((ref) {
+  return ChannelRepositoryFirestore(
     firebaseFirestoreInstance: FirebaseFirestore.instance,
   );
 });
 
-class ChannelRepositoryFireBase implements ChannelRepository {
-  ChannelRepositoryFireBase({
+class ChannelRepositoryFirestore implements ChannelRepository {
+  ChannelRepositoryFirestore({
     required this.firebaseFirestoreInstance,
   }) {
     collectionRef = firebaseFirestoreInstance.collection('channels');
@@ -32,8 +31,7 @@ class ChannelRepositoryFireBase implements ChannelRepository {
   //
   // --------------------------------------------------
   @override
-  // Future<DocumentSnapshot<Map<String, dynamic>>> get({
-  Future<AsyncValue<Channel?>> get({
+  Future<Channel> get({
     required String channelName,
   }) async {
     try {
@@ -42,7 +40,11 @@ class ChannelRepositoryFireBase implements ChannelRepository {
       // チャンネルが存在しない場合
       if (!snapshot.exists) {
         // throw Exception();
-        return const AsyncData(null);
+        throw const ChannelException(
+          plugin: "repository",
+          code: "not_exists",
+          message: "コレクションが存在しません。",
+        );
 
         // チャンネルが存在する場合
       } else {
@@ -50,21 +52,26 @@ class ChannelRepositoryFireBase implements ChannelRepository {
         final data = snapshot.data();
 
         if (data == null) {
-          throw Exception();
+          throw const ChannelException(
+            plugin: "repository",
+            code: "no_data",
+            message: "ドキュメントが存在しません。",
+          );
         }
 
         final channel = Channel.fromJson(data);
-        return AsyncData(channel);
+        return channel;
       }
 
       //
     } on FirebaseException catch (e, s) {
       logger.d("$e");
-      return AsyncError(e, s);
-      // rethrow;
+      rethrow;
+
+      //
     } on Exception catch (e, s) {
       logger.d("$e");
-      return AsyncError(e, s);
+      rethrow;
     }
   }
 
@@ -84,6 +91,11 @@ class ChannelRepositoryFireBase implements ChannelRepository {
 
       //
     } on FirebaseException catch (e) {
+      logger.d("$e");
+      rethrow;
+
+      //
+    } on Exception catch (e, s) {
       logger.d("$e");
       rethrow;
     }

@@ -40,6 +40,10 @@ void main() {
       //
       firebaseAuthUserStateNotifierProvider
           .overrideWith((ref) => FakeFirebaseAuthUserStateNotifier()),
+
+      //
+      userStateNotifierProvider.overrideWith((ref) => FakeUserStateNotifier()),
+
       //
       userRepositoryFirebaseProvider.overrideWithValue(userRepository),
     ]);
@@ -65,14 +69,7 @@ void main() {
 
     // when
     // ユースケース実行
-    await userSetUsecase(
-      nickName: nickName,
-      isHost: isHost,
-      joinedAt: joinedAt,
-      leavedAt: leavedAt,
-      isOnLongPressing: isOnLongPressing,
-      pointerPosition: pointerPosition,
-    );
+    await userSetUsecase();
 
     // then
     // キャプチャされた値を変数に取得。
@@ -88,7 +85,7 @@ void main() {
           ),
           user: captureAny(
             named: "user",
-            that: equals(user),
+            // that: equals(user),
           ),
         )).captured;
 
@@ -102,7 +99,7 @@ void main() {
 
     expect(capturedeEmail, FakeFirebaseAuthUser().email);
 
-    expect(capturedUser, user);
+    // expect(capturedUser, FakeUserState());
     expect(capturedUser.nickName, user.nickName);
     expect(capturedUser.isHost, user.isHost);
     expect(capturedUser.joinedAt, user.joinedAt);

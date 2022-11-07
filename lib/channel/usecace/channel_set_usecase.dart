@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../authentication/authentication.dart';
@@ -7,19 +6,17 @@ import '../channel.dart';
 import '../domain/channel_repository.dart';
 import '../infrastructure/channel_repository_firestore.dart';
 
+// final channelSetUsecaseProvider = FutureProvider((ref) {
 final channelSetUsecaseProvider = Provider((ref) {
   final ChannelRepository channelRepository =
-      ref.watch(channelRepositoryFireBaseProvider);
+      ref.watch(channelRepositoryFirestoreProvider);
 
   final rtcChannelState = ref.watch(
       RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
   final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);
 
-  Future<void> execute({
-    Timestamp? createAt,
-    String? hostUserEmail,
-  }) async {
+  Future<void> execute() async {
     final channel = Channel.create(hostUserEmail: firebaseAuthUser.email);
 
     await channelRepository.set(

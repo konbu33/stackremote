@@ -5,6 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // ignore: unused_import
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/authentication/domain/firebase_auth_user.dart';
 import 'package:stackremote/user/domain/users.dart';
 
 import '../../common/common.dart';
@@ -24,7 +25,7 @@ class User with _$User {
     required String email,
     required String nickName,
     required String comment,
-    required bool isHost,
+    @Default(true) bool isHost,
     @FirestoreTimestampConverter() required Timestamp? joinedAt,
     @FirestoreTimestampConverter() required Timestamp? leavedAt,
     required bool isOnLongPressing,
@@ -45,7 +46,7 @@ class User with _$User {
         email: email ?? "",
         nickName: nickName ?? "",
         comment: comment ?? "",
-        isHost: isHost ?? false,
+        isHost: isHost ?? true,
         joinedAt: joinedAt,
         leavedAt: leavedAt,
         isOnLongPressing: isOnLongPressing ?? false,
@@ -82,16 +83,30 @@ class User with _$User {
 //
 // --------------------------------------------------
 class UserStateNotifier extends StateNotifier<User> {
-  UserStateNotifier() : super(User.create()) {
+  UserStateNotifier({
+    required String email,
+  }) : super(User.create(email: email)) {
     initial();
   }
 
   void initial() {
-    state = User.create();
+    setNickName(state.email.split("@")[0]);
   }
 
-  void setNickName(String nickName) {
+  void setNickName(String newNickName) {
+    String nickName = newNickName;
+
+    const lengthLimit = 8;
+    if (nickName.length > lengthLimit) {
+      nickName = nickName.substring(0, lengthLimit);
+      nickName += "...";
+    }
+
     state = state.copyWith(nickName: nickName);
+  }
+
+  void updateIsHost(bool isHost) {
+    state = state.copyWith(isHost: isHost);
   }
 }
 
@@ -101,9 +116,12 @@ class UserStateNotifier extends StateNotifier<User> {
 //
 // --------------------------------------------------
 final userStateNotifierProvider =
-    StateNotifierProvider<UserStateNotifier, User>(
-  (ref) => UserStateNotifier(),
-);
+    StateNotifierProvider<UserStateNotifier, User>((ref) {
+  final email = ref.watch(
+      firebaseAuthUserStateNotifierProvider.select((value) => value.email));
+
+  return UserStateNotifier(email: email);
+});
 
 // --------------------------------------------------
 //
