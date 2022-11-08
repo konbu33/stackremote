@@ -12,10 +12,10 @@ class AlertDialogWidget extends StatefulHookConsumerWidget {
   const AlertDialogWidget({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<AlertDialogWidget> createState() => AlertDialogWidgetState();
+  ConsumerState<AlertDialogWidget> createState() => _AlertDialogWidgetState();
 }
 
-class AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
+class _AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
   String message = "";
   TextStyle style = const TextStyle(color: Colors.red);
 
