@@ -12,12 +12,17 @@ class AlertDialogWidget extends StatefulHookConsumerWidget {
   const AlertDialogWidget({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<AlertDialogWidget> createState() => _AlertDialogWidgetState();
+  ConsumerState<AlertDialogWidget> createState() => AlertDialogWidgetState();
 }
 
-class _AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
+class AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
   String message = "";
   TextStyle style = const TextStyle(color: Colors.red);
+
+  void setMessage(String newMessage) {
+    message = newMessage;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +53,7 @@ class _AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
             if (user != null) {
               try {
                 await user.delete();
-                message = "登録したメールアドレスを削除しました。";
-                setState(() {});
+                setMessage("登録したメールアドレスを削除しました。");
 
                 sleep(const Duration(seconds: 3));
 
@@ -61,8 +65,7 @@ class _AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
 
                 final createFirebaseExceptionMessage =
                     ref.read(createFirebaseAuthExceptionMessageProvider);
-                message = createFirebaseExceptionMessage(e);
-                setState(() {});
+                setMessage(createFirebaseExceptionMessage(e));
               }
             }
           },
