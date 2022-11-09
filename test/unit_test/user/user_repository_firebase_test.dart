@@ -8,7 +8,7 @@ import 'package:stackremote/user/domain/user_repository.dart';
 import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
 import 'package:stackremote/user/domain/users.dart';
 
-import '../common/dotenvtest.dart';
+import '../../common/dotenvtest.dart';
 import 'user_mock.dart';
 
 void main() {
