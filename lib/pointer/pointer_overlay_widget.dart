@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user/domain/user_streams.dart';
+import 'package:stackremote/user/domain/users.dart';
 
+import '../common/common.dart';
 import '../user/domain/user.dart';
 import '../user/user.dart';
+
+//
+import 'pointer_overlay_provider_stream_transformer.dart';
+// import 'pointer_overlay_provider_await_for.dart';
+//
 
 import 'pointer_overlay_state.dart';
 import 'pointer_positioned_widget.dart';
@@ -23,32 +31,110 @@ class PointerOverlayWidget extends HookConsumerWidget {
 
     // final usersStream = ref.read(usersStreamProvider);
 
-    final userStreamList = ref.watch(userStreamListProvider) ?? [];
+    // final usersState = ref.watch(usersStateNotifierProvider);
+    // final userStreamsState = ref.watch(userStreamsStateNotifierProvider);
+
+    // List<Widget> userWidgetList = [];
+    // userStreamsState.userStreamList.map((userStream) async {
+    //   final widgetList = await userStream.map((user) {
+    //     if (user.isOnLongPressing) {
+    //       final widget = PointerPositionedWidget(
+    //         dx: user.pointerPosition.dx,
+    //         dy: user.pointerPosition.dy,
+    //         nickName: user.nickName,
+    //         email: user.email,
+    //         comment: user.comment,
+    //       );
+    //       return widget;
+    //     }
+    //     return const SizedBox();
+    //   }).toList();
+    //   userWidgetList = widgetList;
+    // });
+
+    // if (user.isOnLongPressing) {
+    //   final widget = PointerPositionedWidget(
+    //     dx: user.pointerPosition.dx,
+    //     dy: user.pointerPosition.dy,
+    //     nickName: user.nickName,
+    //     email: user.email,
+    //     comment: user.comment,
+    //   );
+    //   return widget;
+    // }
+    //   return const SizedBox();
+    // }).toList();
+
+    // List<Widget> userWidgetList = [];
+    // final userStreamList = ref.watch(userStreamListProvider) ?? [];
+    // userStreamList.map(
+    //   (userStream) {
+    //     return userStream.when<Widget>(
+    //       loading: () => const Text("usersStream loading..."),
+    //       error: (error, stackTrace) => const Text("error"),
+    //       data: (user) {
+    //         if (user.isOnLongPressing) {
+    //           final widget = PointerPositionedWidget(
+    //             dx: user.pointerPosition.dx,
+    //             dy: user.pointerPosition.dy,
+    //             nickName: user.nickName,
+    //             email: user.email,
+    //             comment: user.comment,
+    //           );
+
+    //           userWidgetList.add(widget);
+    //         }
+    //         return const Text("success get data");
+    //       },
+    //     );
+    //   },
+    // ).toList();
+
+    // List<Widget> userWidgetList = [];
+    // final userStream = ref.watch(userStreamProvider);
+
+    // userStream.when<Widget>(
+    //   loading: () => const Text("usersStream loading..."),
+    //   error: (error, stackTrace) => const Text("error"),
+    //   data: (user) {
+    //     if (user.isOnLongPressing) {
+    //       final widget = PointerPositionedWidget(
+    //         dx: user.pointerPosition.dx,
+    //         dy: user.pointerPosition.dy,
+    //         nickName: user.nickName,
+    //         email: user.email,
+    //         comment: user.comment,
+    //       );
+
+    //       userWidgetList.add(widget);
+    //     }
+    //     return const Text("success get data");
+    //   },
+    // );
 
     List<Widget> userWidgetList = [];
+    final userStream = ref.watch(userStreamProvider);
 
-    userStreamList.map(
-      (userStream) {
-        return userStream.when<Widget>(
-          loading: () => const Text("usersStream loading..."),
-          error: (error, stackTrace) => const Text("error"),
-          data: (user) {
-            if (user.isOnLongPressing) {
-              final widget = PointerPositionedWidget(
-                dx: user.pointerPosition.dx,
-                dy: user.pointerPosition.dy,
-                nickName: user.nickName,
-                email: user.email,
-                comment: user.comment,
-              );
+    userStream.when<Widget>(
+      loading: () => const Text("usersStream loading..."),
+      error: (error, stackTrace) => const Text("error"),
+      data: (user) {
+        logger.d("$user");
 
-              userWidgetList.add(widget);
-            }
-            return const Text("success get data");
-          },
-        );
+        if (user.isOnLongPressing) {
+          final widget = PointerPositionedWidget(
+            dx: user.pointerPosition.dx,
+            dy: user.pointerPosition.dy,
+            nickName: user.nickName,
+            email: user.email,
+            comment: user.comment,
+          );
+
+          userWidgetList.add(widget);
+        }
+        return const Text("success get data");
       },
-    ).toList();
+    );
 
     return MouseRegion(
       cursor: SystemMouseCursors.none,
@@ -92,6 +178,7 @@ class PointerOverlayWidget extends HookConsumerWidget {
             pointerPosition: event.localPosition,
           );
 
+          // logger.d("${event.localPosition}");
           // userUpdateUsecase(
           //   pointerPosition: pointerOerlayerState.pointerPosition,
           // );
