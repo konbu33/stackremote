@@ -14,28 +14,24 @@ abstract class UserRepository {
 
   late CollectionReference<JsonMap> ref;
 
-  Stream<Users> fetchAll({
-    required String channelName,
-  });
+  late String channelName;
+
+  Stream<Users> fetchAll();
 
   Stream<User> fetchById({
-    required String channelName,
     required String email,
   });
 
   Future<void> set({
-    required String channelName,
     required String email,
     required User user,
   });
 
   Future<void> delete({
-    required String channelName,
     required String email,
   });
 
   void update({
-    required String channelName,
     required String email,
     required Map<String, dynamic> data,
   });

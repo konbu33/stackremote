@@ -5,12 +5,8 @@ import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
 
 import '../../authentication/authentication.dart';
 import '../../common/common.dart';
-import '../../rtc_video/rtc_video.dart';
 
 final userUpdateUsecaseProvider = Provider((ref) {
-  final rtcChannelState = ref.watch(
-      RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
-
   final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);
 
   final UserRepository userRepository =
@@ -56,7 +52,6 @@ final userUpdateUsecaseProvider = Provider((ref) {
     }
 
     userRepository.update(
-      channelName: rtcChannelState.channelName,
       email: firebaseAuthUser.email,
       data: data,
     );
