@@ -48,7 +48,7 @@ class AuthenticationLayer extends SingleChildStatelessWidget {
 
         final firebaseAuthUser =
             ref.watch(firebaseAuthUserStateNotifierProvider);
-        logger.d("$firebaseAuthUser");
+        logger.d(firebaseAuthUser);
 
         // 「サインイン済み、かつ、メールアドレス検証済み」の場合、Menuのルーティングへ移行。
         // 「サインイン済み、かつ、メールアドレス検証済み」でない場合、Authenticationのルーティングへ移行。
