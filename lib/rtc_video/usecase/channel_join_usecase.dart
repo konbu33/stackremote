@@ -130,8 +130,6 @@ final channelJoinUsecaseProvider = Provider((ref) {
 
     // ユーザ登録
     final userSetUsecase = ref.read(userSetUsecaseProvider);
-    final userState = ref.read(userStateNotifierProvider);
-    logger.d("$userState");
     await userSetUsecase();
 
     // --------------------------------------------------
