@@ -166,46 +166,18 @@ void main() {
     // Userインスタンスを複数生成
     final user1 = User.create(
       email: "ake@test.com",
-      nickName: nickName,
-      comment: comment,
-      isHost: isHost,
-      joinedAt: joinedAt,
-      leavedAt: leavedAt,
-      isOnLongPressing: isOnLongPressing,
-      pointerPosition: pointerPosition,
     );
 
     final user2 = User.create(
       email: "ike@test.com",
-      nickName: nickName,
-      comment: comment,
-      isHost: isHost,
-      joinedAt: joinedAt,
-      leavedAt: leavedAt,
-      isOnLongPressing: isOnLongPressing,
-      pointerPosition: pointerPosition,
     );
 
     // final user3 = User.create(
     //   email: "uke@test.com",
-    //   nickName: nickName,
-    //   comment: comment,
-    //   isHost: isHost,
-    //   joinedAt: joinedAt,
-    //   leavedAt: leavedAt,
-    //   isOnLongPressing: isOnLongPressing,
-    //   pointerPosition: pointerPosition,
     // );
 
     final user4 = User.create(
       email: "eke@test.com",
-      nickName: nickName,
-      comment: comment,
-      isHost: isHost,
-      joinedAt: joinedAt,
-      leavedAt: leavedAt,
-      isOnLongPressing: isOnLongPressing,
-      pointerPosition: pointerPosition,
     );
 
     // 複数のUserからUsersコレクションオブジェクト生成
@@ -304,15 +276,15 @@ void main() {
     final rtcChannelState = container.read(
         RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
-    final addUser = User.create(
+    final addUser = User.reconstruct(
       email: "ake@test.com",
       nickName: "non_update_nickname",
-      comment: comment,
-      isHost: isHost,
-      joinedAt: joinedAt,
-      leavedAt: leavedAt,
-      isOnLongPressing: isOnLongPressing,
-      pointerPosition: pointerPosition,
+      // comment: comment,
+      // isHost: isHost,
+      // joinedAt: joinedAt,
+      // leavedAt: leavedAt,
+      // isOnLongPressing: isOnLongPressing,
+      // pointerPosition: pointerPosition,
     );
     // final String addUserId = addUser.userId.value.toString();
 
@@ -346,15 +318,15 @@ void main() {
     );
 
     // when
-    final User updateUser = User.create(
+    final User updateUser = User.reconstruct(
       email: "ake@test.com",
       nickName: "update_nickname",
-      comment: comment,
-      isHost: isHost,
-      joinedAt: joinedAt,
-      leavedAt: leavedAt,
-      isOnLongPressing: isOnLongPressing,
-      pointerPosition: pointerPosition,
+      // comment: comment,
+      // isHost: isHost,
+      // joinedAt: joinedAt,
+      // leavedAt: leavedAt,
+      // isOnLongPressing: isOnLongPressing,
+      // pointerPosition: pointerPosition,
     );
 
     userRepository.update(
@@ -395,15 +367,15 @@ void main() {
     final rtcChannelState = container.read(
         RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
-    final addUser = User.create(
+    final addUser = User.reconstruct(
       email: "ake@test.com",
       nickName: "non_update_nickname",
-      comment: comment,
-      isHost: isHost,
-      joinedAt: joinedAt,
-      leavedAt: leavedAt,
-      isOnLongPressing: isOnLongPressing,
-      pointerPosition: pointerPosition,
+      // comment: comment,
+      // isHost: isHost,
+      // joinedAt: joinedAt,
+      // leavedAt: leavedAt,
+      // isOnLongPressing: isOnLongPressing,
+      // pointerPosition: pointerPosition,
     );
 
     await userRepository.set(

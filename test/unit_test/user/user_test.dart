@@ -32,15 +32,9 @@ void main() {
       //   firebaseAuthIdToken: firebaseAuthIdToken,
       // );
 
-      final user = User.create(
+      final user = User.reconstruct(
         email: email,
         nickName: nickName,
-        comment: comment,
-        isHost: isHost,
-        joinedAt: joinedAt,
-        leavedAt: leavedAt,
-        isOnLongPressing: isOnLongPressing,
-        pointerPosition: pointerPosition,
       );
 
       // then
@@ -120,15 +114,9 @@ void main() {
       //   firebaseAuthIdToken: firebaseAuthIdToken,
       // );
 
-      final user = User.create(
+      final user = User.reconstruct(
         email: "xxx@test.com",
         nickName: "test_user",
-        comment: "",
-        isHost: true,
-        joinedAt: null,
-        leavedAt: null,
-        isOnLongPressing: false,
-        pointerPosition: const Offset(0, 0),
       );
 
       // when

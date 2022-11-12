@@ -24,35 +24,17 @@ void main() {
     test('reconstructメソッドでインスタンス生成した場合、users属性の値が引数の値と同じであること', () {
       // given
       final List<User> userList = [
-        User.create(
+        User.reconstruct(
           email: "ake@test.com",
           nickName: "ake",
-          comment: "",
-          isHost: true,
-          joinedAt: null,
-          leavedAt: null,
-          isOnLongPressing: false,
-          pointerPosition: const Offset(0, 0),
         ),
-        User.create(
+        User.reconstruct(
           email: "ike@test.com",
           nickName: "ike",
-          comment: "",
-          isHost: true,
-          joinedAt: null,
-          leavedAt: null,
-          isOnLongPressing: false,
-          pointerPosition: const Offset(0, 0),
         ),
-        User.create(
+        User.reconstruct(
           email: "uke@test.com",
           nickName: "uke",
-          comment: "",
-          isHost: true,
-          joinedAt: null,
-          leavedAt: null,
-          isOnLongPressing: false,
-          pointerPosition: const Offset(0, 0),
         ),
       ];
 
