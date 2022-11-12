@@ -335,10 +335,6 @@ void main() {
 
   test("ユーザデータを登録可能なこと、かつ、UserId指定でユーザデータを削除可能なこと", () async {
     // given
-    final container = ProviderContainer(overrides: []);
-
-    final rtcChannelState = container.read(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
     final addUser = User.reconstruct(
       email: "ake@test.com",
