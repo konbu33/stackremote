@@ -6,7 +6,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/authentication/domain/firebase_auth_user.dart';
-import 'package:stackremote/user/domain/users.dart';
 
 import '../../common/common.dart';
 import '../usecace/user_fetch_by_id_usecase.dart';
@@ -121,49 +120,4 @@ final userStateNotifierProvider =
       firebaseAuthUserStateNotifierProvider.select((value) => value.email));
 
   return UserStateNotifier(email: email);
-});
-
-// --------------------------------------------------
-//
-// StreamProvider
-//
-// --------------------------------------------------
-final userStreamProviderFamily =
-    StreamProvider.family<User, String>((ref, email) {
-  final userStream = ref.watch(userFetchByIdUsecaseProvider);
-  return userStream(email: email);
-});
-
-// --------------------------------------------------
-//
-// Provider
-//
-// --------------------------------------------------
-final userStreamListProvider = Provider<List<AsyncValue<User>>?>((ref) {
-// final usersStreamProvider = StreamProvider<QuerySnapshot>((ref) {
-  final usersStream = ref.watch(usersStreamProvider);
-  // final userStream = ref.watch(userFetchByIdUsecaseProvider);
-
-  final userStreamList =
-      usersStream.when<List<AsyncValue<User>>?>(data: ((data) {
-    return data.users.map((user) {
-      final userStream = ref.watch(userStreamProviderFamily(user.email));
-      return userStream;
-    }).toList();
-  }), error: ((error, stackTrace) {
-    return null;
-  }), loading: (() {
-    return null;
-  }));
-
-  // final rtcChannelState = ref.watch(
-  //     RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
-
-  // return FirebaseFirestore.instance
-  //     .collection('channels')
-  //     .doc(rtcChannelState.channelName)
-  //     .collection('users')
-  //     .snapshots();
-
-  return userStreamList;
 });

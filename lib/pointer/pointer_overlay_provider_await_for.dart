@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../rtc_video/rtc_video.dart';
 import '../user/domain/user.dart';
+import 'pointer_provider.dart';
 
 // --------------------------------------------------
 //
