@@ -167,9 +167,6 @@ class AgoraVideoPageWidgets {
       final userState = ref.watch(userStateNotifierProvider);
       logger.d(userState);
 
-      final usersState = ref.watch(usersStateNotifierProvider);
-      logger.d("usersState : $usersState");
-
       return const SizedBox();
     }));
 
