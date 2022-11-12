@@ -1,5 +1,6 @@
 // Freezed
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
 
 import 'user.dart';
 
