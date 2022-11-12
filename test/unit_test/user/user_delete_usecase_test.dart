@@ -5,7 +5,7 @@ import 'package:stackremote/rtc_video/rtc_video.dart';
 import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
 import 'package:stackremote/user/usecace/user_delete_usecase.dart';
 
-import '../common/dotenvtest.dart';
+import '../../common/dotenvtest.dart';
 import 'user_mock.dart';
 
 void main() {

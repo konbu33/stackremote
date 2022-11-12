@@ -70,7 +70,7 @@ ChannelLeaveSubmitIconStateProvider
   return StateNotifierProvider<ChannelLeaveSubmitIconStateNotifier,
       ChannelLeaveSubmitIconState>(
     (ref) {
-      final notifier = ref.read(RtcChannelStateNotifierProviderList
+      final notifier = ref.watch(RtcChannelStateNotifierProviderList
           .rtcChannelStateNotifierProvider.notifier);
 
       Function? onSubmit({required BuildContext context}) {

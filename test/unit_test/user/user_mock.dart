@@ -195,3 +195,48 @@ class FakeRtcChannelStateNotifier extends StateNotifier<RtcChannelState>
 final fakeRtcChannelStateNotifierProvider =
     StateNotifierProvider<FakeRtcChannelStateNotifier, RtcChannelState>(
         (ref) => FakeRtcChannelStateNotifier());
+
+// --------------------------------------------------
+//
+// FakeUserState
+//
+// --------------------------------------------------
+// メソッドを利用する場合は、Mockで済みそう。メンバ変数を利用する場合は、Fakeが必要そう。
+class FakeUserState extends Fake implements User {
+  FakeUserState();
+
+  @override
+  final String email = FakeFirebaseAuthUser().email;
+  @override
+  final String nickName = user.nickName;
+  @override
+  final String comment = user.comment;
+  @override
+  final bool isHost = user.isHost;
+  @override
+  final Timestamp? joinedAt = user.joinedAt;
+  @override
+  final Timestamp? leavedAt = user.leavedAt;
+  @override
+  final bool isOnLongPressing = user.isOnLongPressing;
+  @override
+  final Offset pointerPosition = user.pointerPosition;
+}
+
+class FakeUserStateNotifier extends StateNotifier<User>
+    implements UserStateNotifier {
+  FakeUserStateNotifier() : super(FakeUserState());
+
+  @override
+  void initial() {}
+
+  @override
+  void setNickName(String value) {}
+
+  @override
+  void updateIsHost(bool value) {}
+}
+
+final fakeUserStateNotifierProvider =
+    StateNotifierProvider<FakeUserStateNotifier, User>(
+        (ref) => FakeUserStateNotifier());

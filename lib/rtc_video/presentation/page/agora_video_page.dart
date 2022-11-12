@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // improve: pointerのモジュールをimportしている点、疎結合に改善可能か検討の余地あり。
+import '../../../channel/channel.dart';
+import '../../../common/common.dart';
 import '../../../pointer/pointer.dart';
 
+import '../../../user/user.dart';
 import '../../domain/rtc_channel_state.dart';
 
 import '../widget/agora_video_local_preview_widget.dart';
@@ -75,6 +78,7 @@ class AgoraVideoPage extends HookConsumerWidget {
                 ],
               ),
             ),
+            AgoraVideoPageWidgets.buildDisplayState()
           ],
         ),
       ),
@@ -149,6 +153,24 @@ class AgoraVideoPageWidgets {
       // // }
 
       return AgoraVideoRemotePreviewWidget(state: state);
+    }));
+
+    return widget;
+  }
+
+  // Display State Widget
+  static Widget buildDisplayState() {
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      final channelState = ref.watch(channelStateNotifierProvider);
+      logger.d(channelState);
+
+      final userState = ref.watch(userStateNotifierProvider);
+      logger.d(userState);
+
+      final usersState = ref.watch(usersStateNotifierProvider);
+      logger.d("usersState : $usersState");
+
+      return const SizedBox();
     }));
 
     return widget;

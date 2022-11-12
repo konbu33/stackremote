@@ -14,7 +14,7 @@ class NickNameFieldWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(nickNameFieldStateNotifierProvider);
-    final notifier = ref.read(nickNameFieldStateNotifierProvider.notifier);
+    final notifier = ref.watch(nickNameFieldStateNotifierProvider.notifier);
 
     return Column(
       children: [

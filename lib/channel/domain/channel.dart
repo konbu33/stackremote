@@ -39,6 +39,14 @@ class Channel with _$Channel {
 // --------------------------------------------------
 class ChannelStateNotifier extends StateNotifier<Channel> {
   ChannelStateNotifier() : super(Channel.create());
+
+  void setChannelState(Channel channel) {
+    state = channel;
+  }
+
+  void setHostUserEmail(String hostUserEmail) {
+    state = state.copyWith(hostUserEmail: hostUserEmail);
+  }
 }
 
 // --------------------------------------------------
@@ -50,3 +58,26 @@ final channelStateNotifierProvider =
     StateNotifierProvider<ChannelStateNotifier, Channel>(
   (ref) => ChannelStateNotifier(),
 );
+
+// // --------------------------------------------------
+// //
+// //  StateNotifier
+// //
+// // --------------------------------------------------
+// class ChannelStateNotifier extends StateNotifier<AsyncValue<Channel?>> {
+//   ChannelStateNotifier() : super(const AsyncLoading());
+
+//   void updateChannel(AsyncValue<Channel?> asyncValue) {
+//     state = asyncValue;
+//   }
+// }
+
+// // --------------------------------------------------
+// //
+// //  StateNotifierProvider
+// //
+// // --------------------------------------------------
+// final channelStateNotifierProvider =
+//     StateNotifierProvider<ChannelStateNotifier, AsyncValue<Channel?>>(
+//   (ref) => ChannelStateNotifier(),
+// );

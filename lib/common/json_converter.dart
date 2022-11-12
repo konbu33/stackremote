@@ -25,7 +25,6 @@ class OffsetConverter extends JsonConverter<Offset, String> {
 
   @override
   Offset fromJson(String json) {
-    // logger.d("Offset json : $json");
     final Map<String, dynamic> jsonMap = jsonDecode(json);
     final double dx = jsonMap["dx"];
     final double dy = jsonMap["dy"];
@@ -54,26 +53,6 @@ class TextEditingControllerConverter
   }
 }
 
-// // --------------------------------------------------
-// //
-// //  TimestampConverter
-// //
-// // --------------------------------------------------
-// class TimestampConverter extends JsonConverter<Timestamp, String> {
-//   const TimestampConverter();
-
-//   @override
-//   String toJson(Timestamp object) {
-//     return object.toString();
-//   }
-
-//   @override
-//   Timestamp fromJson(String json) {
-//     var parsedDate = DateTime.parse(json);
-//     return Timestamp.fromDate(parsedDate);
-//   }
-// }
-
 // --------------------------------------------------
 //
 //  FirestoreTimestampConverter
@@ -93,19 +72,6 @@ class FirestoreTimestampConverter extends JsonConverter<Timestamp?, dynamic> {
     if (json is Timestamp) return json;
     return null;
   }
-
-//   @override
-//   Timestamp? fromJson(dynamic json) {
-//     // logger.d("fromJson: $json");
-//     if (json is Timestamp) {
-//       DateTime createdAt = json.toDate();
-//       Timestamp createdAtTimestamp = Timestamp.fromDate(createdAt);
-//       // logger.d("createdAtTimestamp : $createdAtTimestamp");
-//       return createdAtTimestamp;
-//     }
-
-//     return null;
-//   }
 }
 
 // --------------------------------------------------

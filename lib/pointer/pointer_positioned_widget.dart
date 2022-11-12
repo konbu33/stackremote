@@ -35,7 +35,7 @@ class PointerPositionedWidget extends HookConsumerWidget {
       child: Builder(
         builder: (context) {
           final firebaseAuthUser =
-              ref.read(firebaseAuthUserStateNotifierProvider);
+              ref.watch(firebaseAuthUserStateNotifierProvider);
 
           if (email == firebaseAuthUser.email) {
             return PointerWidgetLocal(

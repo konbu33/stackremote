@@ -19,6 +19,11 @@ class _AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
   String message = "";
   TextStyle style = const TextStyle(color: Colors.red);
 
+  void setMessage(String newMessage) {
+    message = newMessage;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -48,8 +53,7 @@ class _AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
             if (user != null) {
               try {
                 await user.delete();
-                message = "登録したメールアドレスを削除しました。";
-                setState(() {});
+                setMessage("登録したメールアドレスを削除しました。");
 
                 sleep(const Duration(seconds: 3));
 
@@ -61,10 +65,7 @@ class _AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
 
                 final createFirebaseExceptionMessage =
                     ref.read(createFirebaseAuthExceptionMessageProvider);
-                message = createFirebaseExceptionMessage(e);
-                setState(() {});
-                // notifier.setMessage(message);
-
+                setMessage(createFirebaseExceptionMessage(e));
               }
             }
           },

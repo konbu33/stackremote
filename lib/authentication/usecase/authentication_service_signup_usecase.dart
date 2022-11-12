@@ -1,6 +1,16 @@
+// improve: この依存をrepositoryに閉じ込めたい
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../infrastructure/authentication_service.dart';
+import '../authentication.dart';
+
+final authenticationServiceSignUpUsecaseProvider = Provider((ref) {
+  final AuthenticationService authenticationService =
+      ref.watch(authenticationServiceFirebaseProvider);
+
+  return AuthenticationServiceSignUpUsecase(
+      authenticationService: authenticationService);
+});
 
 class AuthenticationServiceSignUpUsecase {
   AuthenticationServiceSignUpUsecase({
@@ -9,6 +19,7 @@ class AuthenticationServiceSignUpUsecase {
 
   final AuthenticationService authenticationService;
 
+  // improve: FutureProviderの方が良い？
   Future<firebase_auth.UserCredential> execute(
       String email, String password) async {
     final res = await authenticationService.signUp(email, password);

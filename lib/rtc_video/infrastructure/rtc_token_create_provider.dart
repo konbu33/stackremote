@@ -22,7 +22,7 @@ final rtcTokenCreateOnCallProvider = Provider((ref) {
 
     final userState = ref.watch(firebaseAuthUserStateNotifierProvider);
 
-    final notifier = ref.read(RtcChannelStateNotifierProviderList
+    final notifier = ref.watch(RtcChannelStateNotifierProviderList
         .rtcChannelStateNotifierProvider.notifier);
 
     final data = {
@@ -88,7 +88,7 @@ final rtcTokenCreateOnRequestProvider = Provider((ref) {
 
     final userState = ref.watch(firebaseAuthUserStateNotifierProvider);
 
-    final notifier = ref.read(RtcChannelStateNotifierProviderList
+    final notifier = ref.watch(RtcChannelStateNotifierProviderList
         .rtcChannelStateNotifierProvider.notifier);
 
     // rtcIdToken Create API Endpoint

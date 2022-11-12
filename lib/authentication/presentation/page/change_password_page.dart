@@ -58,8 +58,6 @@ class ChangePasswordPageWidgets {
 
   // Description
   static Widget descriptionWidget(ChangePasswordPageState state) {
-    // if (state.message.isEmpty) return const SizedBox();
-
     const String descriptionMessage = "入力間違い防止のため、2回入力して下さい。";
     const style = TextStyle(color: Colors.grey);
     const Widget widget = Text(
@@ -105,7 +103,7 @@ class ChangePasswordPageWidgets {
     final Widget widget = Consumer(
       builder: (context, ref, child) {
         bool checkPasswordIsValidate() {
-          final notifier = ref.read(changePasswordPageStateProvider.notifier);
+          final notifier = ref.watch(changePasswordPageStateProvider.notifier);
           const String disagreementMessage = "入力したパスワードが不一致です。";
 
           // 各TextFormFieldのisValidateを確認
@@ -127,9 +125,10 @@ class ChangePasswordPageWidgets {
           }
 
           // TextFormField間でtextの一致を確認
-          final passwordFieldState = ref.read(state.passwordFieldStateProvider);
+          final passwordFieldState =
+              ref.watch(state.passwordFieldStateProvider);
           final passwordFieldConfirmState =
-              ref.read(state.passwordFieldConfirmStateProvider);
+              ref.watch(state.passwordFieldConfirmStateProvider);
 
           final passwordText = passwordFieldState.passwordFieldController.text;
 
@@ -155,19 +154,16 @@ class ChangePasswordPageWidgets {
         }
 
         final passwordIsValidate = checkPasswordIsValidate();
-        logger.d("----------- $passwordIsValidate, ${state.isOnSubmitable}");
 
         if (passwordIsValidate != state.isOnSubmitable) {
           // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            final notifier = ref.read(changePasswordPageStateProvider.notifier);
+            final notifier =
+                ref.watch(changePasswordPageStateProvider.notifier);
             notifier.updateIsOnSubmitable(passwordIsValidate);
             notifier.setChangePasswordOnSubmit();
           });
         }
-
-        final a = ref.watch(state.onSubmitStateProvider).onSubmit;
-        logger.d(" ---- $a");
 
         return LoginSubmitWidget(
           loginSubmitStateProvider: state.onSubmitStateProvider,

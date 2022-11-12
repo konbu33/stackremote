@@ -17,12 +17,8 @@ final snackBarWidgetProvider = Provider((ref) {
     final message = createMessage(e);
 
     // snackbarにメッセージ設定
-    final notifier = ref.read(snackBarStateProvider.notifier);
+    final notifier = ref.watch(snackBarStateProvider.notifier);
     notifier.setMessage(message);
-
-    // // snackbarでメッセージ表示
-    // final buildSnackBarWidget = ref.read(snackBarWidgetProvider);
-    // return buildSnackBarWidget();
 
     final snackBarState = ref.watch(snackBarStateProvider);
 
@@ -35,21 +31,6 @@ final snackBarWidgetProvider = Provider((ref) {
 
   return buildSnackBarWidget;
 });
-
-// class SnackBarWidget extends HookConsumerWidget {
-//   const SnackBarWidget({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final snackBarState = ref.watch(snackBarStateProvider);
-
-//     final SnackBar snackBar = SnackBar(
-//       content: Text(snackBarState.message),
-//     );
-
-//     return snackBar;
-//   }
-// }
 
 // --------------------------------------------------
 //

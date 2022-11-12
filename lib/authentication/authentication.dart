@@ -1,6 +1,4 @@
 // authentication_layer.dart
-export './infrastructure/auth_state_changes_provider.dart';
-export './infrastructure/firebase_auth_get_id_token_provider.dart';
 export './authentication_routing_layer.dart';
 export './domain/firebase_auth_user.dart';
 
@@ -26,3 +24,8 @@ export './presentation/widget/password_field_widget.dart';
 
 // user_page_state.dart
 export './presentation/widget/appbar_action_icon_widget.dart';
+
+export './infrastructure/authentication_service.dart';
+
+export './usecase/authentication_service_auth_state_changes_usecase.dart';
+export './usecase/authentication_service_get_id_token_usecase.dart';

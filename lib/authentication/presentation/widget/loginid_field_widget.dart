@@ -14,7 +14,7 @@ class LoginIdFieldWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(loginIdFieldStateProvider);
-    final notifier = ref.read(loginIdFieldStateProvider.notifier);
+    final notifier = ref.watch(loginIdFieldStateProvider.notifier);
 
     return Column(
       children: [

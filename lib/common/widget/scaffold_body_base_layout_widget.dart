@@ -16,8 +16,6 @@ class ScaffoldBodyBaseLayoutWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        logger.d("ontap : $focusNodeList");
-
         for (final focusNode in focusNodeList) {
           focusNode.unfocus();
         }

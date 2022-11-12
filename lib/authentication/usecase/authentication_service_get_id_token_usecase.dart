@@ -1,14 +1,18 @@
-import '../infrastructure/authentication_service.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AuthenticationServiceGetIdTokenUsecase {
-  AuthenticationServiceGetIdTokenUsecase({
-    required this.authenticationService,
-  });
+import '../authentication.dart';
 
-  final AuthenticationService authenticationService;
+final authenticationServiceGetIdTokenUsecaseProvider = Provider((ref) {
+  final AuthenticationService authenticationService =
+      ref.watch(authenticationServiceFirebaseProvider);
 
-  Future<String> execute() async {
+  final notifier = ref.watch(firebaseAuthUserStateNotifierProvider.notifier);
+
+  // improve: FutureProviderの方が良い？
+  void execute() async {
     final idToken = await authenticationService.getIdToken();
-    return idToken;
+    notifier.updateFirebaseAuthIdToken(idToken);
   }
-}
+
+  return execute;
+});

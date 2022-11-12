@@ -1,4 +1,3 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/user/domain/user_repository.dart';
@@ -61,55 +60,7 @@ final userUpdateUsecaseProvider = Provider((ref) {
       email: firebaseAuthUser.email,
       data: data,
     );
-
-    // await FirebaseFirestore.instance
-    //     .collection('channels')
-    //     .doc(rtcChannelState.channelName)
-    //     .collection('users')
-    //     .doc(firebaseAuthUser.email)
-    //     .update(data);
   }
 
   return execute;
 });
-
-// import 'package:flutter/material.dart';
-
-// import '../domain/user.dart';
-// import '../domain/user_repository.dart';
-// import '../domain/userid.dart';
-
-// class UserUpdateUseCase {
-//   // Constructor
-//   const UserUpdateUseCase({
-//     required this.userRepository,
-//   });
-
-//   // Repository
-//   final UserRepository userRepository;
-
-//   // UseCase Execute
-//   void execute(
-//     UserId userId,
-//     String email,
-//     String password,
-//     String firebaseAuthUid,
-//     String firebaseAuthGetIdToken, {
-//     Offset? pointerPosition,
-//     bool? isOnLongPressing,
-//   }) {
-//     // Construct Dimain Model Object
-//     final User user = User.reconstruct(
-//       // userId: userId,
-//       // email: email,
-//       // password: password,
-//       // firebaseAuthUid: firebaseAuthUid,
-//       // firebaseAuthIdToken: firebaseAuthGetIdToken,
-//       pointerPosition: pointerPosition,
-//       isOnLongPressing: isOnLongPressing,
-//     );
-
-//     // Repository Execute
-//     userRepository.update(user);
-//   }
-// }

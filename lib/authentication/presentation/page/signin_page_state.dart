@@ -11,7 +11,6 @@ import '../../../common/common.dart';
 
 import '../../common/create_firebse_auth_exception_message.dart';
 import '../../domain/firebase_auth_user.dart';
-import '../../infrastructure/authentication_service_firebase.dart';
 import '../../usecase/authentication_service_signin_usecase.dart';
 
 import '../widget/appbar_action_icon_state.dart';
@@ -43,8 +42,6 @@ class SignInPageState with _$SignInPageState {
     // Login Submit Widget
     // ignore: unused_element
     @Default("サインイン") String loginSubmitWidgetName,
-    required AuthenticationServiceSignInUsecase
-        authenticationServiceSignInUsecase,
     required LoginSubmitStateProvider loginSubmitStateProvider,
     // ignore: unused_element
     @Default(false) bool isOnSubmitable,
@@ -65,10 +62,6 @@ class SignInPageState with _$SignInPageState {
         passwordFieldStateProvider: passwordFieldStateNotifierProviderCreator(),
 
         // Login Submit
-        authenticationServiceSignInUsecase: AuthenticationServiceSignInUsecase(
-            authenticationService: AuthenticationServiceFirebase(
-                instance: firebase_auth.FirebaseAuth.instance)),
-
         loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
           loginSubmitWidgetName: "",
           onSubmit: null,
@@ -101,7 +94,6 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
   void updateIsOnSubmitable(
     bool isOnSubmitable,
   ) {
-    logger.d("updateIsOnSubmitable : ----------------- $isOnSubmitable");
     state = state.copyWith(isOnSubmitable: isOnSubmitable);
   }
 
@@ -125,19 +117,14 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
                 .text;
 
             try {
-              final res = await state.authenticationServiceSignInUsecase
-                  .execute(email, password);
+              final authenticationServiceSignInUsecase =
+                  ref.read(authenticationServiceSignInUsecaseProvider);
+
+              final res = await authenticationServiceSignInUsecase.execute(
+                  email, password);
 
               final firebase_auth.User? user = res.user;
               if (user != null) {
-                if (user.emailVerified == false) {
-                  // メール送信頻度が多いと、下記のエラーが発生するため、サインインと同時にメール送信は行わない。
-                  // E/flutter (24396): [ERROR:flutter/lib/ui/ui_dart_state.cc(198)] Unhandled Exception: [firebase_auth/too-many-requests] We have blocked all requests from this device due to unusual activity. Try again later.
-
-                  // final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
-                  // sendVerifyEmail(user: user);
-                }
-
                 final notifier =
                     ref.read(firebaseAuthUserStateNotifierProvider.notifier);
                 notifier.updateEmailVerified(user.emailVerified);
@@ -162,8 +149,6 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
 
               displayNotificationMessage();
             }
-
-            // initial();
           };
     }
 
@@ -179,7 +164,6 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
         required BuildContext context,
       }) =>
           () {
-            logger.d("go to signup.");
             context.push('/signup');
           };
     }

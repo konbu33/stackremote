@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'user.dart';
-import 'userid.dart';
 import 'users.dart';
 
 typedef JsonMap = Map<String, dynamic>;
@@ -29,8 +28,6 @@ abstract class UserRepository {
     required String email,
     required User user,
   });
-
-  Future<UserId> add(User user);
 
   Future<void> delete({
     required String channelName,

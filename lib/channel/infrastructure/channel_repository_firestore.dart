@@ -1,113 +1,103 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../common/common.dart';
 import '../domain/channel.dart';
 import '../domain/channel_repository.dart';
-import '../domain/channels.dart';
+import '../domain/channel_exception.dart';
 
-class ChannelRepositoryFireBase implements ChannelRepository {
-  ChannelRepositoryFireBase({
+final channelRepositoryFirestoreProvider = Provider((ref) {
+  return ChannelRepositoryFirestore(
+    firebaseFirestoreInstance: FirebaseFirestore.instance,
+  );
+});
+
+class ChannelRepositoryFirestore implements ChannelRepository {
+  ChannelRepositoryFirestore({
     required this.firebaseFirestoreInstance,
   }) {
-    ref = firebaseFirestoreInstance.collection('channels');
+    collectionRef = firebaseFirestoreInstance.collection('channels');
   }
 
   @override
   final FirebaseFirestore firebaseFirestoreInstance;
 
   @override
-  late CollectionReference<JsonMap> ref;
+  late CollectionReference<JsonMap> collectionRef;
 
   // --------------------------------------------------
   //
-  //   fetchAll
+  // get
   //
   // --------------------------------------------------
   @override
-  Stream<Channels> fetchAll() {
-    // Firestore Data Stream Listen
+  Future<Channel> get({
+    required String channelName,
+  }) async {
     try {
-      final Stream<QuerySnapshot<JsonMap>> snapshotStream = ref.snapshots();
+      final snapshot = await collectionRef.doc(channelName).get();
 
-      // Stream Data Transfar from Firestore Stream to Object Stream
-      Stream<Channels> transferStream(
-          Stream<QuerySnapshot<JsonMap>> snapshotStream) async* {
-        // Out snapshot from Stream
-        await for (final snapshot in snapshotStream) {
-          // from Firestore Snapshot to Channel Type Object Collection.
-          final docDatas = snapshot.docs.map(((doc) {
-            final docData = doc.data();
-            return Channel.fromJson(docData);
-          })).toList();
+      // チャンネルが存在しない場合
+      if (!snapshot.exists) {
+        // throw Exception();
+        throw const ChannelException(
+          plugin: "repository",
+          code: "not_exists",
+          message: "コレクションが存在しません。",
+        );
 
-          final Channels channels = Channels.reconstruct(channels: docDatas);
-          yield channels;
+        // チャンネルが存在する場合
+      } else {
+        // チャンネルのホストユーザのemailを取得
+        final data = snapshot.data();
+
+        if (data == null) {
+          throw const ChannelException(
+            plugin: "repository",
+            code: "no_data",
+            message: "ドキュメントが存在しません。",
+          );
         }
+
+        final channel = Channel.fromJson(data);
+        return channel;
       }
 
-      return transferStream(snapshotStream);
-    } catch (e) {
+      //
+    } on FirebaseException catch (e, s) {
+      logger.d("$e");
+      rethrow;
+
+      //
+    } on Exception catch (e, s) {
+      logger.d("$e");
       rethrow;
     }
   }
 
   // --------------------------------------------------
   //
-  //   fetchById
+  //  set
   //
   // --------------------------------------------------
-
   @override
-  Future<Channel> fetchById(String channelId) async {
+  Future<void> set({
+    required String channelName,
+    required Channel channel,
+  }) async {
     try {
-      final DocumentSnapshot<Map<String, dynamic>> doc =
-          await ref.doc(channelId).get();
-      final docData = doc.data();
-      if (docData == null) {
-        throw FirebaseException(
-            plugin: "channelRepository",
-            code: "fetchById",
-            message: "ユーザが存在しません");
-      }
-      final channel = Channel.fromJson(docData);
-      return channel;
-    } on FirebaseException catch (_) {
+      final jsonData = channel.toJson();
+      await collectionRef.doc(channelName).set(jsonData);
+
+      //
+    } on FirebaseException catch (e) {
+      logger.d("$e");
+      rethrow;
+
+      //
+    } on Exception catch (e, s) {
+      logger.d("$e");
       rethrow;
     }
-  }
-
-  // --------------------------------------------------
-  //
-  //   add
-  //
-  // --------------------------------------------------
-  @override
-  Future<Channel> add(Channel channel) async {
-    // final channelJson = channel.toJson();
-    // final String docId = channel.channelId.value.toString();
-    // await ref.doc(docId).set(channelJson);
-    return channel;
-  }
-
-  // --------------------------------------------------
-  //
-  //   delete
-  //
-  // --------------------------------------------------
-  @override
-  Future<String> delete(String channelId) async {
-    await ref.doc(channelId).delete();
-    return "Delete Complete.";
-  }
-
-  // --------------------------------------------------
-  //
-  //   update
-  //
-  // --------------------------------------------------
-  @override
-  void update(Channel channel) async {
-    // final channelJson = channel.toJson();
-    // final String docId = channel.channelId.value.toString();
-    // await ref.doc(docId).set(channelJson);
   }
 }
