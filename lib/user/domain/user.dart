@@ -21,34 +21,20 @@ part 'user.g.dart';
 class User with _$User {
   const factory User._({
     required String email,
-    required String nickName,
-    required String comment,
+    @Default("") String nickName,
+    @Default("") String comment,
     @Default(true) bool isHost,
-    @FirestoreTimestampConverter() required Timestamp? joinedAt,
-    @FirestoreTimestampConverter() required Timestamp? leavedAt,
-    required bool isOnLongPressing,
-    @OffsetConverter() required Offset pointerPosition,
+    @Default(null) @FirestoreTimestampConverter() Timestamp? joinedAt,
+    @Default(null) @FirestoreTimestampConverter() Timestamp? leavedAt,
+    @Default(false) bool isOnLongPressing,
+    @Default(Offset(0, 0)) @OffsetConverter() Offset pointerPosition,
   }) = _User;
 
   factory User.create({
-    String? email,
-    String? nickName,
-    String? comment,
-    bool? isHost,
-    Timestamp? joinedAt,
-    Timestamp? leavedAt,
-    bool? isOnLongPressing,
-    Offset? pointerPosition,
+    required String email,
   }) =>
       User._(
-        email: email ?? "",
-        nickName: nickName ?? "",
-        comment: comment ?? "",
-        isHost: isHost ?? true,
-        joinedAt: joinedAt,
-        leavedAt: leavedAt,
-        isOnLongPressing: isOnLongPressing ?? false,
-        pointerPosition: pointerPosition ?? const Offset(0, 0),
+        email: email,
       );
 
   factory User.reconstruct({
@@ -65,7 +51,7 @@ class User with _$User {
         email: email ?? "",
         nickName: nickName ?? "",
         comment: comment ?? "",
-        isHost: isHost ?? false,
+        isHost: isHost ?? true,
         joinedAt: joinedAt,
         leavedAt: leavedAt,
         isOnLongPressing: isOnLongPressing ?? false,
