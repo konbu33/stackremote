@@ -25,7 +25,6 @@ class OffsetConverter extends JsonConverter<Offset, String> {
 
   @override
   Offset fromJson(String json) {
-    // logger.d("Offset json : $json");
     final Map<String, dynamic> jsonMap = jsonDecode(json);
     final double dx = jsonMap["dx"];
     final double dy = jsonMap["dy"];
