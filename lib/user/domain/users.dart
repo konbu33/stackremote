@@ -13,12 +13,10 @@ part 'users.freezed.dart';
 @freezed
 class Users with _$Users {
   const factory Users._({
-    required List<User> users,
+    @Default([]) List<User> users,
   }) = _Users;
 
-  factory Users.create() => const Users._(
-        users: [],
-      );
+  factory Users.create() => const Users._();
 
   factory Users.reconstruct({
     List<User>? users,
