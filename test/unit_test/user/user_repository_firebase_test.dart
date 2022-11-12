@@ -256,12 +256,6 @@ void main() {
     final addUser = User.reconstruct(
       email: "ake@test.com",
       nickName: "non_update_nickname",
-      // comment: comment,
-      // isHost: isHost,
-      // joinedAt: joinedAt,
-      // leavedAt: leavedAt,
-      // isOnLongPressing: isOnLongPressing,
-      // pointerPosition: pointerPosition,
     );
     // final String addUserId = addUser.userId.value.toString();
 
@@ -296,12 +290,6 @@ void main() {
     final User updateUser = User.reconstruct(
       email: "ake@test.com",
       nickName: "update_nickname",
-      // comment: comment,
-      // isHost: isHost,
-      // joinedAt: joinedAt,
-      // leavedAt: leavedAt,
-      // isOnLongPressing: isOnLongPressing,
-      // pointerPosition: pointerPosition,
     );
 
     userRepository.update(
@@ -339,12 +327,6 @@ void main() {
     final addUser = User.reconstruct(
       email: "ake@test.com",
       nickName: "non_update_nickname",
-      // comment: comment,
-      // isHost: isHost,
-      // joinedAt: joinedAt,
-      // leavedAt: leavedAt,
-      // isOnLongPressing: isOnLongPressing,
-      // pointerPosition: pointerPosition,
     );
 
     await userRepository.set(

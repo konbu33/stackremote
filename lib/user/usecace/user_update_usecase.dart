@@ -14,34 +14,30 @@ final userUpdateUsecaseProvider = Provider((ref) {
       ref.watch(userRepositoryFirebaseProvider);
 
   Future<void> execute<T>({
-    String? email,
-    String? nickName,
     String? comment,
+    String? email,
     bool? isHost,
+    bool? isOnLongPressing,
     // T は Timestamp or Timestamp を想定
     T? joinedAt,
     T? leavedAt,
-    bool? isOnLongPressing,
+    String? nickName,
     Offset? pointerPosition,
   }) async {
     final Map<String, dynamic> data = {};
 
+    if (comment != null) data.addAll({...data, "comment": comment});
     if (email != null) data.addAll({...data, "email": email});
 
-    if (nickName != null) data.addAll({...data, "nickName": nickName});
-
-    if (comment != null) data.addAll({...data, "comment": comment});
-
     if (isHost != null) data.addAll({...data, "isHost": isHost});
-
-    if (joinedAt != null) data.addAll({...data, "joinedAt": joinedAt});
-
-    if (leavedAt != null) data.addAll({...data, "leavedAt": leavedAt});
-
     if (isOnLongPressing != null) {
       data.addAll({...data, "isOnLongPressing": isOnLongPressing});
     }
 
+    if (joinedAt != null) data.addAll({...data, "joinedAt": joinedAt});
+    if (leavedAt != null) data.addAll({...data, "leavedAt": leavedAt});
+
+    if (nickName != null) data.addAll({...data, "nickName": nickName});
     if (pointerPosition != null) {
       data.addAll(
         {

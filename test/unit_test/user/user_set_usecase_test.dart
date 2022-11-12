@@ -92,11 +92,13 @@ void main() {
     expect(capturedeEmail, FakeFirebaseAuthUser().email);
 
     // expect(capturedUser, FakeUserState());
-    expect(capturedUser.nickName, user.nickName);
+    expect(capturedUser.comment, user.comment);
+    expect(capturedUser.email, user.email);
     expect(capturedUser.isHost, user.isHost);
+    expect(capturedUser.isOnLongPressing, user.isOnLongPressing);
     expect(capturedUser.joinedAt, user.joinedAt);
     expect(capturedUser.leavedAt, user.leavedAt);
-    expect(capturedUser.isOnLongPressing, user.isOnLongPressing);
+    expect(capturedUser.nickName, user.nickName);
     expect(capturedUser.pointerPosition, user.pointerPosition);
   });
 }

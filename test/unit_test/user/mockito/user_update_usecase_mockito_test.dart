@@ -93,11 +93,13 @@ void main() {
     expect(capturedeEmail, FakeFirebaseAuthUser().email);
 
     expect(capturedData, isA<Map<String, dynamic>>());
-    expect(capturedData["nickName"], user.nickName);
+    expect(capturedData["comment"], user.comment);
+    expect(capturedData["email"], user.email);
     expect(capturedData["isHost"], user.isHost);
+    expect(capturedData["isOnLongPressing"], user.isOnLongPressing);
     expect(capturedData["joinedAt"], user.joinedAt);
     expect(capturedData["leavedAt"], user.leavedAt);
-    expect(capturedData["isOnLongPressing"], user.isOnLongPressing);
+    expect(capturedData["nickName"], user.nickName);
     expect(capturedData["pointerPosition"],
         const OffsetConverter().toJson(user.pointerPosition));
   });

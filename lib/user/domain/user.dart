@@ -19,13 +19,13 @@ part 'user.g.dart';
 @freezed
 class User with _$User {
   const factory User._({
-    required String email,
-    @Default("") String nickName,
     @Default("") String comment,
+    required String email,
     @Default(true) bool isHost,
+    @Default(false) bool isOnLongPressing,
     @Default(null) @FirestoreTimestampConverter() Timestamp? joinedAt,
     @Default(null) @FirestoreTimestampConverter() Timestamp? leavedAt,
-    @Default(false) bool isOnLongPressing,
+    @Default("") String nickName,
     @Default(Offset(0, 0)) @OffsetConverter() Offset pointerPosition,
   }) = _User;
 
@@ -37,23 +37,23 @@ class User with _$User {
       );
 
   factory User.reconstruct({
-    String? email,
-    String? nickName,
     String? comment,
+    String? email,
     bool? isHost,
+    bool? isOnLongPressing,
     Timestamp? joinedAt,
     Timestamp? leavedAt,
-    bool? isOnLongPressing,
+    String? nickName,
     Offset? pointerPosition,
   }) =>
       User._(
-        email: email ?? "",
-        nickName: nickName ?? "",
         comment: comment ?? "",
+        email: email ?? "",
         isHost: isHost ?? true,
+        isOnLongPressing: isOnLongPressing ?? false,
         joinedAt: joinedAt,
         leavedAt: leavedAt,
-        isOnLongPressing: isOnLongPressing ?? false,
+        nickName: nickName ?? "",
         pointerPosition: pointerPosition ?? const Offset(0, 0),
       );
 

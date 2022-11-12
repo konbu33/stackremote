@@ -19,15 +19,15 @@ final userRepositoryFirebaseProvider = Provider<UserRepository>((ref) {
       RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
   return UserRepositoryFireBase(
-    firebaseFirestoreInstance: firestoreInstance,
     channelName: rtcChannelState.channelName,
+    firebaseFirestoreInstance: firestoreInstance,
   );
 });
 
 class UserRepositoryFireBase implements UserRepository {
   UserRepositoryFireBase({
-    required this.firebaseFirestoreInstance,
     required this.channelName,
+    required this.firebaseFirestoreInstance,
   }) {
     ref = firebaseFirestoreInstance
         .collection('channels')
@@ -36,13 +36,32 @@ class UserRepositoryFireBase implements UserRepository {
   }
 
   @override
+  late String channelName;
+
+  @override
   final FirebaseFirestore firebaseFirestoreInstance;
 
   @override
   late CollectionReference<JsonMap> ref;
 
+  // --------------------------------------------------
+  //
+  //   delete
+  //
+  // --------------------------------------------------
   @override
-  late String channelName;
+  Future<void> delete({
+    required String email,
+  }) async {
+    try {
+      await ref.doc(email).delete();
+
+      //
+    } on FirebaseException catch (e) {
+      logger.d("$e");
+      rethrow;
+    }
+  }
 
   // --------------------------------------------------
   //
@@ -133,25 +152,6 @@ class UserRepositoryFireBase implements UserRepository {
       await ref
           .doc(email)
           .set({...user.toJson(), "joinedAt": FieldValue.serverTimestamp()});
-
-      //
-    } on FirebaseException catch (e) {
-      logger.d("$e");
-      rethrow;
-    }
-  }
-
-  // --------------------------------------------------
-  //
-  //   delete
-  //
-  // --------------------------------------------------
-  @override
-  Future<void> delete({
-    required String email,
-  }) async {
-    try {
-      await ref.doc(email).delete();
 
       //
     } on FirebaseException catch (e) {

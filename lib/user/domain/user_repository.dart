@@ -11,11 +11,15 @@ abstract class UserRepository {
     required this.channelName,
   });
 
+  late String channelName;
+
   final FirebaseFirestore firebaseFirestoreInstance;
 
   late CollectionReference<JsonMap> ref;
 
-  late String channelName;
+  Future<void> delete({
+    required String email,
+  });
 
   Stream<Users> fetchAll();
 
@@ -26,10 +30,6 @@ abstract class UserRepository {
   Future<void> set({
     required String email,
     required User user,
-  });
-
-  Future<void> delete({
-    required String email,
   });
 
   Future<void> update({

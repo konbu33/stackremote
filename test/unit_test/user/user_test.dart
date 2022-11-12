@@ -11,13 +11,13 @@ void main() {
     // const String firebaseAuthUid = "firebaseAuthUid";
     // const String firebaseAuthIdToken = "firebaseAuthIdToken";
 
-    const String email = "xxx@test.com";
-    const String nickName = "test_user";
     const String comment = "";
+    const String email = "xxx@test.com";
     const bool isHost = true;
+    const bool isOnLongPressing = false;
     const Timestamp? joinedAt = null;
     const Timestamp? leavedAt = null;
-    const bool isOnLongPressing = false;
+    const String nickName = "test_user";
     const Offset pointerPosition = Offset(0, 0);
 
     // test(
@@ -45,13 +45,13 @@ void main() {
       // expect(user.email, email);
       // expect(user.password, password);
 
-      expect(user.email, email);
-      expect(user.nickName, nickName);
       expect(user.comment, comment);
+      expect(user.email, email);
       expect(user.isHost, isHost);
+      expect(user.isOnLongPressing, isOnLongPressing);
       expect(user.joinedAt, joinedAt);
       expect(user.leavedAt, leavedAt);
-      expect(user.isOnLongPressing, isOnLongPressing);
+      expect(user.nickName, nickName);
       expect(user.pointerPosition, pointerPosition);
     });
 
@@ -72,25 +72,25 @@ void main() {
       // );
 
       final user = User.reconstruct(
-        email: email,
-        nickName: nickName,
         comment: comment,
+        email: email,
         isHost: isHost,
+        isOnLongPressing: isOnLongPressing,
         joinedAt: joinedAt,
         leavedAt: leavedAt,
-        isOnLongPressing: isOnLongPressing,
+        nickName: nickName,
         pointerPosition: pointerPosition,
       );
 
       // then
       // expect(user.userId, userId);
-      expect(user.email, email);
-      expect(user.nickName, nickName);
       expect(user.comment, comment);
+      expect(user.email, email);
       expect(user.isHost, isHost);
+      expect(user.isOnLongPressing, isOnLongPressing);
       expect(user.joinedAt, joinedAt);
       expect(user.leavedAt, leavedAt);
-      expect(user.isOnLongPressing, isOnLongPressing);
+      expect(user.nickName, nickName);
       expect(user.pointerPosition, pointerPosition);
       // expect(user.password, password);
     });
@@ -123,26 +123,26 @@ void main() {
       // then
       final Map<String, dynamic> userToJson = user.toJson();
       // expect(userToJson["userId"], user.userId.value.toString());
-      expect(userToJson["email"], user.email);
-      expect(userToJson["nickName"], user.nickName);
       expect(userToJson["comment"], user.comment);
+      expect(userToJson["email"], user.email);
       expect(userToJson["isHost"], user.isHost);
+      expect(userToJson["isOnLongPressing"], user.isOnLongPressing);
       expect(userToJson["joinedAt"], user.joinedAt);
       expect(userToJson["leavedAt"], user.leavedAt);
-      expect(userToJson["isOnLongPressing"], user.isOnLongPressing);
+      expect(userToJson["nickName"], user.nickName);
       expect(userToJson["pointerPosition"],
           '{"dx":${user.pointerPosition.dx},"dy":${user.pointerPosition.dy}}');
       // expect(userToJson["password"], user.password);
 
       final User userFromJson = User.fromJson(userToJson);
       // expect(userFromJson.userId, user.userId);
-      expect(userFromJson.email, user.email);
-      expect(userFromJson.nickName, user.nickName);
       expect(userFromJson.comment, user.comment);
+      expect(userFromJson.email, user.email);
       expect(userFromJson.isHost, user.isHost);
+      expect(userFromJson.isOnLongPressing, user.isOnLongPressing);
       expect(userFromJson.joinedAt, user.joinedAt);
       expect(userFromJson.leavedAt, user.leavedAt);
-      expect(userFromJson.isOnLongPressing, user.isOnLongPressing);
+      expect(userFromJson.nickName, user.nickName);
       expect(userFromJson.pointerPosition, user.pointerPosition);
       // expect(userFromJson.password, user.password);
 
