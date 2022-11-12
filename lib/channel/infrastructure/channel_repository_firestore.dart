@@ -65,12 +65,12 @@ class ChannelRepositoryFirestore implements ChannelRepository {
 
       //
     } on FirebaseException catch (e, s) {
-      logger.d("$e");
+      logger.d("$e, $s");
       rethrow;
 
       //
     } on Exception catch (e, s) {
-      logger.d("$e");
+      logger.d("$e, $s");
       rethrow;
     }
   }
@@ -96,7 +96,7 @@ class ChannelRepositoryFirestore implements ChannelRepository {
 
       //
     } on Exception catch (e, s) {
-      logger.d("$e");
+      logger.d("$e, $s");
       rethrow;
     }
   }
