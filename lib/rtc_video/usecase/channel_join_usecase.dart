@@ -5,7 +5,6 @@ import '../../authentication/authentication.dart';
 import '../../channel/channel.dart';
 import '../../channel/domain/channel_exception.dart';
 import '../../common/common.dart';
-import '../../user/domain/user.dart';
 import '../../user/user.dart';
 import '../infrastructure/rtc_channel_join_provider.dart';
 import '../infrastructure/rtc_token_create_provider.dart';
