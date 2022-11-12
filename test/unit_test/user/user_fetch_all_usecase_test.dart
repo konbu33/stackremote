@@ -61,9 +61,9 @@ void main() {
     // expect(capturedCnannelName, FakeRtcChannelState().channelName);
 
     // responseの値も確認
-    // final resUsers = await res.single;
-    // final resUserList = resUsers.users;
+    final resUsers = await res.single;
+    final resUserList = resUsers.users;
 
-    // expect(listEquals(userList, resUserList), isTrue);
+    expect(listEquals(userList, resUserList), isTrue);
   });
 }
