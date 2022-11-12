@@ -7,8 +7,8 @@ import 'package:stackremote/user/domain/users.dart';
 import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
 import 'package:stackremote/user/usecace/user_fetch_all_usecase.dart';
 
-import '../../common/dotenvtest.dart';
-import 'user_mock.dart';
+import '../../../common/dotenvtest.dart';
+import '../user_mock.dart';
 
 void main() {
   setUpAll(() {
