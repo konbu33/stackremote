@@ -154,7 +154,6 @@ class ChangePasswordPageWidgets {
         }
 
         final passwordIsValidate = checkPasswordIsValidate();
-        logger.d("----------- $passwordIsValidate, ${state.isOnSubmitable}");
 
         if (passwordIsValidate != state.isOnSubmitable) {
           // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
@@ -165,9 +164,6 @@ class ChangePasswordPageWidgets {
             notifier.setChangePasswordOnSubmit();
           });
         }
-
-        final a = ref.watch(state.onSubmitStateProvider).onSubmit;
-        logger.d(" ---- $a");
 
         return LoginSubmitWidget(
           loginSubmitStateProvider: state.onSubmitStateProvider,

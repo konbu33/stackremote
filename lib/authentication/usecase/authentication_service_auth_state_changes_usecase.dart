@@ -2,7 +2,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../common/common.dart';
 import '../authentication.dart';
 
 final authenticationServiceAuthStateChangesUsecaseProvider = Provider((ref) {
@@ -16,8 +15,6 @@ final authenticationServiceAuthStateChangesUsecaseProvider = Provider((ref) {
   void execute() {
     final Stream<firebase_auth.User?> stream =
         authenticationService.authStateChanges();
-
-    logger.d("authenticationServiceAuthStateChangesUsecaseProvider");
 
     stream.listen(
       (firebase_auth.User? fbuser) {

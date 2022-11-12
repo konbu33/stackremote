@@ -94,7 +94,6 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
   void updateIsOnSubmitable(
     bool isOnSubmitable,
   ) {
-    logger.d("updateIsOnSubmitable : ----------------- $isOnSubmitable");
     state = state.copyWith(isOnSubmitable: isOnSubmitable);
   }
 
@@ -165,7 +164,6 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
         required BuildContext context,
       }) =>
           () {
-            logger.d("go to signup.");
             context.push('/signup');
           };
     }
