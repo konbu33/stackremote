@@ -59,12 +59,8 @@ void main() {
     // この時点で必須ではないが試しに、that引数で指定したマッチャーで検証
     final captured = verify(userRepository.fetchAll()).captured;
 
-    // キャプチャされた値が配列で格納されているため、それぞれ変数に詰め直し
-    // final String capturedCnannelName = captured[0];
-
     // キャプチャされた値毎に期待する値になっているか否か検証
     expect(captured.isEmpty, isTrue);
-    // expect(capturedCnannelName, FakeRtcChannelState().channelName);
 
     // responseの値も確認
     final resUsers = await res.single;

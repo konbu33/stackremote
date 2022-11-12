@@ -70,8 +70,6 @@ void main() {
     final String capturedeEmail = captured[0];
 
     // キャプチャされた値毎に期待する値になっているか否か検証
-    // expect(capturedCnannelName, FakeRtcChannelState().channelName);
-
     expect(capturedeEmail, FakeFirebaseAuthUser().email);
 
     // responseの値も確認

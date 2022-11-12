@@ -21,12 +21,6 @@ void main() {
   setUpAll(() {
     // dotenv読み込み
     dotEnvTestLoad();
-
-    /*
-      UserPepository.updateメソッドの引数をキャプチャしたいため、引数マッチャーである any() を利用します。
-      この引数の型が、FakeUser型(というカスタム型)であるため、registerFallbackVale で事前登録しておく必要がある。
-    */
-    // registerFallbackValue(user);
   });
 
   test("ユースケースに渡した引数と同値が、リポジトリのメソッドの引数として利用されていること", () async {
