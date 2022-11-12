@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/rtc_video.dart';
 
 import '../../common/common.dart';
+import '../../rtc_video/rtc_video.dart';
+
 import '../domain/user.dart';
 import '../domain/user_repository.dart';
 import '../domain/users.dart';

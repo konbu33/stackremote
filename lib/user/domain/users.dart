@@ -1,5 +1,6 @@
 // Freezed
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'user.dart';
 
 part 'users.freezed.dart';

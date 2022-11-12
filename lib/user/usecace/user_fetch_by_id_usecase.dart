@@ -1,8 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/user/domain/user_repository.dart';
-import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
 
 import '../domain/user.dart';
+import '../domain/user_repository.dart';
+import '../infrastructure/user_repository_firestore.dart';
 
 final userFetchByIdUsecaseProvider = Provider((ref) {
   final UserRepository userRepository =

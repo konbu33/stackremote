@@ -5,8 +5,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // ignore: unused_import
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/domain/firebase_auth_user.dart';
 
+import '../../authentication/authentication.dart';
 import '../../common/common.dart';
 
 part 'user.freezed.dart';
