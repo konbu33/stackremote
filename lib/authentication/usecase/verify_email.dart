@@ -3,14 +3,17 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../common/common.dart';
 import '../domain/firebase_auth_user.dart';
 
 final sendVerifyEmailProvider = Provider((ref) {
   void sendVerifyEmail({
     required firebase_auth.User user,
   }) {
+    logger.d("start : sendVerifyEmail");
     if (!user.emailVerified) {
       user.sendEmailVerification();
+      logger.d("end : sendVerifyEmail");
     }
   }
 
