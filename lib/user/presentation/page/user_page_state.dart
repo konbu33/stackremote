@@ -7,8 +7,11 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 // ignore: unused_import
 import 'package:flutter/foundation.dart';
+
+import '../../../authentication/authentication.dart';
+
 import '../../domain/user.dart';
-import '../../../authentication/presentation/widget/login_submit_state.dart';
+
 import '../widget/nickname_field_state.dart';
 
 part 'user_page_state.freezed.dart';
