@@ -31,8 +31,7 @@ class UserPage extends HookConsumerWidget {
             key: state.userPageformValueKey,
             child: Column(
               children: [
-                Text(
-                    "現在のニックネーム：${userState.nickName.isEmpty ? "未登録" : userState.nickName}"),
+                Text("現在のニックネーム：${userState.nickName}"),
                 const SizedBox(height: 40),
                 UserDetailPageWidgets.userNameField(state),
                 const SizedBox(height: 40),
