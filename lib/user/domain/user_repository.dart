@@ -8,6 +8,7 @@ typedef JsonMap = Map<String, dynamic>;
 abstract class UserRepository {
   UserRepository({
     required this.firebaseFirestoreInstance,
+    required this.channelName,
   });
 
   final FirebaseFirestore firebaseFirestoreInstance;

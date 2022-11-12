@@ -12,12 +12,8 @@ import '../../common/dotenvtest.dart';
 import 'user_mock.dart';
 
 void main() {
-  // Firebaseのモック用インスタンス生成
-  FakeFirebaseFirestore instance = FakeFirebaseFirestore();
-
-  // userRepository生成
-  UserRepository userRepository =
-      UserRepositoryFireBase(firebaseFirestoreInstance: instance);
+  late ProviderContainer container;
+  late UserRepository userRepository;
 
   setUpAll(() {
     // dotenv読み込み
@@ -29,18 +25,19 @@ void main() {
 
   setUp(() {
     // 各テスト毎に初期化
-    instance = FakeFirebaseFirestore();
-    userRepository =
-        UserRepositoryFireBase(firebaseFirestoreInstance: instance);
+    // Firebaseのモック用インスタンス生成
+    container = ProviderContainer(overrides: [
+      firestoreInstanceProvider.overrideWithValue(FakeFirebaseFirestore()),
+      RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider
+          .overrideWith((ref) => FakeRtcChannelStateNotifier()),
+    ]);
+
+    // userRepository生成
+    userRepository = container.read(userRepositoryFirebaseProvider);
   });
 
   test("ユーザデータを登録可能なこと、かつ、UserId指定でユーザデータを取得可能なこと", () async {
     // given
-
-    final container = ProviderContainer(overrides: []);
-    final rtcChannelState = container.read(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
-
     // final firebaseAuthUser =
     //     container.read(firebaseAuthUserStateNotifierProvider);
 
@@ -55,7 +52,6 @@ void main() {
     // when
     // final UserId resUserId = await userRepository.add(user);
     await userRepository.set(
-      channelName: rtcChannelState.channelName,
       email: user.email,
       user: user,
     );
@@ -64,7 +60,6 @@ void main() {
     // print("dump : ${instance.dump()}");
 
     final responseStream = userRepository.fetchById(
-      channelName: rtcChannelState.channelName,
       email: user.email,
     );
 
@@ -118,14 +113,9 @@ void main() {
 
   test("UserId指定でユーザデータを検索時、該当するユーザデータが存在しない場合、例外を返すこと", () async {
     // given
-    final container = ProviderContainer(overrides: []);
-
-    final rtcChannelState = container.read(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
     // when
     final responseStream = userRepository.fetchById(
-      channelName: rtcChannelState.channelName,
       email: FakeFirebaseAuthUser().email,
     );
 
@@ -158,10 +148,6 @@ void main() {
 
   test("全ユーザデータを取得可能なこと", () async {
     // given
-    final container = ProviderContainer(overrides: []);
-
-    final rtcChannelState = container.read(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
     // Userインスタンスを複数生成
     final user1 = User.create(
@@ -195,26 +181,21 @@ void main() {
     // final UserId resUserId4 = await userRepository.add(user4);
 
     await userRepository.set(
-      channelName: rtcChannelState.channelName,
       email: user1.email,
       user: user1,
     );
 
     await userRepository.set(
-      channelName: rtcChannelState.channelName,
       email: user2.email,
       user: user2,
     );
     // await userRepository.add(user3);
     await userRepository.set(
-      channelName: rtcChannelState.channelName,
       email: user4.email,
       user: user4,
     );
 
-    final Stream<Users> resUsers = userRepository.fetchAll(
-      channelName: rtcChannelState.channelName,
-    );
+    final Stream<Users> resUsers = userRepository.fetchAll();
 
     // print("dump : ${instance.dump()}");
 
@@ -271,10 +252,6 @@ void main() {
 
   test("ユーザデータを登録可能なこと、かつ、UserId指定でユーザデータを更新可能なこと", () async {
     // given
-    final container = ProviderContainer(overrides: []);
-
-    final rtcChannelState = container.read(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
     final addUser = User.reconstruct(
       email: "ake@test.com",
@@ -289,13 +266,11 @@ void main() {
     // final String addUserId = addUser.userId.value.toString();
 
     await userRepository.set(
-      channelName: rtcChannelState.channelName,
       email: addUser.email,
       user: addUser,
     );
 
     final resAddUserStream = userRepository.fetchById(
-      channelName: rtcChannelState.channelName,
       email: addUser.email,
     );
 
@@ -330,13 +305,11 @@ void main() {
     );
 
     userRepository.update(
-      channelName: rtcChannelState.channelName,
       email: updateUser.email,
       data: {"nickName": updateUser.nickName},
     );
 
     final resUpdateUserStream = userRepository.fetchById(
-      channelName: rtcChannelState.channelName,
       email: updateUser.email,
     );
 
@@ -379,13 +352,11 @@ void main() {
     );
 
     await userRepository.set(
-      channelName: rtcChannelState.channelName,
       email: addUser.email,
       user: addUser,
     );
 
     final resAddUserStream = userRepository.fetchById(
-      channelName: rtcChannelState.channelName,
       email: addUser.email,
     );
 
@@ -407,13 +378,11 @@ void main() {
 
     // when
     userRepository.delete(
-      channelName: rtcChannelState.channelName,
       email: addUser.email,
     );
 
     // then
     final responseStream = userRepository.fetchById(
-      channelName: rtcChannelState.channelName,
       email: addUser.email,
     );
 

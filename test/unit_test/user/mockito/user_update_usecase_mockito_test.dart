@@ -54,7 +54,6 @@ void main() {
 
     // ユースケース内で該当するリポジトリのメソッドが呼ばれた場合、引数をキャプチャするように指定
     when(userRepository.update(
-      channelName: anyNamed("channelName"),
       email: anyNamed("email"),
       data: anyNamed("data"),
     )).thenAnswer(((realInvocation) => mockResponse));
@@ -76,10 +75,6 @@ void main() {
     // キャプチャされた値を変数に取得。
     // この時点で必須ではないが試しに、that引数で指定したマッチャーで検証
     final captured = verify(userRepository.update(
-      channelName: captureThat(
-        equals(FakeRtcChannelState().channelName),
-        named: "channelName",
-      ),
       email: captureThat(
         equals(FakeFirebaseAuthUser().email),
         named: "email",
@@ -91,13 +86,10 @@ void main() {
     )).captured;
 
     // キャプチャされた値が配列で格納されているため、それぞれ変数に詰め直し
-    final String capturedCnannelName = captured[0];
-    final String capturedeEmail = captured[1];
-    final Map<String, dynamic> capturedData = captured[2];
+    final String capturedeEmail = captured[0];
+    final Map<String, dynamic> capturedData = captured[1];
 
     // キャプチャされた値毎に期待する値になっているか否か検証
-    expect(capturedCnannelName, FakeRtcChannelState().channelName);
-
     expect(capturedeEmail, FakeFirebaseAuthUser().email);
 
     expect(capturedData, isA<Map<String, dynamic>>());
