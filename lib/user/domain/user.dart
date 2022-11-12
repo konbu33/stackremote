@@ -8,7 +8,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/authentication/domain/firebase_auth_user.dart';
 
 import '../../common/common.dart';
-import '../usecace/user_fetch_by_id_usecase.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
