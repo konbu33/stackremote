@@ -32,7 +32,7 @@ abstract class UserRepository {
     required String email,
   });
 
-  void update({
+  Future<void> update({
     required String email,
     required Map<String, dynamic> data,
   });

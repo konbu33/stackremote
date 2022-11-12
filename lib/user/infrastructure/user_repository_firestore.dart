@@ -166,7 +166,7 @@ class UserRepositoryFireBase implements UserRepository {
   //
   // --------------------------------------------------
   @override
-  void update({
+  Future<void> update({
     required String email,
     required Map<String, dynamic> data,
   }) async {
