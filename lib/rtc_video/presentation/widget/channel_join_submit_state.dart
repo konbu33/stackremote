@@ -72,11 +72,6 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
             : () async {
                 final channelJoinUsecase = ref.read(channelJoinUsecaseProvider);
                 await channelJoinUsecase();
-                // channelJoinUsecase.when(
-                //   data: (data) => logger.d("success : "),
-                //   error: (error, stackTrace) => logger.d("fail : $error"),
-                //   loading: () => logger.d("loading..."),
-                // );
               };
       }
 
