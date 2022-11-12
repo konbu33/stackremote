@@ -18,10 +18,9 @@ final userUpdateUsecaseProvider = Provider((ref) {
     String? nickName,
     String? comment,
     bool? isHost,
+    // T は Timestamp or Timestamp を想定
     T? joinedAt,
     T? leavedAt,
-    // Timestamp? joinedAt,
-    // Timestamp? leavedAt,
     bool? isOnLongPressing,
     Offset? pointerPosition,
   }) async {
