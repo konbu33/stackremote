@@ -28,9 +28,6 @@ class UserPageState with _$UserPageState {
     // Form
     required GlobalKey<FormState> userPageformValueKey,
 
-    // Current User
-    required User? currentUser,
-
     // User Name Field
     required NickNameFieldStateNotifierProvider
         nickNameFieldStateNotifierProvider,
@@ -50,9 +47,6 @@ class UserPageState with _$UserPageState {
 
         // Form
         userPageformValueKey: GlobalKey<FormState>(),
-
-        // Current User
-        currentUser: null,
 
         // User Name Field
         nickNameFieldStateNotifierProvider:
@@ -77,16 +71,6 @@ class UserPageStateController extends StateNotifier<UserPageState> {
 
   // ref
   final Ref ref;
-
-  void setUserNickName(User user) {
-    // User Id Field Controller text set
-    ref
-        .read(state.nickNameFieldStateNotifierProvider.notifier)
-        .setFieldText(user.nickName);
-    // Password Field Controller text set
-    // currentUser set
-    state = state.copyWith(currentUser: user);
-  }
 
   void updateIsOnSubmitable(bool isOnSubmitable) {
     state = state.copyWith(isOnSubmitable: isOnSubmitable);
@@ -123,11 +107,6 @@ class UserPageStateController extends StateNotifier<UserPageState> {
         onSubmit: buildOnSubmit(),
       ),
     );
-  }
-
-  void clearUserEmail() {
-    ref.read(state.nickNameFieldStateNotifierProvider.notifier).initial();
-    state = state.copyWith(currentUser: null);
   }
 }
 
