@@ -36,28 +36,13 @@ void main() {
     userRepository = container.read(userRepositoryFirebaseProvider);
   });
 
-  test("ユーザデータを登録可能なこと、かつ、UserId指定でユーザデータを取得可能なこと", () async {
+  test("ユーザデータを登録可能なこと、かつ、email指定でユーザデータを取得可能なこと", () async {
     // given
-    // final firebaseAuthUser =
-    //     container.read(firebaseAuthUserStateNotifierProvider);
-
-    // final user = User.create(
-    //   email: "take@test.com",
-    //   password: "take",
-    //   firebaseAuthUid: "firebaseAuthUid",
-    //   firebaseAuthIdToken: "firebaseAuthIdToken",
-    // );
-    // final String userId = user.userId.value.toString();
-
     // when
-    // final UserId resUserId = await userRepository.add(user);
     await userRepository.set(
       email: user.email,
       user: user,
     );
-
-    // final User resUser = await userRepository.fetchById(userId);
-    // print("dump : ${instance.dump()}");
 
     final responseStream = userRepository.fetchById(
       email: user.email,
@@ -111,7 +96,7 @@ void main() {
     );
   });
 
-  test("UserId指定でユーザデータを検索時、該当するユーザデータが存在しない場合、例外を返すこと", () async {
+  test("email指定でユーザデータを検索時、該当するユーザデータが存在しない場合、例外を返すこと", () async {
     // given
 
     // when
@@ -134,7 +119,6 @@ void main() {
           isA<FirebaseException>(),
           predicate<FirebaseException>(
             (firebaseException) {
-              // logger.d("$firebaseException");
               expect(firebaseException.plugin, "userRepository");
               expect(firebaseException.code, 'fetchById');
               expect(firebaseException.message, "ユーザが存在しません");
@@ -151,35 +135,18 @@ void main() {
 
     // Userインスタンスを複数生成
     final user1 = User.create(
-      email: "ake@test.com",
+      email: "axxx@test.com",
     );
 
     final user2 = User.create(
-      email: "ike@test.com",
+      email: "ixxx@test.com",
     );
-
-    // final user3 = User.create(
-    //   email: "uke@test.com",
-    // );
 
     final user4 = User.create(
-      email: "eke@test.com",
+      email: "exxx@test.com",
     );
 
-    // 複数のUserからUsersコレクションオブジェクト生成
-    // final srcUsers = Users.reconstruct(users: [
-    //   user1,
-    //   user2,
-    //   // user3,
-    //   user4,
-    // ]);
-
     // when
-    // final UserId resUserId1 = await userRepository.add(user1);
-    // final UserId resUserId2 = await userRepository.add(user2);
-    // // final UserId resUserId3 = await userRepository.add(user3);
-    // final UserId resUserId4 = await userRepository.add(user4);
-
     await userRepository.set(
       email: user1.email,
       user: user1,
@@ -189,7 +156,7 @@ void main() {
       email: user2.email,
       user: user2,
     );
-    // await userRepository.add(user3);
+
     await userRepository.set(
       email: user4.email,
       user: user4,
@@ -197,33 +164,10 @@ void main() {
 
     final Stream<Users> resUsers = userRepository.fetchAll();
 
-    // print("dump : ${instance.dump()}");
-
     // then
 
     // 複数箇所でStreamをlistenするため、Broadcastする
     final broadcastResUsers = resUsers.asBroadcastStream();
-
-    // // 各User単位で比較確認
-    // expect(
-    //   broadcastResUsers,
-    //   emitsInOrder(
-    //     [
-    //       // equals(srcUsers),
-    //       emits(
-    //         allOf(
-    //           predicate<Users>(
-    //             (users) {
-    //               // if (user.comment == user1.comment) return false;
-    //               logger.d("${users.users}");
-    //               return true;
-    //             },
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
 
     // 各Userの各属性単位で比較確認
     broadcastResUsers.listen(((event) {
@@ -242,22 +186,17 @@ void main() {
         expect(resUser.leavedAt, srcUser.leavedAt);
         expect(resUser.nickName, srcUser.nickName);
         expect(resUser.pointerPosition, srcUser.pointerPosition);
-
-        // expect(user.userId, srcUser.userId);
-        // expect(user.email, srcUser.email);
-        // expect(user.password, srcUser.password);
       }
     }));
   });
 
-  test("ユーザデータを登録可能なこと、かつ、UserId指定でユーザデータを更新可能なこと", () async {
+  test("ユーザデータを登録可能なこと、かつ、email指定でユーザデータを更新可能なこと", () async {
     // given
 
     final addUser = User.reconstruct(
-      email: "ake@test.com",
+      email: "axxx@test.com",
       nickName: "non_update_nickname",
     );
-    // final String addUserId = addUser.userId.value.toString();
 
     await userRepository.set(
       email: addUser.email,
@@ -267,8 +206,6 @@ void main() {
     final resAddUserStream = userRepository.fetchById(
       email: addUser.email,
     );
-
-    // print("dump add user : ${instance.dump()}");
 
     resAddUserStream.listen(
       (resAddUser) {
@@ -288,7 +225,7 @@ void main() {
 
     // when
     final User updateUser = User.reconstruct(
-      email: "ake@test.com",
+      email: "axxx@test.com",
       nickName: "update_nickname",
     );
 
@@ -318,14 +255,13 @@ void main() {
         expect(resUpdateUser.pointerPosition, addUser.pointerPosition);
       },
     );
-    // print("dump update user : ${instance.dump()}");
   });
 
-  test("ユーザデータを登録可能なこと、かつ、UserId指定でユーザデータを削除可能なこと", () async {
+  test("ユーザデータを登録可能なこと、かつ、email指定でユーザデータを削除可能なこと", () async {
     // given
 
     final addUser = User.reconstruct(
-      email: "ake@test.com",
+      email: "axxx@test.com",
       nickName: "non_update_nickname",
     );
 
@@ -337,8 +273,6 @@ void main() {
     final resAddUserStream = userRepository.fetchById(
       email: addUser.email,
     );
-
-    // print("dump add user : ${instance.dump()}");
 
     resAddUserStream.listen((resAddUser) {
       expect(resAddUser.comment, addUser.comment);
@@ -402,7 +336,6 @@ void main() {
             allOf(
               isA<FirebaseException>(),
               predicate<FirebaseException>((firebaseException) {
-                // logger.d("$firebaseException");
                 expect(firebaseException.plugin, "userRepository");
                 expect(firebaseException.code, 'fetchById');
                 expect(firebaseException.message, "ユーザが存在しません");
