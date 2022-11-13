@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../common/common.dart';
 import '../../usecase/channel_join_usecase.dart';
 import 'channel_name_field_state.dart';
 

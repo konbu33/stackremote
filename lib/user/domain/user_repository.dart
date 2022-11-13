@@ -7,35 +7,32 @@ typedef JsonMap = Map<String, dynamic>;
 
 abstract class UserRepository {
   UserRepository({
+    required this.channelName,
     required this.firebaseFirestoreInstance,
   });
+
+  late String channelName;
 
   final FirebaseFirestore firebaseFirestoreInstance;
 
   late CollectionReference<JsonMap> ref;
 
-  Stream<Users> fetchAll({
-    required String channelName,
+  Future<void> delete({
+    required String email,
   });
 
+  Stream<Users> fetchAll();
+
   Stream<User> fetchById({
-    required String channelName,
     required String email,
   });
 
   Future<void> set({
-    required String channelName,
     required String email,
     required User user,
   });
 
-  Future<void> delete({
-    required String channelName,
-    required String email,
-  });
-
-  void update({
-    required String channelName,
+  Future<void> update({
     required String email,
     required Map<String, dynamic> data,
   });

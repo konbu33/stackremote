@@ -8,16 +8,12 @@ import 'package:stackremote/user/domain/user_repository.dart';
 import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
 import 'package:stackremote/user/domain/users.dart';
 
-import '../../common/dotenvtest.dart';
-import 'user_mock.dart';
+import '../../../common/dotenvtest.dart';
+import '../user_mock.dart';
 
 void main() {
-  // Firebaseのモック用インスタンス生成
-  FakeFirebaseFirestore instance = FakeFirebaseFirestore();
-
-  // userRepository生成
-  UserRepository userRepository =
-      UserRepositoryFireBase(firebaseFirestoreInstance: instance);
+  late ProviderContainer container;
+  late UserRepository userRepository;
 
   setUpAll(() {
     // dotenv読み込み
@@ -29,42 +25,26 @@ void main() {
 
   setUp(() {
     // 各テスト毎に初期化
-    instance = FakeFirebaseFirestore();
-    userRepository =
-        UserRepositoryFireBase(firebaseFirestoreInstance: instance);
+    // Firebaseのモック用インスタンス生成
+    container = ProviderContainer(overrides: [
+      firestoreInstanceProvider.overrideWithValue(FakeFirebaseFirestore()),
+      RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider
+          .overrideWith((ref) => FakeRtcChannelStateNotifier()),
+    ]);
+
+    // userRepository生成
+    userRepository = container.read(userRepositoryFirebaseProvider);
   });
 
-  test("ユーザデータを登録可能なこと、かつ、UserId指定でユーザデータを取得可能なこと", () async {
+  test("ユーザデータを登録可能なこと、かつ、email指定でユーザデータを取得可能なこと", () async {
     // given
-
-    final container = ProviderContainer(overrides: []);
-    final rtcChannelState = container.read(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
-
-    // final firebaseAuthUser =
-    //     container.read(firebaseAuthUserStateNotifierProvider);
-
-    // final user = User.create(
-    //   email: "take@test.com",
-    //   password: "take",
-    //   firebaseAuthUid: "firebaseAuthUid",
-    //   firebaseAuthIdToken: "firebaseAuthIdToken",
-    // );
-    // final String userId = user.userId.value.toString();
-
     // when
-    // final UserId resUserId = await userRepository.add(user);
     await userRepository.set(
-      channelName: rtcChannelState.channelName,
       email: user.email,
       user: user,
     );
 
-    // final User resUser = await userRepository.fetchById(userId);
-    // print("dump : ${instance.dump()}");
-
     final responseStream = userRepository.fetchById(
-      channelName: rtcChannelState.channelName,
       email: user.email,
     );
 
@@ -116,16 +96,11 @@ void main() {
     );
   });
 
-  test("UserId指定でユーザデータを検索時、該当するユーザデータが存在しない場合、例外を返すこと", () async {
+  test("email指定でユーザデータを検索時、該当するユーザデータが存在しない場合、例外を返すこと", () async {
     // given
-    final container = ProviderContainer(overrides: []);
-
-    final rtcChannelState = container.read(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
     // when
     final responseStream = userRepository.fetchById(
-      channelName: rtcChannelState.channelName,
       email: FakeFirebaseAuthUser().email,
     );
 
@@ -144,7 +119,6 @@ void main() {
           isA<FirebaseException>(),
           predicate<FirebaseException>(
             (firebaseException) {
-              // logger.d("$firebaseException");
               expect(firebaseException.plugin, "userRepository");
               expect(firebaseException.code, 'fetchById');
               expect(firebaseException.message, "ユーザが存在しません");
@@ -158,119 +132,42 @@ void main() {
 
   test("全ユーザデータを取得可能なこと", () async {
     // given
-    final container = ProviderContainer(overrides: []);
-
-    final rtcChannelState = container.read(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
     // Userインスタンスを複数生成
     final user1 = User.create(
-      email: "ake@test.com",
-      nickName: nickName,
-      comment: comment,
-      isHost: isHost,
-      joinedAt: joinedAt,
-      leavedAt: leavedAt,
-      isOnLongPressing: isOnLongPressing,
-      pointerPosition: pointerPosition,
+      email: "axxx@test.com",
     );
 
     final user2 = User.create(
-      email: "ike@test.com",
-      nickName: nickName,
-      comment: comment,
-      isHost: isHost,
-      joinedAt: joinedAt,
-      leavedAt: leavedAt,
-      isOnLongPressing: isOnLongPressing,
-      pointerPosition: pointerPosition,
+      email: "ixxx@test.com",
     );
-
-    // final user3 = User.create(
-    //   email: "uke@test.com",
-    //   nickName: nickName,
-    //   comment: comment,
-    //   isHost: isHost,
-    //   joinedAt: joinedAt,
-    //   leavedAt: leavedAt,
-    //   isOnLongPressing: isOnLongPressing,
-    //   pointerPosition: pointerPosition,
-    // );
 
     final user4 = User.create(
-      email: "eke@test.com",
-      nickName: nickName,
-      comment: comment,
-      isHost: isHost,
-      joinedAt: joinedAt,
-      leavedAt: leavedAt,
-      isOnLongPressing: isOnLongPressing,
-      pointerPosition: pointerPosition,
+      email: "exxx@test.com",
     );
 
-    // 複数のUserからUsersコレクションオブジェクト生成
-    // final srcUsers = Users.reconstruct(users: [
-    //   user1,
-    //   user2,
-    //   // user3,
-    //   user4,
-    // ]);
-
     // when
-    // final UserId resUserId1 = await userRepository.add(user1);
-    // final UserId resUserId2 = await userRepository.add(user2);
-    // // final UserId resUserId3 = await userRepository.add(user3);
-    // final UserId resUserId4 = await userRepository.add(user4);
-
     await userRepository.set(
-      channelName: rtcChannelState.channelName,
       email: user1.email,
       user: user1,
     );
 
     await userRepository.set(
-      channelName: rtcChannelState.channelName,
       email: user2.email,
       user: user2,
     );
-    // await userRepository.add(user3);
+
     await userRepository.set(
-      channelName: rtcChannelState.channelName,
       email: user4.email,
       user: user4,
     );
 
-    final Stream<Users> resUsers = userRepository.fetchAll(
-      channelName: rtcChannelState.channelName,
-    );
-
-    // print("dump : ${instance.dump()}");
+    final Stream<Users> resUsers = userRepository.fetchAll();
 
     // then
 
     // 複数箇所でStreamをlistenするため、Broadcastする
     final broadcastResUsers = resUsers.asBroadcastStream();
-
-    // // 各User単位で比較確認
-    // expect(
-    //   broadcastResUsers,
-    //   emitsInOrder(
-    //     [
-    //       // equals(srcUsers),
-    //       emits(
-    //         allOf(
-    //           predicate<Users>(
-    //             (users) {
-    //               // if (user.comment == user1.comment) return false;
-    //               logger.d("${users.users}");
-    //               return true;
-    //             },
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
 
     // 各Userの各属性単位で比較確認
     broadcastResUsers.listen(((event) {
@@ -289,45 +186,26 @@ void main() {
         expect(resUser.leavedAt, srcUser.leavedAt);
         expect(resUser.nickName, srcUser.nickName);
         expect(resUser.pointerPosition, srcUser.pointerPosition);
-
-        // expect(user.userId, srcUser.userId);
-        // expect(user.email, srcUser.email);
-        // expect(user.password, srcUser.password);
       }
     }));
   });
 
-  test("ユーザデータを登録可能なこと、かつ、UserId指定でユーザデータを更新可能なこと", () async {
+  test("ユーザデータを登録可能なこと、かつ、email指定でユーザデータを更新可能なこと", () async {
     // given
-    final container = ProviderContainer(overrides: []);
 
-    final rtcChannelState = container.read(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
-
-    final addUser = User.create(
-      email: "ake@test.com",
+    final addUser = User.reconstruct(
+      email: "axxx@test.com",
       nickName: "non_update_nickname",
-      comment: comment,
-      isHost: isHost,
-      joinedAt: joinedAt,
-      leavedAt: leavedAt,
-      isOnLongPressing: isOnLongPressing,
-      pointerPosition: pointerPosition,
     );
-    // final String addUserId = addUser.userId.value.toString();
 
     await userRepository.set(
-      channelName: rtcChannelState.channelName,
       email: addUser.email,
       user: addUser,
     );
 
     final resAddUserStream = userRepository.fetchById(
-      channelName: rtcChannelState.channelName,
       email: addUser.email,
     );
-
-    // print("dump add user : ${instance.dump()}");
 
     resAddUserStream.listen(
       (resAddUser) {
@@ -346,25 +224,17 @@ void main() {
     );
 
     // when
-    final User updateUser = User.create(
-      email: "ake@test.com",
+    final User updateUser = User.reconstruct(
+      email: "axxx@test.com",
       nickName: "update_nickname",
-      comment: comment,
-      isHost: isHost,
-      joinedAt: joinedAt,
-      leavedAt: leavedAt,
-      isOnLongPressing: isOnLongPressing,
-      pointerPosition: pointerPosition,
     );
 
     userRepository.update(
-      channelName: rtcChannelState.channelName,
       email: updateUser.email,
       data: {"nickName": updateUser.nickName},
     );
 
     final resUpdateUserStream = userRepository.fetchById(
-      channelName: rtcChannelState.channelName,
       email: updateUser.email,
     );
 
@@ -385,39 +255,24 @@ void main() {
         expect(resUpdateUser.pointerPosition, addUser.pointerPosition);
       },
     );
-    // print("dump update user : ${instance.dump()}");
   });
 
-  test("ユーザデータを登録可能なこと、かつ、UserId指定でユーザデータを削除可能なこと", () async {
+  test("ユーザデータを登録可能なこと、かつ、email指定でユーザデータを削除可能なこと", () async {
     // given
-    final container = ProviderContainer(overrides: []);
 
-    final rtcChannelState = container.read(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
-
-    final addUser = User.create(
-      email: "ake@test.com",
+    final addUser = User.reconstruct(
+      email: "axxx@test.com",
       nickName: "non_update_nickname",
-      comment: comment,
-      isHost: isHost,
-      joinedAt: joinedAt,
-      leavedAt: leavedAt,
-      isOnLongPressing: isOnLongPressing,
-      pointerPosition: pointerPosition,
     );
 
     await userRepository.set(
-      channelName: rtcChannelState.channelName,
       email: addUser.email,
       user: addUser,
     );
 
     final resAddUserStream = userRepository.fetchById(
-      channelName: rtcChannelState.channelName,
       email: addUser.email,
     );
-
-    // print("dump add user : ${instance.dump()}");
 
     resAddUserStream.listen((resAddUser) {
       expect(resAddUser.comment, addUser.comment);
@@ -435,13 +290,11 @@ void main() {
 
     // when
     userRepository.delete(
-      channelName: rtcChannelState.channelName,
       email: addUser.email,
     );
 
     // then
     final responseStream = userRepository.fetchById(
-      channelName: rtcChannelState.channelName,
       email: addUser.email,
     );
 
@@ -483,7 +336,6 @@ void main() {
             allOf(
               isA<FirebaseException>(),
               predicate<FirebaseException>((firebaseException) {
-                // logger.d("$firebaseException");
                 expect(firebaseException.plugin, "userRepository");
                 expect(firebaseException.code, 'fetchById');
                 expect(firebaseException.message, "ユーザが存在しません");

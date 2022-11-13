@@ -2,21 +2,41 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/common.dart';
+import '../../rtc_video/rtc_video.dart';
+
 import '../domain/user.dart';
 import '../domain/user_repository.dart';
 import '../domain/users.dart';
 
+final firestoreInstanceProvider = Provider((ref) {
+  return FirebaseFirestore.instance;
+});
+
 final userRepositoryFirebaseProvider = Provider<UserRepository>((ref) {
+  final firestoreInstance = ref.watch(firestoreInstanceProvider);
+
+  final rtcChannelState = ref.watch(
+      RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+
   return UserRepositoryFireBase(
-      firebaseFirestoreInstance: FirebaseFirestore.instance);
+    channelName: rtcChannelState.channelName,
+    firebaseFirestoreInstance: firestoreInstance,
+  );
 });
 
 class UserRepositoryFireBase implements UserRepository {
   UserRepositoryFireBase({
+    required this.channelName,
     required this.firebaseFirestoreInstance,
   }) {
-    // ref = firebaseFirestoreInstance.collection('channels');
+    ref = firebaseFirestoreInstance
+        .collection('channels')
+        .doc(channelName)
+        .collection('users');
   }
+
+  @override
+  late String channelName;
 
   @override
   final FirebaseFirestore firebaseFirestoreInstance;
@@ -26,21 +46,33 @@ class UserRepositoryFireBase implements UserRepository {
 
   // --------------------------------------------------
   //
+  //   delete
+  //
+  // --------------------------------------------------
+  @override
+  Future<void> delete({
+    required String email,
+  }) async {
+    try {
+      await ref.doc(email).delete();
+
+      //
+    } on FirebaseException catch (e) {
+      logger.d("$e");
+      rethrow;
+    }
+  }
+
+  // --------------------------------------------------
+  //
   //   fetchAll
   //
   // --------------------------------------------------
   @override
-  Stream<Users> fetchAll({
-    required String channelName,
-  }) {
+  Stream<Users> fetchAll() {
     // Firestore Data Stream Listen
     try {
-      final Stream<QuerySnapshot<JsonMap>> snapshotStream =
-          firebaseFirestoreInstance
-              .collection('channels')
-              .doc(channelName)
-              .collection('users')
-              .snapshots();
+      final Stream<QuerySnapshot<JsonMap>> snapshotStream = ref.snapshots();
 
       Stream<Users> transferStream(
           Stream<QuerySnapshot<JsonMap>> snapshotStream) async* {
@@ -74,17 +106,11 @@ class UserRepositoryFireBase implements UserRepository {
 
   @override
   Stream<User> fetchById({
-    required String channelName,
     required String email,
   }) {
     try {
       final Stream<DocumentSnapshot<JsonMap>> snapshotStream =
-          firebaseFirestoreInstance
-              .collection('channels')
-              .doc(channelName)
-              .collection('users')
-              .doc(email)
-              .snapshots();
+          ref.doc(email).snapshots();
 
       Stream<User> transferStream(
           Stream<DocumentSnapshot<JsonMap>> snapshotStream) async* {
@@ -119,42 +145,13 @@ class UserRepositoryFireBase implements UserRepository {
   // --------------------------------------------------
   @override
   Future<void> set({
-    required String channelName,
     required String email,
     required User user,
   }) async {
     try {
-      await firebaseFirestoreInstance
-          .collection('channels')
-          .doc(channelName)
-          .collection('users')
+      await ref
           .doc(email)
           .set({...user.toJson(), "joinedAt": FieldValue.serverTimestamp()});
-
-      //
-    } on FirebaseException catch (e) {
-      logger.d("$e");
-      rethrow;
-    }
-  }
-
-  // --------------------------------------------------
-  //
-  //   delete
-  //
-  // --------------------------------------------------
-  @override
-  Future<void> delete({
-    required String channelName,
-    required String email,
-  }) async {
-    try {
-      await firebaseFirestoreInstance
-          .collection('channels')
-          .doc(channelName)
-          .collection('users')
-          .doc(email)
-          .delete();
 
       //
     } on FirebaseException catch (e) {
@@ -169,18 +166,12 @@ class UserRepositoryFireBase implements UserRepository {
   //
   // --------------------------------------------------
   @override
-  void update({
-    required String channelName,
+  Future<void> update({
     required String email,
     required Map<String, dynamic> data,
   }) async {
     try {
-      await firebaseFirestoreInstance
-          .collection('channels')
-          .doc(channelName)
-          .collection('users')
-          .doc(email)
-          .update(data);
+      await ref.doc(email).update(data);
 
       //
     } on FirebaseException catch (e) {

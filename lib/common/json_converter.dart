@@ -64,12 +64,25 @@ class FirestoreTimestampConverter extends JsonConverter<Timestamp?, dynamic> {
   @override
   String? toJson(Timestamp? object) {
     if (object == null) return null;
-    return object.toString();
+    // return object.toString();
+
+    // Timestampのままだと、String <-> Timestampの変換がうまくできないため、
+    // TimestampをDateTimeのStringとして保持する。
+    return object.toDate().toString();
   }
 
   @override
   Timestamp? fromJson(dynamic json) {
     if (json is Timestamp) return json;
+
+    // Timestampのままだと、String <-> Timestampの変換がうまくできないため、
+    // TimestampをDateTimeのStringとして保持する。
+    if (json is String) {
+      final datetime = DateTime.parse(json);
+      final timestamp = Timestamp.fromDate(datetime);
+      return timestamp;
+    }
+
     return null;
   }
 }

@@ -24,25 +24,8 @@ import 'package:stackremote/user/domain/users.dart';
 //
 // --------------------------------------------------
 
-// const String email = "xxx@test.com";
-const String nickName = "test_user";
-const String comment = "";
-const bool isHost = true;
-const Timestamp? joinedAt = null;
-const Timestamp? leavedAt = null;
-const bool isOnLongPressing = false;
-const Offset pointerPosition = Offset(0, 0);
-
 final user = User.create(
-  // email: email,
   email: FakeFirebaseAuthUser().email,
-  nickName: nickName,
-  comment: comment,
-  isHost: isHost,
-  joinedAt: joinedAt,
-  leavedAt: leavedAt,
-  isOnLongPressing: isOnLongPressing,
-  pointerPosition: pointerPosition,
 );
 
 // --------------------------------------------------
@@ -54,33 +37,12 @@ final user = User.create(
 final List<User> userList = [
   User.create(
     email: "ake@test.com",
-    nickName: nickName,
-    comment: comment,
-    isHost: isHost,
-    joinedAt: joinedAt,
-    leavedAt: leavedAt,
-    isOnLongPressing: isOnLongPressing,
-    pointerPosition: pointerPosition,
   ),
   User.create(
     email: "ike@test.com",
-    nickName: nickName,
-    comment: comment,
-    isHost: isHost,
-    joinedAt: joinedAt,
-    leavedAt: leavedAt,
-    isOnLongPressing: isOnLongPressing,
-    pointerPosition: pointerPosition,
   ),
   User.create(
     email: "uke@test.com",
-    nickName: nickName,
-    comment: comment,
-    isHost: isHost,
-    joinedAt: joinedAt,
-    leavedAt: leavedAt,
-    isOnLongPressing: isOnLongPressing,
-    pointerPosition: pointerPosition,
   ),
 ];
 
@@ -155,10 +117,6 @@ class FakeFirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser>
   void updateIsSignIn(bool value) {}
 }
 
-final fakeFirebaseAuthUserStateNotifierProvider =
-    StateNotifierProvider<FakeFirebaseAuthUserStateNotifier, FirebaseAuthUser>(
-        (ref) => FakeFirebaseAuthUserStateNotifier());
-
 // --------------------------------------------------
 //
 // FakeRtcChannelState
@@ -191,10 +149,6 @@ class FakeRtcChannelStateNotifier extends StateNotifier<RtcChannelState>
   @override
   void updateToken(String value) {}
 }
-
-final fakeRtcChannelStateNotifierProvider =
-    StateNotifierProvider<FakeRtcChannelStateNotifier, RtcChannelState>(
-        (ref) => FakeRtcChannelStateNotifier());
 
 // --------------------------------------------------
 //
@@ -236,7 +190,3 @@ class FakeUserStateNotifier extends StateNotifier<User>
   @override
   void updateIsHost(bool value) {}
 }
-
-final fakeUserStateNotifierProvider =
-    StateNotifierProvider<FakeUserStateNotifier, User>(
-        (ref) => FakeUserStateNotifier());

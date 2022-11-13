@@ -1,51 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/user/domain/user_repository.dart';
-import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
 
 import '../../authentication/authentication.dart';
 import '../../common/common.dart';
-import '../../rtc_video/rtc_video.dart';
+
+import '../domain/user_repository.dart';
+import '../infrastructure/user_repository_firestore.dart';
 
 final userUpdateUsecaseProvider = Provider((ref) {
-  final rtcChannelState = ref.watch(
-      RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
-
   final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);
 
   final UserRepository userRepository =
       ref.watch(userRepositoryFirebaseProvider);
 
   Future<void> execute<T>({
-    String? email,
-    String? nickName,
     String? comment,
+    String? email,
     bool? isHost,
+    bool? isOnLongPressing,
+    // T は Timestamp or Timestamp を想定
     T? joinedAt,
     T? leavedAt,
-    // Timestamp? joinedAt,
-    // Timestamp? leavedAt,
-    bool? isOnLongPressing,
+    String? nickName,
     Offset? pointerPosition,
   }) async {
     final Map<String, dynamic> data = {};
 
+    if (comment != null) data.addAll({...data, "comment": comment});
     if (email != null) data.addAll({...data, "email": email});
 
-    if (nickName != null) data.addAll({...data, "nickName": nickName});
-
-    if (comment != null) data.addAll({...data, "comment": comment});
-
     if (isHost != null) data.addAll({...data, "isHost": isHost});
-
-    if (joinedAt != null) data.addAll({...data, "joinedAt": joinedAt});
-
-    if (leavedAt != null) data.addAll({...data, "leavedAt": leavedAt});
-
     if (isOnLongPressing != null) {
       data.addAll({...data, "isOnLongPressing": isOnLongPressing});
     }
 
+    if (joinedAt != null) data.addAll({...data, "joinedAt": joinedAt});
+    if (leavedAt != null) data.addAll({...data, "leavedAt": leavedAt});
+
+    if (nickName != null) data.addAll({...data, "nickName": nickName});
     if (pointerPosition != null) {
       data.addAll(
         {
@@ -56,7 +48,6 @@ final userUpdateUsecaseProvider = Provider((ref) {
     }
 
     userRepository.update(
-      channelName: rtcChannelState.channelName,
       email: firebaseAuthUser.email,
       data: data,
     );

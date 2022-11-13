@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-// ignore: unused_import
 import 'package:flutter/foundation.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/domain/firebase_auth_user.dart';
+import 'package:flutter/material.dart';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../authentication/authentication.dart';
 import '../../common/common.dart';
-import '../usecace/user_fetch_by_id_usecase.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
@@ -21,55 +19,41 @@ part 'user.g.dart';
 @freezed
 class User with _$User {
   const factory User._({
+    @Default("") String comment,
     required String email,
-    required String nickName,
-    required String comment,
     @Default(true) bool isHost,
-    @FirestoreTimestampConverter() required Timestamp? joinedAt,
-    @FirestoreTimestampConverter() required Timestamp? leavedAt,
-    required bool isOnLongPressing,
-    @OffsetConverter() required Offset pointerPosition,
+    @Default(false) bool isOnLongPressing,
+    @Default(null) @FirestoreTimestampConverter() Timestamp? joinedAt,
+    @Default(null) @FirestoreTimestampConverter() Timestamp? leavedAt,
+    @Default("") String nickName,
+    @Default(Offset(0, 0)) @OffsetConverter() Offset pointerPosition,
   }) = _User;
 
   factory User.create({
-    String? email,
-    String? nickName,
-    String? comment,
-    bool? isHost,
-    Timestamp? joinedAt,
-    Timestamp? leavedAt,
-    bool? isOnLongPressing,
-    Offset? pointerPosition,
+    required String email,
   }) =>
       User._(
-        email: email ?? "",
-        nickName: nickName ?? "",
-        comment: comment ?? "",
-        isHost: isHost ?? true,
-        joinedAt: joinedAt,
-        leavedAt: leavedAt,
-        isOnLongPressing: isOnLongPressing ?? false,
-        pointerPosition: pointerPosition ?? const Offset(0, 0),
+        email: email,
       );
 
   factory User.reconstruct({
-    String? email,
-    String? nickName,
     String? comment,
+    String? email,
     bool? isHost,
+    bool? isOnLongPressing,
     Timestamp? joinedAt,
     Timestamp? leavedAt,
-    bool? isOnLongPressing,
+    String? nickName,
     Offset? pointerPosition,
   }) =>
       User._(
-        email: email ?? "",
-        nickName: nickName ?? "",
         comment: comment ?? "",
-        isHost: isHost ?? false,
+        email: email ?? "",
+        isHost: isHost ?? true,
+        isOnLongPressing: isOnLongPressing ?? false,
         joinedAt: joinedAt,
         leavedAt: leavedAt,
-        isOnLongPressing: isOnLongPressing ?? false,
+        nickName: nickName ?? "",
         pointerPosition: pointerPosition ?? const Offset(0, 0),
       );
 

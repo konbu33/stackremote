@@ -2,13 +2,14 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Freezed
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-// ignore: unused_import
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+import '../../../authentication/authentication.dart';
+
 import '../../domain/user.dart';
-import '../../../authentication/presentation/widget/login_submit_state.dart';
+
 import '../widget/nickname_field_state.dart';
 
 part 'user_page_state.freezed.dart';
@@ -27,9 +28,6 @@ class UserPageState with _$UserPageState {
 
     // Form
     required GlobalKey<FormState> userPageformValueKey,
-
-    // Current User
-    required User? currentUser,
 
     // User Name Field
     required NickNameFieldStateNotifierProvider
@@ -50,9 +48,6 @@ class UserPageState with _$UserPageState {
 
         // Form
         userPageformValueKey: GlobalKey<FormState>(),
-
-        // Current User
-        currentUser: null,
 
         // User Name Field
         nickNameFieldStateNotifierProvider:
@@ -77,16 +72,6 @@ class UserPageStateController extends StateNotifier<UserPageState> {
 
   // ref
   final Ref ref;
-
-  void setUserNickName(User user) {
-    // User Id Field Controller text set
-    ref
-        .read(state.nickNameFieldStateNotifierProvider.notifier)
-        .setFieldText(user.nickName);
-    // Password Field Controller text set
-    // currentUser set
-    state = state.copyWith(currentUser: user);
-  }
 
   void updateIsOnSubmitable(bool isOnSubmitable) {
     state = state.copyWith(isOnSubmitable: isOnSubmitable);
@@ -123,11 +108,6 @@ class UserPageStateController extends StateNotifier<UserPageState> {
         onSubmit: buildOnSubmit(),
       ),
     );
-  }
-
-  void clearUserEmail() {
-    ref.read(state.nickNameFieldStateNotifierProvider.notifier).initial();
-    state = state.copyWith(currentUser: null);
   }
 }
 
