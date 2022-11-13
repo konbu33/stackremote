@@ -15,16 +15,15 @@ part 'channel.g.dart';
 @freezed
 class Channel with _$Channel {
   const factory Channel._({
-    @CreatedAtTimestampConverter() required Timestamp? createAt,
+    // ignore: unused_element
+    @Default(null) @CreatedAtTimestampConverter() Timestamp? createAt,
     required String hostUserEmail,
   }) = _Channel;
 
   factory Channel.create({
-    Timestamp? createAt,
     String? hostUserEmail,
   }) =>
       Channel._(
-        createAt: createAt,
         hostUserEmail: hostUserEmail ?? "",
       );
 
@@ -43,10 +42,6 @@ class ChannelStateNotifier extends StateNotifier<Channel> {
   void setChannelState(Channel channel) {
     state = channel;
   }
-
-  void setHostUserEmail(String hostUserEmail) {
-    state = state.copyWith(hostUserEmail: hostUserEmail);
-  }
 }
 
 // --------------------------------------------------
@@ -58,26 +53,3 @@ final channelStateNotifierProvider =
     StateNotifierProvider<ChannelStateNotifier, Channel>(
   (ref) => ChannelStateNotifier(),
 );
-
-// // --------------------------------------------------
-// //
-// //  StateNotifier
-// //
-// // --------------------------------------------------
-// class ChannelStateNotifier extends StateNotifier<AsyncValue<Channel?>> {
-//   ChannelStateNotifier() : super(const AsyncLoading());
-
-//   void updateChannel(AsyncValue<Channel?> asyncValue) {
-//     state = asyncValue;
-//   }
-// }
-
-// // --------------------------------------------------
-// //
-// //  StateNotifierProvider
-// //
-// // --------------------------------------------------
-// final channelStateNotifierProvider =
-//     StateNotifierProvider<ChannelStateNotifier, AsyncValue<Channel?>>(
-//   (ref) => ChannelStateNotifier(),
-// );
