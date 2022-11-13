@@ -27,7 +27,8 @@ void main() {
     // 各テスト毎に初期化
     // Firebaseのモック用インスタンス生成
     container = ProviderContainer(overrides: [
-      firestoreInstanceProvider.overrideWithValue(FakeFirebaseFirestore()),
+      firebaseFirestoreInstanceProvider
+          .overrideWithValue(FakeFirebaseFirestore()),
       RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider
           .overrideWith((ref) => FakeRtcChannelStateNotifier()),
     ]);
