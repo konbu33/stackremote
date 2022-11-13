@@ -24,8 +24,6 @@ import 'package:stackremote/user/domain/users.dart';
 //
 // --------------------------------------------------
 
-// const String email = "xxx@test.com";
-const String nickName = "test_user";
 final user = User.create(
   email: FakeFirebaseAuthUser().email,
 );
@@ -119,10 +117,6 @@ class FakeFirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser>
   void updateIsSignIn(bool value) {}
 }
 
-final fakeFirebaseAuthUserStateNotifierProvider =
-    StateNotifierProvider<FakeFirebaseAuthUserStateNotifier, FirebaseAuthUser>(
-        (ref) => FakeFirebaseAuthUserStateNotifier());
-
 // --------------------------------------------------
 //
 // FakeRtcChannelState
@@ -155,10 +149,6 @@ class FakeRtcChannelStateNotifier extends StateNotifier<RtcChannelState>
   @override
   void updateToken(String value) {}
 }
-
-final fakeRtcChannelStateNotifierProvider =
-    StateNotifierProvider<FakeRtcChannelStateNotifier, RtcChannelState>(
-        (ref) => FakeRtcChannelStateNotifier());
 
 // --------------------------------------------------
 //
@@ -200,7 +190,3 @@ class FakeUserStateNotifier extends StateNotifier<User>
   @override
   void updateIsHost(bool value) {}
 }
-
-final fakeUserStateNotifierProvider =
-    StateNotifierProvider<FakeUserStateNotifier, User>(
-        (ref) => FakeUserStateNotifier());
