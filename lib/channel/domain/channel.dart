@@ -16,15 +16,17 @@ part 'channel.g.dart';
 class Channel with _$Channel {
   const factory Channel._({
     // ignore: unused_element
-    @Default(null) @CreatedAtTimestampConverter() Timestamp? createAt,
+    @CreatedAtTimestampConverter() required Timestamp? createAt,
     required String hostUserEmail,
   }) = _Channel;
 
   factory Channel.create({
     String? hostUserEmail,
+    Timestamp? createAt,
   }) =>
       Channel._(
         hostUserEmail: hostUserEmail ?? "",
+        createAt: createAt,
       );
 
   factory Channel.fromJson(Map<String, dynamic> json) =>
