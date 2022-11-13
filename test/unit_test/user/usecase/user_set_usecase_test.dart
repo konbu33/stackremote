@@ -2,24 +2,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 
-import 'package:stackremote/authentication/authentication.dart';
-import 'package:stackremote/rtc_video/rtc_video.dart';
-
 import 'package:stackremote/user/domain/user.dart';
 import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
 import 'package:stackremote/user/usecace/user_set_usecase.dart';
 
-import '../../../common/dotenvtest.dart';
 import '../user_mock.dart';
 
 void main() {
   setUpAll(() {
-    // dotenv読み込み
-    dotEnvTestLoad();
-
-    // path_providerのFake作成
-    createFakePathProviderPlatform();
-
     /*
       UserPepository.updateメソッドの引数をキャプチャしたいため、引数マッチャーである any() を利用します。
       この引数の型が、FakeUser型(というカスタム型)であるため、registerFallbackVale で事前登録しておく必要がある。
@@ -35,13 +25,6 @@ void main() {
     // 一方、StateNotifierProviderの場合は、overrideWith メソッドを利用する必要がありそう。
     final container = ProviderContainer(overrides: [
       //
-      RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider
-          .overrideWith((ref) => FakeRtcChannelStateNotifier()),
-      //
-      firebaseAuthUserStateNotifierProvider
-          .overrideWith((ref) => FakeFirebaseAuthUserStateNotifier()),
-
-      //
       userStateNotifierProvider.overrideWith((ref) => FakeUserStateNotifier()),
 
       //
@@ -50,12 +33,6 @@ void main() {
 
     // ユースケースのインスタンス生成
     final userSetUsecase = container.read(userSetUsecaseProvider);
-
-    // ユースケース内でgetTemporaryDirectoryメソッドが利用されているのだが、
-    // getTemporaryDirectoryメソッドが実行された場合、
-    // FakeのgetTemporaryDirectoryメソッドが実行されているか確認
-    // final Directory dir = await getTemporaryDirectory();
-    // print("dir : ------------------ : ${dir.path}");
 
     // モックの戻り値を生成
     final Future<void> mockResponse = Future.value();

@@ -3,25 +3,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stackremote/authentication/domain/firebase_auth_user.dart';
 import 'package:stackremote/common/json_converter.dart';
-import 'package:stackremote/rtc_video/rtc_video.dart';
 import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
 import 'package:stackremote/user/usecace/user_update_usecase.dart';
 
-import '../../../common/dotenvtest.dart';
 import '../user_mock.dart';
 
 void main() {
-  setUpAll(() {
-    // dotenv読み込み
-    dotEnvTestLoad();
-
-    /*
-      UserPepository.updateメソッドの引数をキャプチャしたいため、引数マッチャーである any() を利用します。
-      この引数の型が、FakeUser型(というカスタム型)であるため、registerFallbackVale で事前登録しておく必要がある。
-    */
-    registerFallbackValue(user);
-  });
-
   test("ユースケースに渡した引数と同値が、リポジトリのメソッドの引数として利用されていること", () async {
     // given
 
@@ -29,9 +16,6 @@ void main() {
     // override対象のプロバイダーが、Providerの場合は、overrideWithValue メソッドで済みそう。
     // 一方、StateNotifierProviderの場合は、overrideWith メソッドを利用する必要がありそう。
     final container = ProviderContainer(overrides: [
-      //
-      RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider
-          .overrideWith((ref) => FakeRtcChannelStateNotifier()),
       //
       firebaseAuthUserStateNotifierProvider
           .overrideWith((ref) => FakeFirebaseAuthUserStateNotifier()),
