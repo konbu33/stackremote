@@ -6,9 +6,16 @@ import '../domain/channel.dart';
 import '../domain/channel_repository.dart';
 import '../domain/channel_exception.dart';
 
+final firebaseFirestoreInstanceProvider = Provider((ref) {
+  return FirebaseFirestore.instance;
+});
+
 final channelRepositoryFirestoreProvider = Provider((ref) {
+  final firebaseFirestoreInstance =
+      ref.watch(firebaseFirestoreInstanceProvider);
+
   return ChannelRepositoryFirestore(
-    firebaseFirestoreInstance: FirebaseFirestore.instance,
+    firebaseFirestoreInstance: firebaseFirestoreInstance,
   );
 });
 
@@ -16,14 +23,14 @@ class ChannelRepositoryFirestore implements ChannelRepository {
   ChannelRepositoryFirestore({
     required this.firebaseFirestoreInstance,
   }) {
-    collectionRef = firebaseFirestoreInstance.collection('channels');
+    ref = firebaseFirestoreInstance.collection('channels');
   }
 
   @override
   final FirebaseFirestore firebaseFirestoreInstance;
 
   @override
-  late CollectionReference<JsonMap> collectionRef;
+  late CollectionReference<JsonMap> ref;
 
   // --------------------------------------------------
   //
@@ -35,7 +42,7 @@ class ChannelRepositoryFirestore implements ChannelRepository {
     required String channelName,
   }) async {
     try {
-      final snapshot = await collectionRef.doc(channelName).get();
+      final snapshot = await ref.doc(channelName).get();
 
       // チャンネルが存在しない場合
       if (!snapshot.exists) {
@@ -87,7 +94,7 @@ class ChannelRepositoryFirestore implements ChannelRepository {
   }) async {
     try {
       final jsonData = channel.toJson();
-      await collectionRef.doc(channelName).set(jsonData);
+      await ref.doc(channelName).set(jsonData);
 
       //
     } on FirebaseException catch (e) {
