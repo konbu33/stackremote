@@ -14,7 +14,6 @@ void main() {
     const String nickName = "xxx";
     const Offset pointerPosition = Offset(10, 10);
 
-    // when
     final user = User.reconstruct(
       comment: comment,
       email: email,
