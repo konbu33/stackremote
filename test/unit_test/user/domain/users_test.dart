@@ -4,7 +4,7 @@ import 'package:stackremote/user/domain/users.dart';
 
 void main() {
   group("usersインスタンス生成テスト", () {
-    test('createメソッドでインスタンス生成した場合、users属性の値が空リストであること', () {
+    test('createファクトリメソッドでインスタンス生成した場合、users属性の値がデフォルト値(空リスト)であること', () {
       // given
       // when
       final users = Users.create();
@@ -16,25 +16,22 @@ void main() {
       // when
       // final users = Users();
       // final users = Users._(users: []);
-
-      // then
-      // print("users : ${users.value}");
     });
 
-    test('reconstructメソッドでインスタンス生成した場合、users属性の値が引数の値と同じであること', () {
+    test('reconstructファクトリメソッドでインスタンス生成した場合、users属性の値が引数の値と同じであること', () {
       // given
       final List<User> userList = [
         User.reconstruct(
-          email: "ake@test.com",
-          nickName: "ake",
+          email: "axxx@test.com",
+          nickName: "axxx",
         ),
         User.reconstruct(
-          email: "ike@test.com",
-          nickName: "ike",
+          email: "bxxx@test.com",
+          nickName: "bxxx",
         ),
         User.reconstruct(
-          email: "uke@test.com",
-          nickName: "uke",
+          email: "cxxx@test.com",
+          nickName: "cxxx",
         ),
       ];
 
