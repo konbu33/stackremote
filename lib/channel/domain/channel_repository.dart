@@ -9,9 +9,9 @@ abstract class ChannelRepository {
     required this.firebaseFirestoreInstance,
   });
 
-  final FirebaseFirestore firebaseFirestoreInstance;
+  late CollectionReference<JsonMap> ref;
 
-  late CollectionReference<JsonMap> collectionRef;
+  final FirebaseFirestore firebaseFirestoreInstance;
 
   Future<Channel> get({
     required String channelName,

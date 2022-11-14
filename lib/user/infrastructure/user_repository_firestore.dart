@@ -8,19 +8,20 @@ import '../domain/user.dart';
 import '../domain/user_repository.dart';
 import '../domain/users.dart';
 
-final firestoreInstanceProvider = Provider((ref) {
+final firebaseFirestoreInstanceProvider = Provider((ref) {
   return FirebaseFirestore.instance;
 });
 
 final userRepositoryFirebaseProvider = Provider<UserRepository>((ref) {
-  final firestoreInstance = ref.watch(firestoreInstanceProvider);
+  final firebaseFirestoreInstance =
+      ref.watch(firebaseFirestoreInstanceProvider);
 
   final rtcChannelState = ref.watch(
       RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
   return UserRepositoryFireBase(
     channelName: rtcChannelState.channelName,
-    firebaseFirestoreInstance: firestoreInstance,
+    firebaseFirestoreInstance: firebaseFirestoreInstance,
   );
 });
 
