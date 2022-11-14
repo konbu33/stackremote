@@ -32,7 +32,6 @@ final rtcTokenCreateOnCallProvider = Provider((ref) {
       "rtcIdTokenType": state.rtcIdTokenType,
       "role": state.role,
       "privilegeExpireTime": state.privilegeExpireTime,
-      "firebaseAuthIdToken": userState.firebaseAuthIdToken,
     };
 
     // Cloud Functionsのインスタンス生成
@@ -108,7 +107,6 @@ final rtcTokenCreateOnRequestProvider = Provider((ref) {
       "rtcIdTokenType": state.rtcIdTokenType,
       "role": state.role,
       "privilegeExpireTime": state.privilegeExpireTime,
-      "firebaseAuthIdToken": userState.firebaseAuthIdToken,
     };
 
     // print("data : $data");

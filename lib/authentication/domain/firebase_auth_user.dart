@@ -16,7 +16,6 @@ class FirebaseAuthUser with _$FirebaseAuthUser {
     required String email,
     @Default(false) bool emailVerified,
     @Default("") String firebaseAuthUid,
-    @Default("") String firebaseAuthIdToken,
     @Default(false) bool isSignIn,
   }) = _FirebaseAuthUser;
 
@@ -31,14 +30,12 @@ class FirebaseAuthUser with _$FirebaseAuthUser {
     String? email,
     bool? emailVerified,
     String? firebaseAuthUid,
-    String? firebaseAuthIdToken,
     bool? isSignIn,
   }) =>
       FirebaseAuthUser._(
         email: email ?? "",
         emailVerified: emailVerified ?? false,
         firebaseAuthUid: firebaseAuthUid ?? "",
-        firebaseAuthIdToken: firebaseAuthIdToken ?? "",
         isSignIn: isSignIn ?? false,
       );
 
@@ -69,7 +66,6 @@ class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
   void userInformationRegiser(FirebaseAuthUser user) {
     state = state.copyWith(
       firebaseAuthUid: user.firebaseAuthUid,
-      firebaseAuthIdToken: user.firebaseAuthIdToken,
       email: user.email,
       emailVerified: user.emailVerified,
       isSignIn: user.isSignIn,
@@ -78,12 +74,6 @@ class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
 
   void updateIsSignIn(bool isSignIn) {
     state = state.copyWith(isSignIn: isSignIn);
-  }
-
-  void updateFirebaseAuthIdToken(String firebaseAuthIdToken) {
-    state = state.copyWith(
-      firebaseAuthIdToken: firebaseAuthIdToken,
-    );
   }
 
   void updateEmailVerified(bool isEmailVerified) {

@@ -109,28 +109,4 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       }
     }
   }
-
-  // --------------------------------------------------
-  //
-  //   getIdToken
-  //
-  // --------------------------------------------------
-  // improve: 未使用？
-  @override
-  Future<String> getIdToken() async {
-    try {
-      final currentUser = instance.currentUser;
-      if (currentUser != null) {
-        final idToken = await currentUser.getIdToken();
-        return idToken;
-      }
-      return "currentUser is null.";
-    } on firebase_auth.FirebaseAuthException catch (e) {
-      logger.d("$e");
-      switch (e.code) {
-        default:
-          rethrow;
-      }
-    }
-  }
 }

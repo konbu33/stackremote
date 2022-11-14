@@ -14,6 +14,4 @@ abstract class AuthenticationService {
   Future<firebase_auth.UserCredential> signUp(String email, String password);
 
   Future<void> signOut();
-
-  Future<String> getIdToken();
 }

@@ -34,18 +34,6 @@ class AuthenticationLayer extends SingleChildStatelessWidget {
         final isEmailVerified = ref.watch(firebaseAuthUserStateNotifierProvider
             .select((value) => value.emailVerified));
 
-        // 認証されたユーザの情報のfirebaseAuthIdToken属性をwatch開始
-        final firebaseAuthIdToken = ref.watch(
-            firebaseAuthUserStateNotifierProvider
-                .select((value) => value.firebaseAuthIdToken));
-
-        // サインイン済み、且つ、firebaseAuthIdToken属性の値がEmptyの場合、Firebase AuthenticationのToken取得
-        if (isSignIn && firebaseAuthIdToken.isEmpty) {
-          final authenticationServiceGetIdTokenUsecase =
-              ref.watch(authenticationServiceGetIdTokenUsecaseProvider);
-          authenticationServiceGetIdTokenUsecase();
-        }
-
         final firebaseAuthUser =
             ref.watch(firebaseAuthUserStateNotifierProvider);
         logger.d(firebaseAuthUser);
