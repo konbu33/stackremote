@@ -6,7 +6,6 @@ import '../channel.dart';
 import '../domain/channel_repository.dart';
 import '../infrastructure/channel_repository_firestore.dart';
 
-// final channelSetUsecaseProvider = FutureProvider((ref) {
 final channelSetUsecaseProvider = Provider((ref) {
   final ChannelRepository channelRepository =
       ref.watch(channelRepositoryFirestoreProvider);
