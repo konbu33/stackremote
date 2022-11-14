@@ -10,7 +10,7 @@ final firebaseFirestoreInstanceProvider = Provider((ref) {
   return FirebaseFirestore.instance;
 });
 
-final channelRepositoryFirestoreProvider = Provider((ref) {
+final channelRepositoryFirestoreProvider = Provider<ChannelRepository>((ref) {
   final firebaseFirestoreInstance =
       ref.watch(firebaseFirestoreInstanceProvider);
 
