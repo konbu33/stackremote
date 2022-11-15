@@ -5,8 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../../usecase/verify_email.dart';
-
+import '../../usecase/authentication_service_check_email_verified_usecase.dart';
+import '../../usecase/authentication_service_send_verify_email_usecase.dart';
 import '../widget/appbar_action_icon_widget.dart';
 
 import 'wait_email_verified_page_state.dart';
@@ -19,11 +19,16 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
     final state = ref.watch(waitEmailVerifiedPageStateNotifierProvider);
 
     // メールアドレス確認が完了したか否かをポーリング開始
-    final checkEmailVerified = ref.watch(checkEmailVerifiedProvider);
+    final authenticationServiceCheckEmailVerifiedUsecase =
+        ref.watch(authenticationServiceCheckEmailVerifiedUsecaseProvider);
+
+    final checkEmailVerifiedTimer =
+        authenticationServiceCheckEmailVerifiedUsecase();
+
     useEffect(() {
-      checkEmailVerified;
-      return checkEmailVerified.cancel;
-    }, [checkEmailVerified]);
+      checkEmailVerifiedTimer;
+      return checkEmailVerifiedTimer.cancel;
+    }, [checkEmailVerifiedTimer]);
 
     return Scaffold(
       appBar: AppBar(
@@ -86,8 +91,10 @@ class WaitEmailVerifiedPageWidgets {
       return ElevatedButton(
         onPressed: () {
           if (user != null) {
-            final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
-            sendVerifyEmail(user: user);
+            final authenticationServiceSendVerifyEmailUsecase =
+                ref.read(authenticationServiceSendVerifyEmailUsecaseProvider);
+
+            authenticationServiceSendVerifyEmailUsecase(user: user);
           }
         },
         child: const Text("メール再送信"),

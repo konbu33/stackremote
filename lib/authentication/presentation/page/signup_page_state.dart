@@ -8,8 +8,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 import '../../common/create_firebse_auth_exception_message.dart';
 import '../../domain/firebase_auth_user.dart';
+import '../../usecase/authentication_service_send_verify_email_usecase.dart';
 import '../../usecase/authentication_service_signup_usecase.dart';
-import '../../usecase/verify_email.dart';
 
 import '../widget/login_submit_state.dart';
 import '../widget/loginid_field_state.dart';
@@ -111,8 +111,10 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
 
               // User情報取得成功した場合、メールアドレス検証メールを送信
               if (user != null) {
-                final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
-                sendVerifyEmail(user: user);
+                final authenticationServiceSendVerifyEmailUsecase = ref
+                    .read(authenticationServiceSendVerifyEmailUsecaseProvider);
+
+                authenticationServiceSendVerifyEmailUsecase(user: user);
 
                 // Userのメールアドレス検証結果を状態で保持する
                 final notifier =

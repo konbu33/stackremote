@@ -3,35 +3,21 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../common/common.dart';
 import '../domain/firebase_auth_user.dart';
 
-final sendVerifyEmailProvider = Provider((ref) {
-  void sendVerifyEmail({
-    required firebase_auth.User user,
-  }) {
-    logger.d("start : sendVerifyEmail");
-    if (!user.emailVerified) {
-      user.sendEmailVerification();
-      logger.d("end : sendVerifyEmail");
-    }
-  }
-
-  return sendVerifyEmail;
-});
-
-final checkEmailVerifiedProvider = Provider.autoDispose((ref) {
+final authenticationServiceCheckEmailVerifiedUsecaseProvider =
+    Provider.autoDispose((ref) {
   bool isEmailVerified = false;
 
-  Timer checkEmailVerified() {
+  Timer execute() {
     return Timer.periodic(
       const Duration(seconds: 3),
       (timer) {
         // print(" ${DateTime.now()} : Timer During....................");
-        // userChanges でFirebaseAuthのUserの状状変化を監視している場合
+        // userChanges でFirebaseAuthのUserの状態変化を監視している場合
         // reload()実行するだけで、currentUserで取得できるemailVerified属性の最新の値が反映される。
 
-        // authStateChanges でFirebaseAuthのUserの状状変化を監視している場合
+        // authStateChanges でFirebaseAuthのUserの状態変化を監視している場合
         // reload()実行するだけでは、currentUserで取得できるemailVerified属性の最新の値が反映さない。
         // reload() + currentUserの取得 により、currentUserで取得できるemailVerified属性の最新の値が反映される。
 
@@ -66,5 +52,5 @@ final checkEmailVerifiedProvider = Provider.autoDispose((ref) {
     );
   }
 
-  return checkEmailVerified();
+  return execute;
 });
