@@ -1,4 +1,4 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
+// import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -48,12 +48,13 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       final res = await firebaseAuthInstance.signInWithEmailAndPassword(
           email: email, password: password);
 
-      await FirebaseAnalytics.instance.logEvent(
-        name: 'login',
-        parameters: {
-          'method': 'signIn',
-        },
-      );
+      // improve: FirebaseAnalyticsのコードは分離した方がテストしやすいと感じている。
+      // await FirebaseAnalytics.instance.logEvent(
+      //   name: 'login',
+      //   parameters: {
+      //     'method': 'signIn',
+      //   },
+      // );
 
       return res;
     } on firebase_auth.FirebaseAuthException catch (e) {
