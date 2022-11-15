@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 abstract class AuthenticationService {
   AuthenticationService({
-    required this.instance,
+    required this.firebaseAuthInstance,
   });
 
-  final firebase_auth.FirebaseAuth instance;
+  final firebase_auth.FirebaseAuth firebaseAuthInstance;
 
   Stream<firebase_auth.User?> authStateChanges();
 

@@ -5,20 +5,25 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../common/common.dart';
 import 'authentication_service.dart';
 
+final firebaseAuthInstanceProvider = Provider((ref) {
+  return firebase_auth.FirebaseAuth.instance;
+});
+
 final authenticationServiceFirebaseProvider =
     Provider<AuthenticationService>((ref) {
+  final firebaseAuthInstance = ref.watch(firebaseAuthInstanceProvider);
   return AuthenticationServiceFirebase(
-    instance: firebase_auth.FirebaseAuth.instance,
+    firebaseAuthInstance: firebaseAuthInstance,
   );
 });
 
 class AuthenticationServiceFirebase implements AuthenticationService {
   AuthenticationServiceFirebase({
-    required this.instance,
+    required this.firebaseAuthInstance,
   }) : super();
 
   @override
-  final firebase_auth.FirebaseAuth instance;
+  final firebase_auth.FirebaseAuth firebaseAuthInstance;
 
   // --------------------------------------------------
   //
@@ -27,8 +32,7 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   // --------------------------------------------------
   @override
   Stream<firebase_auth.User?> authStateChanges() {
-    final stream = firebase_auth.FirebaseAuth.instance.authStateChanges();
-    // improve: この時点で、FirebaseAuthのUserからこのアプリ内のUserを生成して、returnする方が良さそう。
+    final stream = firebaseAuthInstance.authStateChanges();
     return stream;
   }
 
@@ -41,7 +45,7 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   Future<firebase_auth.UserCredential> signIn(
       String email, String password) async {
     try {
-      final res = await instance.signInWithEmailAndPassword(
+      final res = await firebaseAuthInstance.signInWithEmailAndPassword(
           email: email, password: password);
 
       await FirebaseAnalytics.instance.logEvent(
@@ -76,7 +80,7 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   Future<firebase_auth.UserCredential> signUp(
       String email, String password) async {
     try {
-      final res = await instance.createUserWithEmailAndPassword(
+      final res = await firebaseAuthInstance.createUserWithEmailAndPassword(
           email: email, password: password);
 
       return res;
@@ -100,7 +104,7 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   @override
   Future<void> signOut() async {
     try {
-      await instance.signOut();
+      await firebaseAuthInstance.signOut();
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
       switch (e.code) {
