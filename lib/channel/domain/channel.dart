@@ -21,12 +21,12 @@ class Channel with _$Channel {
   }) = _Channel;
 
   factory Channel.create({
-    String? hostUserEmail,
     Timestamp? createAt,
+    String? hostUserEmail,
   }) =>
       Channel._(
-        hostUserEmail: hostUserEmail ?? "",
         createAt: createAt,
+        hostUserEmail: hostUserEmail ?? "",
       );
 
   factory Channel.fromJson(Map<String, dynamic> json) =>

@@ -65,9 +65,9 @@ class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
 
   void userInformationRegiser(FirebaseAuthUser user) {
     state = state.copyWith(
-      firebaseAuthUid: user.firebaseAuthUid,
       email: user.email,
       emailVerified: user.emailVerified,
+      firebaseAuthUid: user.firebaseAuthUid,
       isSignIn: user.isSignIn,
     );
   }
