@@ -42,7 +42,10 @@ class ChannelStateNotifier extends StateNotifier<Channel> {
   ChannelStateNotifier() : super(Channel.create());
 
   void setChannelState(Channel channel) {
-    state = channel;
+    state = state.copyWith(
+      createAt: channel.createAt,
+      hostUserEmail: channel.hostUserEmail,
+    );
   }
 }
 
