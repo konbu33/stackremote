@@ -110,8 +110,6 @@ class FakeFirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser>
   @override
   void updateEmailVerified(bool value) {}
   @override
-  void updateFirebaseAuthIdToken(String value) {}
-  @override
   void userInformationRegiser(FirebaseAuthUser value) {}
   @override
   void updateIsSignIn(bool value) {}
