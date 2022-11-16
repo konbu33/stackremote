@@ -9,9 +9,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 
 import '../../common/create_firebse_auth_exception_message.dart';
-import '../../domain/firebase_auth_user.dart';
-import '../../usecase/authentication_service_signin_usecase.dart';
 
+import '../../usecase/service_signin.dart';
 import '../widget/appbar_action_icon_state.dart';
 import '../widget/login_submit_state.dart';
 import '../widget/loginid_field_state.dart';
@@ -116,18 +115,13 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
                 .text;
 
             try {
-              final authenticationServiceSignInUsecase =
-                  ref.read(authenticationServiceSignInUsecaseProvider);
+              // サインイン
+              final serviceSignInUsecase =
+                  ref.read(serviceSignInUsecaseProvider);
 
-              final res = await authenticationServiceSignInUsecase.execute(
-                  email, password);
+              await serviceSignInUsecase(email, password);
 
-              final firebase_auth.User? user = res.user;
-              if (user != null) {
-                final notifier =
-                    ref.read(firebaseAuthUserStateNotifierProvider.notifier);
-                notifier.updateEmailVerified(user.emailVerified);
-              }
+              //
             } on firebase_auth.FirebaseAuthException catch (e) {
               logger.d("$e");
 

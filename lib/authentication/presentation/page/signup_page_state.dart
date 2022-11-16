@@ -7,10 +7,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 import '../../common/create_firebse_auth_exception_message.dart';
-import '../../domain/firebase_auth_user.dart';
-import '../../usecase/authentication_service_send_verify_email_usecase.dart';
-import '../../usecase/authentication_service_signup_usecase.dart';
 
+import '../../usecase/current_user_send_verify_email.dart';
+import '../../usecase/service_use_registration.dart';
 import '../widget/login_submit_state.dart';
 import '../widget/loginid_field_state.dart';
 import '../widget/password_field_state.dart';
@@ -98,29 +97,19 @@ class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
                 .text;
 
             try {
-              // User情報登録
-              final authenticationServiceSignUpUsecase =
-                  ref.read(authenticationServiceSignUpUsecaseProvider);
+              // サービス利用登録
+              final serviceUseRegistrationUsecase =
+                  ref.read(serviceUseRegistrationUsecaseProvider);
 
-              final firebase_auth.UserCredential res =
-                  await authenticationServiceSignUpUsecase.execute(
-                      email, password);
+              await serviceUseRegistrationUsecase(email, password);
 
-              // 登録したUser情報を受取る。
-              final firebase_auth.User? user = res.user;
+              // メールアドレス検証メール送信
+              final currentUserSendVerifyEmailUsecase =
+                  ref.read(currentUserSendVerifyEmailUsecaseProvider);
 
-              // User情報取得成功した場合、メールアドレス検証メールを送信
-              if (user != null) {
-                final authenticationServiceSendVerifyEmailUsecase = ref
-                    .read(authenticationServiceSendVerifyEmailUsecaseProvider);
+              await currentUserSendVerifyEmailUsecase();
 
-                authenticationServiceSendVerifyEmailUsecase(user: user);
-
-                // Userのメールアドレス検証結果を状態で保持する
-                final notifier =
-                    ref.read(firebaseAuthUserStateNotifierProvider.notifier);
-                notifier.updateEmailVerified(user.emailVerified);
-              }
+              //
             } on firebase_auth.FirebaseAuthException catch (e) {
               void displayNotificationMessage() {
                 final createFirebaseAuthExceptionMessage =

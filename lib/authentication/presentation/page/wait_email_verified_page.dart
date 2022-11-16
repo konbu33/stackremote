@@ -5,8 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../../usecase/authentication_service_check_email_verified_usecase.dart';
-import '../../usecase/authentication_service_send_verify_email_usecase.dart';
+import '../../usecase/check_email_verified.dart';
+import '../../usecase/current_user_send_verify_email.dart';
 import '../widget/appbar_action_icon_widget.dart';
 
 import 'wait_email_verified_page_state.dart';
@@ -19,14 +19,28 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
     final state = ref.watch(waitEmailVerifiedPageStateNotifierProvider);
 
     // メールアドレス確認が完了したか否かをポーリング開始
-    final authenticationServiceCheckEmailVerifiedUsecase =
-        ref.watch(authenticationServiceCheckEmailVerifiedUsecaseProvider);
+    final checkEmailVerifiedUsecase =
+        ref.watch(checkEmailVerifiedUsecaseProvider);
 
-    final checkEmailVerifiedTimer =
-        authenticationServiceCheckEmailVerifiedUsecase();
+    final checkEmailVerifiedTimer = checkEmailVerifiedUsecase();
 
     useEffect(() {
-      checkEmailVerifiedTimer;
+      //
+
+      try {
+        checkEmailVerifiedTimer;
+      } on firebase_auth.FirebaseAuthException catch (e) {
+        switch (e.code) {
+          case "current-user-null":
+            checkEmailVerifiedTimer.cancel();
+
+            break;
+
+          default:
+            break;
+        }
+      }
+
       return checkEmailVerifiedTimer.cancel;
     }, [checkEmailVerifiedTimer]);
 
@@ -85,17 +99,13 @@ class WaitEmailVerifiedPageWidgets {
 
   static Widget sendVerifiyEmailWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
-      final firebase_auth.User? user =
-          firebase_auth.FirebaseAuth.instance.currentUser;
-
       return ElevatedButton(
-        onPressed: () {
-          if (user != null) {
-            final authenticationServiceSendVerifyEmailUsecase =
-                ref.read(authenticationServiceSendVerifyEmailUsecaseProvider);
+        onPressed: () async {
+          // メールアドレス検証メール送信
+          final currentUserSendVerifyEmailUsecase =
+              ref.read(currentUserSendVerifyEmailUsecaseProvider);
 
-            authenticationServiceSendVerifyEmailUsecase(user: user);
-          }
+          await currentUserSendVerifyEmailUsecase();
         },
         child: const Text("メール再送信"),
       );

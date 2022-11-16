@@ -5,8 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../usecase/authentication_service_signout_usecase.dart';
-
+import '../../usecase/service_signout.dart';
 import '../widget/appbar_action_icon_state.dart';
 
 part 'wait_email_verified_page_state.freezed.dart';
@@ -72,11 +71,11 @@ class WaitEmailVerifiedPageStateNotifier
       return ({
         required BuildContext context,
       }) =>
-          () {
-            final authenticationServiceSignOutUsecase =
-                ref.read(authenticationServiceSignOutUsecaseProvider);
+          () async {
+            final serviceSignOutUsecase =
+                ref.read(serviceSignOutUsecaseProvider);
 
-            authenticationServiceSignOutUsecase.execute();
+            await serviceSignOutUsecase();
           };
     }
 

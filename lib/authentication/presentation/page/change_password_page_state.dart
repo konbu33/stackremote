@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 
 import '../../common/create_firebse_auth_exception_message.dart';
+import '../../usecase/current_user_change_password.dart';
 import '../widget/login_submit_state.dart';
 import '../widget/password_field_state.dart';
 
@@ -99,28 +100,36 @@ class ChangePasswordPageStateNotifier
                 .text;
 
             // improve: FirebaseAuthへの依存を無くしたい。
-            final user = FirebaseAuth.instance.currentUser;
+            // final user = FirebaseAuth.instance.currentUser;
+
+            final currentUserChangePasswordUsecase =
+                ref.read(currentUserChangePasswordUsecaseProvider);
+
+            // final user = authenticationServiceGetCurrentUserUsecase();
 
             final notifier = ref.read(changePasswordPageStateProvider.notifier);
 
-            if (user != null) {
-              try {
-                await user.updatePassword(newPassword);
+            // if (user != null) {
+            try {
+              await currentUserChangePasswordUsecase(
+                password: newPassword,
+              );
+              // await user.updatePassword(newPassword);
 
-                const String message = "パスワード変更しました。";
-                notifier.setMessage(message);
-                //
+              const String message = "パスワード変更しました。";
+              notifier.setMessage(message);
+              //
 
-              } on FirebaseAuthException catch (e) {
-                logger.d("$e");
+            } on firebase_auth.FirebaseAuthException catch (e) {
+              logger.d("$e");
 
-                final createFirebaseExceptionMessage =
-                    ref.read(createFirebaseAuthExceptionMessageProvider);
+              final createFirebaseExceptionMessage =
+                  ref.read(createFirebaseAuthExceptionMessageProvider);
 
-                final String message = createFirebaseExceptionMessage(e);
-                notifier.setMessage(message);
-              }
+              final String message = createFirebaseExceptionMessage(e);
+              notifier.setMessage(message);
             }
+            // }
           };
     }
 
