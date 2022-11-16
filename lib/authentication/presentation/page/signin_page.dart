@@ -15,13 +15,15 @@ class SignInPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginSubmitWidgetName = ref.watch(loginSubmitWidgetNameProvider);
-    final loginIdFieldState = ref.watch(loginIdFieldStateProvider);
-    final passwordFieldState = ref.watch(passwordFieldStateProvider);
+    final loginIdFieldState =
+        ref.watch(SignInPageState.loginIdFieldStateProvider);
+
+    final passwordFieldState =
+        ref.watch(SignInPageState.passwordFieldStateProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(loginSubmitWidgetName),
+        title: const Text(SignInPageState.loginSubmitWidgetName),
         actions: [
           SignInPageWidgets.goToSignUpWidget(),
         ],
@@ -55,7 +57,8 @@ class SignInPageWidgets {
   static Widget goToSignUpWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       return AppbarAcitonIconWidget(
-        appbarActionIconStateProvider: ref.watch(goToSignUpIconStateProvider),
+        appbarActionIconStateProvider:
+            ref.watch(SignInPageState.goToSignUpIconStateProvider),
       );
     });
     return widget;
@@ -64,7 +67,7 @@ class SignInPageWidgets {
   // Login Id Field Widget
   static Widget loginIdField() {
     final Widget widget = LoginIdFieldWidget(
-      loginIdFieldStateProvider: loginIdFieldStateProvider,
+      loginIdFieldStateProvider: SignInPageState.loginIdFieldStateProvider,
     );
     return widget;
   }
@@ -72,7 +75,7 @@ class SignInPageWidgets {
   // Password Field Widget
   static Widget passwordField() {
     final Widget widget = PasswordFieldWidget(
-      passwordFieldStateProvider: passwordFieldStateProvider,
+      passwordFieldStateProvider: SignInPageState.passwordFieldStateProvider,
     );
     return widget;
   }
@@ -81,7 +84,8 @@ class SignInPageWidgets {
   static Widget loginSubmitWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       return LoginSubmitWidget(
-        loginSubmitStateProvider: ref.watch(loginSubmitStateProvider),
+        loginSubmitStateProvider:
+            ref.watch(SignInPageState.loginSubmitStateProvider),
       );
     });
     return widget;
