@@ -22,9 +22,25 @@ class AuthenticationLayer extends SingleChildStatelessWidget {
       child: child,
       builder: (context, ref, child) {
         // 認証状況の変移をwatch開始
-        final authenticationServiceAuthStateChangesUsecase =
-            ref.watch(authenticationServiceAuthStateChangesUsecaseProvider);
-        authenticationServiceAuthStateChangesUsecase();
+        final checkAuthStateChangesUsecase =
+            ref.watch(checkAuthStateChangesUsecaseProvider);
+
+        final Stream<FirebaseAuthUser> firebaseAuthUserStream =
+            checkAuthStateChangesUsecase();
+
+        firebaseAuthUserStream.listen((event) {
+          final FirebaseAuthUser user = event;
+
+          final firebaseAuthUser =
+              ref.watch(firebaseAuthUserStateNotifierProvider);
+
+          final notifier =
+              ref.watch(firebaseAuthUserStateNotifierProvider.notifier);
+
+          if (user.isSignIn != firebaseAuthUser.isSignIn) {
+            notifier.userInformationRegiser(user);
+          }
+        });
 
         // 認証されたユーザの情報のisSignIn属性をwatch開始
         final isSignIn = ref.watch(firebaseAuthUserStateNotifierProvider

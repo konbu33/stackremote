@@ -1,10 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final createFirebaseAuthExceptionMessageProvider = Provider((ref) {
   //
 
-  String createFirebaseAuthExceptionMessage(FirebaseAuthException e) {
+  String createFirebaseAuthExceptionMessage(
+      firebase_auth.FirebaseAuthException e) {
     final String message;
 
     switch (e.code) {
