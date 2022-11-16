@@ -7,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // onCall
 import 'package:cloud_functions/cloud_functions.dart';
 
-import '../../authentication/authentication.dart';
 import '../domain/rtc_channel_state.dart';
 
 // --------------------------------------------------
@@ -19,8 +18,6 @@ final rtcTokenCreateOnCallProvider = Provider((ref) {
   Future<String> rtcCreateToken() async {
     final state = ref.watch(
         RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
-
-    final userState = ref.watch(firebaseAuthUserStateNotifierProvider);
 
     final notifier = ref.watch(RtcChannelStateNotifierProviderList
         .rtcChannelStateNotifierProvider.notifier);
@@ -84,8 +81,6 @@ final rtcTokenCreateOnRequestProvider = Provider((ref) {
   Future<String> rtcCreateToken() async {
     final state = ref.watch(
         RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
-
-    final userState = ref.watch(firebaseAuthUserStateNotifierProvider);
 
     final notifier = ref.watch(RtcChannelStateNotifierProviderList
         .rtcChannelStateNotifierProvider.notifier);
