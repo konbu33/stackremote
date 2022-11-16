@@ -27,6 +27,11 @@ final createFirebaseAuthExceptionMessageProvider = Provider((ref) {
         message = "入力されたパスワードが誤っています。";
         break;
 
+      //  [firebase_auth/invalid-email] The email address is badly formatted.
+      case "invalid-email":
+        message = "メールアドレスを入力して下さい。";
+        break;
+
       // メール送信頻度が多いと、下記のエラーが発生するため、サインインと同時にメール送信は行わない。
       // Unhandled Exception: [firebase_auth/too-many-requests] We have blocked all requests from this device due to unusual activity. Try again later.
       case "too-many-requests":

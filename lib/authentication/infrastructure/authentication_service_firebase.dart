@@ -232,6 +232,9 @@ class AuthenticationServiceFirebase implements AuthenticationService {
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
       switch (e.code) {
+        case "invalid-email":
+          rethrow;
+
         case "user-not-found":
           rethrow;
 
