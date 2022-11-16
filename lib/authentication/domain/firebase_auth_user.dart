@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 part 'firebase_auth_user.freezed.dart';
-part 'firebase_auth_user.g.dart';
 
 // --------------------------------------------------
 //
@@ -38,9 +37,6 @@ class FirebaseAuthUser with _$FirebaseAuthUser {
         firebaseAuthUid: firebaseAuthUid ?? "",
         isSignIn: isSignIn ?? false,
       );
-
-  factory FirebaseAuthUser.fromJson(Map<String, dynamic> json) =>
-      _$FirebaseAuthUserFromJson(json);
 }
 
 // --------------------------------------------------
