@@ -95,7 +95,7 @@ class ChangePasswordPageStateNotifier
 
             // アプリ内のUIからパスワード変更する。
             final newPassword = ref
-                .watch(state.passwordFieldStateProvider)
+                .read(state.passwordFieldStateProvider)
                 .passwordFieldController
                 .text;
 

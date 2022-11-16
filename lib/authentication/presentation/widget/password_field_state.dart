@@ -96,15 +96,15 @@ class PasswordFieldStateNotifier extends StateNotifier<PasswordFieldState> {
 //  typedef Provider
 //
 // --------------------------------------------------
-typedef PasswordFieldStateProvider
-    = StateNotifierProvider<PasswordFieldStateNotifier, PasswordFieldState>;
+typedef PasswordFieldStateProvider = AutoDisposeStateNotifierProvider<
+    PasswordFieldStateNotifier, PasswordFieldState>;
 
 // --------------------------------------------------
 //
 //  StateNotifierProviderCreator
 //
 // --------------------------------------------------
-Function passwordFieldStateNotifierProviderCreator = () {
-  return StateNotifierProvider<PasswordFieldStateNotifier, PasswordFieldState>(
-      (ref) => PasswordFieldStateNotifier());
-};
+PasswordFieldStateProvider passwordFieldStateNotifierProviderCreator() {
+  return StateNotifierProvider.autoDispose<PasswordFieldStateNotifier,
+      PasswordFieldState>((ref) => PasswordFieldStateNotifier());
+}

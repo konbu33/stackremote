@@ -92,8 +92,8 @@ class LoginIdFieldStateNotifier extends StateNotifier<LoginIdFieldState> {
 //  typedef Provider
 //
 // --------------------------------------------------
-typedef LoginIdFieldStateProvider
-    = StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>;
+typedef LoginIdFieldStateProvider = AutoDisposeStateNotifierProvider<
+    LoginIdFieldStateNotifier, LoginIdFieldState>;
 
 // --------------------------------------------------
 //
@@ -101,6 +101,6 @@ typedef LoginIdFieldStateProvider
 //
 // --------------------------------------------------
 LoginIdFieldStateProvider loginIdFieldStateNotifierProviderCreator() {
-  return StateNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>(
-      (ref) => LoginIdFieldStateNotifier());
+  return StateNotifierProvider.autoDispose<LoginIdFieldStateNotifier,
+      LoginIdFieldState>((ref) => LoginIdFieldStateNotifier());
 }

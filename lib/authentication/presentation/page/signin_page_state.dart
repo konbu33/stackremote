@@ -29,41 +29,41 @@ class SignInPageState with _$SignInPageState {
     // GoTo SignUp Submit Widget
     // ignore: unused_element
     @Default("サービス利用登録") String goToSignUpIconOnSubmitWidgetName,
-    required AppbarActionIconStateProvider goToSignUpIconStateProvider,
+    // required AppbarActionIconStateProvider goToSignUpIconStateProvider,
 
     // Login Id Field Widget
-    required LoginIdFieldStateProvider loginIdFieldStateProvider,
+    // required LoginIdFieldStateProvider loginIdFieldStateProvider,
 
     // Password Field Widget
-    required PasswordFieldStateProvider passwordFieldStateProvider,
+    // required PasswordFieldStateProvider passwordFieldStateProvider,
 
     // Login Submit Widget
     // ignore: unused_element
     @Default("サインイン") String loginSubmitWidgetName,
-    required LoginSubmitStateProvider loginSubmitStateProvider,
+    // required LoginSubmitStateProvider loginSubmitStateProvider,
     // ignore: unused_element
     @Default(false) bool isOnSubmitable,
   }) = _SignInPageState;
 
-  factory SignInPageState.create() => SignInPageState._(
-        // GoTo Submit Widget
-        goToSignUpIconStateProvider: appbarActionIconStateProviderCreator(
-          onSubmitWidgetName: "",
-          icon: const Icon(null),
-          onSubmit: null,
-        ),
+  factory SignInPageState.create() => const SignInPageState._(
+      // GoTo Submit Widget
+      // goToSignUpIconStateProvider: appbarActionIconStateProviderCreator(
+      //   onSubmitWidgetName: "",
+      //   icon: const Icon(null),
+      //   onSubmit: null,
+      // ),
 
-        // Login Id Field Widget
-        loginIdFieldStateProvider: loginIdFieldStateNotifierProviderCreator(),
+      // Login Id Field Widget
+      // loginIdFieldStateProvider: loginIdFieldStateNotifierProviderCreator(),
 
-        // Password Field Widget
-        passwordFieldStateProvider: passwordFieldStateNotifierProviderCreator(),
+      // Password Field Widget
+      // passwordFieldStateProvider: passwordFieldStateNotifierProviderCreator(),
 
-        // Login Submit
-        loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
-          loginSubmitWidgetName: "",
-          onSubmit: null,
-        ),
+      // Login Submit
+      // loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+      //   loginSubmitWidgetName: "",
+      //   onSubmit: null,
+      // ),
       );
 }
 
@@ -85,8 +85,8 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
   // initial
   void initial() {
     state = SignInPageState.create();
-    setSignInOnSubmit();
-    setGoToSignUpIconOnSubmit();
+    // setSignInOnSubmit();
+    // setGoToSignUpIconOnSubmit();
   }
 
   void updateIsOnSubmitable(
@@ -95,9 +95,131 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
     state = state.copyWith(isOnSubmitable: isOnSubmitable);
   }
 
-  void setSignInOnSubmit() {
+  // void setSignInOnSubmit() {
+  //   Function? buildOnSubmit() {
+  //     if (!state.isOnSubmitable) {
+  //       return null;
+  //     }
+
+  //     return ({
+  //       required BuildContext context,
+  //     }) =>
+  //         () async {
+  //           final email = ref
+  //               .read(state.loginIdFieldStateProvider)
+  //               .loginIdFieldController
+  //               .text;
+  //           final password = ref
+  //               .read(state.passwordFieldStateProvider)
+  //               .passwordFieldController
+  //               .text;
+
+  //           try {
+  //             // サインイン
+  //             final serviceSignInUsecase =
+  //                 ref.read(serviceSignInUsecaseProvider);
+
+  //             await serviceSignInUsecase(email, password);
+
+  //             //
+  //           } on firebase_auth.FirebaseAuthException catch (e) {
+  //             logger.d("$e");
+
+  //             void displayNotificationMessage() {
+  //               final createFirebaseAuthExceptionMessage =
+  //                   ref.read(createFirebaseAuthExceptionMessageProvider);
+
+  //               final buildSnackBarWidget = ref.read(snackBarWidgetProvider);
+
+  //               final snackBar =
+  //                   buildSnackBarWidget<firebase_auth.FirebaseAuthException>(
+  //                 e,
+  //                 createFirebaseAuthExceptionMessage,
+  //               );
+
+  //               ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  //             }
+
+  //             displayNotificationMessage();
+  //           }
+  //         };
+  //   }
+
+  //   state = state.copyWith(
+  //       loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
+  //           loginSubmitWidgetName: state.loginSubmitWidgetName,
+  //           onSubmit: buildOnSubmit()));
+  // }
+
+  // void setGoToSignUpIconOnSubmit() {
+  //   Function? buildOnSubmit() {
+  //     return ({
+  //       required BuildContext context,
+  //     }) =>
+  //         () {
+  //           context.push('/signup');
+  //         };
+  //   }
+
+  //   state = state.copyWith(
+  //     goToSignUpIconStateProvider: appbarActionIconStateProviderCreator(
+  //       onSubmitWidgetName: state.goToSignUpIconOnSubmitWidgetName,
+  //       icon: const Icon(Icons.person_add),
+  //       onSubmit: buildOnSubmit(),
+  //     ),
+  //   );
+  // }
+}
+
+// --------------------------------------------------
+//
+//  StateNotifierProvider
+//
+// --------------------------------------------------
+final signInPageStateNotifierProvider =
+    StateNotifierProvider<SignInPageStateNotifier, SignInPageState>(
+  (ref) => SignInPageStateNotifier(ref: ref),
+);
+
+final goToSignUpIconStateProvider = Provider((ref) {
+  final signInPageState = ref.watch(signInPageStateNotifierProvider);
+
+  // void setGoToSignUpIconOnSubmit() {
+  Function? buildOnSubmit() {
+    return ({
+      required BuildContext context,
+    }) =>
+        () {
+          context.push('/signup');
+        };
+  }
+  // }
+
+  return appbarActionIconStateProviderCreator(
+    onSubmitWidgetName: signInPageState.goToSignUpIconOnSubmitWidgetName,
+    icon: const Icon(Icons.person_add),
+    onSubmit: buildOnSubmit(),
+  );
+});
+
+final loginIdFieldStateProvider = loginIdFieldStateNotifierProviderCreator();
+
+final passwordFieldStateProvider = passwordFieldStateNotifierProviderCreator();
+
+final loginSubmitStateProvider = Provider.autoDispose(
+  (ref) {
+    final loginIdIsValidate = ref.watch(loginIdFieldStateProvider
+        .select((value) => value.loginIdIsValidate.isValid));
+
+    final passwordIsValidate = ref.watch(passwordFieldStateProvider
+        .select((value) => value.passwordIsValidate.isValid));
+
+    final signInPageState = ref.watch(signInPageStateNotifierProvider);
+
+    // void setSignInOnSubmit() {
     Function? buildOnSubmit() {
-      if (!state.isOnSubmitable) {
+      // if (!isOnSubmitable) {
+      if (!(loginIdIsValidate && passwordIsValidate)) {
         return null;
       }
 
@@ -105,12 +227,10 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
         required BuildContext context,
       }) =>
           () async {
-            final email = ref
-                .read(state.loginIdFieldStateProvider)
-                .loginIdFieldController
-                .text;
+            final email =
+                ref.read(loginIdFieldStateProvider).loginIdFieldController.text;
             final password = ref
-                .read(state.passwordFieldStateProvider)
+                .read(passwordFieldStateProvider)
                 .passwordFieldController
                 .text;
 
@@ -144,39 +264,35 @@ class SignInPageStateNotifier extends StateNotifier<SignInPageState> {
             }
           };
     }
+    // }
 
-    state = state.copyWith(
-        loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
-            loginSubmitWidgetName: state.loginSubmitWidgetName,
-            onSubmit: buildOnSubmit()));
-  }
+    if (loginIdIsValidate && passwordIsValidate) {
+      // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
 
-  void setGoToSignUpIconOnSubmit() {
-    Function? buildOnSubmit() {
-      return ({
-        required BuildContext context,
-      }) =>
-          () {
-            context.push('/signup');
-          };
+      return loginSubmitStateNotifierProviderCreator(
+        loginSubmitWidgetName: signInPageState.loginSubmitWidgetName,
+        onSubmit: buildOnSubmit(),
+      );
     }
 
-    state = state.copyWith(
-      goToSignUpIconStateProvider: appbarActionIconStateProviderCreator(
-        onSubmitWidgetName: state.goToSignUpIconOnSubmitWidgetName,
-        icon: const Icon(Icons.person_add),
-        onSubmit: buildOnSubmit(),
-      ),
-    );
-  }
-}
+    // if ((loginIdIsValidate && passwordIsValidate) != isOnSubmitable) {
+    //   // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
+    //   final signInPageStateNotifier =
+    //       ref.read(signInPageStateNotifierProvider.notifier);
 
-// --------------------------------------------------
-//
-//  StateNotifierProvider
-//
-// --------------------------------------------------
-final signInPageStateNotifierProvider =
-    StateNotifierProvider.autoDispose<SignInPageStateNotifier, SignInPageState>(
-  (ref) => SignInPageStateNotifier(ref: ref),
+    //   signInPageStateNotifier
+    //       .updateIsOnSubmitable(passwordIsValidate && loginIdIsValidate);
+
+    //   return loginSubmitStateNotifierProviderCreator(
+    //     loginSubmitWidgetName: "",
+    //     // onSubmit: setSignInOnSubmit,
+    //     onSubmit: buildOnSubmit(),
+    //   );
+    // }
+
+    return loginSubmitStateNotifierProviderCreator(
+      loginSubmitWidgetName: signInPageState.loginSubmitWidgetName,
+      onSubmit: null,
+    );
+  },
 );
