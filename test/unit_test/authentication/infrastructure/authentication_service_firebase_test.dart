@@ -45,7 +45,7 @@ void main() {
 
         // StreamControllerでラップしてみたパターン
         // このパターンの場合、複数箇所でlistenする場合？broadcastする必要がある様子。
-        final streamController = StreamController<User?>();
+        final streamController = StreamController<FirebaseAuthUser>();
         streamController.addStream(authStateChanges);
 
         final authStateChangesBroadcast =
