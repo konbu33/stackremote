@@ -15,13 +15,13 @@ class SignInPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(signInPageStateNotifierProvider);
+    final loginSubmitWidgetName = ref.watch(loginSubmitWidgetNameProvider);
     final loginIdFieldState = ref.watch(loginIdFieldStateProvider);
     final passwordFieldState = ref.watch(passwordFieldStateProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(state.loginSubmitWidgetName),
+        title: Text(loginSubmitWidgetName),
         actions: [
           SignInPageWidgets.goToSignUpWidget(),
         ],
@@ -80,22 +80,6 @@ class SignInPageWidgets {
   // Login Submit Widget
   static Widget loginSubmitWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
-      // final loginIdIsValidate = ref.watch(loginIdFieldStateProvider
-      //     .select((value) => value.loginIdIsValidate.isValid));
-
-      // final passwordIsValidate = ref.watch(passwordFieldStateProvider
-      //     .select((value) => value.passwordIsValidate.isValid));
-
-      // if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
-      //   // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
-      //   WidgetsBinding.instance.addPostFrameCallback((_) {
-      //     final notifier = ref.watch(signInPageStateNotifierProvider.notifier);
-      //     notifier
-      //         .updateIsOnSubmitable(passwordIsValidate && loginIdIsValidate);
-      //     notifier.setSignInOnSubmit();
-      //   });
-      // }
-
       return LoginSubmitWidget(
         loginSubmitStateProvider: ref.watch(loginSubmitStateProvider),
       );
