@@ -1,6 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,78 +7,137 @@ import '../../../common/common.dart';
 
 import '../../common/create_firebse_auth_exception_message.dart';
 import '../../usecase/current_user_change_password.dart';
+import '../widget/description_message_state.dart';
 import '../widget/login_submit_state.dart';
 import '../widget/password_field_state.dart';
 
-part 'change_password_page_state.freezed.dart';
+class ChangePasswordPageState {
+  ChangePasswordPageState();
+
+  // --------------------------------------------------
+  //
+  //  各password field の validation確認
+  //
+  // --------------------------------------------------
+  static final checkPasswordIsValidateProvider = Provider.autoDispose((ref) {
+    //
+
+    bool checkPasswordIsValidate() {
+      final passwordIsValidate = ref.watch(passwordFieldStateProvider
+          .select((value) => value.passwordIsValidate.isValid));
+
+      final passwordIsValidateConfirm = ref.watch(
+          passwordFieldConfirmStateProvider
+              .select((value) => value.passwordIsValidate.isValid));
+
+      if (!passwordIsValidate) return false;
+      if (!passwordIsValidateConfirm) return false;
+      return true;
+    }
+
+    return checkPasswordIsValidate;
+  });
+
+  // --------------------------------------------------
+  //
+  //  複数password field 間の入力文字列の一致確認
+  //
+  // --------------------------------------------------
+  static final checkPasswordIsMatchProvider = Provider.autoDispose((ref) {
+    //
+
+    bool checkPasswordIsMatch() {
+      final passwordFieldState = ref.watch(passwordFieldStateProvider);
+
+      final passwordFieldConfirmState =
+          ref.watch(passwordFieldConfirmStateProvider);
+
+      final passwordText = passwordFieldState.passwordFieldController.text;
+
+      final passwordTextConfirm =
+          passwordFieldConfirmState.passwordFieldController.text;
+
+      if (passwordText != passwordTextConfirm) return false;
+      return true;
+    }
+
+    return checkPasswordIsMatch;
+  });
+
+  // --------------------------------------------------
+  //
+  //   passwordFieldStateProvider
+  //   passwordFieldConfirmStateProvider
+  //
+  // --------------------------------------------------
+
+  static final passwordFieldStateProvider =
+      passwordFieldStateNotifierProviderCreator();
+
+  static final passwordFieldConfirmStateProvider =
+      passwordFieldStateNotifierProviderCreator();
+
+  // --------------------------------------------------
+  //
+  //   descriptionMessageStateProvider
+  //
+  // --------------------------------------------------
+
+  static final descriptionMessageStateProvider =
+      descriptionMessageStateProviderCreator(
+    message: "入力間違い防止のため、2回入力して下さい。",
+  );
+
+  // --------------------------------------------------
+  //
+  //   attentionMessageStateProvider
+  //
+  // --------------------------------------------------
+  static final attentionMessageStateProvider = Provider.autoDispose((ref) {
+    //
+
+    final checkPasswordIsValidate = ref.watch(checkPasswordIsValidateProvider);
+    final checkPasswordIsMatch = ref.watch(checkPasswordIsMatchProvider);
+
+    final passwordIsValidate = checkPasswordIsValidate();
+
+    if (!passwordIsValidate) {
+      return descriptionMessageStateProviderCreator();
+    }
+
+    final passwordIsMatch = checkPasswordIsMatch();
+
+    if (!passwordIsMatch) {
+      const String notMatchMessage = "入力したパスワードが不一致です。";
+      return descriptionMessageStateProviderCreator(message: notMatchMessage);
+    }
+
+    return descriptionMessageStateProviderCreator();
+  });
 
 // --------------------------------------------------
 //
-//   Freezed
+//   onSubmitStateProvider
 //
 // --------------------------------------------------
-@freezed
-class ChangePasswordPageState with _$ChangePasswordPageState {
-  factory ChangePasswordPageState._({
-    // ignore: unused_element
-    @Default("パスワード変更") String pageTitle,
-    required GlobalKey<FormState> formKey,
-    required PasswordFieldStateProvider passwordFieldStateProvider,
-    required PasswordFieldStateProvider passwordFieldConfirmStateProvider,
-    required LoginSubmitStateProvider onSubmitStateProvider,
-    // ignore: unused_element
-    @Default("") String message,
+  static const pageTitle = "パスワード変更";
 
-    // ignore: unused_element
-    @Default(false) bool isOnSubmitable,
-  }) = _ChangePasswordPageState;
+  static final onSubmitStateProvider = Provider.autoDispose((ref) {
+    bool passwordIsValidate = false;
+    bool passwordIsMatch = false;
+    bool isOnSubmitable = false;
 
-  factory ChangePasswordPageState.create() {
-    return ChangePasswordPageState._(
-      formKey: GlobalKey<FormState>(),
-      passwordFieldStateProvider: passwordFieldStateNotifierProviderCreator(),
-      passwordFieldConfirmStateProvider:
-          passwordFieldStateNotifierProviderCreator(),
-      onSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
-        loginSubmitWidgetName: "",
-        onSubmit: null,
-      ),
-    );
-  }
-}
+    final checkPasswordIsValidate = ref.watch(checkPasswordIsValidateProvider);
+    final checkPasswordIsMatch = ref.watch(checkPasswordIsMatchProvider);
 
-// --------------------------------------------------
-//
-//  StateNotifier
-//
-// --------------------------------------------------
-class ChangePasswordPageStateNotifier
-    extends StateNotifier<ChangePasswordPageState> {
-  ChangePasswordPageStateNotifier({
-    required this.ref,
-  }) : super(
-          ChangePasswordPageState.create(),
-        ) {
-    initial();
-  }
+    final attentionMessageStateNotifier =
+        ref.watch(ref.watch(attentionMessageStateProvider).notifier);
 
-  final Ref ref;
-
-  void initial() {
-    setChangePasswordOnSubmit();
-  }
-
-  void updateIsOnSubmitable(bool isOnSubmitable) {
-    state = state.copyWith(isOnSubmitable: isOnSubmitable);
-  }
-
-  void setMessage(String message) {
-    state = state.copyWith(message: message);
-  }
-
-  void setChangePasswordOnSubmit() {
-    Function? buildOnSubmit() {
-      if (!state.isOnSubmitable) {
+    // --------------------------------------------------
+    //  onSubmit関数の生成
+    // --------------------------------------------------
+    Function? buildChangePasswordOnSubmit() {
+      if (!isOnSubmitable) {
         return null;
       }
 
@@ -95,29 +152,20 @@ class ChangePasswordPageStateNotifier
 
             // アプリ内のUIからパスワード変更する。
             final newPassword = ref
-                .read(state.passwordFieldStateProvider)
+                .read(passwordFieldStateProvider)
                 .passwordFieldController
                 .text;
 
-            // improve: FirebaseAuthへの依存を無くしたい。
-            // final user = FirebaseAuth.instance.currentUser;
-
-            final currentUserChangePasswordUsecase =
-                ref.read(currentUserChangePasswordUsecaseProvider);
-
-            // final user = authenticationServiceGetCurrentUserUsecase();
-
-            final notifier = ref.read(changePasswordPageStateProvider.notifier);
-
-            // if (user != null) {
             try {
+              final currentUserChangePasswordUsecase =
+                  ref.read(currentUserChangePasswordUsecaseProvider);
+
               await currentUserChangePasswordUsecase(
                 password: newPassword,
               );
-              // await user.updatePassword(newPassword);
 
               const String message = "パスワード変更しました。";
-              notifier.setMessage(message);
+              attentionMessageStateNotifier.setMessage(message);
               //
 
             } on firebase_auth.FirebaseAuthException catch (e) {
@@ -127,29 +175,29 @@ class ChangePasswordPageStateNotifier
                   ref.read(createFirebaseAuthExceptionMessageProvider);
 
               final String message = createFirebaseExceptionMessage(e);
-              notifier.setMessage(message);
+              attentionMessageStateNotifier.setMessage(message);
             }
-            // }
           };
     }
 
-    state = state.copyWith(
-      onSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
-        loginSubmitWidgetName: state.pageTitle,
-        onSubmit: buildOnSubmit(),
-      ),
-    );
-  }
-}
+    passwordIsValidate = checkPasswordIsValidate();
 
-// --------------------------------------------------
-//
-//  StateNotifierProvider
-//
-// --------------------------------------------------
-final changePasswordPageStateProvider = StateNotifierProvider.autoDispose<
-    ChangePasswordPageStateNotifier, ChangePasswordPageState>(
-  (ref) {
-    return ChangePasswordPageStateNotifier(ref: ref);
-  },
-);
+    if (passwordIsValidate) {
+      passwordIsMatch = checkPasswordIsMatch();
+    }
+
+    if (passwordIsMatch != isOnSubmitable) {
+      isOnSubmitable = passwordIsMatch;
+    }
+
+    logger.d(
+        "passwordIsValidate : ${passwordIsValidate}, passwordIsMatch : ${passwordIsMatch}, isOnSubmitablei : ${isOnSubmitable}");
+
+    final onSubmitStateProvider = loginSubmitStateNotifierProviderCreator(
+      loginSubmitWidgetName: pageTitle,
+      onSubmit: buildChangePasswordOnSubmit(),
+    );
+
+    return onSubmitStateProvider;
+  });
+}
