@@ -37,6 +37,8 @@ class SignInPageState {
 
   static final loginSubmitStateProvider = Provider.autoDispose(
     (ref) {
+      bool isOnSubmitable = false;
+
       final loginIdIsValidate = ref.watch(loginIdFieldStateProvider
           .select((value) => value.loginIdIsValidate.isValid));
 
@@ -44,7 +46,7 @@ class SignInPageState {
           .select((value) => value.passwordIsValidate.isValid));
 
       Function? buildSignInOnSubmit() {
-        if (!(loginIdIsValidate && passwordIsValidate)) {
+        if (!isOnSubmitable) {
           return null;
         }
 
@@ -93,21 +95,15 @@ class SignInPageState {
             };
       }
 
-      final LoginSubmitStateProvider loginSubmitStateNotifierProvider;
-
       if (loginIdIsValidate && passwordIsValidate) {
-        loginSubmitStateNotifierProvider =
-            loginSubmitStateNotifierProviderCreator(
-          loginSubmitWidgetName: loginSubmitWidgetName,
-          onSubmit: buildSignInOnSubmit(),
-        );
-      } else {
-        loginSubmitStateNotifierProvider =
-            loginSubmitStateNotifierProviderCreator(
-          loginSubmitWidgetName: loginSubmitWidgetName,
-          onSubmit: null,
-        );
+        isOnSubmitable = true;
       }
+
+      final loginSubmitStateNotifierProvider =
+          loginSubmitStateNotifierProviderCreator(
+        loginSubmitWidgetName: loginSubmitWidgetName,
+        onSubmit: buildSignInOnSubmit(),
+      );
 
       return loginSubmitStateNotifierProvider;
     },
