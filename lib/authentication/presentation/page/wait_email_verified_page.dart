@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
@@ -17,32 +15,6 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // // メールアドレス確認が完了したか否かをポーリング開始
-    // final checkEmailVerifiedUsecase =
-    //     ref.watch(checkEmailVerifiedUsecaseProvider);
-
-    // final checkEmailVerifiedTimer = checkEmailVerifiedUsecase();
-
-    // useEffect(() {
-    //   //
-
-    //   try {
-    //     checkEmailVerifiedTimer;
-    //   } on firebase_auth.FirebaseAuthException catch (e) {
-    //     switch (e.code) {
-    //       case "current-user-null":
-    //         checkEmailVerifiedTimer.cancel();
-
-    //         break;
-
-    //       default:
-    //         break;
-    //     }
-    //   }
-
-    //   return checkEmailVerifiedTimer.cancel;
-    // }, [checkEmailVerifiedTimer]);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(WaitEmailVerifiedPageState.pageTitle),
