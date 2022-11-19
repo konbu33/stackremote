@@ -14,28 +14,25 @@ class UserPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(userPageStateControllerProvider);
-
-    final userState = ref.watch(userStateNotifierProvider);
-
     final nickNameFieldState =
-        ref.watch(state.nickNameFieldStateNotifierProvider);
+        ref.watch(UserPageState.nickNameFieldStateNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(
-        title: UserDetailPageWidgets.pageTitleWidget(state),
+        title: UserDetailPageWidgets.pageTitleWidget(),
       ),
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: [nickNameFieldState.focusNode],
         children: [
           Form(
-            key: state.userPageformValueKey,
+            key: GlobalKey<FormState>(),
             child: Column(
               children: [
-                Text("現在のニックネーム：${userState.nickName}"),
+                UserDetailPageWidgets.currentNickNameWidget(),
                 const SizedBox(height: 40),
-                UserDetailPageWidgets.userNameField(state),
+                UserDetailPageWidgets.userNameField(),
                 const SizedBox(height: 40),
-                UserDetailPageWidgets.userUpdateButton(state),
+                UserDetailPageWidgets.userUpdateButton(),
               ],
             ),
           ),
@@ -46,41 +43,46 @@ class UserPage extends HookConsumerWidget {
 }
 
 class UserDetailPageWidgets {
-  // Page Title
-  static Widget pageTitleWidget(UserPageState state) {
-    final Widget widget = Text(state.pageTitle);
+  // Page pageTitleWidget
+  static Widget pageTitleWidget() {
+    //
+    const Widget widget = Text(UserPageState.pageTitle);
     return widget;
   }
 
-  // User Name Field
-  static Widget userNameField(UserPageState state) {
+  // currentNickNameWidget
+  static Widget currentNickNameWidget() {
+    //
+    final Widget widget = Consumer(
+      builder: (context, ref, child) {
+        final userState = ref.watch(userStateNotifierProvider);
+        return Text("現在のニックネーム：${userState.nickName}");
+      },
+    );
+    return widget;
+  }
+
+  // userNameField
+  static Widget userNameField() {
+    //
     final Widget widget = NickNameFieldWidget(
         nickNameFieldStateNotifierProvider:
-            state.nickNameFieldStateNotifierProvider);
+            UserPageState.nickNameFieldStateNotifierProvider);
 
     return widget;
   }
 
-  // User Update Button
-  static Widget userUpdateButton(UserPageState state) {
-    final Widget widget = Consumer(builder: ((context, ref, child) {
-      final loginIdIsValidate = ref.watch(state
-          .nickNameFieldStateNotifierProvider
-          .select((value) => value.nickNameIsValidate.isValid));
-
-      if (loginIdIsValidate != state.isOnSubmitable) {
-        // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          final notifier = ref.watch(userPageStateControllerProvider.notifier);
-          notifier.updateIsOnSubmitable(loginIdIsValidate);
-          notifier.setUserUpdateOnSubmit();
-        });
-      }
-
-      return LoginSubmitWidget(
-        loginSubmitStateProvider: state.userUpdateSubmitStateProvider,
-      );
-    }));
+  // userUpdateButton
+  static Widget userUpdateButton() {
+    //
+    final Widget widget = Consumer(
+      builder: (context, ref, child) {
+        return LoginSubmitWidget(
+          loginSubmitStateProvider:
+              ref.watch(UserPageState.userUpdateSubmitStateProvider),
+        );
+      },
+    );
 
     return widget;
   }

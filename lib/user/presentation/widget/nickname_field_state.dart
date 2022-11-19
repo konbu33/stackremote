@@ -93,8 +93,8 @@ class NickNameFieldStateNotifier extends StateNotifier<NickNameFieldState> {
 //  typedef Provider
 //
 // --------------------------------------------------
-typedef NickNameFieldStateNotifierProvider
-    = StateNotifierProvider<NickNameFieldStateNotifier, NickNameFieldState>;
+typedef NickNameFieldStateNotifierProvider = AutoDisposeStateNotifierProvider<
+    NickNameFieldStateNotifier, NickNameFieldState>;
 
 // --------------------------------------------------
 //
@@ -102,19 +102,10 @@ typedef NickNameFieldStateNotifierProvider
 //
 // --------------------------------------------------
 NickNameFieldStateNotifierProvider nickNameFieldStateNotifierProviderCreator() {
-  return StateNotifierProvider<NickNameFieldStateNotifier, NickNameFieldState>(
+  return StateNotifierProvider.autoDispose<NickNameFieldStateNotifier,
+      NickNameFieldState>(
     (ref) {
       return NickNameFieldStateNotifier();
     },
   );
-}
-
-// --------------------------------------------------
-//
-//  StateNotifierProviderList
-//
-// --------------------------------------------------
-class NickNameFieldStateNotifierProviderList {
-  static final nickNameFieldStateNotifierProvider =
-      nickNameFieldStateNotifierProviderCreator();
 }
