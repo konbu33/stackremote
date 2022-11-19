@@ -7,11 +7,11 @@ class DescriptionMessageWidget extends StatelessWidget {
   const DescriptionMessageWidget({
     Key? key,
     required this.descriptionMessageStateProvider,
-    required this.textStyle,
+    this.textStyle,
   }) : super(key: key);
 
   final DescriptionMessageStateProvider descriptionMessageStateProvider;
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
