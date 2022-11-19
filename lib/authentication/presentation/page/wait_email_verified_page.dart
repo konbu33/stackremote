@@ -6,9 +6,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 
 import '../../usecase/check_email_verified.dart';
-import '../../usecase/current_user_send_verify_email.dart';
 import '../widget/appbar_action_icon_widget.dart';
 
+import '../widget/description_message_widget.dart';
+import '../widget/login_submit_widget.dart';
 import 'wait_email_verified_page_state.dart';
 
 class WaitEmailVerifiedPage extends HookConsumerWidget {
@@ -16,37 +17,35 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(waitEmailVerifiedPageStateNotifierProvider);
+    // // メールアドレス確認が完了したか否かをポーリング開始
+    // final checkEmailVerifiedUsecase =
+    //     ref.watch(checkEmailVerifiedUsecaseProvider);
 
-    // メールアドレス確認が完了したか否かをポーリング開始
-    final checkEmailVerifiedUsecase =
-        ref.watch(checkEmailVerifiedUsecaseProvider);
+    // final checkEmailVerifiedTimer = checkEmailVerifiedUsecase();
 
-    final checkEmailVerifiedTimer = checkEmailVerifiedUsecase();
+    // useEffect(() {
+    //   //
 
-    useEffect(() {
-      //
+    //   try {
+    //     checkEmailVerifiedTimer;
+    //   } on firebase_auth.FirebaseAuthException catch (e) {
+    //     switch (e.code) {
+    //       case "current-user-null":
+    //         checkEmailVerifiedTimer.cancel();
 
-      try {
-        checkEmailVerifiedTimer;
-      } on firebase_auth.FirebaseAuthException catch (e) {
-        switch (e.code) {
-          case "current-user-null":
-            checkEmailVerifiedTimer.cancel();
+    //         break;
 
-            break;
+    //       default:
+    //         break;
+    //     }
+    //   }
 
-          default:
-            break;
-        }
-      }
-
-      return checkEmailVerifiedTimer.cancel;
-    }, [checkEmailVerifiedTimer]);
+    //   return checkEmailVerifiedTimer.cancel;
+    // }, [checkEmailVerifiedTimer]);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(state.pageTitle),
+        title: const Text(WaitEmailVerifiedPageState.pageTitle),
         actions: [
           WaitEmailVerifiedPageWidgets.signOutIconWidget(),
         ],
@@ -56,9 +55,12 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
         children: [
           Column(
             children: [
-              WaitEmailVerifiedPageWidgets.messageWidget(),
+              WaitEmailVerifiedPageWidgets.descriptionMessageWidget(),
               const SizedBox(height: 30),
               WaitEmailVerifiedPageWidgets.sendVerifiyEmailWidget(),
+              WaitEmailVerifiedPageWidgets.attentionMessageWidget(),
+              const SizedBox(height: 80), // height: 90以上でレイアウトエラー発生する様子。
+              WaitEmailVerifiedPageWidgets.checkEmailVerifiedTimerWidget(),
             ],
           ),
         ],
@@ -68,14 +70,16 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
 }
 
 class WaitEmailVerifiedPageWidgets {
-  // signOutIconButton
+  //
+
+  // signOutIconWidget
   static Widget signOutIconWidget() {
+    //
     final Widget widget = Consumer(
       builder: ((context, ref, child) {
-        final state = ref.watch(waitEmailVerifiedPageStateNotifierProvider);
-
         return AppbarAcitonIconWidget(
-          appbarActionIconStateProvider: state.signOutIconStateProvider,
+          appbarActionIconStateProvider:
+              ref.watch(WaitEmailVerifiedPageState.signOutIconStateProvider),
         );
       }),
     );
@@ -83,34 +87,58 @@ class WaitEmailVerifiedPageWidgets {
     return widget;
   }
 
-  static Widget messageWidget() {
-    String message = "";
-    message += "あなたが「サービス利用登録時に登録したメールアドレス」の持ち主かどうか、確認待ちの状態です。";
-    message += "\n\n\n";
-    message += "「サービス利用登録時に登録したメールアドレス」へ、メールを送信しました。";
-    message += "メール本文のリンクをクリックし、あなたがメールアドレスの持ち主であことを証明して下さい。";
-    message += "\n\n\n";
-    message += "もし、メールが届いていない場合、下記からメールを再送信可能です。";
-
-    final Widget widget = Text(message);
+  // messageWidget
+  static Widget descriptionMessageWidget() {
+    //
+    final Widget widget = DescriptionMessageWidget(
+      descriptionMessageStateProvider:
+          WaitEmailVerifiedPageState.descriptionMessageStateProvider,
+    );
 
     return widget;
   }
 
+  // sendVerifiyEmailWidget
   static Widget sendVerifiyEmailWidget() {
+    //
     final Widget widget = Consumer(builder: (context, ref, child) {
-      return ElevatedButton(
-        onPressed: () async {
-          // メールアドレス検証メール送信
-          final currentUserSendVerifyEmailUsecase =
-              ref.read(currentUserSendVerifyEmailUsecaseProvider);
-
-          await currentUserSendVerifyEmailUsecase();
-        },
-        child: const Text("メール再送信"),
+      return LoginSubmitWidget(
+        loginSubmitStateProvider:
+            ref.watch(WaitEmailVerifiedPageState.onSubmitStateProvider),
       );
     });
 
+    return widget;
+  }
+
+  // attentionMessageWidget
+  static Widget attentionMessageWidget() {
+    const textStyle = TextStyle(color: Colors.red);
+
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      return DescriptionMessageWidget(
+        descriptionMessageStateProvider:
+            WaitEmailVerifiedPageState.attentionMessageStateProvider,
+        textStyle: textStyle,
+      );
+    });
+    return widget;
+  }
+
+  // checkEmailVerifiedTimerWidget
+  static Widget checkEmailVerifiedTimerWidget() {
+    // メールアドレス確認が完了したか否かをポーリング開始
+
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final checkEmailVerifiedUsecase =
+          ref.watch(checkEmailVerifiedUsecaseProvider);
+
+      final checkEmailVerifiedTimer = checkEmailVerifiedUsecase();
+
+      checkEmailVerifiedTimer;
+
+      return const SizedBox();
+    });
     return widget;
   }
 }
