@@ -86,12 +86,11 @@ class AgoraVideoChannelJoinPageStateNotifier
       return ({
         required BuildContext context,
       }) =>
-          () {
-            final authenticationServiceSignOutUsecase =
-                ref.read(authenticationServiceSignOutUsecaseProvider);
+          () async {
+            final serviceSignOutUsecase =
+                ref.read(serviceSignOutUsecaseProvider);
 
-            authenticationServiceSignOutUsecase.execute();
-            // state.authenticationServiceSignOutUsecase.execute();
+            await serviceSignOutUsecase();
           };
     }
 

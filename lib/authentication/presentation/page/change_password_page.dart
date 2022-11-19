@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
+import '../widget/description_message_widget.dart';
 import '../widget/login_submit_widget.dart';
 import '../widget/password_field_widget.dart';
 
@@ -13,14 +14,15 @@ class ChangePasswordPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(changePasswordPageStateProvider);
-    final passwordField = ref.watch(state.passwordFieldStateProvider);
+    final passwordField =
+        ref.watch(ChangePasswordPageState.passwordFieldStateProvider);
+
     final passwordFieldConfirm =
-        ref.watch(state.passwordFieldConfirmStateProvider);
+        ref.watch(ChangePasswordPageState.passwordFieldConfirmStateProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: ChangePasswordPageWidgets.pageTitleWidget(state),
+        title: ChangePasswordPageWidgets.pageTitleWidget(),
       ),
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: [
@@ -29,17 +31,17 @@ class ChangePasswordPage extends HookConsumerWidget {
         ],
         children: [
           Form(
-            key: state.formKey,
+            key: GlobalKey<FormState>(),
             child: Column(
               children: [
-                ChangePasswordPageWidgets.descriptionWidget(state),
-                ChangePasswordPageWidgets.messageWidget(state),
+                ChangePasswordPageWidgets.descriptionMessageWidget(),
+                ChangePasswordPageWidgets.attentionMessageWidget(),
                 const SizedBox(height: 40),
-                ChangePasswordPageWidgets.passwordField(state),
+                ChangePasswordPageWidgets.passwordField(),
                 const SizedBox(height: 40),
-                ChangePasswordPageWidgets.passwordFieldConfirm(state),
+                ChangePasswordPageWidgets.passwordFieldConfirm(),
                 const SizedBox(height: 40),
-                ChangePasswordPageWidgets.changePasswordButton(state),
+                ChangePasswordPageWidgets.changePasswordButton(),
               ],
             ),
           ),
@@ -51,122 +53,62 @@ class ChangePasswordPage extends HookConsumerWidget {
 
 class ChangePasswordPageWidgets {
   // Page Title
-  static Widget pageTitleWidget(ChangePasswordPageState state) {
-    final Widget widget = Text(state.pageTitle);
+  static Widget pageTitleWidget() {
+    const Widget widget = Text(ChangePasswordPageState.pageTitle);
     return widget;
   }
 
   // Description
-  static Widget descriptionWidget(ChangePasswordPageState state) {
-    const String descriptionMessage = "入力間違い防止のため、2回入力して下さい。";
-    const style = TextStyle(color: Colors.grey);
-    const Widget widget = Text(
-      descriptionMessage,
-      style: style,
+  static Widget descriptionMessageWidget() {
+    const textStyle = TextStyle(color: Colors.grey);
+
+    final Widget widget = DescriptionMessageWidget(
+      descriptionMessageStateProvider:
+          ChangePasswordPageState.descriptionMessageStateProvider,
+      textStyle: textStyle,
     );
     return widget;
   }
 
   // Message
-  static Widget messageWidget(ChangePasswordPageState state) {
-    if (state.message.isEmpty) return const SizedBox();
+  static Widget attentionMessageWidget() {
+    const textStyle = TextStyle(color: Colors.red);
 
-    const style = TextStyle(color: Colors.red);
-    final Widget widget = Column(children: [
-      const SizedBox(height: 20),
-      Text(
-        state.message,
-        style: style,
-      ),
-    ]);
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      return DescriptionMessageWidget(
+        descriptionMessageStateProvider:
+            ref.watch(ChangePasswordPageState.attentionMessageStateProvider),
+        textStyle: textStyle,
+      );
+    });
     return widget;
   }
 
   // Password Field Widget
-  static Widget passwordField(ChangePasswordPageState state) {
+  static Widget passwordField() {
     final Widget widget = PasswordFieldWidget(
-      passwordFieldStateProvider: state.passwordFieldStateProvider,
+      passwordFieldStateProvider:
+          ChangePasswordPageState.passwordFieldStateProvider,
     );
     return widget;
   }
 
   // Password Field Widget
-  static Widget passwordFieldConfirm(ChangePasswordPageState state) {
+  static Widget passwordFieldConfirm() {
     final Widget widget = PasswordFieldWidget(
-      passwordFieldStateProvider: state.passwordFieldConfirmStateProvider,
+      passwordFieldStateProvider:
+          ChangePasswordPageState.passwordFieldConfirmStateProvider,
     );
     return widget;
   }
 
   // Submit Button
-  static Widget changePasswordButton(ChangePasswordPageState state) {
+  static Widget changePasswordButton() {
     final Widget widget = Consumer(
       builder: (context, ref, child) {
-        bool checkPasswordIsValidate() {
-          final notifier = ref.watch(changePasswordPageStateProvider.notifier);
-          const String disagreementMessage = "入力したパスワードが不一致です。";
-
-          // 各TextFormFieldのisValidateを確認
-          final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
-              .select((value) => value.passwordIsValidate.isValid));
-
-          final passwordIsValidateConfirm = ref.watch(state
-              .passwordFieldConfirmStateProvider
-              .select((value) => value.passwordIsValidate.isValid));
-
-          if (!passwordIsValidate || !passwordIsValidateConfirm) {
-            if (state.message.isNotEmpty) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                notifier.setMessage("");
-              });
-            }
-
-            return false;
-          }
-
-          // TextFormField間でtextの一致を確認
-          final passwordFieldState =
-              ref.watch(state.passwordFieldStateProvider);
-          final passwordFieldConfirmState =
-              ref.watch(state.passwordFieldConfirmStateProvider);
-
-          final passwordText = passwordFieldState.passwordFieldController.text;
-
-          final passwordTextConfirm =
-              passwordFieldConfirmState.passwordFieldController.text;
-
-          if (passwordText != passwordTextConfirm) {
-            if (state.message != disagreementMessage) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                notifier.setMessage(disagreementMessage);
-              });
-            }
-            return false;
-          }
-
-          if (state.message == disagreementMessage) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              notifier.setMessage("");
-            });
-          }
-
-          return true;
-        }
-
-        final passwordIsValidate = checkPasswordIsValidate();
-
-        if (passwordIsValidate != state.isOnSubmitable) {
-          // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            final notifier =
-                ref.watch(changePasswordPageStateProvider.notifier);
-            notifier.updateIsOnSubmitable(passwordIsValidate);
-            notifier.setChangePasswordOnSubmit();
-          });
-        }
-
         return LoginSubmitWidget(
-          loginSubmitStateProvider: state.onSubmitStateProvider,
+          loginSubmitStateProvider:
+              ref.watch(ChangePasswordPageState.onSubmitStateProvider),
         );
       },
     );

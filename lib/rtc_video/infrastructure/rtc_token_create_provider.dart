@@ -7,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // onCall
 import 'package:cloud_functions/cloud_functions.dart';
 
-import '../../authentication/authentication.dart';
 import '../domain/rtc_channel_state.dart';
 
 // --------------------------------------------------
@@ -20,8 +19,6 @@ final rtcTokenCreateOnCallProvider = Provider((ref) {
     final state = ref.watch(
         RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
-    final userState = ref.watch(firebaseAuthUserStateNotifierProvider);
-
     final notifier = ref.watch(RtcChannelStateNotifierProviderList
         .rtcChannelStateNotifierProvider.notifier);
 
@@ -32,7 +29,6 @@ final rtcTokenCreateOnCallProvider = Provider((ref) {
       "rtcIdTokenType": state.rtcIdTokenType,
       "role": state.role,
       "privilegeExpireTime": state.privilegeExpireTime,
-      "firebaseAuthIdToken": userState.firebaseAuthIdToken,
     };
 
     // Cloud Functionsのインスタンス生成
@@ -86,8 +82,6 @@ final rtcTokenCreateOnRequestProvider = Provider((ref) {
     final state = ref.watch(
         RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
-    final userState = ref.watch(firebaseAuthUserStateNotifierProvider);
-
     final notifier = ref.watch(RtcChannelStateNotifierProviderList
         .rtcChannelStateNotifierProvider.notifier);
 
@@ -108,7 +102,6 @@ final rtcTokenCreateOnRequestProvider = Provider((ref) {
       "rtcIdTokenType": state.rtcIdTokenType,
       "role": state.role,
       "privilegeExpireTime": state.privilegeExpireTime,
-      "firebaseAuthIdToken": userState.firebaseAuthIdToken,
     };
 
     // print("data : $data");

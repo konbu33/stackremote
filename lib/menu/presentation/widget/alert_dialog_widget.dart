@@ -1,11 +1,12 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../authentication/authentication.dart';
 import '../../../authentication/common/create_firebse_auth_exception_message.dart';
+import '../../../authentication/usecase/service_use_cancellation.dart';
 import '../../../common/common.dart';
 
 class AlertDialogWidget extends StatefulHookConsumerWidget {
@@ -49,24 +50,26 @@ class _AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
       actions: [
         TextButton(
           onPressed: () async {
-            final user = FirebaseAuth.instance.currentUser;
-            if (user != null) {
-              try {
-                await user.delete();
-                setMessage("登録したメールアドレスを削除しました。");
+            final serviceUseCancellationUsecase =
+                ref.read(serviceUseCancellationUsecaseProvider);
 
-                sleep(const Duration(seconds: 3));
+            try {
+              await serviceUseCancellationUsecase();
+              setMessage("登録したメールアドレスを削除しました。");
 
-                final notifier =
-                    ref.read(firebaseAuthUserStateNotifierProvider.notifier);
-                notifier.updateIsSignIn(false);
-              } on FirebaseAuthException catch (e) {
-                logger.d("$e");
+              sleep(const Duration(seconds: 3));
 
-                final createFirebaseExceptionMessage =
-                    ref.read(createFirebaseAuthExceptionMessageProvider);
-                setMessage(createFirebaseExceptionMessage(e));
-              }
+              final notifier =
+                  ref.read(firebaseAuthUserStateNotifierProvider.notifier);
+              notifier.updateIsSignIn(false);
+
+              //
+            } on firebase_auth.FirebaseAuthException catch (e) {
+              logger.d("$e");
+
+              final createFirebaseExceptionMessage =
+                  ref.read(createFirebaseAuthExceptionMessageProvider);
+              setMessage(createFirebaseExceptionMessage(e));
             }
           },
           child: const Text("はい"),

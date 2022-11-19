@@ -21,12 +21,12 @@ class Channel with _$Channel {
   }) = _Channel;
 
   factory Channel.create({
-    String? hostUserEmail,
     Timestamp? createAt,
+    String? hostUserEmail,
   }) =>
       Channel._(
-        hostUserEmail: hostUserEmail ?? "",
         createAt: createAt,
+        hostUserEmail: hostUserEmail ?? "",
       );
 
   factory Channel.fromJson(Map<String, dynamic> json) =>
@@ -42,7 +42,10 @@ class ChannelStateNotifier extends StateNotifier<Channel> {
   ChannelStateNotifier() : super(Channel.create());
 
   void setChannelState(Channel channel) {
-    state = channel;
+    state = state.copyWith(
+      createAt: channel.createAt,
+      hostUserEmail: channel.hostUserEmail,
+    );
   }
 }
 

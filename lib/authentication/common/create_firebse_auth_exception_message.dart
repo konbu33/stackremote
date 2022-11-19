@@ -1,10 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final createFirebaseAuthExceptionMessageProvider = Provider((ref) {
   //
 
-  String createFirebaseAuthExceptionMessage(FirebaseAuthException e) {
+  String createFirebaseAuthExceptionMessage(
+      firebase_auth.FirebaseAuthException e) {
     final String message;
 
     switch (e.code) {
@@ -24,6 +25,11 @@ final createFirebaseAuthExceptionMessageProvider = Provider((ref) {
       //  [firebase_auth/wrong-password] The password is invalid or the user does not have a password.
       case "wrong-password":
         message = "入力されたパスワードが誤っています。";
+        break;
+
+      //  [firebase_auth/invalid-email] The email address is badly formatted.
+      case "invalid-email":
+        message = "メールアドレスを入力して下さい。";
         break;
 
       // メール送信頻度が多いと、下記のエラーが発生するため、サインインと同時にメール送信は行わない。

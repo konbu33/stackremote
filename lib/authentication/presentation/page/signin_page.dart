@@ -15,15 +15,17 @@ class SignInPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(signInPageStateNotifierProvider);
-    final loginIdFieldState = ref.watch(state.loginIdFieldStateProvider);
-    final passwordFieldState = ref.watch(state.passwordFieldStateProvider);
+    final loginIdFieldState =
+        ref.watch(SignInPageState.loginIdFieldStateProvider);
+
+    final passwordFieldState =
+        ref.watch(SignInPageState.passwordFieldStateProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(state.loginSubmitWidgetName),
+        title: const Text(SignInPageState.loginSubmitWidgetName),
         actions: [
-          SignInPageWidgets.goToSignUpWidget(state),
+          SignInPageWidgets.goToSignUpWidget(),
         ],
       ),
       body: ScaffoldBodyBaseLayoutWidget(
@@ -36,11 +38,11 @@ class SignInPage extends HookConsumerWidget {
             key: GlobalKey<FormState>(),
             child: Column(
               children: [
-                SignInPageWidgets.loginIdField(state),
+                SignInPageWidgets.loginIdField(),
                 const SizedBox(height: 30),
-                SignInPageWidgets.passwordField(state),
+                SignInPageWidgets.passwordField(),
                 const SizedBox(height: 40),
-                SignInPageWidgets.loginSubmitWidget(state),
+                SignInPageWidgets.loginSubmitWidget(),
               ],
             ),
           ),
@@ -52,50 +54,38 @@ class SignInPage extends HookConsumerWidget {
 
 class SignInPageWidgets {
   // GoTo SignUp Icon Widget
-  static Widget goToSignUpWidget(SignInPageState state) {
-    final Widget widget = AppbarAcitonIconWidget(
-      appbarActionIconStateProvider: state.goToSignUpIconStateProvider,
-    );
+  static Widget goToSignUpWidget() {
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      return AppbarAcitonIconWidget(
+        appbarActionIconStateProvider:
+            ref.watch(SignInPageState.goToSignUpIconStateProvider),
+      );
+    });
     return widget;
   }
 
   // Login Id Field Widget
-  static Widget loginIdField(SignInPageState state) {
+  static Widget loginIdField() {
     final Widget widget = LoginIdFieldWidget(
-      loginIdFieldStateProvider: state.loginIdFieldStateProvider,
+      loginIdFieldStateProvider: SignInPageState.loginIdFieldStateProvider,
     );
     return widget;
   }
 
   // Password Field Widget
-  static Widget passwordField(SignInPageState state) {
+  static Widget passwordField() {
     final Widget widget = PasswordFieldWidget(
-      passwordFieldStateProvider: state.passwordFieldStateProvider,
+      passwordFieldStateProvider: SignInPageState.passwordFieldStateProvider,
     );
     return widget;
   }
 
   // Login Submit Widget
-  static Widget loginSubmitWidget(SignInPageState state) {
+  static Widget loginSubmitWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
-      final loginIdIsValidate = ref.watch(state.loginIdFieldStateProvider
-          .select((value) => value.loginIdIsValidate.isValid));
-
-      final passwordIsValidate = ref.watch(state.passwordFieldStateProvider
-          .select((value) => value.passwordIsValidate.isValid));
-
-      if ((loginIdIsValidate && passwordIsValidate) != state.isOnSubmitable) {
-        // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          final notifier = ref.watch(signInPageStateNotifierProvider.notifier);
-          notifier
-              .updateIsOnSubmitable(passwordIsValidate && loginIdIsValidate);
-          notifier.setSignInOnSubmit();
-        });
-      }
-
       return LoginSubmitWidget(
-        loginSubmitStateProvider: state.loginSubmitStateProvider,
+        loginSubmitStateProvider:
+            ref.watch(SignInPageState.loginSubmitStateProvider),
       );
     });
     return widget;

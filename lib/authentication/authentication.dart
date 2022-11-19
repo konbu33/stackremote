@@ -7,7 +7,7 @@ export './presentation/page/change_password_page.dart';
 
 // agora_video_channel_join_page_state.dart, user_page_state.dart
 export './presentation/widget/appbar_action_icon_state.dart';
-export './usecase/authentication_service_signout_usecase.dart';
+export './usecase/service_signout.dart';
 export './infrastructure/authentication_service_firebase.dart';
 
 // agora_video_channel_join_page.dart
@@ -27,7 +27,6 @@ export './presentation/widget/appbar_action_icon_widget.dart';
 
 export './infrastructure/authentication_service.dart';
 
-export './usecase/authentication_service_auth_state_changes_usecase.dart';
-export './usecase/authentication_service_get_id_token_usecase.dart';
+export './usecase/check_auth_state_changes.dart';
 
 export './presentation/widget/login_submit_state.dart';

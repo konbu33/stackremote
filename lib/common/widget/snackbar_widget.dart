@@ -20,7 +20,10 @@ final snackBarWidgetProvider = Provider((ref) {
     final notifier = ref.watch(snackBarStateProvider.notifier);
     notifier.setMessage(message);
 
-    final snackBarState = ref.watch(snackBarStateProvider);
+    // notifierでstate更新した直後に、ref.watch指定すると、
+    // '_didChangeDependency == false'エラー発生するため、ref.read指定する。
+    // サインアウト後、1回目の認証でパスワード誤った場合に、エラー発生した。
+    final snackBarState = ref.read(snackBarStateProvider);
 
     final SnackBar snackBar = SnackBar(
       content: Text(snackBarState.message),

@@ -1,102 +1,118 @@
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-// ignore: unused_import
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../usecase/authentication_service_signout_usecase.dart';
+import '../../../common/common.dart';
+import '../../common/create_firebse_auth_exception_message.dart';
+import '../../usecase/current_user_send_verify_email.dart';
+import '../../usecase/service_signout.dart';
 
 import '../widget/appbar_action_icon_state.dart';
+import '../widget/description_message_state.dart';
+import '../widget/login_submit_state.dart';
 
-part 'wait_email_verified_page_state.freezed.dart';
+class WaitEmailVerifiedPageState {
+  const WaitEmailVerifiedPageState();
 
-// --------------------------------------------------
-//
-//   Freezed
-//
-// --------------------------------------------------
-@freezed
-class WaitEmailVerifiedPageState with _$WaitEmailVerifiedPageState {
-  const factory WaitEmailVerifiedPageState._({
-    // PageTitle
-    required String pageTitle,
+  static const pageTitle = "メールアドレス確認待ち";
 
-    // SignOutIcon Button
-    required String signOutIconButtonName,
+  static const signOutIconButtonName = "サインアウト";
 
+  static const String message = ''' 
+    あなたが「サービス利用登録時に登録したメールアドレス」の持ち主かどうか、確認待ちの状態です。
+    \n
+    「サービス利用登録時に登録したメールアドレス」へ、メールを送信しました。
+    メール本文のリンクをクリックし、あなたがメールアドレスの持ち主であことを証明して下さい。
+    \n
+    もし、メールが届いていない場合、下記からメールを再送信可能です。
+  ''';
+
+  static final descriptionMessageStateProvider =
+      descriptionMessageStateProviderCreator(
+          message: message.replaceAll(" ", ""));
+
+  // --------------------------------------------------
+  //
+  //   signOutIconStateProvider
+  //
+  // --------------------------------------------------
+  static final signOutIconStateProvider = Provider((ref) {
     //
-    required AppbarActionIconStateProvider signOutIconStateProvider,
-  }) = _WaitEmailVerifiedPageState;
 
-  factory WaitEmailVerifiedPageState.create() => WaitEmailVerifiedPageState._(
-        // PageTitle
-        pageTitle: "メールアドレス確認待ち",
-
-        // SignOutIcon Button
-        signOutIconButtonName: "サインアウト",
-
-        signOutIconStateProvider: appbarActionIconStateProviderCreator(
-          onSubmitWidgetName: "",
-          icon: const Icon(null),
-          onSubmit: null,
-        ),
-      );
-}
-
-// --------------------------------------------------
-//
-//  StateNotifier
-//
-// --------------------------------------------------
-class WaitEmailVerifiedPageStateNotifier
-    extends StateNotifier<WaitEmailVerifiedPageState> {
-  WaitEmailVerifiedPageStateNotifier({
-    required this.ref,
-  }) : super(WaitEmailVerifiedPageState.create()) {
-    initial();
-  }
-
-  // ref
-  final Ref ref;
-
-  // initial
-  void initial() {
-    state = WaitEmailVerifiedPageState.create();
-    setSignOutIconOnSubumit();
-  }
-
-  // setSignOutIconOnSubumit
-  void setSignOutIconOnSubumit() {
-    Function buildOnSubmit() {
+    Function buildSignOutIconOnSubmit() {
       return ({
         required BuildContext context,
       }) =>
-          () {
-            final authenticationServiceSignOutUsecase =
-                ref.read(authenticationServiceSignOutUsecaseProvider);
+          () async {
+            final serviceSignOutUsecase =
+                ref.read(serviceSignOutUsecaseProvider);
 
-            authenticationServiceSignOutUsecase.execute();
+            await serviceSignOutUsecase();
           };
     }
 
-    state = state.copyWith(
-      signOutIconStateProvider: appbarActionIconStateProviderCreator(
-        onSubmitWidgetName: state.signOutIconButtonName,
-        icon: const Icon(Icons.logout),
-        onSubmit: buildOnSubmit(),
-      ),
+    final signOutIconStateProvider = appbarActionIconStateProviderCreator(
+      onSubmitWidgetName: signOutIconButtonName,
+      icon: const Icon(Icons.logout),
+      onSubmit: buildSignOutIconOnSubmit(),
     );
-  }
-}
+
+    return signOutIconStateProvider;
+  });
+
+  // --------------------------------------------------
+  //
+  //   attentionMessageStateProvider
+  //
+  // --------------------------------------------------
+  static final attentionMessageStateProvider =
+      descriptionMessageStateProviderCreator();
 
 // --------------------------------------------------
 //
-//  StateNotifierProvider
+//   onSubmitStateProvider
 //
 // --------------------------------------------------
-final waitEmailVerifiedPageStateNotifierProvider =
-    StateNotifierProvider.autoDispose<WaitEmailVerifiedPageStateNotifier,
-        WaitEmailVerifiedPageState>(
-  (ref) => WaitEmailVerifiedPageStateNotifier(ref: ref),
-);
+  static final onSubmitStateProvider = Provider.autoDispose((ref) {
+    final attentionMessageStateNotifier =
+        ref.watch(attentionMessageStateProvider.notifier);
+
+    // --------------------------------------------------
+    //  onSubmit関数の生成
+    // --------------------------------------------------
+    Function? buildSendVerifyMailOnSubmit() {
+      return ({
+        required BuildContext context,
+      }) =>
+          () async {
+            try {
+              // メールアドレス検証メール送信
+              final currentUserSendVerifyEmailUsecase =
+                  ref.read(currentUserSendVerifyEmailUsecaseProvider);
+
+              await currentUserSendVerifyEmailUsecase();
+
+              const String message = "メール再送しました。";
+              attentionMessageStateNotifier.setMessage(message);
+              //
+
+            } on firebase_auth.FirebaseAuthException catch (e) {
+              logger.d("$e");
+
+              final createFirebaseExceptionMessage =
+                  ref.read(createFirebaseAuthExceptionMessageProvider);
+
+              final String message = createFirebaseExceptionMessage(e);
+              attentionMessageStateNotifier.setMessage(message);
+            }
+          };
+    }
+
+    final onSubmitStateProvider = loginSubmitStateNotifierProviderCreator(
+      loginSubmitWidgetName: "メール再送信",
+      onSubmit: buildSendVerifyMailOnSubmit(),
+    );
+
+    return onSubmitStateProvider;
+  });
+}

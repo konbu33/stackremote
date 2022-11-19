@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 part 'firebase_auth_user.freezed.dart';
-part 'firebase_auth_user.g.dart';
 
 // --------------------------------------------------
 //
@@ -16,7 +15,6 @@ class FirebaseAuthUser with _$FirebaseAuthUser {
     required String email,
     @Default(false) bool emailVerified,
     @Default("") String firebaseAuthUid,
-    @Default("") String firebaseAuthIdToken,
     @Default(false) bool isSignIn,
   }) = _FirebaseAuthUser;
 
@@ -31,19 +29,14 @@ class FirebaseAuthUser with _$FirebaseAuthUser {
     String? email,
     bool? emailVerified,
     String? firebaseAuthUid,
-    String? firebaseAuthIdToken,
     bool? isSignIn,
   }) =>
       FirebaseAuthUser._(
         email: email ?? "",
         emailVerified: emailVerified ?? false,
         firebaseAuthUid: firebaseAuthUid ?? "",
-        firebaseAuthIdToken: firebaseAuthIdToken ?? "",
         isSignIn: isSignIn ?? false,
       );
-
-  factory FirebaseAuthUser.fromJson(Map<String, dynamic> json) =>
-      _$FirebaseAuthUserFromJson(json);
 }
 
 // --------------------------------------------------
@@ -68,22 +61,15 @@ class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
 
   void userInformationRegiser(FirebaseAuthUser user) {
     state = state.copyWith(
-      firebaseAuthUid: user.firebaseAuthUid,
-      firebaseAuthIdToken: user.firebaseAuthIdToken,
       email: user.email,
       emailVerified: user.emailVerified,
+      firebaseAuthUid: user.firebaseAuthUid,
       isSignIn: user.isSignIn,
     );
   }
 
   void updateIsSignIn(bool isSignIn) {
     state = state.copyWith(isSignIn: isSignIn);
-  }
-
-  void updateFirebaseAuthIdToken(String firebaseAuthIdToken) {
-    state = state.copyWith(
-      firebaseAuthIdToken: firebaseAuthIdToken,
-    );
   }
 
   void updateEmailVerified(bool isEmailVerified) {

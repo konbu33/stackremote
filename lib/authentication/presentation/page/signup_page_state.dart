@@ -1,158 +1,112 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
+
 import '../../common/create_firebse_auth_exception_message.dart';
-import '../../domain/firebase_auth_user.dart';
-import '../../usecase/authentication_service_signup_usecase.dart';
-import '../../usecase/verify_email.dart';
+import '../../usecase/current_user_send_verify_email.dart';
+import '../../usecase/service_use_registration.dart';
 
 import '../widget/login_submit_state.dart';
 import '../widget/loginid_field_state.dart';
 import '../widget/password_field_state.dart';
 
-part 'signup_page_state.freezed.dart';
+class SignUpPageState {
+  const SignUpPageState();
 
-// --------------------------------------------------
-//
-//   Freezed
-//
-// --------------------------------------------------
-@freezed
-class SignUpPageState with _$SignUpPageState {
-  const factory SignUpPageState._({
-    // Login Id Field Widget
-    required LoginIdFieldStateProvider loginIdFieldStateProvider,
+  // --------------------------------------------------
+  //
+  //   Freezed
+  //
+  // --------------------------------------------------
+  static final loginIdFieldStateProvider =
+      loginIdFieldStateNotifierProviderCreator();
 
-    // Password Field Widget
-    required PasswordFieldStateProvider passwordFieldStateProvider,
+  static final passwordFieldStateProvider =
+      passwordFieldStateNotifierProviderCreator();
 
-    // Login Submit Widget
-    // ignore: unused_element
-    @Default("サービス利用登録") String loginSubmitWidgetName,
-    required LoginSubmitStateProvider loginSubmitStateProvider,
-    // ignore: unused_element
-    @Default(false) bool isOnSubmitable,
-  }) = _SignUpPageState;
+  // --------------------------------------------------
+  //
+  //  loginSubmitStateProvider
+  //
+  // --------------------------------------------------
+  static const loginSubmitWidgetName = "サービス利用登録";
 
-  factory SignUpPageState.create() => SignUpPageState._(
-        // Login Id Field Widget
-        loginIdFieldStateProvider: loginIdFieldStateNotifierProviderCreator(),
+  static final loginSubmitStateProvider = Provider.autoDispose(
+    (ref) {
+      bool isOnSubmitable = false;
 
-        // Password Field Widget
-        passwordFieldStateProvider: passwordFieldStateNotifierProviderCreator(),
+      final loginIdIsValidate = ref.watch(loginIdFieldStateProvider
+          .select((value) => value.loginIdIsValidate.isValid));
 
-        loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
-          loginSubmitWidgetName: "",
-          onSubmit: null,
-        ),
-      );
-}
+      final passwordIsValidate = ref.watch(passwordFieldStateProvider
+          .select((value) => value.passwordIsValidate.isValid));
 
-// --------------------------------------------------
-//
-//  StateNotifier
-//
-// --------------------------------------------------
-class SignUpPageStateNotifier extends StateNotifier<SignUpPageState> {
-  SignUpPageStateNotifier({
-    required this.ref,
-  }) : super(SignUpPageState.create()) {
-    initial();
-  }
+      Function? buildSignUpOnSubmit() {
+        if (!isOnSubmitable) {
+          return null;
+        }
 
-  // ref
-  final Ref ref;
+        return ({
+          required BuildContext context,
+        }) =>
+            () async {
+              final email = ref
+                  .read(loginIdFieldStateProvider)
+                  .loginIdFieldController
+                  .text;
 
-  // initial
-  void initial() {
-    state = SignUpPageState.create();
-    setSignUpOnSubmit();
-  }
+              final password = ref
+                  .read(passwordFieldStateProvider)
+                  .passwordFieldController
+                  .text;
 
-  void updateIsOnSubmitable(bool isOnSubmitable) {
-    state = state.copyWith(isOnSubmitable: isOnSubmitable);
-  }
+              try {
+                // サービス利用登録
+                final serviceUseRegistrationUsecase =
+                    ref.read(serviceUseRegistrationUsecaseProvider);
 
-  void setSignUpOnSubmit() {
-    Function? buildOnSubmit() {
-      if (!state.isOnSubmitable) {
-        return null;
+                await serviceUseRegistrationUsecase(email, password);
+
+                // メールアドレス検証メール送信
+                final currentUserSendVerifyEmailUsecase =
+                    ref.read(currentUserSendVerifyEmailUsecaseProvider);
+
+                await currentUserSendVerifyEmailUsecase();
+
+                //
+              } on firebase_auth.FirebaseAuthException catch (e) {
+                void displayNotificationMessage() {
+                  final createFirebaseAuthExceptionMessage =
+                      ref.read(createFirebaseAuthExceptionMessageProvider);
+
+                  final buildSnackBarWidget = ref.read(snackBarWidgetProvider);
+
+                  final snackBar =
+                      buildSnackBarWidget<firebase_auth.FirebaseAuthException>(
+                    e,
+                    createFirebaseAuthExceptionMessage,
+                  );
+
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+
+                displayNotificationMessage();
+              }
+            };
       }
 
-      return ({
-        required BuildContext context,
-      }) =>
-          () async {
-            final email = ref
-                .read(state.loginIdFieldStateProvider)
-                .loginIdFieldController
-                .text;
-            final password = ref
-                .read(state.passwordFieldStateProvider)
-                .passwordFieldController
-                .text;
+      if (loginIdIsValidate && passwordIsValidate) {
+        isOnSubmitable = true;
+      }
 
-            try {
-              // User情報登録
-              final authenticationServiceSignUpUsecase =
-                  ref.read(authenticationServiceSignUpUsecaseProvider);
+      final loginSubmitStateProvider = loginSubmitStateNotifierProviderCreator(
+        loginSubmitWidgetName: loginSubmitWidgetName,
+        onSubmit: buildSignUpOnSubmit(),
+      );
 
-              final firebase_auth.UserCredential res =
-                  await authenticationServiceSignUpUsecase.execute(
-                      email, password);
-
-              // 登録したUser情報を受取る。
-              final firebase_auth.User? user = res.user;
-
-              // User情報取得成功した場合、メールアドレス検証メールを送信
-              if (user != null) {
-                final sendVerifyEmail = ref.read(sendVerifyEmailProvider);
-                sendVerifyEmail(user: user);
-
-                // Userのメールアドレス検証結果を状態で保持する
-                final notifier =
-                    ref.read(firebaseAuthUserStateNotifierProvider.notifier);
-                notifier.updateEmailVerified(user.emailVerified);
-              }
-            } on firebase_auth.FirebaseAuthException catch (e) {
-              void displayNotificationMessage() {
-                final createFirebaseAuthExceptionMessage =
-                    ref.read(createFirebaseAuthExceptionMessageProvider);
-
-                final buildSnackBarWidget = ref.read(snackBarWidgetProvider);
-
-                final snackBar =
-                    buildSnackBarWidget<firebase_auth.FirebaseAuthException>(
-                  e,
-                  createFirebaseAuthExceptionMessage,
-                );
-
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              }
-
-              displayNotificationMessage();
-            }
-          };
-    }
-
-    state = state.copyWith(
-        loginSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
-            loginSubmitWidgetName: state.loginSubmitWidgetName,
-            onSubmit: buildOnSubmit()));
-  }
+      return loginSubmitStateProvider;
+    },
+  );
 }
-
-// --------------------------------------------------
-//
-//  StateNotifierProvider
-//
-// --------------------------------------------------
-final signUpPageStateNotifierProvider =
-    StateNotifierProvider.autoDispose<SignUpPageStateNotifier, SignUpPageState>(
-  (ref) => SignUpPageStateNotifier(ref: ref),
-);
