@@ -5,12 +5,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class PointerWidgetRemote extends HookConsumerWidget {
   const PointerWidgetRemote({
     Key? key,
-    this.nickName,
     this.comment,
+    this.nickName,
   }) : super(key: key);
 
-  final String? nickName;
   final String? comment;
+  final String? nickName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

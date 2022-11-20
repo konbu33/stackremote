@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../authentication/authentication.dart';
 import 'pointer_widget_local.dart';
-import 'pointer_overlay_state.dart';
+// import 'pointer_overlay_state.dart';
 import 'pointer_widget_remote.dart';
 
 class PointerPositionedWidget extends HookConsumerWidget {
@@ -24,10 +24,13 @@ class PointerPositionedWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(pointerOverlayStateNotifierProvider);
+    // final state = ref.watch(pointerOverlayStateNotifierProvider);
 
-    final top = dy ?? state.displayPointerPosition.dy;
-    final left = dx ?? state.displayPointerPosition.dx;
+    // final top = dy ?? state.displayPointerPosition.dy;
+    // final left = dx ?? state.displayPointerPosition.dx;
+
+    final top = dy ?? 0;
+    final left = dx ?? 0;
 
     return Positioned(
       top: top,
@@ -44,8 +47,8 @@ class PointerPositionedWidget extends HookConsumerWidget {
           }
 
           return PointerWidgetRemote(
-            nickName: nickName,
             comment: comment,
+            nickName: nickName,
           );
         },
       ),

@@ -190,8 +190,8 @@ class ChangePasswordPageState {
       isOnSubmitable = passwordIsMatch;
     }
 
-    logger.d(
-        "passwordIsValidate : ${passwordIsValidate}, passwordIsMatch : ${passwordIsMatch}, isOnSubmitablei : ${isOnSubmitable}");
+    // logger.d(
+    //     "passwordIsValidate : ${passwordIsValidate}, passwordIsMatch : ${passwordIsMatch}, isOnSubmitablei : ${isOnSubmitable}");
 
     final onSubmitStateProvider = loginSubmitStateNotifierProviderCreator(
       loginSubmitWidgetName: pageTitle,

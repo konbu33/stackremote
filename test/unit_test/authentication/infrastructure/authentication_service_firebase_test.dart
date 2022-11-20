@@ -12,15 +12,16 @@ import 'package:stackremote/authentication/authentication.dart';
 void main() {
   const String email = "xxx@test.com";
   const String password = "xxx";
+  const uid = "1";
 
   late AuthenticationService authenticationService;
 
   setUp(() {
     //
-    const uid = "1";
     final mockUser = MockUser(
-      uid: uid,
       email: email,
+      isEmailVerified: false,
+      uid: uid,
     );
 
     final MockFirebaseAuth mockFirebaseAuth =
@@ -60,18 +61,52 @@ void main() {
           authStateChangesBroadcast,
           emitsInOrder(
             [
-              equals(null),
+              // equals(null),
+              // equals(isA<FirebaseAuthUser>()),
               allOf(
-                isA<MockUser>(),
-                predicate<MockUser>(
-                  (mockUser) {
-                    expect(mockUser.email, equals(email));
+                isA<FirebaseAuthUser>(),
+                predicate<FirebaseAuthUser>(
+                  (firebaseAuthUser) {
+                    expect(firebaseAuthUser.email, equals(""));
+                    expect(firebaseAuthUser.emailVerified, isFalse);
+                    expect(firebaseAuthUser.firebaseAuthUid, equals(""));
+                    expect(firebaseAuthUser.isSignIn, isFalse);
                     return true;
                     //
                   },
                 ),
               ),
-              equals(null),
+
+              allOf(
+                isA<FirebaseAuthUser>(),
+                predicate<FirebaseAuthUser>(
+                  (firebaseAuthUser) {
+                    expect(firebaseAuthUser.email, equals(email));
+                    expect(firebaseAuthUser.emailVerified, isTrue);
+                    expect(
+                        firebaseAuthUser.firebaseAuthUid, equals("mock_uid"));
+                    expect(firebaseAuthUser.isSignIn, isTrue);
+                    return true;
+                    //
+                  },
+                ),
+              ),
+
+              allOf(
+                isA<FirebaseAuthUser>(),
+                predicate<FirebaseAuthUser>(
+                  (firebaseAuthUser) {
+                    expect(firebaseAuthUser.email, equals(""));
+                    expect(firebaseAuthUser.emailVerified, isFalse);
+                    expect(firebaseAuthUser.firebaseAuthUid, equals(""));
+                    expect(firebaseAuthUser.isSignIn, isFalse);
+                    return true;
+                    //
+                  },
+                ),
+              ),
+
+              // equals(isA<FirebaseAuthUser>()),
             ],
           ),
         );
@@ -97,18 +132,49 @@ void main() {
           authStateChanges,
           emitsInOrder(
             [
-              equals(null),
+              // equals(null),
+
               allOf(
-                isA<MockUser>(),
-                predicate<MockUser>(
-                  (mockUser) {
-                    expect(mockUser.email, equals(email));
+                isA<FirebaseAuthUser>(),
+                predicate<FirebaseAuthUser>(
+                  (firebaseAuthUser) {
+                    expect(firebaseAuthUser.email, equals(""));
+                    expect(firebaseAuthUser.emailVerified, isFalse);
+                    expect(firebaseAuthUser.firebaseAuthUid, equals(""));
+                    expect(firebaseAuthUser.isSignIn, isFalse);
                     return true;
                     //
                   },
                 ),
               ),
-              equals(null),
+              allOf(
+                isA<FirebaseAuthUser>(),
+                predicate<FirebaseAuthUser>(
+                  (firebaseAuthUser) {
+                    expect(firebaseAuthUser.email, equals(email));
+                    expect(firebaseAuthUser.emailVerified, isFalse);
+                    expect(firebaseAuthUser.firebaseAuthUid, equals(uid));
+                    expect(firebaseAuthUser.isSignIn, isTrue);
+                    return true;
+                    //
+                  },
+                ),
+              ),
+              allOf(
+                isA<FirebaseAuthUser>(),
+                predicate<FirebaseAuthUser>(
+                  (firebaseAuthUser) {
+                    expect(firebaseAuthUser.email, equals(""));
+                    expect(firebaseAuthUser.emailVerified, isFalse);
+                    expect(firebaseAuthUser.firebaseAuthUid, equals(""));
+                    expect(firebaseAuthUser.isSignIn, isFalse);
+                    return true;
+                    //
+                  },
+                ),
+              ),
+
+              // equals(null),
             ],
           ),
         );
