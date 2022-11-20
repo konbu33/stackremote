@@ -8,6 +8,7 @@ import '../common/common.dart';
 // import '../user/domain/user.dart';
 import 'pointer_positioned_widget.dart';
 // import 'pointer_provider.dart';
+import 'pointer_provider.dart';
 import 'pointer_state_list.dart';
 
 class PointerWidgetList extends StatelessWidget {
@@ -28,18 +29,14 @@ class PointerWidgetList extends StatelessWidget {
       //   return Stack(children: const []);
       // }
 
-      final usersState = ref.watch(usersStateNotifierProvider);
+      final pointerStateList = ref.watch(pointerStateProvider);
 
-      if (usersState.users.isEmpty) {
+      if (pointerStateList.isEmpty) {
         return Stack(children: const []);
       }
 
-      // userStreamList as List<AsyncValue<User>>;
-
-      // List<Widget?> pointerWidgetListNullable =
       List<Widget?> pointerWidgetListNullable =
-          // pointerOverlayState.pointerStateList.map((pointerState) {
-          usersState.users.map((pointerState) {
+          pointerStateList.map((pointerState) {
         if (pointerState.isOnLongPressing) {
           final widget = PointerPositionedWidget(
             comment: pointerState.comment,
@@ -52,6 +49,31 @@ class PointerWidgetList extends StatelessWidget {
         }
         return null;
       }).toList();
+
+      // final usersState = ref.watch(usersStateNotifierProvider);
+
+      // if (usersState.users.isEmpty) {
+      //   return Stack(children: const []);
+      // }
+
+      // // userStreamList as List<AsyncValue<User>>;
+
+      // // List<Widget?> pointerWidgetListNullable =
+      // List<Widget?> pointerWidgetListNullable =
+      //     // pointerOverlayState.pointerStateList.map((pointerState) {
+      //     usersState.users.map((pointerState) {
+      //   if (pointerState.isOnLongPressing) {
+      //     final widget = PointerPositionedWidget(
+      //       comment: pointerState.comment,
+      //       dx: pointerState.pointerPosition.dx,
+      //       dy: pointerState.pointerPosition.dy,
+      //       email: pointerState.email,
+      //       nickName: pointerState.nickName,
+      //     );
+      //     return widget;
+      //   }
+      //   return null;
+      // }).toList();
 
       //
 

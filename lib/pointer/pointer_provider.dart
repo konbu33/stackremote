@@ -83,54 +83,73 @@ final pointerProvider = Provider((ref) {
 // --------------------------------------------------
 
 final pointerStateProvider = Provider((ref) {
-  final userStreamList = ref.watch(pointerProvider);
+  final usersState = ref.watch(usersStateNotifierProvider);
 
-  // logger.d(" yyyx : $userStreamList");
-
-  if (userStreamList.isEmpty) return [];
-
-  userStreamList as List<AsyncValue<User>>;
-
-  final List<PointerState?> pointerStateListNullable =
-      userStreamList.map((userStream) {
-    final pointerState = userStream.when(data: (user) {
-      PointerState userToPointerState(User user) {
-        final pointerState = PointerState.reconstruct(
-          comment: user.comment,
-          email: user.email,
-          isOnLongPressing: user.isOnLongPressing,
-          nickName: user.nickName,
-          pointerPosition: user.pointerPosition,
-        );
-
-        return pointerState;
-      }
-
-      final pointerState = (userToPointerState(user));
+  final pointerStateList = usersState.users.map((user) {
+    PointerState userToPointerState(User user) {
+      final pointerState = PointerState.reconstruct(
+        comment: user.comment,
+        email: user.email,
+        isOnLongPressing: user.isOnLongPressing,
+        nickName: user.nickName,
+        pointerPosition: user.pointerPosition,
+      );
 
       return pointerState;
-    }, error: (error, stackTrace) {
-      //
-      return null;
-    }, loading: () {
-      //
-      return null;
-    });
+    }
 
-    return pointerState;
+    final pointerStateList = userToPointerState(user);
+    return pointerStateList;
   }).toList();
 
-  final pointerStateList =
-      pointerStateListNullable.whereType<PointerState>().toList();
+  // final userStreamList = ref.watch(pointerProvider);
 
-  if (pointerStateList.isNotEmpty) {
-    // final pointerOverlayStateNotifier =
-    //     ref.watch(pointerOverlayStateNotifierProvider.notifier);
-    // logger.d(" yyyx : $pointerStateList");
+  // // logger.d(" yyyx : $userStreamList");
 
-    // pointerOverlayStateNotifier.setPointerStateList(pointerStateList);
-    // logger.d(" yyyy : $pointerStateList");
-  }
+  // if (userStreamList.isEmpty) return [];
+
+  // userStreamList as List<AsyncValue<User>>;
+
+  // final List<PointerState?> pointerStateListNullable =
+  //     userStreamList.map((userStream) {
+  //   final pointerState = userStream.when(data: (user) {
+  //     PointerState userToPointerState(User user) {
+  //       final pointerState = PointerState.reconstruct(
+  //         comment: user.comment,
+  //         email: user.email,
+  //         isOnLongPressing: user.isOnLongPressing,
+  //         nickName: user.nickName,
+  //         pointerPosition: user.pointerPosition,
+  //       );
+
+  //       return pointerState;
+  //     }
+
+  //     final pointerState = (userToPointerState(user));
+
+  //     return pointerState;
+  //   }, error: (error, stackTrace) {
+  //     //
+  //     return null;
+  //   }, loading: () {
+  //     //
+  //     return null;
+  //   });
+
+  //   return pointerState;
+  // }).toList();
+
+  // final pointerStateList =
+  //     pointerStateListNullable.whereType<PointerState>().toList();
+
+  // if (pointerStateList.isNotEmpty) {
+  //   // final pointerOverlayStateNotifier =
+  //   //     ref.watch(pointerOverlayStateNotifierProvider.notifier);
+  //   // logger.d(" yyyx : $pointerStateList");
+
+  //   // pointerOverlayStateNotifier.setPointerStateList(pointerStateList);
+  //   // logger.d(" yyyy : $pointerStateList");
+  // }
   // logger.d(" yyyz : $pointerStateList");
 
   return pointerStateList;
