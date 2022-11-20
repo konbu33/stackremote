@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user/domain/users.dart';
+import 'package:stackremote/user/user.dart';
 // import 'package:stackremote/pointer/pointer_overlay_state.dart';
 
 import '../common/common.dart';
@@ -17,12 +19,18 @@ class PointerWidgetList extends StatelessWidget {
       // final userStreamList = ref.watch(pointerProvider);
       // final userStreamList = ref.watch(pointerStateProvider);
 
-      final pointerOverlayState =
-          ref.watch(pointerStateListStateNotifierProvider);
+      // final pointerOverlayState =
+      //     ref.watch(pointerStateListStateNotifierProvider);
 
-      logger.d(" yyy1 : ${pointerOverlayState.pointerStateList}");
+      // logger.d(" yyy1 : ${pointerOverlayState.pointerStateList}");
 
-      if (pointerOverlayState.pointerStateList.isEmpty) {
+      // if (pointerOverlayState.pointerStateList.isEmpty) {
+      //   return Stack(children: const []);
+      // }
+
+      final usersState = ref.watch(usersStateNotifierProvider);
+
+      if (usersState.users.isEmpty) {
         return Stack(children: const []);
       }
 
@@ -30,7 +38,8 @@ class PointerWidgetList extends StatelessWidget {
 
       // List<Widget?> pointerWidgetListNullable =
       List<Widget?> pointerWidgetListNullable =
-          pointerOverlayState.pointerStateList.map((pointerState) {
+          // pointerOverlayState.pointerStateList.map((pointerState) {
+          usersState.users.map((pointerState) {
         if (pointerState.isOnLongPressing) {
           final widget = PointerPositionedWidget(
             comment: pointerState.comment,
