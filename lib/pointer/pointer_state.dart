@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user/user.dart';
 
 import '../common/common.dart';
 
@@ -23,9 +24,11 @@ class PointerState with _$PointerState {
 
   factory PointerState.create({
     required String email,
+    String? nickName,
   }) =>
       PointerState._(
         email: email,
+        nickName: nickName ?? "",
       );
 
   factory PointerState.reconstruct({
@@ -57,7 +60,8 @@ class PointerState with _$PointerState {
 class PointerStateNotifier extends StateNotifier<PointerState> {
   PointerStateNotifier({
     required String email,
-  }) : super(PointerState.create(email: email));
+    String? nickName,
+  }) : super(PointerState.create(email: email, nickName: nickName));
 
   Offset calcDisplayPointerPosition(Offset pointerPosition) {
     // Pointerが指に被るため、ずらす
@@ -90,4 +94,10 @@ class PointerStateNotifier extends StateNotifier<PointerState> {
 // --------------------------------------------------
 final pointerStateNotifierProvider =
     StateNotifierProvider.autoDispose<PointerStateNotifier, PointerState>(
-        (ref) => PointerStateNotifier(email: ""));
+        (ref) {
+  final userState = ref.watch(userStateNotifierProvider);
+  return PointerStateNotifier(
+    email: userState.email,
+    nickName: userState.nickName,
+  );
+});
