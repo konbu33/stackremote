@@ -18,8 +18,6 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(agoraVideoChannelJoinPageStateNotifierProvider);
-
     final channelNameFieldState = ref.watch(
         ChannelNameFieldStateNotifierProviderList
             .channelNameFieldStateNotifierProvider);
@@ -27,7 +25,7 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
     return Scaffold(
       drawer: AgoraVideoChannelJoinPageWidgets.menuWidget(),
       appBar: AppBar(
-        title: Text(state.pageTitle),
+        title: const Text(AgoraVideoChannelJoinPageState.pageTitle),
         actions: [
           AgoraVideoChannelJoinPageWidgets.signOutIconButton(),
         ],
@@ -67,13 +65,12 @@ class AgoraVideoChannelJoinPageWidgets {
 
   // signOutIconButton
   static Widget signOutIconButton() {
+    //
     final Widget widget = Consumer(
       builder: ((context, ref, child) {
-        // imporve : state.dartにまとめた方が良いか？ProviderListで定義して利用する方が良いか？
-        final state = ref.watch(agoraVideoChannelJoinPageStateNotifierProvider);
-
         return AppbarAcitonIconWidget(
-          appbarActionIconStateProvider: state.signOutIconStateProvider,
+          appbarActionIconStateProvider: ref
+              .watch(AgoraVideoChannelJoinPageState.signOutIconStateProvider),
         );
       }),
     );
@@ -83,11 +80,11 @@ class AgoraVideoChannelJoinPageWidgets {
 
   // Message Widget
   static Widget messageWidget() {
+    //
     final Widget widget = Consumer(builder: (context, ref, child) {
-      final state = ref.watch(agoraVideoChannelJoinPageStateNotifierProvider);
       const style = TextStyle(color: Colors.red);
       return Text(
-        state.message,
+        ref.watch(AgoraVideoChannelJoinPageState.messageProvider),
         style: style,
       );
     });

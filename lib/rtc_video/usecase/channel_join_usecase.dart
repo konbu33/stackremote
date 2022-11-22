@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -40,9 +42,11 @@ final channelJoinUsecaseProvider = Provider((ref) {
     try {
       await rtcCreateToken();
     } on FirebaseFunctionsException catch (error) {
-      final notifier =
-          ref.read(agoraVideoChannelJoinPageStateNotifierProvider.notifier);
-      notifier.setMessage(error.message ?? "no message");
+      final message =
+          "${DateTime.now()}: RTC_ID_TOKENの生成に失敗しました。: ${error.message}";
+      ref
+          .read(AgoraVideoChannelJoinPageState.messageProvider.notifier)
+          .update((state) => message);
 
       // final snackBar = SnackBar(
       //   margin: const EdgeInsets.fromLTRB(30, 0, 30, 50),
@@ -67,7 +71,15 @@ final channelJoinUsecaseProvider = Provider((ref) {
     //
     // --------------------------------------------------
     final rtcJoinChannel = ref.read(rtcJoinChannelProvider);
-    await rtcJoinChannel();
+    try {
+      await rtcJoinChannel();
+    } on Exception catch (e, s) {
+      final message = "${DateTime.now()}: Channelへの参加に失敗しました。$e, $s";
+
+      ref
+          .read(AgoraVideoChannelJoinPageState.messageProvider.notifier)
+          .update((state) => message);
+    }
 
     // --------------------------------------------------
     //
@@ -125,6 +137,11 @@ final channelJoinUsecaseProvider = Provider((ref) {
             break;
         }
       }
+
+      final message = "${DateTime.now()}: Channel情報の登録に失敗しました。";
+      ref
+          .read(AgoraVideoChannelJoinPageState.messageProvider.notifier)
+          .update((state) => message);
     }
 
     // ユーザ登録

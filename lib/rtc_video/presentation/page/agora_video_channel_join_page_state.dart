@@ -1,88 +1,29 @@
-// import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // improve: authenticationのモジュールをimportしている点、疎結合に改善可能か検討の余地あり。
 import '../../../authentication/authentication.dart';
 
-part 'agora_video_channel_join_page_state.freezed.dart';
+class AgoraVideoChannelJoinPageState {
+  // --------------------------------------------------
+  //
+  //   pageTitle
+  //   messageProvider
+  //
+  // --------------------------------------------------
+  static const pageTitle = "チャンネル参加";
+  static final messageProvider = StateProvider.autoDispose((ref) => "");
 
-// --------------------------------------------------
-//
-//   Freezed
-//
-// --------------------------------------------------
-@freezed
-class AgoraVideoChannelJoinPageState with _$AgoraVideoChannelJoinPageState {
-  const factory AgoraVideoChannelJoinPageState._({
-    // PageTitle
-    required String pageTitle,
-    required String message,
+  // --------------------------------------------------
+  //
+  //  signOutIconStateProvider
+  //
+  // --------------------------------------------------
+  static const signOutIconButtonName = "サインアウト";
+  static final signOutIconStateProvider = Provider((ref) {
+    //
 
-    // SignOutIcon Button
-    required String signOutIconButtonName,
-    // required AuthenticationServiceSignOutUsecase
-    //     authenticationServiceSignOutUsecase,
-    required AppbarActionIconStateProvider signOutIconStateProvider,
-  }) = _AgoraVideoChannelJoinPageState;
-
-  factory AgoraVideoChannelJoinPageState.create() =>
-      AgoraVideoChannelJoinPageState._(
-        // PageTitle
-        pageTitle: "チャンネル参加",
-
-        message: "",
-
-        // Sign Out Button
-        signOutIconButtonName: "サインアウト",
-        // authenticationServiceSignOutUsecase:
-        //     AuthenticationServiceSignOutUsecase(
-        //   authenticationService: AuthenticationServiceFirebase(
-        //     instance: firebase_auth.FirebaseAuth.instance,
-        //   ),
-        // ),
-
-        signOutIconStateProvider: appbarActionIconStateProviderCreator(
-          onSubmitWidgetName: "",
-          icon: const Icon(null),
-          onSubmit: null,
-        ),
-      );
-}
-
-// --------------------------------------------------
-//
-//  StateNotifier
-//
-// --------------------------------------------------
-class AgoraVideoChannelJoinPageStateNotifier
-    extends StateNotifier<AgoraVideoChannelJoinPageState> {
-  AgoraVideoChannelJoinPageStateNotifier({
-    required this.ref,
-  }) : super(AgoraVideoChannelJoinPageState.create()) {
-    initial();
-  }
-
-  // ref
-  final Ref ref;
-
-  // initial
-  void initial() {
-    state = AgoraVideoChannelJoinPageState.create();
-    // setOnSubmit();
-    setSignOutIconOnSubumit();
-  }
-
-  void setMessage(String message) {
-    state = state.copyWith(message: message);
-  }
-
-  // setSignOutIconOnSubumit
-  void setSignOutIconOnSubumit() {
-    Function buildOnSubmit() {
+    Function buildSignOutIconOnSubmit() {
       return ({
         required BuildContext context,
       }) =>
@@ -94,23 +35,12 @@ class AgoraVideoChannelJoinPageStateNotifier
           };
     }
 
-    state = state.copyWith(
-      signOutIconStateProvider: appbarActionIconStateProviderCreator(
-        onSubmitWidgetName: state.signOutIconButtonName,
-        icon: const Icon(Icons.logout),
-        onSubmit: buildOnSubmit(),
-      ),
+    final signOutIconStateProvider = appbarActionIconStateProviderCreator(
+      onSubmitWidgetName: signOutIconButtonName,
+      icon: const Icon(Icons.logout),
+      onSubmit: buildSignOutIconOnSubmit(),
     );
-  }
-}
 
-// --------------------------------------------------
-//
-//  StateNotifierProvider
-//
-// --------------------------------------------------
-final agoraVideoChannelJoinPageStateNotifierProvider =
-    StateNotifierProvider.autoDispose<AgoraVideoChannelJoinPageStateNotifier,
-        AgoraVideoChannelJoinPageState>(
-  (ref) => AgoraVideoChannelJoinPageStateNotifier(ref: ref),
-);
+    return signOutIconStateProvider;
+  });
+}
