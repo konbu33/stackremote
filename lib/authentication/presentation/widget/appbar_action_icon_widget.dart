@@ -21,8 +21,7 @@ class AppbarAcitonIconWidget extends HookConsumerWidget {
         margin: const EdgeInsets.only(right: 5),
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
         child: IconButton(
-          onPressed:
-              state.onSubmit == null ? null : state.onSubmit!(context: context),
+          onPressed: state.onSubmit(context: context),
           icon: state.icon,
           tooltip: state.onSubmitWidgetName,
         ),

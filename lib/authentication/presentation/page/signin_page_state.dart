@@ -119,7 +119,7 @@ class SignInPageState {
   static final goToSignUpIconStateProvider = Provider((ref) {
     //
 
-    Function? buildGoToSignUpIconOnSubmit() {
+    Function buildGoToSignUpIconOnSubmit() {
       return ({
         required BuildContext context,
       }) =>
