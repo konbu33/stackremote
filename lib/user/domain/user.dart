@@ -27,6 +27,7 @@ class User with _$User {
     @Default(null) @FirestoreTimestampConverter() Timestamp? leavedAt,
     @Default("") String nickName,
     @Default(Offset(0, 0)) @OffsetConverter() Offset pointerPosition,
+    @Default(Offset(0, 0)) @OffsetConverter() Offset displayPointerPosition,
   }) = _User;
 
   factory User.create({
@@ -45,6 +46,7 @@ class User with _$User {
     Timestamp? leavedAt,
     String? nickName,
     Offset? pointerPosition,
+    Offset? displayPointerPosition,
   }) =>
       User._(
         comment: comment ?? "",
@@ -55,6 +57,7 @@ class User with _$User {
         leavedAt: leavedAt,
         nickName: nickName ?? "",
         pointerPosition: pointerPosition ?? const Offset(0, 0),
+        displayPointerPosition: displayPointerPosition ?? const Offset(0, 0),
       );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

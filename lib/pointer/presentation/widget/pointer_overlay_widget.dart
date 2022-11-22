@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../user/user.dart';
-
+import '../../../common/common.dart';
+import '../../domain/pointer_state.dart';
 import 'pointer_overlay_state.dart';
 import 'pointer_widget_list.dart';
 
@@ -16,34 +16,30 @@ class PointerOverlayWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(pointerOverlayStateNotifierProvider);
+    // localのpointerState更新時に、リモートDB上へも反映するhooks
+    ref.watch(updateUserIsOnLongPressingProvider);
+    ref.watch(updateUserPointerPositionProvider);
+
+    // onXXX の読み込み
+    final onTap = ref.watch(PointerOverlayState.onTapProvider);
+
+    final onLongPressStart =
+        ref.watch(PointerOverlayState.onLongPressStartProvider);
+
+    final onLongPressMoveUpdate =
+        ref.watch(PointerOverlayState.onLongPressMoveUpdateProvider);
 
     return MouseRegion(
       cursor: SystemMouseCursors.none,
       child: GestureDetector(
         // 画面タップすることで、TextFormFieldからフォーカスを外せるようにする。
-        onTap: () => state.focusNode.unfocus(),
+        onTap: onTap(),
 
         // ロングタップすることで、ポイン表示開始
-        onLongPressStart: (event) async {
-          // DBのポインタ情報を更新
-          final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
-
-          userUpdateUsecase(
-            isOnLongPressing: true,
-            pointerPosition: event.localPosition,
-          );
-        },
+        onLongPressStart: onLongPressStart(),
 
         // ロングタップ中は、ポインタ表示
-        onLongPressMoveUpdate: (event) async {
-          // DBのポインタ情報を更新
-          final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
-
-          userUpdateUsecase(
-            pointerPosition: event.localPosition,
-          );
-        },
+        onLongPressMoveUpdate: onLongPressMoveUpdate(),
 
         child: Container(
           // Container内にポインタが表示される。

@@ -1,34 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../authentication/authentication.dart';
+import '../../domain/pointer_state.dart';
 import 'pointer_widget_local.dart';
-// import 'pointer_overlay_state.dart';
 import 'pointer_widget_remote.dart';
 
 class PointerPositionedWidget extends HookConsumerWidget {
   const PointerPositionedWidget({
     Key? key,
+    this.comment,
+    this.email,
     this.dx,
     this.dy,
     this.nickName,
-    this.email,
-    this.comment,
   }) : super(key: key);
 
+  final String? comment;
+  final String? email;
   final double? dx;
   final double? dy;
   final String? nickName;
-  final String? email;
-  final String? comment;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final state = ref.watch(pointerOverlayStateNotifierProvider);
-
-    // final top = dy ?? state.displayPointerPosition.dy;
-    // final left = dx ?? state.displayPointerPosition.dx;
-
     final top = dy ?? 0;
     final left = dx ?? 0;
 
@@ -37,10 +31,8 @@ class PointerPositionedWidget extends HookConsumerWidget {
       left: left,
       child: Builder(
         builder: (context) {
-          final firebaseAuthUser =
-              ref.watch(firebaseAuthUserStateNotifierProvider);
-
-          if (email == firebaseAuthUser.email) {
+          final pointerState = ref.watch(pointerStateNotifierProvider);
+          if (email == pointerState.email) {
             return PointerWidgetLocal(
               nickName: nickName,
             );

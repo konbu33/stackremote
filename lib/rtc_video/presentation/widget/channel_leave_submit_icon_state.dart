@@ -83,9 +83,11 @@ ChannelLeaveSubmitIconStateProvider
           // DBのUser情報更新
           final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
           await userUpdateUsecase<FieldValue>(
+            comment: "",
             leavedAt: FieldValue.serverTimestamp(),
             isOnLongPressing: false,
             pointerPosition: const Offset(0, 0),
+            displayPointerPosition: const Offset(0, 0),
           );
 
           // チャンネル離脱したことをアプリ内の状態として保持

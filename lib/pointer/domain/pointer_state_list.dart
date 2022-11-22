@@ -1,11 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
-// import 'package:flutter/material.dart';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// import '../common/common.dart';
-import 'pointer_provider.dart';
+import '../../common/common.dart';
+import '../../user/user.dart';
+
 import 'pointer_state.dart';
 
 part 'pointer_state_list.freezed.dart';
@@ -59,11 +58,37 @@ final pointerStateListStateNotifierProvider =
         (ref) {
   final pointerStateList = ref.watch(pointerStateProvider);
 
-  List<PointerState> newPointerStateList = [];
+  logger.d("pointerStateList - $pointerStateList");
 
-  if (pointerStateList.isNotEmpty) {
-    newPointerStateList = pointerStateList as List<PointerState>;
-  }
+  return PointerStateListStateNotifier(pointerStateList: pointerStateList);
+});
 
-  return PointerStateListStateNotifier(pointerStateList: newPointerStateList);
+// --------------------------------------------------
+//
+// Get PointerState from userStreamList
+//
+// --------------------------------------------------
+
+final pointerStateProvider = Provider((ref) {
+  final usersState = ref.watch(usersStateNotifierProvider);
+
+  final pointerStateList = usersState.users.map((user) {
+    PointerState userToPointerState(User user) {
+      final pointerState = PointerState.reconstruct(
+        comment: user.comment,
+        email: user.email,
+        isOnLongPressing: user.isOnLongPressing,
+        nickName: user.nickName,
+        pointerPosition: user.pointerPosition,
+        displayPointerPosition: user.displayPointerPosition,
+      );
+
+      return pointerState;
+    }
+
+    final pointerStateList = userToPointerState(user);
+    return pointerStateList;
+  }).toList();
+
+  return pointerStateList;
 });

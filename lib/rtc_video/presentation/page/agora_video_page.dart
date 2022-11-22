@@ -162,10 +162,13 @@ class AgoraVideoPageWidgets {
   static Widget buildDisplayState() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       final channelState = ref.watch(channelStateNotifierProvider);
-      logger.d(channelState);
+      logger.d("videochannel: $channelState");
 
       final userState = ref.watch(userStateNotifierProvider);
-      logger.d(userState);
+      logger.d("videouser: $userState");
+
+      final usersState = ref.watch(usersStateNotifierProvider);
+      logger.d("videousers: $usersState");
 
       return const SizedBox();
     }));

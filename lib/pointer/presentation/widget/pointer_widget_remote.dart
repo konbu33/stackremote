@@ -14,35 +14,7 @@ class PointerWidgetRemote extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final state = ref.watch(pointerOverlayStateNotifierProvider);
-    // final notifier = ref.read(pointerOverlayStateNotifierProvider.notifier);
-
     return GestureDetector(
-      onTap: () async {
-        // // ポインタ押下して、ポインタ非表示し、位置もリセット。
-        // notifier.changeOnLongPress(isOnLongPressing: false);
-        // notifier.updatePosition(const Offset(0, 0));
-
-        // // DBのポインタ情報を更新
-        // final pointerOerlayerState =
-        //     ref.watch(pointerOverlayStateNotifierProvider);
-
-        // final firebaseAuthUser =
-        //     ref.read(firebaseAuthUserStateNotifierProvider);
-
-        // if (email == firebaseAuthUser.email) {
-        //   final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
-        //   userUpdateUsecase(
-        //     isOnLongPressing: false,
-        //     pointerPosition: const Offset(0, 0),
-        //   );
-        // }
-
-        // userUpdateUsecase(
-        //   isOnLongPressing: pointerOerlayerState.isOnLongPressing,
-        //   pointerPosition: pointerOerlayerState.pointerPosition,
-        // );
-      },
       child: Row(
         // Pointerを左上に固定
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +23,6 @@ class PointerWidgetRemote extends HookConsumerWidget {
           SizedBox(
             width: 100,
             child: TextFormField(
-              // controller: state.commentController,
               controller: TextEditingController(text: comment),
               enabled: false,
               readOnly: true,
@@ -62,12 +33,10 @@ class PointerWidgetRemote extends HookConsumerWidget {
 
               decoration: InputDecoration(
                 // ユーザ名
-                // labelText: state.name,
                 labelText: nickName ?? "no name",
               ),
 
               // 画面タップすることで、TextFormFieldからフォーカスを外せるようにする。
-              // focusNode: state.focusNode,
             ),
           ),
         ],

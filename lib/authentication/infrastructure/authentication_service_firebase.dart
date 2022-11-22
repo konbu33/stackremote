@@ -104,7 +104,6 @@ class AuthenticationServiceFirebase implements AuthenticationService {
         throw firebase_auth.FirebaseAuthException(code: "current-user-null");
       }
 
-      logger.d("yyy : getCurrentUser : $user");
       return user;
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
@@ -176,7 +175,6 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       }
 
       await user.sendEmailVerification();
-      logger.d("yyy : sendEmailVerificationCurrentUser : $user");
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
       switch (e.code) {
