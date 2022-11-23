@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 
 import '../../usecase/check_email_verified.dart';
-import '../widget/appbar_action_icon_widget.dart';
 
 import '../widget/description_message_widget.dart';
 import '../widget/login_submit_widget.dart';

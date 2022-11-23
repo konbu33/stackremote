@@ -7,7 +7,6 @@ import '../../../common/common.dart';
 import '../../common/create_firebse_auth_exception_message.dart';
 import '../../usecase/service_signin.dart';
 
-import '../widget/appbar_action_icon_state.dart';
 import '../widget/login_submit_state.dart';
 import '../widget/loginid_field_state.dart';
 import '../widget/password_field_state.dart';
