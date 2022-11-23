@@ -78,9 +78,8 @@ final menuRouterProvider = Provider(
       // improve：if文での分岐を抽象化したい。
       redirect: (state) {
         // rtc channel join済・未joinの状態監視
-        final RtcChannelState rtcChannelState = ref.watch(
-            RtcChannelStateNotifierProviderList
-                .rtcChannelStateNotifierProvider);
+        final RtcChannelState rtcChannelState =
+            ref.watch(rtcChannelStateNotifierProvider);
 
         // rtc channel join済・未joinの状態を監視し、
         // 状態が変化した場合、リダイレクト操作が実施される。

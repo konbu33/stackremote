@@ -113,13 +113,3 @@ ChannelNameFieldStateProvider channelNameFieldStateNotifierProviderCreator() {
     },
   );
 }
-
-// --------------------------------------------------
-//
-//  StateNotifierProviderList
-//
-// --------------------------------------------------
-class ChannelNameFieldStateNotifierProviderList {
-  static final channelNameFieldStateNotifierProvider =
-      channelNameFieldStateNotifierProviderCreator();
-}

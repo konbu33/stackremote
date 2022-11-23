@@ -131,10 +131,8 @@ RtcChannelStateNotifierProvider rtcChannelStateNotifierProviderCreator() {
 
 // --------------------------------------------------
 //
-//  StateNotifierProviderList
+//  rtcChannelStateNotifierProvider
 //
 // --------------------------------------------------
-class RtcChannelStateNotifierProviderList {
-  static final rtcChannelStateNotifierProvider =
-      rtcChannelStateNotifierProviderCreator();
-}
+final rtcChannelStateNotifierProvider =
+    rtcChannelStateNotifierProviderCreator();

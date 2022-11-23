@@ -11,7 +11,6 @@ import '../../domain/rtc_channel_state.dart';
 
 import '../widget/agora_video_local_preview_widget.dart';
 import '../widget/agora_video_remote_preview_widget.dart';
-import '../widget/channel_leave_submit_icon_state.dart';
 import '../widget/channel_leave_submit_icon_widget.dart';
 
 import 'agora_video_page_state.dart';
@@ -30,8 +29,7 @@ class AgoraVideoPage extends HookConsumerWidget {
   // Build UI
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final rtcChannelState = ref.watch(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+    final rtcChannelState = ref.watch(rtcChannelStateNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -97,16 +95,12 @@ class AgoraVideoPage extends HookConsumerWidget {
 // ---------------------------------------------------
 
 class AgoraVideoPageWidgets {
-  // Leave Channel Icon Widget
+  // buildLeaveChannelIconWidget
   static Widget buildLeaveChannelIconWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      final channelLeaveSubmitIconStateProvider =
-          ChannelLeaveSubmitIconStateProviderList
-              .channelLeaveSubmitIconStateProvider;
-
       return ChannelLeaveSubmitIconWidget(
         channelLeaveSubmitIconStateProvider:
-            channelLeaveSubmitIconStateProvider,
+            AgoraVideoPageState.channelLeaveSubmitIconStateProvider,
       );
     }));
     return widget;
@@ -115,8 +109,7 @@ class AgoraVideoPageWidgets {
   // Local Preview Widget
   static Widget buildLocalPreviewWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      final state = ref.watch(
-          RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+      final state = ref.watch(rtcChannelStateNotifierProvider);
 
       // return AgoraVideoView(
       //   controller: VideoViewController(
@@ -133,8 +126,7 @@ class AgoraVideoPageWidgets {
   // Remote Preview Widget
   static Widget buildRemotePreviewWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      final state = ref.watch(
-          RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+      final state = ref.watch(rtcChannelStateNotifierProvider);
 
       // // if (_remoteUid != null) {
       // return AgoraVideoView(

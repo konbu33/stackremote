@@ -10,8 +10,7 @@ final channelSetUsecaseProvider = Provider((ref) {
   final ChannelRepository channelRepository =
       ref.watch(channelRepositoryFirestoreProvider);
 
-  final rtcChannelState = ref.watch(
-      RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+  final rtcChannelState = ref.watch(rtcChannelStateNotifierProvider);
 
   final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);
 

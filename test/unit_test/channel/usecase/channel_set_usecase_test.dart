@@ -29,7 +29,7 @@ void main() {
       channelRepositoryFirestoreProvider.overrideWithValue(channelRepository),
 
       //
-      RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider
+      rtcChannelStateNotifierProvider
           .overrideWith((ref) => FakeRtcChannelStateNotifier()),
 
       //

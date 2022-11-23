@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../usecase/channel_join_usecase.dart';
-import 'channel_name_field_state.dart';
+import '../page/agora_video_channel_join_page_state.dart';
 
 part 'channel_join_submit_state.freezed.dart';
 
@@ -63,7 +63,7 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
       ChannelJoinSubmitState>(
     (ref) {
       Function? onSubmit({required BuildContext context}) {
-        final state = ref.watch(ChannelNameFieldStateNotifierProviderList
+        final state = ref.watch(AgoraVideoChannelJoinPageState
             .channelNameFieldStateNotifierProvider);
 
         return state.channelNameIsValidate.isValid == false
@@ -80,14 +80,4 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
       );
     },
   );
-}
-
-// --------------------------------------------------
-//
-// StateNotifierProviderList
-//
-// --------------------------------------------------
-class ChannelJoinSubmitStateProviderList {
-  static final channelJoinSubmitStateNotifierProvider =
-      channelJoinSubmitStateNotifierProviderCreator();
 }

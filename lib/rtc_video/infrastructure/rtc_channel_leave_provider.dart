@@ -7,8 +7,7 @@ import '../domain/rtc_channel_state.dart';
 
 final rtcLeaveChannelProvider = Provider((ref) {
   Future<void> rtcLeaveChannel() async {
-    final state = ref.watch(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+    final state = ref.watch(rtcChannelStateNotifierProvider);
 
     // 接続先のAgoraのプロジェクトをAppIdで指定
     // ログ出力先も指定

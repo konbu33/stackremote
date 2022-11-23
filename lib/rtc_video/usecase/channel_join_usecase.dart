@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,7 +9,6 @@ import '../../user/user.dart';
 import '../infrastructure/rtc_channel_join_provider.dart';
 import '../infrastructure/rtc_token_create_provider.dart';
 import '../presentation/page/agora_video_channel_join_page_state.dart';
-import '../presentation/widget/channel_name_field_state.dart';
 import '../rtc_video.dart';
 
 // final channelJoinUsecaseProvider = FutureProvider((ref) async {
@@ -22,11 +19,10 @@ final channelJoinUsecaseProvider = Provider((ref) {
     // チャンネル名をアプリ内で状態として保持する
     //
     // --------------------------------------------------
-    final notifier = ref.read(RtcChannelStateNotifierProviderList
-        .rtcChannelStateNotifierProvider.notifier);
+    final notifier = ref.read(rtcChannelStateNotifierProvider.notifier);
 
-    final state = ref.read(ChannelNameFieldStateNotifierProviderList
-        .channelNameFieldStateNotifierProvider);
+    final state = ref.read(
+        AgoraVideoChannelJoinPageState.channelNameFieldStateNotifierProvider);
 
     final channelName = state.channelNameFieldController.text;
 

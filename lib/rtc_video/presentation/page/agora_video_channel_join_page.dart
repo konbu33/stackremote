@@ -6,9 +6,7 @@ import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
 import '../../../menu/menu.dart';
 
-import '../widget/channel_join_submit_state.dart';
 import '../widget/channel_join_submit_widget.dart';
-import '../widget/channel_name_field_state.dart';
 import '../widget/channel_name_field_widget.dart';
 
 import 'agora_video_channel_join_page_state.dart';
@@ -19,8 +17,7 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final channelNameFieldState = ref.watch(
-        ChannelNameFieldStateNotifierProviderList
-            .channelNameFieldStateNotifierProvider);
+        AgoraVideoChannelJoinPageState.channelNameFieldStateNotifierProvider);
 
     return Scaffold(
       drawer: AgoraVideoChannelJoinPageWidgets.menuWidget(),
@@ -92,15 +89,12 @@ class AgoraVideoChannelJoinPageWidgets {
     return widget;
   }
 
-  // Login Id Field Widget
+  // channelNameFieldWidget
   static Widget channelNameFieldWidget() {
-    // imporve : state.dartにまとめた方が良いか？ProviderListで定義して利用する方が良いか？
-    final channelNameFieldStateProvider =
-        ChannelNameFieldStateNotifierProviderList
-            .channelNameFieldStateNotifierProvider;
-
+    //
     final Widget widget = ChannelNameFieldWidget(
-      channelNameFieldStateProvider: channelNameFieldStateProvider,
+      channelNameFieldStateProvider:
+          AgoraVideoChannelJoinPageState.channelNameFieldStateNotifierProvider,
     );
 
     return widget;
@@ -108,12 +102,9 @@ class AgoraVideoChannelJoinPageWidgets {
 
   // Login Submit Widget
   static Widget channelJoinSubmitWidget() {
-    // imporve : state.dartにまとめた方が良いか？ProviderListで定義して利用する方が良いか？
-    final channelJoinSubmitStateProvider = ChannelJoinSubmitStateProviderList
-        .channelJoinSubmitStateNotifierProvider;
-
     final Widget widget = ChannelJoinSubmitWidget(
-      channelJoinSubmitStateProvider: channelJoinSubmitStateProvider,
+      channelJoinSubmitStateProvider:
+          AgoraVideoChannelJoinPageState.channelJoinSubmitStateNotifierProvider,
     );
 
     return widget;

@@ -16,11 +16,9 @@ import '../domain/rtc_channel_state.dart';
 // --------------------------------------------------
 final rtcTokenCreateOnCallProvider = Provider((ref) {
   Future<String> rtcCreateToken() async {
-    final state = ref.watch(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+    final state = ref.watch(rtcChannelStateNotifierProvider);
 
-    final notifier = ref.watch(RtcChannelStateNotifierProviderList
-        .rtcChannelStateNotifierProvider.notifier);
+    final notifier = ref.watch(rtcChannelStateNotifierProvider.notifier);
 
     final data = {
       "channelName": state.channelName,
@@ -79,11 +77,9 @@ final rtcTokenCreateOnCallProvider = Provider((ref) {
 // --------------------------------------------------
 final rtcTokenCreateOnRequestProvider = Provider((ref) {
   Future<String> rtcCreateToken() async {
-    final state = ref.watch(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+    final state = ref.watch(rtcChannelStateNotifierProvider);
 
-    final notifier = ref.watch(RtcChannelStateNotifierProviderList
-        .rtcChannelStateNotifierProvider.notifier);
+    final notifier = ref.watch(rtcChannelStateNotifierProvider.notifier);
 
     // rtcIdToken Create API Endpoint
     final String baseUrl = state.rtcIdTokenApiUrl;

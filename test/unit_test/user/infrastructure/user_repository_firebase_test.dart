@@ -29,7 +29,7 @@ void main() {
     container = ProviderContainer(overrides: [
       firebaseFirestoreInstanceProvider
           .overrideWithValue(FakeFirebaseFirestore()),
-      RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider
+      rtcChannelStateNotifierProvider
           .overrideWith((ref) => FakeRtcChannelStateNotifier()),
     ]);
 

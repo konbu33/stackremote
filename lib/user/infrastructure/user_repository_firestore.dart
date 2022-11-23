@@ -16,8 +16,7 @@ final userRepositoryFirebaseProvider = Provider<UserRepository>((ref) {
   final firebaseFirestoreInstance =
       ref.watch(firebaseFirestoreInstanceProvider);
 
-  final rtcChannelState = ref.watch(
-      RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+  final rtcChannelState = ref.watch(rtcChannelStateNotifierProvider);
 
   return UserRepositoryFireBase(
     channelName: rtcChannelState.channelName,

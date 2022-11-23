@@ -20,11 +20,9 @@ final rtcJoinChannelProvider = Provider((ref) {
   Future<void> rtcJoinChannel() async {
     await androidPermissionRequest();
 
-    final state = ref.watch(
-        RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
+    final state = ref.watch(rtcChannelStateNotifierProvider);
 
-    final notifier = ref.watch(RtcChannelStateNotifierProviderList
-        .rtcChannelStateNotifierProvider.notifier);
+    final notifier = ref.watch(rtcChannelStateNotifierProvider.notifier);
 
     // 接続先のAgoraのプロジェクトをAppIdで指定
     // ログ出力先も指定
