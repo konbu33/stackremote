@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../common/common.dart';
 import 'domain/firebase_auth_user.dart';
 import 'presentation/page/signin_page.dart';
+import 'presentation/page/signin_page_state.dart';
 import 'presentation/page/signup_page.dart';
 import 'presentation/page/wait_email_verified_page.dart';
 
@@ -44,7 +45,7 @@ final authenticationRouterProvider = Provider(
     // improve：肥大化しそうなため、分割を検討
     return GoRouter(
       // デフォルト表示されるルーティング先
-      initialLocation: '/',
+      initialLocation: '/signin',
 
       // ルーティング先
       // improve：ルーティング先をグループ化してコンポーネント化し、着脱容易にしたい。
@@ -54,9 +55,19 @@ final authenticationRouterProvider = Provider(
 
         // サインイン・サインアップ
         GoRoute(
-            path: '/signin', builder: (context, state) => const SignInPage()),
-        GoRoute(
-            path: '/signup', builder: (context, state) => const SignUpPage()),
+            path: '/signin',
+            builder: (context, state) => const SignInPage(),
+            redirect: (state) {
+              final isSignUpPagePush =
+                  ref.watch(SignInPageState.isSignUpPagePushProvider);
+              if (isSignUpPagePush) return '/signin/signup';
+              return null;
+            },
+            routes: [
+              GoRoute(
+                  path: 'signup',
+                  builder: (context, state) => const SignUpPage()),
+            ]),
         GoRoute(
             path: '/waitmailverified',
             builder: (context, state) => const WaitEmailVerifiedPage()),

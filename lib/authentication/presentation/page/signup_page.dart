@@ -7,6 +7,7 @@ import '../widget/login_submit_widget.dart';
 import '../widget/loginid_field_widget.dart';
 import '../widget/password_field_widget.dart';
 
+import 'signin_page_state.dart';
 import 'signup_page_state.dart';
 
 class SignUpPage extends HookConsumerWidget {
@@ -23,6 +24,15 @@ class SignUpPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(SignUpPageState.loginSubmitWidgetName),
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: () {
+            ref
+                .read(SignInPageState.isSignUpPagePushProvider.notifier)
+                .update((state) => false);
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: [
