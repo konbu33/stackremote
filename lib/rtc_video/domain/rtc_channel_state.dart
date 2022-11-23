@@ -21,9 +21,10 @@ class RtcChannelState with _$RtcChannelState {
   const factory RtcChannelState._({
     //
     required String appId,
-    required String rtcIdToken,
-    required String channelName,
-    required String rtcIdTokenApiUrl,
+    // ignore: unused_element
+    @Default("") String rtcIdToken,
+    // ignore: unused_element
+    @Default("") String channelName,
     @Default(0) int localUid,
     required String account,
     required String rtcIdTokenType,
@@ -34,19 +35,14 @@ class RtcChannelState with _$RtcChannelState {
     @Default(false) bool joined,
     // ignore: unused_element
     @Default(1) int remoteUid,
-    // ignore: unused_element
-    @Default(false) bool viewSwitch,
     //
     required LogConfig tempLogConfig,
   }) = _RtcChannelState;
 
   factory RtcChannelState.create() => RtcChannelState._(
         appId: dotenv.get("APP_ID"),
-        rtcIdToken: dotenv.get("RTC_ID_TOKEN"),
         rtcIdTokenType: "uid",
-        channelName: dotenv.get("CHANNEL_NAME"),
         role: "publisher",
-        rtcIdTokenApiUrl: dotenv.get("RTC_ID_TOKEN_API_URL"),
         account: Ulid().toString(),
         privilegeExpireTime: 4000,
         // localUid: DateTime.now().millisecondsSinceEpoch,
@@ -85,10 +81,6 @@ class RtcChannelStateNotifier extends StateNotifier<RtcChannelState> {
 
   void setRemoteUid(int remoteUid) {
     state = state.copyWith(remoteUid: remoteUid);
-  }
-
-  void toggleViewSwitch() {
-    state = state.copyWith(viewSwitch: !state.viewSwitch);
   }
 
   void setTempLogConfig() async {

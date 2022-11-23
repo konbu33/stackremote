@@ -139,8 +139,6 @@ class FakeRtcChannelStateNotifier extends StateNotifier<RtcChannelState>
   @override
   void setTempLogConfig() {}
   @override
-  void toggleViewSwitch() {}
-  @override
   void initial() {}
   @override
   void updateChannelName(String value) {}
