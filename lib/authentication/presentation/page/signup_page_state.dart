@@ -15,7 +15,8 @@ import '../widget/password_field_state.dart';
 class SignUpPageState {
   // --------------------------------------------------
   //
-  //   Freezed
+  //   loginIdFieldStateProvider
+  //   passwordFieldStateProvider
   //
   // --------------------------------------------------
   static final loginIdFieldStateProvider =

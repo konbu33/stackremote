@@ -51,10 +51,26 @@ class ChannelStateNotifier extends StateNotifier<Channel> {
 
 // --------------------------------------------------
 //
+//  ChannelStateNotifierProvider
+//
+// --------------------------------------------------
+typedef ChannelStateNotifierProvider
+    = StateNotifierProvider<ChannelStateNotifier, Channel>;
+
+// --------------------------------------------------
+//
 //  StateNotifierProvider
 //
 // --------------------------------------------------
-final channelStateNotifierProvider =
-    StateNotifierProvider<ChannelStateNotifier, Channel>(
-  (ref) => ChannelStateNotifier(),
-);
+ChannelStateNotifierProvider channelStateNotifierProviderCreator() {
+  return StateNotifierProvider<ChannelStateNotifier, Channel>(
+    (ref) => ChannelStateNotifier(),
+  );
+}
+
+// --------------------------------------------------
+//
+//  StateNotifierProvider
+//
+// --------------------------------------------------
+final channelStateNotifierProvider = channelStateNotifierProviderCreator();

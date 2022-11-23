@@ -81,10 +81,28 @@ class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
 
 // --------------------------------------------------
 //
-//  StateNotifierProvider
+//  FirebaseAuthUserStateNotifierProvider
+//
+// --------------------------------------------------
+typedef FirebaseAuthUserStateNotifierProvider
+    = StateNotifierProvider<FirebaseAuthUserStateNotifier, FirebaseAuthUser>;
+
+// --------------------------------------------------
+//
+//  firebaseAuthUserStateNotifierProviderCreator
+//
+// --------------------------------------------------
+FirebaseAuthUserStateNotifierProvider
+    firebaseAuthUserStateNotifierProviderCreator() {
+  return StateNotifierProvider<FirebaseAuthUserStateNotifier, FirebaseAuthUser>(
+    (ref) => FirebaseAuthUserStateNotifier(),
+  );
+}
+
+// --------------------------------------------------
+//
+//  firebaseAuthUserStateNotifierProvider
 //
 // --------------------------------------------------
 final firebaseAuthUserStateNotifierProvider =
-    StateNotifierProvider<FirebaseAuthUserStateNotifier, FirebaseAuthUser>(
-  (ref) => FirebaseAuthUserStateNotifier(),
-);
+    firebaseAuthUserStateNotifierProviderCreator();
