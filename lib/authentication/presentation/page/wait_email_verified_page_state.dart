@@ -12,8 +12,6 @@ import '../widget/description_message_state.dart';
 import '../widget/login_submit_state.dart';
 
 class WaitEmailVerifiedPageState {
-  const WaitEmailVerifiedPageState();
-
   static const pageTitle = "メールアドレス確認待ち";
 
   static const signOutIconButtonName = "サインアウト";

@@ -12,8 +12,6 @@ import '../widget/login_submit_state.dart';
 import '../widget/password_field_state.dart';
 
 class ChangePasswordPageState {
-  ChangePasswordPageState();
-
   // --------------------------------------------------
   //
   //  各password field の validation確認

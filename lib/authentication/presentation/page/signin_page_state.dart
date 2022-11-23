@@ -13,8 +13,6 @@ import '../widget/loginid_field_state.dart';
 import '../widget/password_field_state.dart';
 
 class SignInPageState {
-  const SignInPageState();
-
   // --------------------------------------------------
   //
   //  loginIdFieldStateProvider

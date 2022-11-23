@@ -8,8 +8,6 @@ import '../../domain/user.dart';
 import '../widget/nickname_field_state.dart';
 
 class UserPageState {
-  const UserPageState();
-
   static const pageTitle = "ユーザ情報";
 
   static final nickNameFieldStateNotifierProvider =
