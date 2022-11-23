@@ -15,17 +15,15 @@ class AppbarAcitonIconWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(appbarActionIconStateProvider);
 
-    return Builder(builder: (context) {
-      return Container(
-        alignment: Alignment.center,
-        margin: const EdgeInsets.only(right: 5),
-        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        child: IconButton(
-          onPressed: state.onSubmit(context: context),
-          icon: state.icon,
-          tooltip: state.onSubmitWidgetName,
-        ),
-      );
-    });
+    return Container(
+      alignment: Alignment.center,
+      margin: const EdgeInsets.only(right: 5),
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+      child: IconButton(
+        onPressed: state.onSubmit(),
+        icon: state.icon,
+        tooltip: state.onSubmitWidgetName,
+      ),
+    );
   }
 }

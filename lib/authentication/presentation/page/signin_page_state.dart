@@ -122,18 +122,15 @@ class SignInPageState {
     //
 
     Function buildGoToSignUpIconOnSubmit() {
-      return ({
-        required BuildContext context,
-      }) =>
-          () {
-            ref.read(isSignUpPagePushProvider.notifier).update((state) => true);
-          };
+      return () {
+        ref.read(isSignUpPagePushProvider.notifier).update((state) => true);
+      };
     }
 
     final appbarActionIconStateProvider = appbarActionIconStateProviderCreator(
       onSubmitWidgetName: goToSignUpIconOnSubmitWidgetName,
       icon: const Icon(Icons.person_add),
-      onSubmit: buildGoToSignUpIconOnSubmit(),
+      onSubmit: buildGoToSignUpIconOnSubmit,
     );
 
     return appbarActionIconStateProvider;

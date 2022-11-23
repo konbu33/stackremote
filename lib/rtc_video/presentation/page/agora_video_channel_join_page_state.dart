@@ -24,21 +24,17 @@ class AgoraVideoChannelJoinPageState {
     //
 
     Function buildSignOutIconOnSubmit() {
-      return ({
-        required BuildContext context,
-      }) =>
-          () async {
-            final serviceSignOutUsecase =
-                ref.read(serviceSignOutUsecaseProvider);
+      return () async {
+        final serviceSignOutUsecase = ref.read(serviceSignOutUsecaseProvider);
 
-            await serviceSignOutUsecase();
-          };
+        await serviceSignOutUsecase();
+      };
     }
 
     final signOutIconStateProvider = appbarActionIconStateProviderCreator(
       onSubmitWidgetName: signOutIconButtonName,
       icon: const Icon(Icons.logout),
-      onSubmit: buildSignOutIconOnSubmit(),
+      onSubmit: buildSignOutIconOnSubmit,
     );
 
     return signOutIconStateProvider;
