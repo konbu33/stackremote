@@ -30,8 +30,6 @@ class AgoraVideoPage extends HookConsumerWidget {
   // Build UI
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(agoraVideoPageStateNotifierProvider);
-    final notifier = ref.watch(agoraVideoPageStateNotifierProvider.notifier);
     final rtcChannelState = ref.watch(
         RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider);
 
@@ -52,7 +50,7 @@ class AgoraVideoPage extends HookConsumerWidget {
               child: Stack(
                 children: [
                   Center(
-                    child: state.viewSwitch
+                    child: ref.watch(AgoraVideoPageState.viewSwitchProvider)
                         ? AgoraVideoPageWidgets.buildRemotePreviewWidget()
                         : AgoraVideoPageWidgets.buildLocalPreviewWidget(),
                   ),
@@ -64,10 +62,14 @@ class AgoraVideoPage extends HookConsumerWidget {
                       color: Colors.blue,
                       child: GestureDetector(
                         onTap: () {
-                          notifier.toggleViewSwitch();
+                          ref
+                              .read(AgoraVideoPageState
+                                  .viewSwitchProvider.notifier)
+                              .update((state) => !state);
                         },
                         child: Center(
-                          child: state.viewSwitch
+                          child: ref
+                                  .watch(AgoraVideoPageState.viewSwitchProvider)
                               ? AgoraVideoPageWidgets.buildLocalPreviewWidget()
                               : AgoraVideoPageWidgets
                                   .buildRemotePreviewWidget(),
