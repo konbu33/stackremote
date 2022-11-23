@@ -1,7 +1,7 @@
 // onRequest
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
+// import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // onCall
@@ -70,86 +70,86 @@ final rtcTokenCreateOnCallProvider = Provider((ref) {
   return rtcCreateToken;
 });
 
-// --------------------------------------------------
-//
-//  Firebase Functions OnRequest用
-//
-// --------------------------------------------------
-final rtcTokenCreateOnRequestProvider = Provider((ref) {
-  Future<String> rtcCreateToken() async {
-    final state = ref.watch(rtcChannelStateNotifierProvider);
+// // --------------------------------------------------
+// //
+// //  Firebase Functions OnRequest用
+// //
+// // --------------------------------------------------
+// final rtcTokenCreateOnRequestProvider = Provider((ref) {
+//   Future<String> rtcCreateToken() async {
+//     final state = ref.watch(rtcChannelStateNotifierProvider);
 
-    final notifier = ref.watch(rtcChannelStateNotifierProvider.notifier);
+//     final notifier = ref.watch(rtcChannelStateNotifierProvider.notifier);
 
-    // rtcIdToken Create API Endpoint
-    final String baseUrl = state.rtcIdTokenApiUrl;
-    const String onRequestFunctionName = "createRtcIdTokenOnRequest";
-    const String queryString = "";
-    final String url = baseUrl + onRequestFunctionName + queryString;
+//     // rtcIdToken Create API Endpoint
+//     final String baseUrl = state.rtcIdTokenApiUrl;
+//     const String onRequestFunctionName = "createRtcIdTokenOnRequest";
+//     const String queryString = "";
+//     final String url = baseUrl + onRequestFunctionName + queryString;
 
-    // print("url : ------------------------------------------ ${url}");
+//     // print("url : ------------------------------------------ ${url}");
 
-    // data in request body
-    final data = {
-      // "uid": state.localUid,
-      "channelName": state.channelName,
-      "localUid": state.localUid,
-      "account": state.account,
-      "rtcIdTokenType": state.rtcIdTokenType,
-      "role": state.role,
-      "privilegeExpireTime": state.privilegeExpireTime,
-    };
+//     // data in request body
+//     final data = {
+//       // "uid": state.localUid,
+//       "channelName": state.channelName,
+//       "localUid": state.localUid,
+//       "account": state.account,
+//       "rtcIdTokenType": state.rtcIdTokenType,
+//       "role": state.role,
+//       "privilegeExpireTime": state.privilegeExpireTime,
+//     };
 
-    // print("data : $data");
-    // print("data json ------------------------------- : ${jsonEncode(data)}");
+//     // print("data : $data");
+//     // print("data json ------------------------------- : ${jsonEncode(data)}");
 
-    // final formData = FormData.fromMap(data);
+//     // final formData = FormData.fromMap(data);
 
-    try {
-      final res = await Dio().post(url,
-          data: data,
-          // data: jsonEncode(data),
-          // data: formData,
-          // queryParameters: data,
-          // data: {"uid": 123456, "channelName": "ChannelA", "role": 1},
-          options: Options(
-            headers: {
-              // "Content-Type": "application/json",
-              // "Content-Type": 'application/json; charset=UTF-8',
-              // Headers.contentTypeHeader: 'application/json; charset=UTF-8',
-            },
-          ));
+//     try {
+//       final res = await Dio().post(url,
+//           data: data,
+//           // data: jsonEncode(data),
+//           // data: formData,
+//           // queryParameters: data,
+//           // data: {"uid": 123456, "channelName": "ChannelA", "role": 1},
+//           options: Options(
+//             headers: {
+//               // "Content-Type": "application/json",
+//               // "Content-Type": 'application/json; charset=UTF-8',
+//               // Headers.contentTypeHeader: 'application/json; charset=UTF-8',
+//             },
+//           ));
 
-      // print("res : ------------------------------------------ ${res}");
+//       // print("res : ------------------------------------------ ${res}");
 
-      final resJson = jsonDecode(res.data["data"]);
-      final String token = resJson["rtcIdToken"];
-      // print(
-      //     "res rtcIdToken  -------------------------------------- : ${token}");
+//       final resJson = jsonDecode(res.data["data"]);
+//       final String token = resJson["rtcIdToken"];
+//       // print(
+//       //     "res rtcIdToken  -------------------------------------- : ${token}");
 
-      // state = state.copyWith(token: token);
-      notifier.updateToken(token);
+//       // state = state.copyWith(token: token);
+//       notifier.updateToken(token);
 
-      return token;
-    } on DioError catch (e) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx and is also not 304.
-      if (e.response != null) {
-        // print(e.response!.data);
-        // print(e.response!.headers);
-        // print("1requestOptions : ${e.response!.requestOptions.data}");
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        // print("2requestOptions : ${e.requestOptions}");
-        // print(e.message);
-      }
-      return e.message;
-    }
-  }
-  //   } catch (e) {
-  //     print("error : ${e.toString()}");
-  //   }
-  // }
+//       return token;
+//     } on DioError catch (e) {
+//       // The request was made and the server responded with a status code
+//       // that falls out of the range of 2xx and is also not 304.
+//       if (e.response != null) {
+//         // print(e.response!.data);
+//         // print(e.response!.headers);
+//         // print("1requestOptions : ${e.response!.requestOptions.data}");
+//       } else {
+//         // Something happened in setting up or sending the request that triggered an Error
+//         // print("2requestOptions : ${e.requestOptions}");
+//         // print(e.message);
+//       }
+//       return e.message;
+//     }
+//   }
+//   //   } catch (e) {
+//   //     print("error : ${e.toString()}");
+//   //   }
+//   // }
 
-  return rtcCreateToken;
-});
+//   return rtcCreateToken;
+// });
