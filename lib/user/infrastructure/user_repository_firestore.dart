@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/channel/channel.dart';
 
 import '../../common/common.dart';
-import '../../rtc_video/rtc_video.dart';
 
 import '../domain/user.dart';
 import '../domain/user_repository.dart';
@@ -16,10 +16,10 @@ final userRepositoryFirebaseProvider = Provider<UserRepository>((ref) {
   final firebaseFirestoreInstance =
       ref.watch(firebaseFirestoreInstanceProvider);
 
-  final rtcChannelState = ref.watch(rtcChannelStateNotifierProvider);
+  final channelName = ref.watch(channelNameProvider);
 
   return UserRepositoryFireBase(
-    channelName: rtcChannelState.channelName,
+    channelName: channelName,
     firebaseFirestoreInstance: firebaseFirestoreInstance,
   );
 });

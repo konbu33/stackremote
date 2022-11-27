@@ -7,6 +7,8 @@ import '../../common/common.dart';
 part 'channel.freezed.dart';
 part 'channel.g.dart';
 
+final channelNameProvider = StateProvider((ref) => "");
+
 // --------------------------------------------------
 //
 //   Freezed

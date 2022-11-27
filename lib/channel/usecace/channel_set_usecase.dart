@@ -1,7 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../authentication/authentication.dart';
-import '../../rtc_video/rtc_video.dart';
 import '../channel.dart';
 import '../domain/channel_repository.dart';
 import '../infrastructure/channel_repository_firestore.dart';
@@ -10,7 +9,7 @@ final channelSetUsecaseProvider = Provider((ref) {
   final ChannelRepository channelRepository =
       ref.watch(channelRepositoryFirestoreProvider);
 
-  final rtcChannelState = ref.watch(rtcChannelStateNotifierProvider);
+  final channelName = ref.watch(channelNameProvider);
 
   final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);
 
@@ -18,7 +17,7 @@ final channelSetUsecaseProvider = Provider((ref) {
     final channel = Channel.create(hostUserEmail: firebaseAuthUser.email);
 
     await channelRepository.set(
-      channelName: rtcChannelState.channelName,
+      channelName: channelName,
       channel: channel,
     );
   }

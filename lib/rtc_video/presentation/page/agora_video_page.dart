@@ -29,13 +29,13 @@ class AgoraVideoPage extends HookConsumerWidget {
   // Build UI
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final rtcChannelState = ref.watch(rtcChannelStateNotifierProvider);
+    final channelName = ref.watch(channelNameProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: Tooltip(
           message: "チャンネル名",
-          child: Text(rtcChannelState.channelName),
+          child: Text(channelName),
         ),
         actions: [
           AgoraVideoPageWidgets.buildLeaveChannelIconWidget(),
@@ -109,7 +109,7 @@ class AgoraVideoPageWidgets {
   // Local Preview Widget
   static Widget buildLocalPreviewWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      final state = ref.watch(rtcChannelStateNotifierProvider);
+      final isJoined = ref.watch(RtcChannelState.isJoinedProvider);
 
       // return AgoraVideoView(
       //   controller: VideoViewController(
@@ -118,7 +118,7 @@ class AgoraVideoPageWidgets {
       //   ),
       // );
 
-      return AgoraVideoLocalPreviewWidget(state: state);
+      return AgoraVideoLocalPreviewWidget(isJoined: isJoined);
     }));
     return widget;
   }
@@ -126,7 +126,8 @@ class AgoraVideoPageWidgets {
   // Remote Preview Widget
   static Widget buildRemotePreviewWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      final state = ref.watch(rtcChannelStateNotifierProvider);
+      final channelName = ref.watch(channelNameProvider);
+      final remoteUid = ref.watch(RtcChannelState.remoteUidProvider);
 
       // // if (_remoteUid != null) {
       // return AgoraVideoView(
@@ -146,7 +147,10 @@ class AgoraVideoPageWidgets {
       // //   );
       // // }
 
-      return AgoraVideoRemotePreviewWidget(state: state);
+      return AgoraVideoRemotePreviewWidget(
+        channelName: channelName,
+        remoteUid: remoteUid,
+      );
     }));
 
     return widget;

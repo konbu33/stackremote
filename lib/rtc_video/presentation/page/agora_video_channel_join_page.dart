@@ -28,17 +28,22 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: [channelNameFieldState.focusNode],
         children: [
-          Form(
-            key: GlobalKey<FormState>(),
-            child: Column(
-              children: [
-                AgoraVideoChannelJoinPageWidgets.messageWidget(),
-                const SizedBox(height: 40),
-                AgoraVideoChannelJoinPageWidgets.channelNameFieldWidget(),
-                const SizedBox(height: 40),
-                AgoraVideoChannelJoinPageWidgets.channelJoinSubmitWidget(),
-              ],
-            ),
+          Stack(
+            children: [
+              Form(
+                key: GlobalKey<FormState>(),
+                child: Column(
+                  children: [
+                    AgoraVideoChannelJoinPageWidgets.messageWidget(),
+                    const SizedBox(height: 40),
+                    AgoraVideoChannelJoinPageWidgets.channelNameFieldWidget(),
+                    const SizedBox(height: 40),
+                    AgoraVideoChannelJoinPageWidgets.channelJoinSubmitWidget(),
+                  ],
+                ),
+              ),
+              AgoraVideoChannelJoinPageWidgets.channelJoinProgress(),
+            ],
           ),
         ],
       ),
@@ -104,6 +109,24 @@ class AgoraVideoChannelJoinPageWidgets {
       channelJoinSubmitStateProvider:
           AgoraVideoChannelJoinPageState.channelJoinSubmitStateNotifierProvider,
     );
+
+    return widget;
+  }
+
+  //
+  static Widget channelJoinProgress() {
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final channelJoinProgress =
+          ref.watch(AgoraVideoChannelJoinPageState.channelJoinProgressProvider);
+
+      return channelJoinProgress.when(data: (data) {
+        return const SizedBox();
+      }, error: (error, stackTrace) {
+        return const SizedBox();
+      }, loading: () {
+        return const Center(child: CircularProgressIndicator());
+      });
+    });
 
     return widget;
   }

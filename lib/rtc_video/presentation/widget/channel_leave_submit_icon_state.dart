@@ -1,11 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/user/usecace/user_update_usecase.dart';
-
-import '../../domain/rtc_channel_state.dart';
-import '../../infrastructure/rtc_channel_leave_provider.dart';
+import 'package:stackremote/rtc_video/usecase/channel_leave.dart';
 
 part 'channel_leave_submit_icon_state.freezed.dart';
 
@@ -70,27 +66,13 @@ ChannelLeaveSubmitIconStateProvider
   return StateNotifierProvider<ChannelLeaveSubmitIconStateNotifier,
       ChannelLeaveSubmitIconState>(
     (ref) {
-      final notifier = ref.watch(rtcChannelStateNotifierProvider.notifier);
-
       Function? onSubmit() {
         return () async {
-          final rtcLeaveChannel = ref.read(rtcLeaveChannelProvider);
+          final channelLeaveUsecase =
+              await ref.read(channelLeaveUsecaseProvider);
 
           // チャンネル離脱
-          rtcLeaveChannel();
-
-          // DBのUser情報更新
-          final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
-          await userUpdateUsecase<FieldValue>(
-            comment: "",
-            leavedAt: FieldValue.serverTimestamp(),
-            isOnLongPressing: false,
-            pointerPosition: const Offset(0, 0),
-            displayPointerPosition: const Offset(0, 0),
-          );
-
-          // チャンネル離脱したことをアプリ内の状態として保持
-          notifier.changeJoined(false);
+          await channelLeaveUsecase();
         };
       }
 
