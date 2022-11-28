@@ -96,7 +96,7 @@ class AgoraVideoChannelJoinPageWidgets {
   static Widget channelNameFieldWidget() {
     //
     final Widget widget = ChannelNameFieldWidget(
-      channelNameFieldStateProvider:
+      channelNameFieldStateNotifierProvider:
           AgoraVideoChannelJoinPageState.channelNameFieldStateNotifierProvider,
     );
 

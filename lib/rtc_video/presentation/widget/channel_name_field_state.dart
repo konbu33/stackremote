@@ -10,62 +10,48 @@ part 'channel_name_field_state.freezed.dart';
 
 // --------------------------------------------------
 //
-// Freezed
+// ChannelNameFieldState
 //
 // --------------------------------------------------
 @freezed
 class ChannelNameFieldState with _$ChannelNameFieldState {
   const factory ChannelNameFieldState._({
     required String channelNameFieldName,
-    required Widget channelNameField,
     required GlobalKey<FormFieldState> channelNameFieldKey,
     required FocusNode focusNode,
     required TextEditingController channelNameFieldController,
-    required Icon channelNameIcon,
     required Validation channelNameIsValidate,
-    // ignore: unused_element
-    @Default(8) int channelNameMinLength,
-    // ignore: unused_element
-    @Default(20) int channelNameMaxLength,
+    required Icon channelNameIcon,
+    required int channelNameMinLength,
+    required int channelNameMaxLength,
   }) = _ChannelNameFieldState;
 
-  factory ChannelNameFieldState.create() {
-    return ChannelNameFieldState._(
-      channelNameFieldName: "チャンネル名",
-      channelNameField: const Placeholder(),
-      channelNameFieldKey: GlobalKey<FormFieldState>(),
-      focusNode: FocusNode(),
-      channelNameFieldController: TextEditingController(),
-      channelNameIcon: const Icon(Icons.room),
-      channelNameIsValidate: Validation.create(),
-    );
-  }
+  factory ChannelNameFieldState.create() => ChannelNameFieldState._(
+        channelNameFieldName: "チャンネル名",
+        channelNameFieldKey: GlobalKey<FormFieldState>(),
+        focusNode: FocusNode(),
+        channelNameFieldController: TextEditingController(),
+        channelNameIsValidate: Validation.create(),
+        channelNameIcon: const Icon(Icons.room),
+        channelNameMinLength: 8,
+        channelNameMaxLength: 20,
+      );
 }
 
 // --------------------------------------------------
 //
-// StateNotifier
+// ChannelNameFieldStateNotifier
 //
 // --------------------------------------------------
-class ChannelNameFieldStateNotifier
-    extends StateNotifier<ChannelNameFieldState> {
-  ChannelNameFieldStateNotifier() : super(ChannelNameFieldState.create());
-
-  void initial() {
-    state = ChannelNameFieldState.create();
-  }
-
-  void setFieldText(String value) {
-    state = state.copyWith(
-        channelNameFieldController: TextEditingController(text: value));
+class ChannelNameFieldStateNotifier extends Notifier<ChannelNameFieldState> {
+  @override
+  ChannelNameFieldState build() {
+    return ChannelNameFieldState.create();
   }
 
   Validation channelNameCustomValidator(String value) {
     const defaultMessage = "";
     const emptyMessage = "";
-
-    // final minMaxLenghtMessage =
-    //     "Min lenght: ${state.channelNameMinLength}, Max length : ${state.channelNameMaxLength}.";
 
     final minMaxLenghtMessage =
         "${state.channelNameMinLength}文字以上、${state.channelNameMaxLength}文字以下で入力して下さい。";
@@ -94,22 +80,14 @@ class ChannelNameFieldStateNotifier
 
 // --------------------------------------------------
 //
-//  typedef Provider
+// channelNameFieldStateNotifierProviderCreator
 //
 // --------------------------------------------------
-typedef ChannelNameFieldStateProvider = StateNotifierProvider<
-    ChannelNameFieldStateNotifier, ChannelNameFieldState>;
+typedef ChannelNameFieldStateNotifierProvider
+    = NotifierProvider<ChannelNameFieldStateNotifier, ChannelNameFieldState>;
 
-// --------------------------------------------------
-//
-//  StateNotifierProviderCreateor
-//
-// --------------------------------------------------
-ChannelNameFieldStateProvider channelNameFieldStateNotifierProviderCreator() {
-  return StateNotifierProvider<ChannelNameFieldStateNotifier,
-      ChannelNameFieldState>(
-    (ref) {
-      return ChannelNameFieldStateNotifier();
-    },
-  );
+ChannelNameFieldStateNotifierProvider
+    channelNameFieldStateNotifierProviderCreator() {
+  return NotifierProvider<ChannelNameFieldStateNotifier, ChannelNameFieldState>(
+      () => ChannelNameFieldStateNotifier());
 }

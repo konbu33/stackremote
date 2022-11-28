@@ -6,15 +6,16 @@ import 'channel_name_field_state.dart';
 class ChannelNameFieldWidget extends HookConsumerWidget {
   const ChannelNameFieldWidget({
     Key? key,
-    required this.channelNameFieldStateProvider,
+    required this.channelNameFieldStateNotifierProvider,
   }) : super(key: key);
 
-  final ChannelNameFieldStateProvider channelNameFieldStateProvider;
+  final ChannelNameFieldStateNotifierProvider
+      channelNameFieldStateNotifierProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(channelNameFieldStateProvider);
-    final notifier = ref.watch(channelNameFieldStateProvider.notifier);
+    final state = ref.watch(channelNameFieldStateNotifierProvider);
+    final notifier = ref.watch(channelNameFieldStateNotifierProvider.notifier);
 
     return Column(
       children: [
