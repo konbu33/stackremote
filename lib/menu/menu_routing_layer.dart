@@ -78,11 +78,12 @@ final menuRouterProvider = Provider(
       // improve：if文での分岐を抽象化したい。
       redirect: (state) {
         // rtc channel join済・未joinの状態監視
-        final isJoined = ref.watch(RtcChannelState.isJoinedProvider);
+        final isJoinedChannel =
+            ref.watch(RtcChannelState.isJoinedChannelProvider);
 
         // rtc channel join済・未joinの状態を監視し、
         // 状態が変化した場合、リダイレクト操作が実施される。
-        if (isJoined) {
+        if (isJoinedChannel) {
           if (state.subloc == '/agoravideo') {
             return null;
           } else {

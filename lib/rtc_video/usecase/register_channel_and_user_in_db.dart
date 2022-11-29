@@ -6,7 +6,7 @@ import '../../channel/domain/channel_exception.dart';
 import '../../common/common.dart';
 import '../../user/user.dart';
 
-final registerChannelAndUserInDBProvider = Provider((ref) {
+final registerChannelAndUserInDBUsecaseProvider = Provider((ref) {
   //
 
   Future<void> execute() async {

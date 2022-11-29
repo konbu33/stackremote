@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../usecase/channel_join.dart';
 import '../page/agora_video_channel_join_page_state.dart';
 
 part 'channel_join_submit_state.freezed.dart';
@@ -68,16 +67,12 @@ ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
 
         return state.channelNameIsValidate.isValid == false
             ? null
-            : () async {
+            : () {
+                // channel参加
                 ref
                     .read(AgoraVideoChannelJoinPageState
-                        .channelJoinProgressProvider.notifier)
+                        .channelJoinProgressStateProvider.notifier)
                     .channelJoin();
-
-                // final channelJoinUsecase =
-                //     await ref.read(channelJoinUsecaseProvider);
-
-                // await channelJoinUsecase();
               };
       }
 

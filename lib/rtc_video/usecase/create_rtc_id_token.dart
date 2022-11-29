@@ -13,17 +13,9 @@ final createRtcIdTokenUsecaseProvider = Provider((ref) async {
 
   final channelName = ref.watch(channelNameProvider);
 
-  // --------------------------------------------------
-  //
-  // rtc_id_token取得
-  //
-  // --------------------------------------------------
-  // String rtcIdToken;
   Future<String> execute() async {
-    String rtcIdToken = "";
-
     try {
-      rtcIdToken = await rtcVideoRepository.createRtcIdToken(
+      final rtcIdToken = await rtcVideoRepository.createRtcIdToken(
         channelName: channelName,
         localUid: RtcChannelState.localUid,
         account: RtcChannelState.account,
@@ -31,11 +23,11 @@ final createRtcIdTokenUsecaseProvider = Provider((ref) async {
         role: RtcChannelState.role,
         privilegeExpireTime: RtcChannelState.privilegeExpireTime,
       );
+
+      return rtcIdToken;
     } on FirebaseFunctionsException catch (_) {
       rethrow;
     }
-
-    return rtcIdToken;
   }
 
   return execute;

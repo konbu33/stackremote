@@ -11,8 +11,8 @@ import '../../domain/rtc_channel_state.dart';
 
 import '../widget/agora_video_local_preview_widget.dart';
 import '../widget/agora_video_remote_preview_widget.dart';
-import '../widget/channel_leave_submit_icon_widget.dart';
 
+import '../widget/channel_join_progress_widget.dart';
 import 'agora_video_page_state.dart';
 
 class AgoraVideoPage extends HookConsumerWidget {
@@ -42,44 +42,38 @@ class AgoraVideoPage extends HookConsumerWidget {
         ],
       ),
       body: PointerOverlayWidget(
-        child: Column(
-          children: [
-            Flexible(
-              child: Stack(
-                children: [
-                  Center(
-                    child: ref.watch(AgoraVideoPageState.viewSwitchProvider)
-                        ? AgoraVideoPageWidgets.buildRemotePreviewWidget()
-                        : AgoraVideoPageWidgets.buildLocalPreviewWidget(),
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      color: Colors.blue,
-                      child: GestureDetector(
-                        onTap: () {
-                          ref
-                              .read(AgoraVideoPageState
-                                  .viewSwitchProvider.notifier)
-                              .update((state) => !state);
-                        },
-                        child: Center(
-                          child: ref
-                                  .watch(AgoraVideoPageState.viewSwitchProvider)
-                              ? AgoraVideoPageWidgets.buildLocalPreviewWidget()
-                              : AgoraVideoPageWidgets
-                                  .buildRemotePreviewWidget(),
-                        ),
-                      ),
+        child: Flexible(
+          child: Stack(
+            children: [
+              Center(
+                child: ref.watch(AgoraVideoPageState.viewSwitchProvider)
+                    ? AgoraVideoPageWidgets.buildRemotePreviewWidget()
+                    : AgoraVideoPageWidgets.buildLocalPreviewWidget(),
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.blue,
+                  child: GestureDetector(
+                    onTap: () {
+                      ref
+                          .read(AgoraVideoPageState.viewSwitchProvider.notifier)
+                          .update((state) => !state);
+                    },
+                    child: Center(
+                      child: ref.watch(AgoraVideoPageState.viewSwitchProvider)
+                          ? AgoraVideoPageWidgets.buildLocalPreviewWidget()
+                          : AgoraVideoPageWidgets.buildRemotePreviewWidget(),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-            AgoraVideoPageWidgets.buildDisplayState()
-          ],
+              AgoraVideoPageWidgets.buildDisplayState(),
+              AgoraVideoPageWidgets.channelLeaveProgressWidget(),
+            ],
+          ),
         ),
       ),
     );
@@ -98,18 +92,34 @@ class AgoraVideoPageWidgets {
   // buildLeaveChannelIconWidget
   static Widget buildLeaveChannelIconWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      return ChannelLeaveSubmitIconWidget(
-        channelLeaveSubmitIconStateProvider:
-            AgoraVideoPageState.channelLeaveSubmitIconStateProvider,
+      return AppbarAcitonIconWidget(
+        appbarActionIconStateNotifierProvider: ref.watch(
+            AgoraVideoPageState.channelLeaveSubmitIconStateNotifierProvider),
       );
+      // return ChannelLeaveSubmitIconWidget(
+      //   channelLeaveSubmitIconStateNotifierProvider:
+      //       AgoraVideoPageState.channelLeaveSubmitIconStateNotifierProvider,
+      // );
     }));
+
+    // final Widget widget = Consumer(builder: ((context, ref, child) {
+    //   return ChannelLeaveSubmitIconWidget(
+    //     channelLeaveSubmitIconStateEx:
+    //         AgoraVideoPageState.channelLeaveSubmitIconStateEx,
+    //   );
+    //   // return ChannelLeaveSubmitIconWidget(
+    //   //   channelLeaveSubmitIconStateNotifierProvider:
+    //   //       AgoraVideoPageState.channelLeaveSubmitIconStateNotifierProvider,
+    //   // );
+    // }));
     return widget;
   }
 
   // Local Preview Widget
   static Widget buildLocalPreviewWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      final isJoined = ref.watch(RtcChannelState.isJoinedProvider);
+      final isJoinedChannel =
+          ref.watch(RtcChannelState.isJoinedChannelProvider);
 
       // return AgoraVideoView(
       //   controller: VideoViewController(
@@ -118,7 +128,7 @@ class AgoraVideoPageWidgets {
       //   ),
       // );
 
-      return AgoraVideoLocalPreviewWidget(isJoined: isJoined);
+      return AgoraVideoLocalPreviewWidget(isJoinedChannel: isJoinedChannel);
     }));
     return widget;
   }
@@ -170,6 +180,15 @@ class AgoraVideoPageWidgets {
 
       return const SizedBox();
     }));
+
+    return widget;
+  }
+
+  static Widget channelLeaveProgressWidget() {
+    final Widget widget = ChannelJoinProgressWidget(
+      channelJoinProgressStateProvider:
+          AgoraVideoPageState.channelLeaveProgressStateProvider,
+    );
 
     return widget;
   }

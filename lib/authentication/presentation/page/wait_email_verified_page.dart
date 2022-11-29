@@ -49,7 +49,7 @@ class WaitEmailVerifiedPageWidgets {
     final Widget widget = Consumer(
       builder: ((context, ref, child) {
         return AppbarAcitonIconWidget(
-          appbarActionIconStateProvider:
+          appbarActionIconStateNotifierProvider:
               ref.watch(WaitEmailVerifiedPageState.signOutIconStateProvider),
         );
       }),

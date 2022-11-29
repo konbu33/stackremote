@@ -13,8 +13,6 @@ import '../widget/login_submit_state.dart';
 class WaitEmailVerifiedPageState {
   static const pageTitle = "メールアドレス確認待ち";
 
-  static const signOutIconButtonName = "サインアウト";
-
   static const String message = ''' 
     あなたが「サービス利用登録時に登録したメールアドレス」の持ち主かどうか、確認待ちの状態です。
     \n
@@ -36,22 +34,23 @@ class WaitEmailVerifiedPageState {
   static final signOutIconStateProvider = Provider((ref) {
     //
 
-    Function buildSignOutIconOnSubmit() {
-      return ({
-        required BuildContext context,
-      }) =>
-          () async {
-            final serviceSignOutUsecase =
-                ref.read(serviceSignOutUsecaseProvider);
+    void Function() buildSignOutIconOnSubmit() {
+      return () async {
+        final serviceSignOutUsecase = ref.read(serviceSignOutUsecaseProvider);
 
-            await serviceSignOutUsecase();
-          };
+        await serviceSignOutUsecase();
+      };
     }
 
-    final signOutIconStateProvider = appbarActionIconStateProviderCreator(
-      onSubmitWidgetName: signOutIconButtonName,
+    final appbarActionIconState = AppbarActionIconState.create(
+      onSubmitWidgetName: "サインアウト",
       icon: const Icon(Icons.logout),
-      onSubmit: buildSignOutIconOnSubmit(),
+      onSubmit: buildSignOutIconOnSubmit,
+    );
+
+    final signOutIconStateProvider =
+        appbarActionIconStateNotifierProviderCreator(
+      appbarActionIconState: appbarActionIconState,
     );
 
     return signOutIconStateProvider;

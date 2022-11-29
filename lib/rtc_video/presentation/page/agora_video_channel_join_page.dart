@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/rtc_video/presentation/widget/channel_join_progress_widget.dart';
 
 import '../../../common/common.dart';
 import '../../../menu/menu.dart';
@@ -42,7 +43,7 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
                   ],
                 ),
               ),
-              AgoraVideoChannelJoinPageWidgets.channelJoinProgress(),
+              AgoraVideoChannelJoinPageWidgets.channelJoinProgressWidget(),
             ],
           ),
         ],
@@ -69,7 +70,7 @@ class AgoraVideoChannelJoinPageWidgets {
     final Widget widget = Consumer(
       builder: ((context, ref, child) {
         return AppbarAcitonIconWidget(
-          appbarActionIconStateProvider: ref
+          appbarActionIconStateNotifierProvider: ref
               .watch(AgoraVideoChannelJoinPageState.signOutIconStateProvider),
         );
       }),
@@ -114,19 +115,11 @@ class AgoraVideoChannelJoinPageWidgets {
   }
 
   //
-  static Widget channelJoinProgress() {
-    final Widget widget = Consumer(builder: (context, ref, child) {
-      final channelJoinProgress =
-          ref.watch(AgoraVideoChannelJoinPageState.channelJoinProgressProvider);
-
-      return channelJoinProgress.when(data: (data) {
-        return const SizedBox();
-      }, error: (error, stackTrace) {
-        return const SizedBox();
-      }, loading: () {
-        return const Center(child: CircularProgressIndicator());
-      });
-    });
+  static Widget channelJoinProgressWidget() {
+    final Widget widget = ChannelJoinProgressWidget(
+      channelJoinProgressStateProvider:
+          AgoraVideoChannelJoinPageState.channelJoinProgressStateProvider,
+    );
 
     return widget;
   }

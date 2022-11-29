@@ -7,7 +7,6 @@ import 'package:stackremote/channel/domain/channel_repository.dart';
 import 'package:stackremote/channel/infrastructure/channel_repository_firestore.dart';
 import 'package:stackremote/channel/usecace/channel_get_usecase.dart';
 import 'package:stackremote/common/common.dart';
-import 'package:stackremote/rtc_video/rtc_video.dart';
 
 import '../../user/user_mock.dart';
 
@@ -27,8 +26,9 @@ void main() {
       channelRepositoryFirestoreProvider.overrideWithValue(channelRepository),
 
       //
-      rtcChannelStateNotifierProvider
-          .overrideWith((ref) => FakeRtcChannelStateNotifier()),
+      channelNameProvider
+          .overrideWith((ref) => ref.watch(fakeChannelNameProvider)),
+      // .overrideWith((ref) => FakeRtcChannelStateNotifier()),
     ]);
 
     //
@@ -47,6 +47,7 @@ void main() {
           .thenAnswer((invocation) => mockResponse);
 
       // when
+      final fakeChannelName = container.read(channelNameProvider);
       final channelGetUsecase = container.read(channelGetUsecaseProvider);
       final resChannel = await channelGetUsecase();
 
@@ -56,7 +57,7 @@ void main() {
           channelName: captureAny(
             named: "channelName",
             that: equals(
-              FakeRtcChannelState().channelName,
+              fakeChannelName,
             ),
           ),
         ),
@@ -64,9 +65,9 @@ void main() {
 
       final channelName = captured[0];
 
-      expect(channelName, FakeRtcChannelState().channelName);
+      expect(channelName, fakeChannelName);
 
-      logger.d("$resChannel");
+      logger.d("$channelName, $resChannel");
       expect(resChannel.hostUserEmail, equals(hostUserEmail));
       expect(resChannel.createAt, equals(null));
     });

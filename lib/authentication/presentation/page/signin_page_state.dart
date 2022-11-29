@@ -113,21 +113,25 @@ class SignInPageState {
   //  goToSignUpIconStateProvider
   //
   // --------------------------------------------------
-  static const goToSignUpIconOnSubmitWidgetName = "サービス利用登録";
 
   static final goToSignUpIconStateProvider = Provider((ref) {
     //
 
-    Function buildGoToSignUpIconOnSubmit() {
+    void Function() buildGoToSignUpIconOnSubmit() {
       return () {
         ref.read(isSignUpPagePushProvider.notifier).update((state) => true);
       };
     }
 
-    final appbarActionIconStateProvider = appbarActionIconStateProviderCreator(
-      onSubmitWidgetName: goToSignUpIconOnSubmitWidgetName,
+    final appbarActionIconState = AppbarActionIconState.create(
+      onSubmitWidgetName: "サービス利用登録",
       icon: const Icon(Icons.person_add),
       onSubmit: buildGoToSignUpIconOnSubmit,
+    );
+
+    final appbarActionIconStateProvider =
+        appbarActionIconStateNotifierProviderCreator(
+      appbarActionIconState: appbarActionIconState,
     );
 
     return appbarActionIconStateProvider;

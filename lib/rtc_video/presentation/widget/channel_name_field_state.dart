@@ -49,32 +49,23 @@ class ChannelNameFieldStateNotifier extends Notifier<ChannelNameFieldState> {
     return ChannelNameFieldState.create();
   }
 
-  Validation channelNameCustomValidator(String value) {
-    const defaultMessage = "";
-    const emptyMessage = "";
+  void channelNameCustomValidator(String value) {
+    Validation validation;
+
+    if (value.length >= state.channelNameMinLength &&
+        value.length <= state.channelNameMaxLength) {
+      const defaultMessage = "";
+      validation = Validation.create(isValid: true, message: defaultMessage);
+      state = state.copyWith(channelNameIsValidate: validation);
+      return;
+    }
 
     final minMaxLenghtMessage =
         "${state.channelNameMinLength}文字以上、${state.channelNameMaxLength}文字以下で入力して下さい。";
-
-    if (value.isEmpty) {
-      final validation =
-          Validation.create(isValid: false, message: emptyMessage);
-      state = state.copyWith(channelNameIsValidate: validation);
-      return validation;
-    }
-
-    if (value.length < state.channelNameMinLength) {
-      final validation =
-          Validation.create(isValid: false, message: minMaxLenghtMessage);
-      state = state.copyWith(channelNameIsValidate: validation);
-      return validation;
-    }
-
-    final validation =
-        Validation.create(isValid: true, message: defaultMessage);
-
+    validation =
+        Validation.create(isValid: false, message: minMaxLenghtMessage);
     state = state.copyWith(channelNameIsValidate: validation);
-    return validation;
+    return;
   }
 }
 

@@ -56,7 +56,7 @@ class SignInPageWidgets {
   static Widget goToSignUpWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       return AppbarAcitonIconWidget(
-        appbarActionIconStateProvider:
+        appbarActionIconStateNotifierProvider:
             ref.watch(SignInPageState.goToSignUpIconStateProvider),
       );
     });

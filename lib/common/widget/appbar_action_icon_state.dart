@@ -8,7 +8,7 @@ part 'appbar_action_icon_state.freezed.dart';
 
 // --------------------------------------------------
 //
-//   Freezed
+//   AppbarActionIconState
 //
 // --------------------------------------------------
 @freezed
@@ -33,48 +33,40 @@ class AppbarActionIconState with _$AppbarActionIconState {
 
 // --------------------------------------------------
 //
-// StateNotifier
+// AppbarActionIconStateNotifier
 //
 // --------------------------------------------------
-class AppbarActionIconStateNotifier
-    extends StateNotifier<AppbarActionIconState> {
+class AppbarActionIconStateNotifier extends Notifier<AppbarActionIconState> {
   AppbarActionIconStateNotifier({
-    required String onSubmitWidgetName,
-    required Icon icon,
-    required Function onSubmit,
-  }) : super(AppbarActionIconState.create(
-          onSubmitWidgetName: onSubmitWidgetName,
-          icon: icon,
-          onSubmit: onSubmit,
-        ));
+    required this.appbarActionIconState,
+  });
+
+  final AppbarActionIconState appbarActionIconState;
+
+  @override
+  AppbarActionIconState build() {
+    return AppbarActionIconState.create(
+      onSubmitWidgetName: appbarActionIconState.onSubmitWidgetName,
+      icon: appbarActionIconState.icon,
+      onSubmit: appbarActionIconState.onSubmit,
+    );
+  }
 }
 
 // --------------------------------------------------
 //
-//  typedef Provider
+//  appbarActionIconStateNotifierProviderCreator
 //
 // --------------------------------------------------
-typedef AppbarActionIconStateProvider = StateNotifierProvider<
-    AppbarActionIconStateNotifier, AppbarActionIconState>;
+typedef AppbarActionIconStateNotifierProvider
+    = NotifierProvider<AppbarActionIconStateNotifier, AppbarActionIconState>;
 
-// --------------------------------------------------
-//
-//  StateNotifierProviderCreator
-//
-// --------------------------------------------------
-AppbarActionIconStateProvider appbarActionIconStateProviderCreator({
-  required String onSubmitWidgetName,
-  required Icon icon,
-  required Function onSubmit,
+AppbarActionIconStateNotifierProvider
+    appbarActionIconStateNotifierProviderCreator({
+  required AppbarActionIconState appbarActionIconState,
 }) {
-  return StateNotifierProvider<AppbarActionIconStateNotifier,
-      AppbarActionIconState>(
-    (ref) {
-      return AppbarActionIconStateNotifier(
-        onSubmitWidgetName: onSubmitWidgetName,
-        icon: icon,
-        onSubmit: onSubmit,
-      );
-    },
-  );
+  return NotifierProvider<AppbarActionIconStateNotifier, AppbarActionIconState>(
+      () => AppbarActionIconStateNotifier(
+            appbarActionIconState: appbarActionIconState,
+          ));
 }

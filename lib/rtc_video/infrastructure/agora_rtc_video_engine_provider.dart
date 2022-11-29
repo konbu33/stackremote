@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../common/common.dart';
 import '../domain/rtc_channel_state.dart';
 
-final appIdProvider = StateProvider((ref) => dotenv.get("APP_ID"));
+final appIdProvider = Provider((ref) => dotenv.get("APP_ID"));
 
 final tempLogConfigProvider = Provider((ref) {
   //
@@ -65,9 +65,17 @@ final agoraRtcEngineCreatorProvider = Provider((ref) {
       joinChannelSuccess: (String channel, int uid, int elapsed) {
         // print('joinChannelSuccess ${channel} ${uid}');
         // notifier.changeJoined(true);
+
+        // --------------------------------------------------
+        //
+        // チャンネル参加済みであることをアプリ内で状態として保持する
+        //
+        // --------------------------------------------------
         ref
-            .watch(RtcChannelState.isJoinedProvider.notifier)
+            .watch(RtcChannelState.isJoinedChannelProvider.notifier)
             .update((state) => true);
+
+        //
       },
 
       // 他ユーザがチャンネル参加してきた場合
@@ -89,7 +97,16 @@ final agoraRtcEngineCreatorProvider = Provider((ref) {
       },
       // チャンネル離脱した場合
       leaveChannel: (RtcStats rtcStats) {
-        // print("on leave channel ---------- : stats : ${rtcStats.toString()}");
+        // --------------------------------------------------
+        //
+        // チャンネル離脱済みであることをアプリ内で状態として保持する
+        //
+        // --------------------------------------------------
+        ref
+            .watch(RtcChannelState.isJoinedChannelProvider.notifier)
+            .update((state) => false);
+
+        //
       },
     );
 

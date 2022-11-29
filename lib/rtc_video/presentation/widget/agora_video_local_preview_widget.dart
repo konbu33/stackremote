@@ -6,10 +6,10 @@ import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 class AgoraVideoLocalPreviewWidget extends StatelessWidget {
   const AgoraVideoLocalPreviewWidget({
     Key? key,
-    required this.isJoined,
+    required this.isJoinedChannel,
   }) : super(key: key);
 
-  final bool isJoined;
+  final bool isJoinedChannel;
 
   // @override
   // Widget build(BuildContext context) {
@@ -23,13 +23,13 @@ class AgoraVideoLocalPreviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isJoined && defaultTargetPlatform == TargetPlatform.android ||
-        isJoined && defaultTargetPlatform == TargetPlatform.iOS) {
+    if (isJoinedChannel && defaultTargetPlatform == TargetPlatform.android ||
+        isJoinedChannel && defaultTargetPlatform == TargetPlatform.iOS) {
       return const rtc_local_view.SurfaceView();
     }
 
-    if (isJoined && defaultTargetPlatform == TargetPlatform.windows ||
-        isJoined && defaultTargetPlatform == TargetPlatform.macOS) {
+    if (isJoinedChannel && defaultTargetPlatform == TargetPlatform.windows ||
+        isJoinedChannel && defaultTargetPlatform == TargetPlatform.macOS) {
       return const rtc_local_view.TextureView();
     } else {
       return const Text(

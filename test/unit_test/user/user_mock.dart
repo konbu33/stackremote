@@ -12,7 +12,7 @@ import 'package:path_provider_platform_interface/path_provider_platform_interfac
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'package:stackremote/authentication/authentication.dart';
-import 'package:stackremote/rtc_video/rtc_video.dart';
+// import 'package:stackremote/rtc_video/rtc_video.dart';
 import 'package:stackremote/user/domain/user.dart';
 
 import 'package:stackremote/user/domain/user_repository.dart';
@@ -121,30 +121,33 @@ class FakeFirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser>
 //
 // --------------------------------------------------
 // メソッドを利用する場合は、Mockで済みそう。メンバ変数を利用する場合は、Fakeが必要そう。
-class FakeRtcChannelState extends Fake implements RtcChannelState {
-  FakeRtcChannelState();
+// class FakeRtcChannelState extends Fake implements RtcChannelState {
+//   FakeRtcChannelState();
 
-  @override
-  final String channelName = "fake_cnannel_name";
-}
+//   @override
+//   final String channelName = "fake_cnannel_name";
+// }
 
-class FakeRtcChannelStateNotifier extends StateNotifier<RtcChannelState>
-    implements RtcChannelStateNotifier {
-  FakeRtcChannelStateNotifier() : super(FakeRtcChannelState());
+final fakeChannelNameProvider =
+    StateProvider<String>((ref) => "fake_channel_name");
 
-  @override
-  void changeJoined(bool value) {}
-  @override
-  void setRemoteUid(int value) {}
-  @override
-  void setTempLogConfig() {}
-  @override
-  void initial() {}
-  @override
-  void updateChannelName(String value) {}
-  @override
-  void updateToken(String value) {}
-}
+// class FakeRtcChannelStateNotifier extends StateNotifier<RtcChannelState>
+//     implements RtcChannelStateNotifier {
+//   FakeRtcChannelStateNotifier() : super(FakeRtcChannelState());
+
+//   @override
+//   void changeJoined(bool value) {}
+//   @override
+//   void setRemoteUid(int value) {}
+//   @override
+//   void setTempLogConfig() {}
+//   @override
+//   void initial() {}
+//   @override
+//   void updateChannelName(String value) {}
+//   @override
+//   void updateToken(String value) {}
+// }
 
 // --------------------------------------------------
 //
