@@ -71,25 +71,13 @@ final agoraRtcEngineCreatorProvider = Provider((ref) {
     final handler = RtcEngineEventHandler(
       // チャンネル参加が成功した場合
       joinChannelSuccess: (String channel, int uid, int elapsed) {
-        // print('joinChannelSuccess ${channel} ${uid}');
-        // notifier.changeJoined(true);
-
-        // --------------------------------------------------
-        //
-        // チャンネル参加済みであることをアプリ内で状態として保持する
-        //
-        // --------------------------------------------------
         ref
             .watch(RtcChannelState.isJoinedChannelProvider.notifier)
             .update((state) => true);
-
-        //
       },
 
       // 他ユーザがチャンネル参加してきた場合
       userJoined: (int uid, int elapsed) {
-        // print('userJoined ${uid}');
-        // notifier.setRemoteUid(uid);
         ref
             .watch(RtcChannelState.remoteUidProvider.notifier)
             .update((state) => uid);
@@ -97,24 +85,16 @@ final agoraRtcEngineCreatorProvider = Provider((ref) {
 
       // チャンネル参加がオフラインになった場合
       userOffline: (int uid, UserOfflineReason reason) {
-        // print('userOffline ${uid}');
-        // notifier.setRemoteUid(0);
         ref
             .watch(RtcChannelState.remoteUidProvider.notifier)
             .update((state) => 0);
       },
+
       // チャンネル離脱した場合
       leaveChannel: (RtcStats rtcStats) {
-        // --------------------------------------------------
-        //
-        // チャンネル離脱済みであることをアプリ内で状態として保持する
-        //
-        // --------------------------------------------------
         ref
             .watch(RtcChannelState.isJoinedChannelProvider.notifier)
             .update((state) => false);
-
-        //
       },
     );
 
