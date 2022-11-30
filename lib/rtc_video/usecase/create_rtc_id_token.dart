@@ -7,13 +7,16 @@ import '../domain/rtc_channel_state.dart';
 import '../infrastructure/rtc_video_repository.dart';
 import '../infrastructure/rtc_video_repository_agora.dart';
 
-final createRtcIdTokenUsecaseProvider = Provider((ref) async {
-  final RtcVideoRepository rtcVideoRepository =
-      await ref.watch(rtcVideoRepositoryAgoraProvider);
-
-  final channelName = ref.watch(channelNameProvider);
-
+final createRtcIdTokenUsecaseProvider = Provider((ref) {
   Future<String> execute() async {
+    final rtcVideoRepositoryAgoraCreator =
+        ref.watch(rtcVideoRepositoryAgoraCreatorProvider);
+
+    final RtcVideoRepository rtcVideoRepository =
+        await rtcVideoRepositoryAgoraCreator();
+
+    final channelName = ref.watch(channelNameProvider);
+
     try {
       final rtcIdToken = await rtcVideoRepository.createRtcIdToken(
         channelName: channelName,

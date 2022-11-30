@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
@@ -8,12 +9,18 @@ import 'package:path_provider/path_provider.dart';
 import '../../common/common.dart';
 import '../domain/rtc_channel_state.dart';
 
-final appIdProvider = Provider((ref) => dotenv.get("APP_ID"));
+final appIdCreatorProvider = Provider((ref) {
+  String appIdCreator() {
+    return dotenv.get("APP_ID");
+  }
 
-final tempLogConfigProvider = Provider((ref) {
+  return appIdCreator;
+});
+
+final tempLogConfigCreatorProvider = Provider((ref) {
   //
 
-  Future<LogConfig?> setTempLogConfig() async {
+  Future<LogConfig?> tempLogConfigCreator() async {
     // ログ出力
     try {
       Directory tempDir = await getTemporaryDirectory();
@@ -36,24 +43,25 @@ final tempLogConfigProvider = Provider((ref) {
     }
   }
 
-  return setTempLogConfig();
+  return tempLogConfigCreator;
 });
 
 final agoraRtcEngineCreatorProvider = Provider((ref) {
-  // final notifier = ref.read(rtcChannelStateNotifierProvider.notifier);
-
-  final appId = ref.watch(appIdProvider);
+  //
 
   Future<RtcEngine> agoraRtcEngineCreator() async {
+    final appIdCreator = ref.watch(appIdCreatorProvider);
+    final appId = appIdCreator();
+
     // log設定
-    final tempLogConfig = await ref.watch(tempLogConfigProvider);
+    final tempLogConfigCreator = ref.watch(tempLogConfigCreatorProvider);
+    final tempLogConfig = await tempLogConfigCreator();
 
     // 接続先のAgoraのプロジェクトをAppIdで指定
     // ログ出力先も指定
     final RtcEngineContext context = RtcEngineContext(
       appId,
       logConfig: tempLogConfig,
-      // logConfig: null,
     );
 
     // RTC client instance作成

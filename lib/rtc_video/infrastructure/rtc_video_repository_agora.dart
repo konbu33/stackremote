@@ -10,21 +10,15 @@ import '../../common/common.dart';
 import 'agora_rtc_video_engine_provider.dart';
 import 'rtc_video_repository.dart';
 
-final rtcVideoRepositoryAgoraProvider = Provider((ref) async {
-  final agoraRtcEngineCreator = ref.watch(agoraRtcEngineCreatorProvider);
-  final rtcEngine = await agoraRtcEngineCreator();
+final rtcVideoRepositoryAgoraCreatorProvider = Provider((ref) {
+  Future<RtcVideoRepositoryAgora> rtcVideoRepositoryAgoraCreator() async {
+    final agoraRtcEngineCreator = ref.watch(agoraRtcEngineCreatorProvider);
+    final rtcEngine = await agoraRtcEngineCreator();
 
-  // final agoraRtcEngineAsyncValue = ref.watch(agoraRtcEngineProvider);
+    return RtcVideoRepositoryAgora(rtcEngine: rtcEngine);
+  }
 
-  // final rtcEngine = agoraRtcEngineAsyncValue.when(data: (data) {
-  //   return data;
-  // }, error: (error, stackTrace) {
-  //   logger.d("error: $error, stackTracke: $stackTrace");
-  // }, loading: () {
-  //   logger.d("loading...");
-  // });
-
-  return RtcVideoRepositoryAgora(rtcEngine: rtcEngine);
+  return rtcVideoRepositoryAgoraCreator;
 });
 
 class RtcVideoRepositoryAgora implements RtcVideoRepository {

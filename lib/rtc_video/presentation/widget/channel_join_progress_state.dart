@@ -42,7 +42,7 @@ class ChannelJoinProgressState extends AsyncNotifier<void> {
       //
       // --------------------------------------------------
       try {
-        final channelLeaveUsecase = await ref.read(channelLeaveUsecaseProvider);
+        final channelLeaveUsecase = ref.read(channelLeaveUsecaseProvider);
         await channelLeaveUsecase();
 
         //
@@ -116,7 +116,7 @@ class ChannelJoinProgressState extends AsyncNotifier<void> {
 
       try {
         final createRtcIdTokenUsecase =
-            await ref.watch(createRtcIdTokenUsecaseProvider);
+            ref.watch(createRtcIdTokenUsecaseProvider);
 
         final rtcIdToken = await createRtcIdTokenUsecase();
 
@@ -139,7 +139,7 @@ class ChannelJoinProgressState extends AsyncNotifier<void> {
       //
       // --------------------------------------------------
       try {
-        final channelJoinUsecase = await ref.read(channelJoinUsecaseProvider);
+        final channelJoinUsecase = ref.read(channelJoinUsecaseProvider);
         await channelJoinUsecase();
 
         //
