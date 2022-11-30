@@ -6,7 +6,7 @@ import '../../channel/domain/channel_exception.dart';
 import '../../common/common.dart';
 import '../../user/user.dart';
 
-final registerChannelAndUserInDBUsecaseProvider = Provider((ref) {
+final channelJoinRegisterChannelAndUserInDBUsecaseProvider = Provider((ref) {
   //
 
   Future<void> execute() async {
@@ -34,21 +34,19 @@ final registerChannelAndUserInDBUsecaseProvider = Provider((ref) {
       }
 
       //
-    } on Exception catch (e) {
-      if (e is ChannelException) {
-        logger.d("$e");
-        switch (e.code) {
+    } on ChannelException catch (e) {
+      logger.d("$e");
+      switch (e.code) {
 
-          // チャンネルが存在しない場合
-          case "not_exists":
-            isExistChannel = false;
+        // チャンネルが存在しない場合
+        case "not_exists":
+          isExistChannel = false;
 
-            break;
+          break;
 
-          //
-          default:
-            break;
-        }
+        //
+        default:
+          break;
       }
     }
 
