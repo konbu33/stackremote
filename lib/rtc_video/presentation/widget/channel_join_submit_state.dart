@@ -33,15 +33,29 @@ class ChannelJoinSubmitState with _$ChannelJoinSubmitState {
 // StateNotifier
 //
 // --------------------------------------------------
-class ChannelJoinSubmitStateNotifier
-    extends StateNotifier<ChannelJoinSubmitState> {
-  ChannelJoinSubmitStateNotifier({
-    required String channelJoinSubmitWidgetName,
-    required Function onSubmit,
-  }) : super(ChannelJoinSubmitState.create(
-          channelJoinSubmitWidgetName: channelJoinSubmitWidgetName,
-          onSubmit: onSubmit,
-        ));
+class ChannelJoinSubmitStateNotifier extends Notifier<ChannelJoinSubmitState> {
+  @override
+  ChannelJoinSubmitState build() {
+    void Function()? onSubmit() {
+      final state = ref.watch(
+          AgoraVideoChannelJoinPageState.channelNameFieldStateNotifierProvider);
+
+      return state.channelNameIsValidate.isValid == false
+          ? null
+          : () {
+              // channel参加
+              ref
+                  .read(AgoraVideoChannelJoinPageState
+                      .channelJoinProgressStateProvider.notifier)
+                  .channelJoin();
+            };
+    }
+
+    return ChannelJoinSubmitState.create(
+      channelJoinSubmitWidgetName: "チャンネル参加",
+      onSubmit: onSubmit,
+    );
+  }
 }
 
 // --------------------------------------------------
@@ -49,37 +63,16 @@ class ChannelJoinSubmitStateNotifier
 // typedef Provider
 //
 // --------------------------------------------------
-typedef ChannelJoinSubmitStateProvider = StateNotifierProvider<
-    ChannelJoinSubmitStateNotifier, ChannelJoinSubmitState>;
+typedef ChannelJoinSubmitStateNotifierProvider
+    = NotifierProvider<ChannelJoinSubmitStateNotifier, ChannelJoinSubmitState>;
 
 // --------------------------------------------------
 //
 // StateNotifierProviderCreator
 //
 // --------------------------------------------------
-ChannelJoinSubmitStateProvider channelJoinSubmitStateNotifierProviderCreator() {
-  return StateNotifierProvider<ChannelJoinSubmitStateNotifier,
-      ChannelJoinSubmitState>(
-    (ref) {
-      Function? onSubmit({required BuildContext context}) {
-        final state = ref.watch(AgoraVideoChannelJoinPageState
-            .channelNameFieldStateNotifierProvider);
-
-        return state.channelNameIsValidate.isValid == false
-            ? null
-            : () {
-                // channel参加
-                ref
-                    .read(AgoraVideoChannelJoinPageState
-                        .channelJoinProgressStateProvider.notifier)
-                    .channelJoin();
-              };
-      }
-
-      return ChannelJoinSubmitStateNotifier(
-        channelJoinSubmitWidgetName: "チャンネル参加",
-        onSubmit: onSubmit,
-      );
-    },
-  );
+ChannelJoinSubmitStateNotifierProvider
+    channelJoinSubmitStateNotifierProviderCreator() {
+  return NotifierProvider<ChannelJoinSubmitStateNotifier,
+      ChannelJoinSubmitState>(() => ChannelJoinSubmitStateNotifier());
 }

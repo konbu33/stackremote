@@ -9,7 +9,7 @@ class ChannelJoinSubmitWidget extends HookConsumerWidget {
     required this.channelJoinSubmitStateProvider,
   }) : super(key: key);
 
-  final ChannelJoinSubmitStateProvider channelJoinSubmitStateProvider;
+  final ChannelJoinSubmitStateNotifierProvider channelJoinSubmitStateProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,7 +24,7 @@ class ChannelJoinSubmitWidget extends HookConsumerWidget {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
             )),
-            onPressed: channelJoinSubmitState.onSubmit(context: context),
+            onPressed: channelJoinSubmitState.onSubmit(),
             child: Text(channelJoinSubmitState.channelJoinSubmitWidgetName),
           ),
         ),

@@ -30,29 +30,6 @@ class AgoraVideoPageState {
       void Function() buidChannelLeaveOnSubmit() {
         return () async {
           ref.read(channelLeaveProgressStateProvider.notifier).channelLeave();
-
-          // // --------------------------------------------------
-          // //
-          // // チャンネル離脱
-          // //
-          // // --------------------------------------------------
-          // final channelLeaveUsecase =
-          //     await ref.read(channelLeaveUsecaseProvider);
-          // await channelLeaveUsecase();
-
-          // // --------------------------------------------------
-          // //
-          // // DBのユーザ情報をクリア
-          // //
-          // // --------------------------------------------------
-          // final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
-          // await userUpdateUsecase<FieldValue>(
-          //   comment: "",
-          //   leavedAt: FieldValue.serverTimestamp(),
-          //   isOnLongPressing: false,
-          //   pointerPosition: const Offset(0, 0),
-          //   displayPointerPosition: const Offset(0, 0),
-          // );
         };
       }
 

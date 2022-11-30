@@ -96,39 +96,15 @@ class AgoraVideoPageWidgets {
         appbarActionIconStateNotifierProvider: ref.watch(
             AgoraVideoPageState.channelLeaveSubmitIconStateNotifierProvider),
       );
-      // return ChannelLeaveSubmitIconWidget(
-      //   channelLeaveSubmitIconStateNotifierProvider:
-      //       AgoraVideoPageState.channelLeaveSubmitIconStateNotifierProvider,
-      // );
     }));
 
-    // final Widget widget = Consumer(builder: ((context, ref, child) {
-    //   return ChannelLeaveSubmitIconWidget(
-    //     channelLeaveSubmitIconStateEx:
-    //         AgoraVideoPageState.channelLeaveSubmitIconStateEx,
-    //   );
-    //   // return ChannelLeaveSubmitIconWidget(
-    //   //   channelLeaveSubmitIconStateNotifierProvider:
-    //   //       AgoraVideoPageState.channelLeaveSubmitIconStateNotifierProvider,
-    //   // );
-    // }));
     return widget;
   }
 
   // Local Preview Widget
   static Widget buildLocalPreviewWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      final isJoinedChannel =
-          ref.watch(RtcChannelState.isJoinedChannelProvider);
-
-      // return AgoraVideoView(
-      //   controller: VideoViewController(
-      //     rtcEngine: createAgoraRtcEngine(),
-      //     canvas: VideoCanvas(uid: state.localUid),
-      //   ),
-      // );
-
-      return AgoraVideoLocalPreviewWidget(isJoinedChannel: isJoinedChannel);
+      return const AgoraVideoLocalPreviewWidget();
     }));
     return widget;
   }
@@ -138,24 +114,6 @@ class AgoraVideoPageWidgets {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       final channelName = ref.watch(channelNameProvider);
       final remoteUid = ref.watch(RtcChannelState.remoteUidProvider);
-
-      // // if (_remoteUid != null) {
-      // return AgoraVideoView(
-      //   controller: VideoViewController.remote(
-      //     rtcEngine: createAgoraRtcEngine(),
-      //     canvas: VideoCanvas(uid: state.remoteUid),
-      //     connection: RtcConnection(
-      //       channelId: state.channelName,
-      //       localUid: state.localUid,
-      //     ),
-      //   ),
-      // );
-      // // } else {
-      // //   return const Text(
-      // //     'Please wait for remote user to join',
-      // //     textAlign: TextAlign.center,
-      // //   );
-      // // }
 
       return AgoraVideoRemotePreviewWidget(
         channelName: channelName,
