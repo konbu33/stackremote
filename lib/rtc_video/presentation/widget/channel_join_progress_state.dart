@@ -1,15 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../channel/domain/channel.dart';
-import '../../../user/user.dart';
 import '../../usecase/channel_leave.dart';
+import '../../usecase/channel_leave_clear_user_in_db.dart';
 import '../page/agora_video_channel_join_page_state.dart';
 import '../../usecase/channel_join.dart';
 import '../../usecase/create_rtc_id_token.dart';
-import '../../usecase/register_channel_and_user_in_db.dart';
+import '../../usecase/channel_join_register_channel_and_user_in_db.dart';
 import '../../domain/rtc_channel_state.dart';
 
 // --------------------------------------------------
@@ -59,14 +57,11 @@ class ChannelJoinProgressState extends AsyncNotifier<void> {
       //
       // --------------------------------------------------
       try {
-        final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
-        await userUpdateUsecase<FieldValue>(
-          comment: "",
-          leavedAt: FieldValue.serverTimestamp(),
-          isOnLongPressing: false,
-          pointerPosition: const Offset(0, 0),
-          displayPointerPosition: const Offset(0, 0),
-        );
+        final channelLeaveClearUserInDBUsecase =
+            ref.read(channelLeaveClearUserInDBUsecaseProvider);
+        await channelLeaveClearUserInDBUsecase();
+
+        //
       } on Exception catch (e, s) {
         final message = "${DateTime.now()}: User情報のクリアに失敗しました。: $e, $s";
         setMessage(message);
@@ -157,7 +152,7 @@ class ChannelJoinProgressState extends AsyncNotifier<void> {
       //
       // --------------------------------------------------
       final registerChannelAndUserInDBUsecase =
-          ref.watch(registerChannelAndUserInDBUsecaseProvider);
+          ref.watch(channelJoinRegisterChannelAndUserInDBUsecaseProvider);
 
       try {
         registerChannelAndUserInDBUsecase();
