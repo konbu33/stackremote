@@ -7,7 +7,6 @@ import '../../../common/common.dart';
 
 import '../../common/create_firebse_auth_exception_message.dart';
 import '../../usecase/current_user_change_password.dart';
-import '../widget/description_message_state.dart';
 import '../widget/login_submit_state.dart';
 import '../widget/password_field_state.dart';
 
@@ -81,36 +80,60 @@ class ChangePasswordPageState {
   //
   // --------------------------------------------------
 
+  // static final descriptionMessageStateProvider =
+  //     descriptionMessageStateProviderCreator(
+  //   message: "入力間違い防止のため、2回入力して下さい。",
+  // );
+
   static final descriptionMessageStateProvider =
-      descriptionMessageStateProviderCreator(
-    message: "入力間違い防止のため、2回入力して下さい。",
-  );
+      StateProvider.autoDispose((ref) => "入力間違い防止のため、2回入力して下さい。");
 
   // --------------------------------------------------
   //
   //   attentionMessageStateProvider
   //
   // --------------------------------------------------
-  static final attentionMessageStateProvider = Provider.autoDispose((ref) {
+  // static final attentionMessageStateProvider = Provider.autoDispose((ref) {
+  //   //
+
+  //   final checkPasswordIsValidate = ref.watch(checkPasswordIsValidateProvider);
+  //   final checkPasswordIsMatch = ref.watch(checkPasswordIsMatchProvider);
+
+  //   final passwordIsValidate = checkPasswordIsValidate();
+
+  //   if (!passwordIsValidate) {
+  //     return descriptionMessageStateProviderCreator();
+  //   }
+
+  //   final passwordIsMatch = checkPasswordIsMatch();
+
+  //   if (!passwordIsMatch) {
+  //     const String notMatchMessage = "入力したパスワードが不一致です。";
+  //     return descriptionMessageStateProviderCreator(message: notMatchMessage);
+  //   }
+
+  //   return descriptionMessageStateProviderCreator();
+  // });
+
+  static final attentionMessageStateProvider = StateProvider.autoDispose((ref) {
     //
 
+    // 個別PasswordField毎にvalidate確認
     final checkPasswordIsValidate = ref.watch(checkPasswordIsValidateProvider);
-    final checkPasswordIsMatch = ref.watch(checkPasswordIsMatchProvider);
-
     final passwordIsValidate = checkPasswordIsValidate();
 
-    if (!passwordIsValidate) {
-      return descriptionMessageStateProviderCreator();
-    }
+    if (!passwordIsValidate) return "";
 
+    // 複数PasswordField間の入力値の一致確認
+    final checkPasswordIsMatch = ref.watch(checkPasswordIsMatchProvider);
     final passwordIsMatch = checkPasswordIsMatch();
 
     if (!passwordIsMatch) {
       const String notMatchMessage = "入力したパスワードが不一致です。";
-      return descriptionMessageStateProviderCreator(message: notMatchMessage);
+      return notMatchMessage;
     }
 
-    return descriptionMessageStateProviderCreator();
+    return "";
   });
 
 // --------------------------------------------------
@@ -128,8 +151,8 @@ class ChangePasswordPageState {
     final checkPasswordIsValidate = ref.watch(checkPasswordIsValidateProvider);
     final checkPasswordIsMatch = ref.watch(checkPasswordIsMatchProvider);
 
-    final attentionMessageStateNotifier =
-        ref.watch(ref.watch(attentionMessageStateProvider).notifier);
+    // final attentionMessageStateNotifier =
+    //     ref.watch(ref.watch(attentionMessageStateProvider).notifier);
 
     // --------------------------------------------------
     //  onSubmit関数の生成
@@ -163,7 +186,9 @@ class ChangePasswordPageState {
               );
 
               const String message = "パスワード変更しました。";
-              attentionMessageStateNotifier.setMessage(message);
+              ref
+                  .read(attentionMessageStateProvider.notifier)
+                  .update((state) => message);
               //
 
             } on firebase_auth.FirebaseAuthException catch (e) {
@@ -173,7 +198,9 @@ class ChangePasswordPageState {
                   ref.read(createFirebaseAuthExceptionMessageProvider);
 
               final String message = createFirebaseExceptionMessage(e);
-              attentionMessageStateNotifier.setMessage(message);
+              ref
+                  .read(attentionMessageStateProvider.notifier)
+                  .update((state) => message);
             }
           };
     }

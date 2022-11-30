@@ -5,7 +5,7 @@ import '../../../common/common.dart';
 
 import '../../usecase/check_email_verified.dart';
 
-import '../widget/description_message_widget.dart';
+import '../../../common/widget/description_message_widget.dart';
 import '../widget/login_submit_widget.dart';
 import 'wait_email_verified_page_state.dart';
 

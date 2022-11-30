@@ -1,4 +1,3 @@
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../channel/channel.dart';
@@ -17,20 +16,16 @@ final createRtcIdTokenUsecaseProvider = Provider((ref) {
 
     final channelName = ref.watch(channelNameProvider);
 
-    try {
-      final rtcIdToken = await rtcVideoRepository.createRtcIdToken(
-        channelName: channelName,
-        localUid: RtcChannelState.localUid,
-        account: RtcChannelState.account,
-        rtcIdTokenType: RtcChannelState.rtcIdTokenType,
-        role: RtcChannelState.role,
-        privilegeExpireTime: RtcChannelState.privilegeExpireTime,
-      );
+    final rtcIdToken = await rtcVideoRepository.createRtcIdToken(
+      channelName: channelName,
+      localUid: RtcChannelState.localUid,
+      account: RtcChannelState.account,
+      rtcIdTokenType: RtcChannelState.rtcIdTokenType,
+      role: RtcChannelState.role,
+      privilegeExpireTime: RtcChannelState.privilegeExpireTime,
+    );
 
-      return rtcIdToken;
-    } on FirebaseFunctionsException catch (_) {
-      rethrow;
-    }
+    return rtcIdToken;
   }
 
   return execute;

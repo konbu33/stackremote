@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../widget/description_message_widget.dart';
+import '../../../common/widget/description_message_widget.dart';
 import '../widget/login_submit_widget.dart';
 import '../widget/password_field_widget.dart';
 
@@ -77,7 +77,7 @@ class ChangePasswordPageWidgets {
     final Widget widget = Consumer(builder: (context, ref, child) {
       return DescriptionMessageWidget(
         descriptionMessageStateProvider:
-            ref.watch(ChangePasswordPageState.attentionMessageStateProvider),
+            ChangePasswordPageState.attentionMessageStateProvider,
         textStyle: textStyle,
       );
     });

@@ -7,7 +7,6 @@ import '../../common/create_firebse_auth_exception_message.dart';
 import '../../usecase/current_user_send_verify_email.dart';
 import '../../usecase/service_signout.dart';
 
-import '../widget/description_message_state.dart';
 import '../widget/login_submit_state.dart';
 
 class WaitEmailVerifiedPageState {
@@ -22,9 +21,12 @@ class WaitEmailVerifiedPageState {
     もし、メールが届いていない場合、下記からメールを再送信可能です。
   ''';
 
+  // static final descriptionMessageStateProvider =
+  //     descriptionMessageStateProviderCreator(
+  //         message: message.replaceAll(" ", ""));
+
   static final descriptionMessageStateProvider =
-      descriptionMessageStateProviderCreator(
-          message: message.replaceAll(" ", ""));
+      StateProvider.autoDispose((ref) => message.replaceAll(" ", ""));
 
   // --------------------------------------------------
   //
@@ -61,8 +63,11 @@ class WaitEmailVerifiedPageState {
   //   attentionMessageStateProvider
   //
   // --------------------------------------------------
+  // static final attentionMessageStateProvider =
+  //     descriptionMessageStateProviderCreator();
+
   static final attentionMessageStateProvider =
-      descriptionMessageStateProviderCreator();
+      StateProvider.autoDispose((ref) => "");
 
 // --------------------------------------------------
 //
@@ -70,8 +75,8 @@ class WaitEmailVerifiedPageState {
 //
 // --------------------------------------------------
   static final onSubmitStateProvider = Provider.autoDispose((ref) {
-    final attentionMessageStateNotifier =
-        ref.watch(attentionMessageStateProvider.notifier);
+    // final attentionMessageStateNotifier =
+    //     ref.watch(attentionMessageStateProvider.notifier);
 
     // --------------------------------------------------
     //  onSubmit関数の生成
@@ -89,7 +94,9 @@ class WaitEmailVerifiedPageState {
               await currentUserSendVerifyEmailUsecase();
 
               const String message = "メール再送しました。";
-              attentionMessageStateNotifier.setMessage(message);
+              ref
+                  .read(attentionMessageStateProvider.notifier)
+                  .update((state) => message);
               //
 
             } on firebase_auth.FirebaseAuthException catch (e) {
@@ -99,7 +106,9 @@ class WaitEmailVerifiedPageState {
                   ref.read(createFirebaseAuthExceptionMessageProvider);
 
               final String message = createFirebaseExceptionMessage(e);
-              attentionMessageStateNotifier.setMessage(message);
+              ref
+                  .read(attentionMessageStateProvider.notifier)
+                  .update((state) => message);
             }
           };
     }
