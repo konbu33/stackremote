@@ -1,11 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../../common/create_firebse_auth_exception_message.dart';
 import '../../usecase/current_user_change_password.dart';
 import '../widget/login_submit_state.dart';
 import '../widget/password_field_state.dart';
@@ -191,16 +189,12 @@ class ChangePasswordPageState {
                   .update((state) => message);
               //
 
-            } on firebase_auth.FirebaseAuthException catch (e) {
+            } on StackremoteException catch (e) {
               logger.d("$e");
 
-              final createFirebaseExceptionMessage =
-                  ref.read(createFirebaseAuthExceptionMessageProvider);
-
-              final String message = createFirebaseExceptionMessage(e);
               ref
                   .read(attentionMessageStateProvider.notifier)
-                  .update((state) => message);
+                  .update((state) => e.message);
             }
           };
     }

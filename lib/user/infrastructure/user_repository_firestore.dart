@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/channel/channel.dart';
 
+import '../../channel/channel.dart';
 import '../../common/common.dart';
 
 import '../domain/user.dart';
@@ -59,7 +59,13 @@ class UserRepositoryFireBase implements UserRepository {
       //
     } on FirebaseException catch (e) {
       logger.d("$e");
-      rethrow;
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        message: e.message ?? "",
+        code: e.code,
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -99,7 +105,13 @@ class UserRepositoryFireBase implements UserRepository {
       //
     } on FirebaseException catch (e) {
       logger.d("$e");
-      rethrow;
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        message: e.message ?? "",
+        code: e.code,
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -139,7 +151,13 @@ class UserRepositoryFireBase implements UserRepository {
       //
     } on FirebaseException catch (e) {
       logger.d("$e");
-      rethrow;
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        message: e.message ?? "",
+        code: e.code,
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -161,7 +179,13 @@ class UserRepositoryFireBase implements UserRepository {
       //
     } on FirebaseException catch (e) {
       logger.d("$e");
-      rethrow;
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        message: e.message ?? "",
+        code: e.code,
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -181,7 +205,13 @@ class UserRepositoryFireBase implements UserRepository {
       //
     } on FirebaseException catch (e) {
       logger.d("$e");
-      rethrow;
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        message: e.message ?? "",
+        code: e.code,
+        stackTrace: e.stackTrace,
+      );
     }
   }
 }

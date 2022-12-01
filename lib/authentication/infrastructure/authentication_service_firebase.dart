@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/authentication/common/firebase_auth_exception_enum.dart';
 
 import '../../common/common.dart';
 import '../domain/firebase_auth_user.dart';
@@ -15,6 +16,7 @@ final firebaseAuthInstanceProvider = Provider((ref) {
 final authenticationServiceFirebaseProvider =
     Provider<AuthenticationService>((ref) {
   final firebaseAuthInstance = ref.watch(firebaseAuthInstanceProvider);
+
   return AuthenticationServiceFirebase(
     firebaseAuthInstance: firebaseAuthInstance,
   );
@@ -83,10 +85,14 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       await user.delete();
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
-      switch (e.code) {
-        default:
-          rethrow;
-      }
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        code: e.code,
+        // message: firebaseAuthExceptionEnum.messageToJapanese(e),
+        message: FirebaseAuthExceptionEnum.messageToJapanese(e),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -107,10 +113,13 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       return user;
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
-      switch (e.code) {
-        default:
-          rethrow;
-      }
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        code: e.code,
+        message: FirebaseAuthExceptionEnum.messageToJapanese(e),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -131,10 +140,13 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       return user.emailVerified;
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
-      switch (e.code) {
-        default:
-          rethrow;
-      }
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        code: e.code,
+        message: FirebaseAuthExceptionEnum.messageToJapanese(e),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -152,10 +164,13 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       return user;
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
-      switch (e.code) {
-        default:
-          rethrow;
-      }
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        code: e.code,
+        message: FirebaseAuthExceptionEnum.messageToJapanese(e),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -177,10 +192,13 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       await user.sendEmailVerification();
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
-      switch (e.code) {
-        default:
-          rethrow;
-      }
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        code: e.code,
+        message: FirebaseAuthExceptionEnum.messageToJapanese(e),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -199,10 +217,13 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       await user.updatePassword(password);
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
-      switch (e.code) {
-        default:
-          rethrow;
-      }
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        code: e.code,
+        message: FirebaseAuthExceptionEnum.messageToJapanese(e),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -229,19 +250,13 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       return res;
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
-      switch (e.code) {
-        case "invalid-email":
-          rethrow;
 
-        case "user-not-found":
-          rethrow;
-
-        case "too-many-requests":
-          rethrow;
-
-        default:
-          rethrow;
-      }
+      throw StackremoteException(
+        plugin: e.plugin,
+        code: e.code,
+        message: FirebaseAuthExceptionEnum.messageToJapanese(e),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -260,13 +275,13 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       return res;
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
-      switch (e.code) {
-        case "email-already-in-use":
-          rethrow;
 
-        default:
-          rethrow;
-      }
+      throw StackremoteException(
+        plugin: e.plugin,
+        code: e.code,
+        message: FirebaseAuthExceptionEnum.messageToJapanese(e),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -281,10 +296,13 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       await firebaseAuthInstance.signOut();
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
-      switch (e.code) {
-        default:
-          rethrow;
-      }
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        code: e.code,
+        message: FirebaseAuthExceptionEnum.messageToJapanese(e),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 }

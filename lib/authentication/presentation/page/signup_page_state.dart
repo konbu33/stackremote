@@ -1,10 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
-
-import '../../common/create_firebse_auth_exception_message.dart';
 import '../../usecase/current_user_send_verify_email.dart';
 import '../../usecase/service_use_registration.dart';
 
@@ -17,6 +14,7 @@ class SignUpPageState {
   //
   //   loginIdFieldStateProvider
   //   passwordFieldStateProvider
+  //   attentionMessageProvider
   //
   // --------------------------------------------------
   static final loginIdFieldStateProvider =
@@ -24,6 +22,9 @@ class SignUpPageState {
 
   static final passwordFieldStateProvider =
       passwordFieldStateNotifierProviderCreator();
+
+  static final attentionMessageStateProvider =
+      StateProvider.autoDispose((ref) => "");
 
   // --------------------------------------------------
   //
@@ -75,23 +76,10 @@ class SignUpPageState {
                 await currentUserSendVerifyEmailUsecase();
 
                 //
-              } on firebase_auth.FirebaseAuthException catch (e) {
-                void displayNotificationMessage() {
-                  final createFirebaseAuthExceptionMessage =
-                      ref.read(createFirebaseAuthExceptionMessageProvider);
-
-                  final buildSnackBarWidget = ref.read(snackBarWidgetProvider);
-
-                  final snackBar =
-                      buildSnackBarWidget<firebase_auth.FirebaseAuthException>(
-                    e,
-                    createFirebaseAuthExceptionMessage,
-                  );
-
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }
-
-                displayNotificationMessage();
+              } on StackremoteException catch (e) {
+                ref
+                    .read(attentionMessageStateProvider.notifier)
+                    .update((state) => e.message);
               }
             };
       }

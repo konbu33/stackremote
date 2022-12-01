@@ -18,7 +18,7 @@ import 'package:flutter/material.dart';
 /// }
 /// ```
 @immutable
-class ChannelException implements Exception {
+class StackremoteException implements Exception {
   /// A generic class which provides exceptions in a Firebase-friendly format
   /// to users.
   ///
@@ -29,9 +29,9 @@ class ChannelException implements Exception {
   ///   print(e.toString());
   /// }
   /// ```
-  const ChannelException({
+  const StackremoteException({
     required this.plugin,
-    this.message,
+    required this.message,
     String? code,
     this.stackTrace,
     // ignore: unnecessary_this
@@ -44,7 +44,7 @@ class ChannelException implements Exception {
   final String plugin;
 
   /// The long form message of the exception.
-  final String? message;
+  final String message;
 
   /// The optional code to accommodate the message.
   ///
@@ -60,7 +60,7 @@ class ChannelException implements Exception {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    if (other is! ChannelException) return false;
+    if (other is! StackremoteException) return false;
     return other.hashCode == hashCode;
   }
 

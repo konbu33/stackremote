@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/presentation/widget/channel_join_progress_widget.dart';
 
 import '../../../common/common.dart';
 import '../../../menu/menu.dart';
 
+import '../widget/channel_join_progress_widget.dart';
 import '../widget/channel_join_submit_widget.dart';
 import '../widget/channel_name_field_widget.dart';
 

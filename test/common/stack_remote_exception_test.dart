@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stackremote/channel/domain/channel_exception.dart';
+import 'package:stackremote/common/stackremote_exception.dart';
 
 void main() {
   group('ChannelException', () {
@@ -7,7 +7,12 @@ void main() {
 
     test('コンストラクタでインスタンス生成した場合、引数指定した値が設定されること、それ以外はデフォルト値が設定されること', () {
       const String plugin = "pluginName";
-      const channelException = ChannelException(plugin: plugin);
+      const String message = "message";
+
+      const channelException = StackremoteException(
+        plugin: plugin,
+        message: message,
+      );
 
       expect(channelException.plugin, equals(plugin));
       expect(channelException.code, equals("unknown"));

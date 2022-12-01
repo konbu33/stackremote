@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/user/domain/user.dart';
 
 // improve: authentication関連への依存関係を無くしたい。
 import '../../../authentication/authentication.dart';
 
 import '../../../common/common.dart';
+import '../../domain/user.dart';
 import '../widget/nickname_field_widget.dart';
 import 'user_page_state.dart';
 

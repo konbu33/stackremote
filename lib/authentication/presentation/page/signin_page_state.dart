@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../../common/create_firebse_auth_exception_message.dart';
 import '../../usecase/service_signin.dart';
 
 import '../widget/login_submit_state.dart';
@@ -17,6 +15,7 @@ class SignInPageState {
   //  loginIdFieldStateProvider
   //  passwordFieldStateProvider
   //  isSignUpPagePushProvider
+  //  attentionMessageProvider
   //
   // --------------------------------------------------
   static final loginIdFieldStateProvider =
@@ -26,6 +25,9 @@ class SignInPageState {
       passwordFieldStateNotifierProviderCreator();
 
   static final isSignUpPagePushProvider = StateProvider((ref) => false);
+
+  static final attentionMessageStateProvider =
+      StateProvider.autoDispose((ref) => "");
 
   // --------------------------------------------------
   //
@@ -71,25 +73,10 @@ class SignInPageState {
                 await serviceSignInUsecase(email, password);
 
                 //
-              } on firebase_auth.FirebaseAuthException catch (e) {
-                logger.d("$e");
-
-                void displayNotificationMessage() {
-                  final createFirebaseAuthExceptionMessage =
-                      ref.read(createFirebaseAuthExceptionMessageProvider);
-
-                  final buildSnackBarWidget = ref.read(snackBarWidgetProvider);
-
-                  final snackBar =
-                      buildSnackBarWidget<firebase_auth.FirebaseAuthException>(
-                    e,
-                    createFirebaseAuthExceptionMessage,
-                  );
-
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }
-
-                displayNotificationMessage();
+              } on StackremoteException catch (e) {
+                ref
+                    .read(attentionMessageStateProvider.notifier)
+                    .update((state) => e.message);
               }
             };
       }

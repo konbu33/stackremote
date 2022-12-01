@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../../../common/widget/description_message_widget.dart';
 import '../widget/login_submit_widget.dart';
 import '../widget/password_field_widget.dart';
 

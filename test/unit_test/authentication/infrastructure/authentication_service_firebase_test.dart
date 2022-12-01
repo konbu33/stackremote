@@ -5,6 +5,7 @@ import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/authentication/authentication.dart';
+import 'package:stackremote/common/common.dart';
 
 // class MockAuthenticationService extends Mock implements AuthenticationService {}
 // final AuthenticationService authenticationService = MockAuthenticationService();
@@ -211,11 +212,11 @@ void main() {
         expect(
           () async => await authenticationService.signUp(email, password),
           allOf(
-            throwsA(isA<FirebaseAuthException>()),
+            throwsA(isA<StackremoteException>()),
             throwsA(
-              predicate<FirebaseAuthException>(
-                (firebaseAuthException) {
-                  expect(firebaseAuthException.code, equals(code));
+              predicate<StackremoteException>(
+                (stackremoteException) {
+                  expect(stackremoteException.code, equals(code));
                   return true;
                   //
                 },
@@ -258,11 +259,11 @@ void main() {
           expect(
             () async => await authenticationService.signIn(email, password),
             allOf(
-              throwsA(isA<FirebaseAuthException>()),
+              throwsA(isA<StackremoteException>()),
               throwsA(
-                predicate<FirebaseAuthException>(
-                  (firebaseAuthException) {
-                    expect(firebaseAuthException.code, equals(code));
+                predicate<StackremoteException>(
+                  (stackremoteException) {
+                    expect(stackremoteException.code, equals(code));
                     return true;
                     //
                   },

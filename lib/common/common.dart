@@ -23,3 +23,6 @@ export './widget/snackbar_widget.dart';
 
 export './widget/appbar_action_icon_state.dart';
 export './widget/appbar_action_icon_widget.dart';
+
+export './widget/description_message_widget.dart';
+export 'stackremote_exception.dart';

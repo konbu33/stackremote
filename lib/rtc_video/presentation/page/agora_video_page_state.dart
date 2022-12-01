@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/common/common.dart';
 
+import '../../../common/common.dart';
 import '../widget/channel_join_progress_state.dart';
 
 class AgoraVideoPageState {

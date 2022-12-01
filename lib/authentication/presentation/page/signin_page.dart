@@ -37,6 +37,8 @@ class SignInPage extends HookConsumerWidget {
             key: GlobalKey<FormState>(),
             child: Column(
               children: [
+                SignInPageWidgets.attentionMessageWidget(),
+                const SizedBox(height: 30),
                 SignInPageWidgets.loginIdField(),
                 const SizedBox(height: 30),
                 SignInPageWidgets.passwordField(),
@@ -60,6 +62,17 @@ class SignInPageWidgets {
             ref.watch(SignInPageState.goToSignUpIconStateProvider),
       );
     });
+    return widget;
+  }
+
+  // attentionMessageWidget
+  static Widget attentionMessageWidget() {
+    const textStyle = TextStyle(color: Colors.red);
+    final Widget widget = DescriptionMessageWidget(
+      descriptionMessageStateProvider:
+          SignInPageState.attentionMessageStateProvider,
+      textStyle: textStyle,
+    );
     return widget;
   }
 

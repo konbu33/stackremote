@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
-import '../../common/create_firebse_auth_exception_message.dart';
 import '../../usecase/current_user_send_verify_email.dart';
 import '../../usecase/service_signout.dart';
 
@@ -98,17 +96,10 @@ class WaitEmailVerifiedPageState {
                   .read(attentionMessageStateProvider.notifier)
                   .update((state) => message);
               //
-
-            } on firebase_auth.FirebaseAuthException catch (e) {
-              logger.d("$e");
-
-              final createFirebaseExceptionMessage =
-                  ref.read(createFirebaseAuthExceptionMessageProvider);
-
-              final String message = createFirebaseExceptionMessage(e);
+            } on StackremoteException catch (e) {
               ref
                   .read(attentionMessageStateProvider.notifier)
-                  .update((state) => message);
+                  .update((state) => e.message);
             }
           };
     }

@@ -44,6 +44,8 @@ class SignUpPage extends HookConsumerWidget {
             key: GlobalKey<FormState>(),
             child: Column(
               children: [
+                SignUpPageWidgets.attentionMessageWidget(),
+                const SizedBox(height: 30),
                 SignUpPageWidgets.loginIdField(),
                 const SizedBox(height: 30),
                 SignUpPageWidgets.passwordField(),
@@ -59,6 +61,17 @@ class SignUpPage extends HookConsumerWidget {
 }
 
 class SignUpPageWidgets {
+  // attentionMessageWidget
+  static Widget attentionMessageWidget() {
+    const textStyle = TextStyle(color: Colors.red);
+    final Widget widget = DescriptionMessageWidget(
+      descriptionMessageStateProvider:
+          SignUpPageState.attentionMessageStateProvider,
+      textStyle: textStyle,
+    );
+    return widget;
+  }
+
   // Login Id Field Widget
   static Widget loginIdField() {
     final Widget widget = LoginIdFieldWidget(

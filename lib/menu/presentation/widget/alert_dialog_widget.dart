@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../authentication/authentication.dart';
-import '../../../authentication/common/create_firebse_auth_exception_message.dart';
 import '../../../authentication/usecase/service_use_cancellation.dart';
 import '../../../common/common.dart';
 
@@ -17,16 +15,21 @@ class AlertDialogWidget extends StatefulHookConsumerWidget {
 }
 
 class _AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
-  String message = "";
+  // String message = "";
+
+  final attentionMessageStateProvider = StateProvider((ref) => "");
+
   TextStyle style = const TextStyle(color: Colors.red);
 
-  void setMessage(String newMessage) {
-    message = newMessage;
-    setState(() {});
-  }
+  // void setMessage(String newMessage) {
+  //   message = newMessage;
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final message = ref.watch(attentionMessageStateProvider);
+
     return AlertDialog(
       title: const Text("サービス利用登録解除"),
       content: Column(
@@ -55,7 +58,10 @@ class _AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
 
             try {
               await serviceUseCancellationUsecase();
-              setMessage("登録したメールアドレスを削除しました。");
+              const message = "登録したメールアドレスを削除しました。";
+              ref
+                  .read(attentionMessageStateProvider.notifier)
+                  .update((state) => message);
 
               sleep(const Duration(seconds: 3));
 
@@ -64,12 +70,11 @@ class _AlertDialogWidgetState extends ConsumerState<AlertDialogWidget> {
               notifier.updateIsSignIn(false);
 
               //
-            } on firebase_auth.FirebaseAuthException catch (e) {
-              logger.d("$e");
-
-              final createFirebaseExceptionMessage =
-                  ref.read(createFirebaseAuthExceptionMessageProvider);
-              setMessage(createFirebaseExceptionMessage(e));
+            } on StackremoteException catch (e) {
+              //   logger.d("$e");
+              ref
+                  .read(attentionMessageStateProvider.notifier)
+                  .update((state) => e.message);
             }
           },
           child: const Text("はい"),

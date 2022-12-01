@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:stackremote/channel/channel.dart';
-import 'package:stackremote/channel/domain/channel_exception.dart';
+import 'package:stackremote/common/stackremote_exception.dart';
 import 'package:stackremote/channel/domain/channel_repository.dart';
 import 'package:stackremote/channel/infrastructure/channel_repository_firestore.dart';
 
@@ -63,8 +63,8 @@ void main() {
         () async => await channelRepository.get(channelName: channelName),
         throwsA(
           allOf(
-            isA<ChannelException>(),
-            predicate<ChannelException>((channelException) {
+            isA<StackremoteException>(),
+            predicate<StackremoteException>((channelException) {
               expect(channelException.plugin, equals("repository"));
               expect(channelException.code, equals("not_exists"));
               expect(channelException.message, equals("コレクションが存在しません。"));
@@ -105,8 +105,8 @@ void main() {
         () async => await channelRepository.get(channelName: channelName),
         throwsA(
           allOf(
-            isA<ChannelException>(),
-            predicate<ChannelException>((channelException) {
+            isA<StackremoteException>(),
+            predicate<StackremoteException>((channelException) {
               expect(channelException.plugin, equals("repository"));
               expect(channelException.code, equals("not_exists"));
               expect(channelException.message, equals("コレクションが存在しません。"));

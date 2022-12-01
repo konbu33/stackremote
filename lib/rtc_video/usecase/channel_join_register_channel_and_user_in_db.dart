@@ -2,7 +2,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../authentication/authentication.dart';
 import '../../channel/channel.dart';
-import '../../channel/domain/channel_exception.dart';
 import '../../common/common.dart';
 import '../../user/user.dart';
 
@@ -34,7 +33,7 @@ final channelJoinRegisterChannelAndUserInDBUsecaseProvider = Provider((ref) {
       }
 
       //
-    } on ChannelException catch (e) {
+    } on StackremoteException catch (e) {
       logger.d("$e");
       switch (e.code) {
 
