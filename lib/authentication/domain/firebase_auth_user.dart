@@ -6,7 +6,7 @@ part 'firebase_auth_user.freezed.dart';
 
 // --------------------------------------------------
 //
-//   Freezed
+//   FirebaseAuthUser
 //
 // --------------------------------------------------
 @freezed
@@ -41,22 +41,13 @@ class FirebaseAuthUser with _$FirebaseAuthUser {
 
 // --------------------------------------------------
 //
-//  StateNotifier
+//  FirebaseAuthUserStateNotifier
 //
 // --------------------------------------------------
-class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
-  FirebaseAuthUserStateNotifier({
-    String? email,
-  }) : super(FirebaseAuthUser.create(
-          email: email ?? "",
-        )) {
-    initial();
-  }
-
-  void initial() {
-    state = FirebaseAuthUser.create(
-      email: "",
-    );
+class FirebaseAuthUserStateNotifier extends Notifier<FirebaseAuthUser> {
+  @override
+  FirebaseAuthUser build() {
+    return FirebaseAuthUser.create(email: "");
   }
 
   void userInformationRegiser(FirebaseAuthUser user) {
@@ -81,21 +72,16 @@ class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
 
 // --------------------------------------------------
 //
-//  FirebaseAuthUserStateNotifierProvider
-//
-// --------------------------------------------------
-typedef FirebaseAuthUserStateNotifierProvider
-    = StateNotifierProvider<FirebaseAuthUserStateNotifier, FirebaseAuthUser>;
-
-// --------------------------------------------------
-//
 //  firebaseAuthUserStateNotifierProviderCreator
 //
 // --------------------------------------------------
+typedef FirebaseAuthUserStateNotifierProvider
+    = NotifierProvider<FirebaseAuthUserStateNotifier, FirebaseAuthUser>;
+
 FirebaseAuthUserStateNotifierProvider
     firebaseAuthUserStateNotifierProviderCreator() {
-  return StateNotifierProvider<FirebaseAuthUserStateNotifier, FirebaseAuthUser>(
-    (ref) => FirebaseAuthUserStateNotifier(),
+  return NotifierProvider<FirebaseAuthUserStateNotifier, FirebaseAuthUser>(
+    () => FirebaseAuthUserStateNotifier(),
   );
 }
 

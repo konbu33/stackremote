@@ -38,7 +38,7 @@ void main() {
 
       //
       firebaseAuthUserStateNotifierProvider
-          .overrideWith((ref) => FakeFirebaseAuthUserStateNotifier()),
+          .overrideWith(() => FakeFirebaseAuthUserStateNotifier()),
     ]);
 
     //

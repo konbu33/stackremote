@@ -101,12 +101,13 @@ class FakeFirebaseAuthUser extends Fake implements FirebaseAuthUser {
   final String email = "fakexxx@test.com";
 }
 
-class FakeFirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser>
+class FakeFirebaseAuthUserStateNotifier extends Notifier<FirebaseAuthUser>
     implements FirebaseAuthUserStateNotifier {
-  FakeFirebaseAuthUserStateNotifier() : super(FakeFirebaseAuthUser());
-
   @override
-  void initial() {}
+  FirebaseAuthUser build() {
+    return FakeFirebaseAuthUser();
+  }
+
   @override
   void updateEmailVerified(bool value) {}
   @override

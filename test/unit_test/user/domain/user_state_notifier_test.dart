@@ -25,7 +25,7 @@ void main() {
     setUp(() {
       container = ProviderContainer(overrides: [
         firebaseAuthUserStateNotifierProvider
-            .overrideWith((ref) => FakeFirebaseAuthUserStateNotifier()),
+            .overrideWith(() => FakeFirebaseAuthUserStateNotifier()),
       ]);
 
       userStateNotifier = container.read(userStateNotifierProvider.notifier);
