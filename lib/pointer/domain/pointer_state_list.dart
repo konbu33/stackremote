@@ -2,7 +2,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../common/common.dart';
 import '../../user/user.dart';
 
 import 'pointer_state.dart';
@@ -40,12 +39,18 @@ class PointerStateList with _$PointerStateList {
 // StateNotifier
 //
 // --------------------------------------------------
-class PointerStateListStateNotifier extends StateNotifier<PointerStateList> {
-  PointerStateListStateNotifier({
-    required List<PointerState> pointerStateList,
-  }) : super(PointerStateList.create(
-          pointerStateList: pointerStateList,
-        ));
+class PointerStateListStateNotifier extends Notifier<PointerStateList> {
+  @override
+  PointerStateList build() {
+    final pointerStateList = ref.watch(pointerStateListProvider);
+
+    // logger.d("pointerStateList - $pointerStateList");
+
+    final newPointerStateList =
+        PointerStateList.create(pointerStateList: pointerStateList);
+
+    return newPointerStateList;
+  }
 }
 
 // --------------------------------------------------
@@ -54,14 +59,8 @@ class PointerStateListStateNotifier extends StateNotifier<PointerStateList> {
 //
 // --------------------------------------------------
 final pointerStateListStateNotifierProvider =
-    StateNotifierProvider<PointerStateListStateNotifier, PointerStateList>(
-        (ref) {
-  final pointerStateList = ref.watch(pointerStateProvider);
-
-  logger.d("pointerStateList - $pointerStateList");
-
-  return PointerStateListStateNotifier(pointerStateList: pointerStateList);
-});
+    NotifierProvider<PointerStateListStateNotifier, PointerStateList>(
+        () => PointerStateListStateNotifier());
 
 // --------------------------------------------------
 //
@@ -69,7 +68,7 @@ final pointerStateListStateNotifierProvider =
 //
 // --------------------------------------------------
 
-final pointerStateProvider = Provider((ref) {
+final pointerStateListProvider = Provider((ref) {
   final usersState = ref.watch(usersStateNotifierProvider);
 
   final pointerStateList = usersState.users.map((user) {
