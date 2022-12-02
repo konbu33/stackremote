@@ -95,8 +95,8 @@ class SignInPageWidgets {
   // Login Submit Widget
   static Widget loginSubmitWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
-      return LoginSubmitWidget(
-        loginSubmitStateProvider:
+      return OnSubmitButtonWidget(
+        onSubmitButtonStateProvider:
             ref.watch(SignInPageState.loginSubmitStateProvider),
       );
     });

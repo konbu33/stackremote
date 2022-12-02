@@ -5,7 +5,6 @@ import '../../../common/common.dart';
 
 import '../../usecase/service_signin.dart';
 
-import '../widget/login_submit_state.dart';
 import '../widget/loginid_field_state.dart';
 import '../widget/password_field_state.dart';
 
@@ -86,8 +85,8 @@ class SignInPageState {
       }
 
       final loginSubmitStateNotifierProvider =
-          loginSubmitStateNotifierProviderCreator(
-        loginSubmitWidgetName: loginSubmitWidgetName,
+          onSubmitButtonStateNotifierProviderCreator(
+        onSubmitButtonWidgetName: loginSubmitWidgetName,
         onSubmit: buildSignInOnSubmit(),
       );
 
