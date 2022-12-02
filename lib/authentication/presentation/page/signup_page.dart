@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../widget/login_submit_widget.dart';
 import '../widget/loginid_field_widget.dart';
 import '../widget/password_field_widget.dart';
 
@@ -91,8 +90,8 @@ class SignUpPageWidgets {
   // Login Submit Widget
   static Widget loginSubmitWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      return LoginSubmitWidget(
-        loginSubmitStateProvider:
+      return OnSubmitButtonWidget(
+        onSubmitButtonStateProvider:
             ref.watch(SignUpPageState.loginSubmitStateProvider),
       );
     }));

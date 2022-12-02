@@ -5,7 +5,6 @@ import '../../../common/common.dart';
 import '../../usecase/current_user_send_verify_email.dart';
 import '../../usecase/service_use_registration.dart';
 
-import '../widget/login_submit_state.dart';
 import '../widget/loginid_field_state.dart';
 import '../widget/password_field_state.dart';
 
@@ -88,8 +87,9 @@ class SignUpPageState {
         isOnSubmitable = true;
       }
 
-      final loginSubmitStateProvider = loginSubmitStateNotifierProviderCreator(
-        loginSubmitWidgetName: loginSubmitWidgetName,
+      final loginSubmitStateProvider =
+          onSubmitButtonStateNotifierProviderCreator(
+        onSubmitButtonWidgetName: loginSubmitWidgetName,
         onSubmit: buildSignUpOnSubmit(),
       );
 
