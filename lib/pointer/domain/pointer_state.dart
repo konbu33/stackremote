@@ -60,11 +60,16 @@ class PointerState with _$PointerState {
 // StateNotifier
 //
 // --------------------------------------------------
-class PointerStateNotifier extends StateNotifier<PointerState> {
-  PointerStateNotifier({
-    required String email,
-    String? nickName,
-  }) : super(PointerState.create(email: email, nickName: nickName));
+class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
+  @override
+  PointerState build() {
+    final userState = ref.watch(userStateNotifierProvider);
+
+    return PointerState.create(
+      email: userState.email,
+      nickName: userState.nickName,
+    );
+  }
 
   void updateIsOnLongPressing(bool isOnLongPressing) {
     state = state.copyWith(isOnLongPressing: isOnLongPressing);
@@ -107,15 +112,8 @@ class PointerStateNotifier extends StateNotifier<PointerState> {
 //
 // --------------------------------------------------
 final pointerStateNotifierProvider =
-    StateNotifierProvider.autoDispose<PointerStateNotifier, PointerState>(
-        (ref) {
-  final userState = ref.watch(userStateNotifierProvider);
-
-  return PointerStateNotifier(
-    email: userState.email,
-    nickName: userState.nickName,
-  );
-});
+    NotifierProvider.autoDispose<PointerStateNotifier, PointerState>(
+        () => PointerStateNotifier());
 
 // --------------------------------------------------
 //
