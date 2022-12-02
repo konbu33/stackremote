@@ -34,30 +34,6 @@ class Users with _$Users {
       );
 }
 
-// // --------------------------------------------------
-// //
-// // StateNotifier
-// //
-// // --------------------------------------------------
-// class UsersStateNotifier extends Notifier<Users> {
-//   @override
-//   Users build() {
-//     final userFetchAllUsecase = ref.watch(userFetchAllUsecaseProvider);
-//     final usersStream = userFetchAllUsecase();
-
-//     // usersStreamのConsuming開始。データが流れてきたら、stateを再構築する。
-//     usersStream.listen((event) {
-//       final users = Users.create(users: event.users);
-//       state = users;
-//       // return users;
-//     });
-
-//     final users = Users.create(users: []);
-//     return users;
-//   }
-
-// }
-
 // --------------------------------------------------
 //
 // StateNotifier
@@ -66,27 +42,59 @@ class Users with _$Users {
 class UsersStateNotifier extends Notifier<Users> {
   @override
   Users build() {
-    final usersStream = ref.watch(usersStreamProvider);
+    final userFetchAllUsecase = ref.watch(userFetchAllUsecaseProvider);
+    final usersStream = userFetchAllUsecase();
 
-    // usersStreamのConsuming開始。データが流れてきたら、stateを再構築する。
-    final usersList = usersStream.when(data: (data) {
-      return data.users;
-    }, error: (error, stackTrace) {
-      return [];
-    }, loading: () {
-      return [];
+    // usersStreamのConsuming開始。
+
+    // stateの初期化は、returnで行われると思われる。
+    // 初期化以降、このlistenで購読をし続けてけており、データが流れてきたら、stateを再更新する流れになると思われる。
+
+    // この時点で、エラー処理したい場合は、Streamのまま購読せずに、
+    // StreamProviderを介して、AsyncValueとして購読した方が、コードわかりやすくなりそう。
+    usersStream.listen((event) {
+      final users = Users.create(users: event.users);
+      state = users;
     });
 
-    List<User> newUsersList = [];
-
-    if (usersList.isNotEmpty) {
-      newUsersList = usersList as List<User>;
-    }
-
-    final users = Users.create(users: newUsersList);
+    // stateの初期化は、このreturnで行われると思われる。
+    final users = Users.create(users: []);
     return users;
   }
 }
+
+// // --------------------------------------------------
+// //
+// // StateNotifier
+// //
+// // --------------------------------------------------
+// class UsersStateNotifier extends Notifier<Users> {
+//   @override
+//   Users build() {
+//     final usersStream = ref.watch(usersStreamProvider);
+
+//     // usersStreamのConsuming開始。
+//     // stateの初期化は、returnで行われると思われる。
+//     // 初期化以降、このlistenで購読をし続けてけており、データが流れてきたら、stateを再更新する流れになると思われる。
+//     final usersList = usersStream.when(data: (data) {
+//       return data.users;
+//     }, error: (error, stackTrace) {
+//       return [];
+//     }, loading: () {
+//       return [];
+//     });
+
+//     List<User> newUsersList = [];
+
+//     if (usersList.isNotEmpty) {
+//       newUsersList = usersList as List<User>;
+//     }
+
+//     // stateの初期化は、このreturnで行われると思われる。
+//     final users = Users.create(users: newUsersList);
+//     return users;
+//   }
+// }
 
 // --------------------------------------------------
 //
@@ -96,14 +104,14 @@ class UsersStateNotifier extends Notifier<Users> {
 final usersStateNotifierProvider =
     NotifierProvider<UsersStateNotifier, Users>(() => UsersStateNotifier());
 
-// --------------------------------------------------
-//
-// usersStreamProvider
-//
-// --------------------------------------------------
+// // --------------------------------------------------
+// //
+// // usersStreamProvider
+// //
+// // --------------------------------------------------
 
-final usersStreamProvider = StreamProvider<Users>((ref) {
-  final userFetchAllUsecase = ref.watch(userFetchAllUsecaseProvider);
-  final usersStream = userFetchAllUsecase();
-  return usersStream;
-});
+// final usersStreamProvider = StreamProvider<Users>((ref) {
+//   final userFetchAllUsecase = ref.watch(userFetchAllUsecaseProvider);
+//   final usersStream = userFetchAllUsecase();
+//   return usersStream;
+// });
