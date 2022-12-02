@@ -136,6 +136,11 @@ class AgoraVideoPageWidgets {
       final usersState = ref.watch(usersStateNotifierProvider);
       logger.d("videousers: $usersState");
 
+      if (usersState.isGetDataError) {
+        const snackBar = SnackBar(content: Text("ユーザ情報の取得に失敗しました。"));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+
       return const SizedBox();
     }));
 
