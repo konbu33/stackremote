@@ -13,7 +13,7 @@ part 'user.g.dart';
 
 // --------------------------------------------------
 //
-//   Freezed
+//   User
 //
 // --------------------------------------------------
 @freezed
@@ -67,7 +67,7 @@ class User with _$User {
 
 // --------------------------------------------------
 //
-//  StateNotifier
+//  UserStateNotifier
 //
 // --------------------------------------------------
 class UserStateNotifier extends Notifier<User> {
@@ -118,7 +118,7 @@ class UserStateNotifier extends Notifier<User> {
 
 // --------------------------------------------------
 //
-//  StateNotifierProvider
+//  userStateNotifierProvider
 //
 // --------------------------------------------------
 final userStateNotifierProvider =

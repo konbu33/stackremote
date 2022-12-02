@@ -9,7 +9,7 @@ part 'loginid_field_state.freezed.dart';
 
 // --------------------------------------------------
 //
-// Freezed
+// LoginIdFieldState
 //
 // --------------------------------------------------
 @freezed
@@ -43,14 +43,14 @@ class LoginIdFieldState with _$LoginIdFieldState {
 
 // --------------------------------------------------
 //
-// StateNotifier
+// LoginIdFieldStateNotifier
 //
 // --------------------------------------------------
-class LoginIdFieldStateNotifier extends StateNotifier<LoginIdFieldState> {
-  LoginIdFieldStateNotifier() : super(LoginIdFieldState.create());
-
-  void initial() {
-    state = LoginIdFieldState.create();
+class LoginIdFieldStateNotifier extends AutoDisposeNotifier<LoginIdFieldState> {
+  @override
+  LoginIdFieldState build() {
+    final loginIdFieldState = LoginIdFieldState.create();
+    return loginIdFieldState;
   }
 
   void setUserEmail(String value) {
@@ -89,18 +89,13 @@ class LoginIdFieldStateNotifier extends StateNotifier<LoginIdFieldState> {
 
 // --------------------------------------------------
 //
-//  typedef Provider
+//  loginIdFieldStateNotifierProviderCreator
 //
 // --------------------------------------------------
-typedef LoginIdFieldStateProvider = AutoDisposeStateNotifierProvider<
-    LoginIdFieldStateNotifier, LoginIdFieldState>;
+typedef LoginIdFieldStateProvider
+    = AutoDisposeNotifierProvider<LoginIdFieldStateNotifier, LoginIdFieldState>;
 
-// --------------------------------------------------
-//
-//  StateNotifierProviderCreateor
-//
-// --------------------------------------------------
 LoginIdFieldStateProvider loginIdFieldStateNotifierProviderCreator() {
-  return StateNotifierProvider.autoDispose<LoginIdFieldStateNotifier,
-      LoginIdFieldState>((ref) => LoginIdFieldStateNotifier());
+  return NotifierProvider.autoDispose<LoginIdFieldStateNotifier,
+      LoginIdFieldState>(() => LoginIdFieldStateNotifier());
 }

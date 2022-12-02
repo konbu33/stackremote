@@ -7,7 +7,7 @@ part 'channel_join_submit_state.freezed.dart';
 
 // --------------------------------------------------
 //
-// Freezed
+// ChannelJoinSubmitState
 //
 // --------------------------------------------------
 @freezed
@@ -29,7 +29,7 @@ class ChannelJoinSubmitState with _$ChannelJoinSubmitState {
 
 // --------------------------------------------------
 //
-// StateNotifier
+// ChannelJoinSubmitStateNotifier
 //
 // --------------------------------------------------
 class ChannelJoinSubmitStateNotifier extends Notifier<ChannelJoinSubmitState> {
@@ -59,17 +59,12 @@ class ChannelJoinSubmitStateNotifier extends Notifier<ChannelJoinSubmitState> {
 
 // --------------------------------------------------
 //
-// typedef Provider
+// channelJoinSubmitStateNotifierProviderCreator
 //
 // --------------------------------------------------
 typedef ChannelJoinSubmitStateNotifierProvider
     = NotifierProvider<ChannelJoinSubmitStateNotifier, ChannelJoinSubmitState>;
 
-// --------------------------------------------------
-//
-// StateNotifierProviderCreator
-//
-// --------------------------------------------------
 ChannelJoinSubmitStateNotifierProvider
     channelJoinSubmitStateNotifierProviderCreator() {
   return NotifierProvider<ChannelJoinSubmitStateNotifier,

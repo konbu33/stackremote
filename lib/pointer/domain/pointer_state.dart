@@ -11,7 +11,7 @@ part 'pointer_state.g.dart';
 
 // --------------------------------------------------
 //
-// Freezed
+// PointerState
 //
 // --------------------------------------------------
 @freezed
@@ -57,7 +57,7 @@ class PointerState with _$PointerState {
 
 // --------------------------------------------------
 //
-// StateNotifier
+// PointerStateNotifier
 //
 // --------------------------------------------------
 class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
@@ -108,7 +108,7 @@ class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
 
 // --------------------------------------------------
 //
-// PointerStateNotifierProvider
+// pointerStateNotifierProvider
 //
 // --------------------------------------------------
 final pointerStateNotifierProvider =

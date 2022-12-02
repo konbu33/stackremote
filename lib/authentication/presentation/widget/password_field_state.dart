@@ -9,7 +9,7 @@ part 'password_field_state.freezed.dart';
 
 // --------------------------------------------------
 //
-// Freezed
+// PasswordFieldState
 //
 // --------------------------------------------------
 @freezed
@@ -45,14 +45,15 @@ class PasswordFieldState with _$PasswordFieldState {
 
 // --------------------------------------------------
 //
-// StateNotifier
+// PasswordFieldStateNotifier
 //
 // --------------------------------------------------
-class PasswordFieldStateNotifier extends StateNotifier<PasswordFieldState> {
-  PasswordFieldStateNotifier() : super(PasswordFieldState.create());
-
-  void initial() {
-    state = PasswordFieldState.create();
+class PasswordFieldStateNotifier
+    extends AutoDisposeNotifier<PasswordFieldState> {
+  @override
+  PasswordFieldState build() {
+    final passwordFieldState = PasswordFieldState.create();
+    return passwordFieldState;
   }
 
   void setUserPassword(String value) {
@@ -93,18 +94,13 @@ class PasswordFieldStateNotifier extends StateNotifier<PasswordFieldState> {
 
 // --------------------------------------------------
 //
-//  typedef Provider
+//  passwordFieldStateNotifierProviderCreator
 //
 // --------------------------------------------------
-typedef PasswordFieldStateProvider = AutoDisposeStateNotifierProvider<
+typedef PasswordFieldStateProvider = AutoDisposeNotifierProvider<
     PasswordFieldStateNotifier, PasswordFieldState>;
 
-// --------------------------------------------------
-//
-//  StateNotifierProviderCreator
-//
-// --------------------------------------------------
 PasswordFieldStateProvider passwordFieldStateNotifierProviderCreator() {
-  return StateNotifierProvider.autoDispose<PasswordFieldStateNotifier,
-      PasswordFieldState>((ref) => PasswordFieldStateNotifier());
+  return NotifierProvider.autoDispose<PasswordFieldStateNotifier,
+      PasswordFieldState>(() => PasswordFieldStateNotifier());
 }

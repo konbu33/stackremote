@@ -9,8 +9,7 @@ part 'users.freezed.dart';
 
 // --------------------------------------------------
 //
-// Freezed
-// First Colection
+// Users
 //
 // --------------------------------------------------
 @freezed
@@ -41,7 +40,7 @@ class Users with _$Users {
 
 // --------------------------------------------------
 //
-// StateNotifier
+// UsersStateNotifier
 //
 // --------------------------------------------------
 class UsersStateNotifier extends Notifier<Users> {
@@ -65,7 +64,7 @@ class UsersStateNotifier extends Notifier<Users> {
 
 // --------------------------------------------------
 //
-// StateNotifierProvider
+// usersStateNotifierProvider
 //
 // --------------------------------------------------
 final usersStateNotifierProvider =

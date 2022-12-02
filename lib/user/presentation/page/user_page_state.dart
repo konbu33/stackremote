@@ -47,8 +47,6 @@ class UserPageState {
                 ref.read(userStateNotifierProvider.notifier);
 
             userStateNotifier.setNickName(nickName);
-
-            // ref.read(nickNameFieldStateNotifierProvider.notifier).initial();
           };
     }
 

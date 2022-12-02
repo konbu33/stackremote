@@ -11,7 +11,7 @@ final channelNameProvider = StateProvider((ref) => "");
 
 // --------------------------------------------------
 //
-//   Freezed
+//   Channel
 //
 // --------------------------------------------------
 @freezed
@@ -37,7 +37,7 @@ class Channel with _$Channel {
 
 // --------------------------------------------------
 //
-//  StateNotifier
+//  ChannelStateNotifier
 //
 // --------------------------------------------------
 class ChannelStateNotifier extends Notifier<Channel> {

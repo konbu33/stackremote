@@ -6,7 +6,7 @@ part 'login_submit_state.freezed.dart';
 
 // --------------------------------------------------
 //
-// Freezed
+// LoginSubmitState
 //
 // --------------------------------------------------
 @freezed
@@ -28,7 +28,7 @@ class LoginSubmitState with _$LoginSubmitState {
 
 // --------------------------------------------------
 //
-// StateNotifier
+// LoginSubmitStateNotifier
 //
 // --------------------------------------------------
 class LoginSubmitStateNotifier extends Notifier<LoginSubmitState> {

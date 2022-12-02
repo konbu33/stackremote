@@ -10,7 +10,7 @@ part 'nickname_field_state.freezed.dart';
 
 // --------------------------------------------------
 //
-// Freezed
+// NickNameFieldState
 //
 // --------------------------------------------------
 @freezed
@@ -44,14 +44,15 @@ class NickNameFieldState with _$NickNameFieldState {
 
 // --------------------------------------------------
 //
-// StateNotifier
+// NickNameFieldStateNotifier
 //
 // --------------------------------------------------
-class NickNameFieldStateNotifier extends StateNotifier<NickNameFieldState> {
-  NickNameFieldStateNotifier() : super(NickNameFieldState.create());
-
-  void initial() {
-    state = NickNameFieldState.create();
+class NickNameFieldStateNotifier
+    extends AutoDisposeNotifier<NickNameFieldState> {
+  @override
+  NickNameFieldState build() {
+    final nickNameFieldState = NickNameFieldState.create();
+    return nickNameFieldState;
   }
 
   void setFieldText(String value) {
@@ -90,22 +91,13 @@ class NickNameFieldStateNotifier extends StateNotifier<NickNameFieldState> {
 
 // --------------------------------------------------
 //
-//  typedef Provider
+//  nickNameFieldStateNotifierProviderCreator
 //
 // --------------------------------------------------
-typedef NickNameFieldStateNotifierProvider = AutoDisposeStateNotifierProvider<
+typedef NickNameFieldStateNotifierProvider = AutoDisposeNotifierProvider<
     NickNameFieldStateNotifier, NickNameFieldState>;
 
-// --------------------------------------------------
-//
-//  StateNotifierProviderCreateor
-//
-// --------------------------------------------------
 NickNameFieldStateNotifierProvider nickNameFieldStateNotifierProviderCreator() {
-  return StateNotifierProvider.autoDispose<NickNameFieldStateNotifier,
-      NickNameFieldState>(
-    (ref) {
-      return NickNameFieldStateNotifier();
-    },
-  );
+  return NotifierProvider.autoDispose<NickNameFieldStateNotifier,
+      NickNameFieldState>(() => NickNameFieldStateNotifier());
 }

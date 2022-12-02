@@ -10,7 +10,7 @@ part 'pointer_state_list.freezed.dart';
 
 // --------------------------------------------------
 //
-// Freezed
+// PointerStateList
 //
 // --------------------------------------------------
 @freezed
@@ -36,7 +36,7 @@ class PointerStateList with _$PointerStateList {
 
 // --------------------------------------------------
 //
-// StateNotifier
+// PointerStateListStateNotifier
 //
 // --------------------------------------------------
 class PointerStateListStateNotifier extends Notifier<PointerStateList> {
@@ -55,7 +55,7 @@ class PointerStateListStateNotifier extends Notifier<PointerStateList> {
 
 // --------------------------------------------------
 //
-// StateNotifierProvider
+// pointerStateListStateNotifierProvider
 //
 // --------------------------------------------------
 final pointerStateListStateNotifierProvider =
@@ -64,10 +64,9 @@ final pointerStateListStateNotifierProvider =
 
 // --------------------------------------------------
 //
-// Get PointerState from userStreamList
+// pointerStateListProvider
 //
 // --------------------------------------------------
-
 final pointerStateListProvider = Provider((ref) {
   final usersState = ref.watch(usersStateNotifierProvider);
 
