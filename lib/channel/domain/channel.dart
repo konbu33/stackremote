@@ -40,8 +40,11 @@ class Channel with _$Channel {
 //  StateNotifier
 //
 // --------------------------------------------------
-class ChannelStateNotifier extends StateNotifier<Channel> {
-  ChannelStateNotifier() : super(Channel.create());
+class ChannelStateNotifier extends Notifier<Channel> {
+  @override
+  Channel build() {
+    return Channel.create();
+  }
 
   void setChannelState(Channel channel) {
     state = state.copyWith(
@@ -53,26 +56,21 @@ class ChannelStateNotifier extends StateNotifier<Channel> {
 
 // --------------------------------------------------
 //
-//  ChannelStateNotifierProvider
+//  channelStateNotifierProviderCreator
 //
 // --------------------------------------------------
 typedef ChannelStateNotifierProvider
-    = StateNotifierProvider<ChannelStateNotifier, Channel>;
+    = NotifierProvider<ChannelStateNotifier, Channel>;
 
-// --------------------------------------------------
-//
-//  StateNotifierProvider
-//
-// --------------------------------------------------
 ChannelStateNotifierProvider channelStateNotifierProviderCreator() {
-  return StateNotifierProvider<ChannelStateNotifier, Channel>(
-    (ref) => ChannelStateNotifier(),
+  return NotifierProvider<ChannelStateNotifier, Channel>(
+    () => ChannelStateNotifier(),
   );
 }
 
 // --------------------------------------------------
 //
-//  StateNotifierProvider
+//  channelStateNotifierProvider
 //
 // --------------------------------------------------
 final channelStateNotifierProvider = channelStateNotifierProviderCreator();

@@ -32,9 +32,11 @@ class User with _$User {
 
   factory User.create({
     required String email,
+    String? nickName,
   }) =>
       User._(
         email: email,
+        nickName: nickName ?? "",
       );
 
   factory User.reconstruct({
@@ -68,15 +70,33 @@ class User with _$User {
 //  StateNotifier
 //
 // --------------------------------------------------
-class UserStateNotifier extends StateNotifier<User> {
-  UserStateNotifier({
-    required String email,
-  }) : super(User.create(email: email)) {
-    initial();
-  }
+class UserStateNotifier extends Notifier<User> {
+  @override
+  User build() {
+    final email = ref.watch(
+        firebaseAuthUserStateNotifierProvider.select((value) => value.email));
 
-  void initial() {
-    setNickName(state.email.split("@")[0]);
+    String initialSetNickName(String newNickName) {
+      String nickName = newNickName;
+
+      const lengthLimit = 8;
+      if (nickName.length > lengthLimit) {
+        nickName = nickName.substring(0, lengthLimit);
+        nickName += "...";
+      }
+
+      return nickName;
+    }
+
+    final nickName = initialSetNickName(email.split("@")[0]);
+
+    final user = User.create(email: email, nickName: nickName);
+
+    // build関数で初期化処理を行いたい場合、return + stateへの代入が必要な様子。
+    // build関数で初期化処理を行いたいケースは無いかもしれない。
+    state = user;
+
+    return user;
   }
 
   void setNickName(String newNickName) {
@@ -102,9 +122,4 @@ class UserStateNotifier extends StateNotifier<User> {
 //
 // --------------------------------------------------
 final userStateNotifierProvider =
-    StateNotifierProvider<UserStateNotifier, User>((ref) {
-  final email = ref.watch(
-      firebaseAuthUserStateNotifierProvider.select((value) => value.email));
-
-  return UserStateNotifier(email: email);
-});
+    NotifierProvider<UserStateNotifier, User>(() => UserStateNotifier());

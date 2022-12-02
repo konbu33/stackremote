@@ -177,15 +177,17 @@ class FakeUserState extends Fake implements User {
   final Offset pointerPosition = user.pointerPosition;
 }
 
-class FakeUserStateNotifier extends StateNotifier<User>
+class FakeUserStateNotifier extends Notifier<User>
     implements UserStateNotifier {
-  FakeUserStateNotifier() : super(FakeUserState());
+  @override
+  User build() {
+    return FakeUserState();
+  }
 
   @override
-  void initial() {}
-
-  @override
-  void setNickName(String value) {}
+  String setNickName(String value) {
+    return "";
+  }
 
   @override
   void updateIsHost(bool value) {}
