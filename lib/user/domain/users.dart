@@ -34,15 +34,58 @@ class Users with _$Users {
       );
 }
 
+// // --------------------------------------------------
+// //
+// // StateNotifier
+// //
+// // --------------------------------------------------
+// class UsersStateNotifier extends Notifier<Users> {
+//   @override
+//   Users build() {
+//     final userFetchAllUsecase = ref.watch(userFetchAllUsecaseProvider);
+//     final usersStream = userFetchAllUsecase();
+
+//     // usersStreamのConsuming開始。データが流れてきたら、stateを再構築する。
+//     usersStream.listen((event) {
+//       final users = Users.create(users: event.users);
+//       state = users;
+//       // return users;
+//     });
+
+//     final users = Users.create(users: []);
+//     return users;
+//   }
+
+// }
+
 // --------------------------------------------------
 //
 // StateNotifier
 //
 // --------------------------------------------------
-class UsersStateNotifier extends StateNotifier<Users> {
-  UsersStateNotifier({
-    required List<User> users,
-  }) : super(Users.create(users: users));
+class UsersStateNotifier extends Notifier<Users> {
+  @override
+  Users build() {
+    final usersStream = ref.watch(usersStreamProvider);
+
+    // usersStreamのConsuming開始。データが流れてきたら、stateを再構築する。
+    final usersList = usersStream.when(data: (data) {
+      return data.users;
+    }, error: (error, stackTrace) {
+      return [];
+    }, loading: () {
+      return [];
+    });
+
+    List<User> newUsersList = [];
+
+    if (usersList.isNotEmpty) {
+      newUsersList = usersList as List<User>;
+    }
+
+    final users = Users.create(users: newUsersList);
+    return users;
+  }
 }
 
 // --------------------------------------------------
@@ -51,25 +94,7 @@ class UsersStateNotifier extends StateNotifier<Users> {
 //
 // --------------------------------------------------
 final usersStateNotifierProvider =
-    StateNotifierProvider<UsersStateNotifier, Users>((ref) {
-  final usersStream = ref.watch(usersStreamProvider);
-
-  final usersList = usersStream.when(data: (data) {
-    return data.users;
-  }, error: (error, stackTrace) {
-    return [];
-  }, loading: () {
-    return [];
-  });
-
-  List<User> newUsersList = [];
-
-  if (usersList.isNotEmpty) {
-    newUsersList = usersList as List<User>;
-  }
-
-  return UsersStateNotifier(users: newUsersList);
-});
+    NotifierProvider<UsersStateNotifier, Users>(() => UsersStateNotifier());
 
 // --------------------------------------------------
 //
