@@ -31,35 +31,39 @@ class LoginSubmitState with _$LoginSubmitState {
 // StateNotifier
 //
 // --------------------------------------------------
-class LoginSubmitStateNotifier extends StateNotifier<LoginSubmitState> {
+class LoginSubmitStateNotifier extends Notifier<LoginSubmitState> {
   LoginSubmitStateNotifier({
-    required String loginSubmitWidgetName,
-    required Function? onSubmit,
-  }) : super(LoginSubmitState.create(
-          loginSubmitWidgetName: loginSubmitWidgetName,
-          onSubmit: onSubmit,
-        ));
+    required this.loginSubmitWidgetName,
+    required this.onSubmit,
+  });
+
+  final String loginSubmitWidgetName;
+  final Function? onSubmit;
+
+  @override
+  LoginSubmitState build() {
+    final loginSubmitState = LoginSubmitState.create(
+      loginSubmitWidgetName: loginSubmitWidgetName,
+      onSubmit: onSubmit,
+    );
+    return loginSubmitState;
+  }
 }
 
 // --------------------------------------------------
 //
-// typedef Provider
+// loginSubmitStateNotifierProviderCreator
 //
 // --------------------------------------------------
 typedef LoginSubmitStateProvider
-    = StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>;
+    = NotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>;
 
-// --------------------------------------------------
-//
-// StateNotifierProviderCreator
-//
-// --------------------------------------------------
 LoginSubmitStateProvider loginSubmitStateNotifierProviderCreator({
   required String loginSubmitWidgetName,
   required Function? onSubmit,
 }) {
-  return StateNotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>(
-    (ref) => LoginSubmitStateNotifier(
+  return NotifierProvider<LoginSubmitStateNotifier, LoginSubmitState>(
+    () => LoginSubmitStateNotifier(
       loginSubmitWidgetName: loginSubmitWidgetName,
       onSubmit: onSubmit,
     ),
