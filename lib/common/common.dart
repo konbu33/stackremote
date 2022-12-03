@@ -29,3 +29,6 @@ export 'stackremote_exception.dart';
 
 export './widget/on_submit_button_state.dart';
 export './widget/on_submit_button_widget.dart';
+
+export './widget/name_field_state.dart';
+export './widget/name_field_widget.dart';

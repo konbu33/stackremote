@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../widget/loginid_field_widget.dart';
 import '../widget/password_field_widget.dart';
 
 import 'signin_page_state.dart';
@@ -14,7 +13,7 @@ class SignInPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final loginIdFieldState =
-        ref.watch(SignInPageState.loginIdFieldStateProvider);
+        ref.watch(ref.watch(SignInPageState.loginIdFieldStateNotifierProvider));
 
     final passwordFieldState =
         ref.watch(SignInPageState.passwordFieldStateProvider);
@@ -77,9 +76,12 @@ class SignInPageWidgets {
 
   // Login Id Field Widget
   static Widget loginIdField() {
-    final Widget widget = LoginIdFieldWidget(
-      loginIdFieldStateProvider: SignInPageState.loginIdFieldStateProvider,
-    );
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      return NameFieldWidget(
+        nameFieldStateNotifierProvider:
+            ref.watch(SignInPageState.loginIdFieldStateNotifierProvider),
+      );
+    });
     return widget;
   }
 

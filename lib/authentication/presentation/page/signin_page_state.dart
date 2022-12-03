@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/common/validation/validator.dart';
 
 import '../../../common/common.dart';
 
 import '../../usecase/service_signin.dart';
 
-import '../widget/loginid_field_state.dart';
 import '../widget/password_field_state.dart';
 
 class SignInPageState {
@@ -17,8 +17,21 @@ class SignInPageState {
   //  attentionMessageProvider
   //
   // --------------------------------------------------
-  static final loginIdFieldStateProvider =
-      loginIdFieldStateNotifierProviderCreator();
+  // static final loginIdFieldStateProvider =
+  //     loginIdFieldStateNotifierProviderCreator();
+
+  static final loginIdFieldStateNotifierProvider = Provider((ref) {
+    const name = "メールアドレス";
+    final validator = ref.watch(customValidatorProvider);
+
+    final nameFieldStateNotifierProvider =
+        nameFieldStateNotifierProviderCreator(
+      name: name,
+      validator: validator,
+    );
+
+    return nameFieldStateNotifierProvider;
+  });
 
   static final passwordFieldStateProvider =
       passwordFieldStateNotifierProviderCreator();
@@ -39,8 +52,9 @@ class SignInPageState {
     (ref) {
       bool isOnSubmitable = false;
 
-      final loginIdIsValidate = ref.watch(loginIdFieldStateProvider
-          .select((value) => value.loginIdIsValidate.isValid));
+      final loginIdIsValidate = ref.watch(ref
+          .watch(loginIdFieldStateNotifierProvider)
+          .select((value) => value.isValidate.isValid));
 
       final passwordIsValidate = ref.watch(passwordFieldStateProvider
           .select((value) => value.passwordIsValidate.isValid));
@@ -55,8 +69,8 @@ class SignInPageState {
         }) =>
             () async {
               final email = ref
-                  .read(loginIdFieldStateProvider)
-                  .loginIdFieldController
+                  .read(ref.read(loginIdFieldStateNotifierProvider))
+                  .textEditingController
                   .text;
 
               final password = ref
