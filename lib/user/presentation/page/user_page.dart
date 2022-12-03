@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// improve: authentication関連への依存関係を無くしたい。
-import '../../../authentication/authentication.dart';
-
 import '../../../common/common.dart';
 import '../../domain/user.dart';
 import '../widget/nickname_field_widget.dart';
@@ -77,9 +74,9 @@ class UserDetailPageWidgets {
     //
     final Widget widget = Consumer(
       builder: (context, ref, child) {
-        return LoginSubmitWidget(
-          loginSubmitStateProvider:
-              ref.watch(UserPageState.userUpdateSubmitStateProvider),
+        return OnSubmitButtonWidget(
+          onSubmitButtonStateNotifierProvider: ref.watch(
+              UserPageState.userUpdateOnSubmitButtonStateNotifierProvider),
         );
       },
     );

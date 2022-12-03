@@ -1,8 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/material.dart';
 
-import '../../../authentication/authentication.dart';
-
+import '../../../common/common.dart';
 import '../../domain/user.dart';
 
 import '../widget/nickname_field_state.dart';
@@ -15,10 +14,11 @@ class UserPageState {
 
   // --------------------------------------------------
   //
-  // userUpdateSubmitStateProvider
+  // userUpdateOnSubmitButtonStateNotifierProvider
   //
   // --------------------------------------------------
-  static final userUpdateSubmitStateProvider = Provider.autoDispose((ref) {
+  static final userUpdateOnSubmitButtonStateNotifierProvider =
+      Provider.autoDispose((ref) {
     bool isOnSubmitable = false;
 
     final loginIdIsValidate = ref.watch(nickNameFieldStateNotifierProvider
@@ -50,12 +50,12 @@ class UserPageState {
           };
     }
 
-    final userUpdateSubmitStateProvider =
-        loginSubmitStateNotifierProviderCreator(
-      loginSubmitWidgetName: pageTitle,
+    final userUpdateOnSubmitButtonStateNotifierProvider =
+        onSubmitButtonStateNotifierProviderCreator(
+      onSubmitButtonWidgetName: "$pageTitle更新",
       onSubmit: buildUserUpdateOnSubmit(),
     );
 
-    return userUpdateSubmitStateProvider;
+    return userUpdateOnSubmitButtonStateNotifierProvider;
   });
 }
