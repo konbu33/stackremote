@@ -18,7 +18,6 @@ export '../common/widget/appbar_action_icon_widget.dart';
 export './common/validation.dart';
 
 // user_detail_page.dart
-export './presentation/widget/login_submit_widget.dart';
 export './presentation/widget/loginid_field_widget.dart';
 export './presentation/widget/password_field_widget.dart';
 
@@ -28,5 +27,3 @@ export '../common/widget/appbar_action_icon_widget.dart';
 export './infrastructure/authentication_service.dart';
 
 export './usecase/check_auth_state_changes.dart';
-
-export './presentation/widget/login_submit_state.dart';
