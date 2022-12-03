@@ -21,7 +21,7 @@ class SignInPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(SignInPageState.loginSubmitWidgetName),
+        title: const Text(SignInPageState.pageTitle),
         actions: [
           SignInPageWidgets.goToSignUpWidget(),
         ],
@@ -95,8 +95,8 @@ class SignInPageWidgets {
   static Widget loginSubmitWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       return OnSubmitButtonWidget(
-        onSubmitButtonStateProvider:
-            ref.watch(SignInPageState.loginSubmitStateProvider),
+        onSubmitButtonStateNotifierProvider: ref
+            .watch(SignInPageState.signInOnSubmitButtonStateNotifierProvider),
       );
     });
     return widget;

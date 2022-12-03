@@ -6,14 +6,14 @@ import 'on_submit_button_state.dart';
 class OnSubmitButtonWidget extends HookConsumerWidget {
   const OnSubmitButtonWidget({
     Key? key,
-    required this.onSubmitButtonStateProvider,
+    required this.onSubmitButtonStateNotifierProvider,
   }) : super(key: key);
 
-  final OnSubmitButtonStateProvider onSubmitButtonStateProvider;
+  final OnSubmitButtonStateNotifierProvider onSubmitButtonStateNotifierProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final onSubmitButtonState = ref.watch(onSubmitButtonStateProvider);
+    final onSubmitButtonState = ref.watch(onSubmitButtonStateNotifierProvider);
 
     return Column(
       children: [

@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 
 import '../../usecase/current_user_change_password.dart';
-import '../widget/login_submit_state.dart';
 import '../widget/password_field_state.dart';
 
 class ChangePasswordPageState {
@@ -75,43 +74,11 @@ class ChangePasswordPageState {
   // --------------------------------------------------
   //
   //   descriptionMessageStateProvider
-  //
-  // --------------------------------------------------
-
-  // static final descriptionMessageStateProvider =
-  //     descriptionMessageStateProviderCreator(
-  //   message: "入力間違い防止のため、2回入力して下さい。",
-  // );
-
-  static final descriptionMessageStateProvider =
-      StateProvider.autoDispose((ref) => "入力間違い防止のため、2回入力して下さい。");
-
-  // --------------------------------------------------
-  //
   //   attentionMessageStateProvider
   //
   // --------------------------------------------------
-  // static final attentionMessageStateProvider = Provider.autoDispose((ref) {
-  //   //
-
-  //   final checkPasswordIsValidate = ref.watch(checkPasswordIsValidateProvider);
-  //   final checkPasswordIsMatch = ref.watch(checkPasswordIsMatchProvider);
-
-  //   final passwordIsValidate = checkPasswordIsValidate();
-
-  //   if (!passwordIsValidate) {
-  //     return descriptionMessageStateProviderCreator();
-  //   }
-
-  //   final passwordIsMatch = checkPasswordIsMatch();
-
-  //   if (!passwordIsMatch) {
-  //     const String notMatchMessage = "入力したパスワードが不一致です。";
-  //     return descriptionMessageStateProviderCreator(message: notMatchMessage);
-  //   }
-
-  //   return descriptionMessageStateProviderCreator();
-  // });
+  static final descriptionMessageStateProvider =
+      StateProvider.autoDispose((ref) => "入力間違い防止のため、2回入力して下さい。");
 
   static final attentionMessageStateProvider = StateProvider.autoDispose((ref) {
     //
@@ -136,21 +103,19 @@ class ChangePasswordPageState {
 
 // --------------------------------------------------
 //
-//   onSubmitStateProvider
+//   changePasswordOnSubmitButtonStateNotifierProvider
 //
 // --------------------------------------------------
   static const pageTitle = "パスワード変更";
 
-  static final onSubmitStateProvider = Provider.autoDispose((ref) {
+  static final changePasswordOnSubmitButtonStateNotifierProvider =
+      Provider.autoDispose((ref) {
     bool passwordIsValidate = false;
     bool passwordIsMatch = false;
     bool isOnSubmitable = false;
 
     final checkPasswordIsValidate = ref.watch(checkPasswordIsValidateProvider);
     final checkPasswordIsMatch = ref.watch(checkPasswordIsMatchProvider);
-
-    // final attentionMessageStateNotifier =
-    //     ref.watch(ref.watch(attentionMessageStateProvider).notifier);
 
     // --------------------------------------------------
     //  onSubmit関数の生成
@@ -209,14 +174,12 @@ class ChangePasswordPageState {
       isOnSubmitable = passwordIsMatch;
     }
 
-    // logger.d(
-    //     "passwordIsValidate : ${passwordIsValidate}, passwordIsMatch : ${passwordIsMatch}, isOnSubmitablei : ${isOnSubmitable}");
-
-    final onSubmitStateProvider = loginSubmitStateNotifierProviderCreator(
-      loginSubmitWidgetName: pageTitle,
+    final changePasswordOnSubmitButtonStateNotifierProvider =
+        onSubmitButtonStateNotifierProviderCreator(
+      onSubmitButtonWidgetName: pageTitle,
       onSubmit: buildChangePasswordOnSubmit(),
     );
 
-    return onSubmitStateProvider;
+    return changePasswordOnSubmitButtonStateNotifierProvider;
   });
 }

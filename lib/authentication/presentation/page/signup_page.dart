@@ -22,7 +22,7 @@ class SignUpPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(SignUpPageState.loginSubmitWidgetName),
+        title: const Text(SignUpPageState.pageTitle),
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {
@@ -91,8 +91,8 @@ class SignUpPageWidgets {
   static Widget loginSubmitWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       return OnSubmitButtonWidget(
-        onSubmitButtonStateProvider:
-            ref.watch(SignUpPageState.loginSubmitStateProvider),
+        onSubmitButtonStateNotifierProvider: ref
+            .watch(SignUpPageState.signUpOnSubmitButtonStateNotifierProvider),
       );
     }));
 

@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../widget/login_submit_widget.dart';
 import '../widget/password_field_widget.dart';
 
 import 'change_password_page_state.dart';
@@ -21,7 +20,7 @@ class ChangePasswordPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: ChangePasswordPageWidgets.pageTitleWidget(),
+        title: const Text(ChangePasswordPageState.pageTitle),
       ),
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: [
@@ -51,12 +50,6 @@ class ChangePasswordPage extends HookConsumerWidget {
 }
 
 class ChangePasswordPageWidgets {
-  // Page Title
-  static Widget pageTitleWidget() {
-    const Widget widget = Text(ChangePasswordPageState.pageTitle);
-    return widget;
-  }
-
   // Description
   static Widget descriptionMessageWidget() {
     const textStyle = TextStyle(color: Colors.grey);
@@ -105,9 +98,9 @@ class ChangePasswordPageWidgets {
   static Widget changePasswordButton() {
     final Widget widget = Consumer(
       builder: (context, ref, child) {
-        return LoginSubmitWidget(
-          loginSubmitStateProvider:
-              ref.watch(ChangePasswordPageState.onSubmitStateProvider),
+        return OnSubmitButtonWidget(
+          onSubmitButtonStateNotifierProvider: ref.watch(ChangePasswordPageState
+              .changePasswordOnSubmitButtonStateNotifierProvider),
         );
       },
     );

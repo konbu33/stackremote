@@ -5,8 +5,6 @@ import '../../../common/common.dart';
 import '../../usecase/current_user_send_verify_email.dart';
 import '../../usecase/service_signout.dart';
 
-import '../widget/login_submit_state.dart';
-
 class WaitEmailVerifiedPageState {
   static const pageTitle = "メールアドレス確認待ち";
 
@@ -18,10 +16,6 @@ class WaitEmailVerifiedPageState {
     \n
     もし、メールが届いていない場合、下記からメールを再送信可能です。
   ''';
-
-  // static final descriptionMessageStateProvider =
-  //     descriptionMessageStateProviderCreator(
-  //         message: message.replaceAll(" ", ""));
 
   static final descriptionMessageStateProvider =
       StateProvider.autoDispose((ref) => message.replaceAll(" ", ""));
@@ -61,21 +55,17 @@ class WaitEmailVerifiedPageState {
   //   attentionMessageStateProvider
   //
   // --------------------------------------------------
-  // static final attentionMessageStateProvider =
-  //     descriptionMessageStateProviderCreator();
 
   static final attentionMessageStateProvider =
       StateProvider.autoDispose((ref) => "");
 
-// --------------------------------------------------
-//
-//   onSubmitStateProvider
-//
-// --------------------------------------------------
-  static final onSubmitStateProvider = Provider.autoDispose((ref) {
-    // final attentionMessageStateNotifier =
-    //     ref.watch(attentionMessageStateProvider.notifier);
-
+  // --------------------------------------------------
+  //
+  //   onSubmitStateProvider
+  //
+  // --------------------------------------------------
+  static final sendVerifyEmailOnSubmitStateNotifierProvider =
+      Provider.autoDispose((ref) {
     // --------------------------------------------------
     //  onSubmit関数の生成
     // --------------------------------------------------
@@ -104,11 +94,12 @@ class WaitEmailVerifiedPageState {
           };
     }
 
-    final onSubmitStateProvider = loginSubmitStateNotifierProviderCreator(
-      loginSubmitWidgetName: "メール再送信",
+    final sendVerifyEmailOnSubmitStateNotifierProvider =
+        onSubmitButtonStateNotifierProviderCreator(
+      onSubmitButtonWidgetName: "メール再送信",
       onSubmit: buildSendVerifyMailOnSubmit(),
     );
 
-    return onSubmitStateProvider;
+    return sendVerifyEmailOnSubmitStateNotifierProvider;
   });
 }

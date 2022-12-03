@@ -55,10 +55,10 @@ class OnSubmitButtonStateNotifier extends Notifier<OnSubmitButtonState> {
 // OnSubmitButtonStateNotifierProviderCreator
 //
 // --------------------------------------------------
-typedef OnSubmitButtonStateProvider
+typedef OnSubmitButtonStateNotifierProvider
     = NotifierProvider<OnSubmitButtonStateNotifier, OnSubmitButtonState>;
 
-OnSubmitButtonStateProvider onSubmitButtonStateNotifierProviderCreator({
+OnSubmitButtonStateNotifierProvider onSubmitButtonStateNotifierProviderCreator({
   required String onSubmitButtonWidgetName,
   required Function? onSubmit,
 }) {

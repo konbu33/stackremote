@@ -27,12 +27,12 @@ class SignUpPageState {
 
   // --------------------------------------------------
   //
-  //  loginSubmitStateProvider
+  //  signUpOnSubmitButtonStateNotifierProvider
   //
   // --------------------------------------------------
-  static const loginSubmitWidgetName = "サービス利用登録";
+  static const pageTitle = "サービス利用登録";
 
-  static final loginSubmitStateProvider = Provider.autoDispose(
+  static final signUpOnSubmitButtonStateNotifierProvider = Provider.autoDispose(
     (ref) {
       bool isOnSubmitable = false;
 
@@ -87,13 +87,13 @@ class SignUpPageState {
         isOnSubmitable = true;
       }
 
-      final loginSubmitStateProvider =
+      final signUpOnSubmitButtonStateNotifierProvider =
           onSubmitButtonStateNotifierProviderCreator(
-        onSubmitButtonWidgetName: loginSubmitWidgetName,
+        onSubmitButtonWidgetName: pageTitle,
         onSubmit: buildSignUpOnSubmit(),
       );
 
-      return loginSubmitStateProvider;
+      return signUpOnSubmitButtonStateNotifierProvider;
     },
   );
 }

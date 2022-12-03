@@ -5,7 +5,6 @@ import '../../../common/common.dart';
 
 import '../../usecase/check_email_verified.dart';
 
-import '../widget/login_submit_widget.dart';
 import 'wait_email_verified_page_state.dart';
 
 class WaitEmailVerifiedPage extends HookConsumerWidget {
@@ -27,7 +26,7 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
             children: [
               WaitEmailVerifiedPageWidgets.descriptionMessageWidget(),
               const SizedBox(height: 30),
-              WaitEmailVerifiedPageWidgets.sendVerifiyEmailWidget(),
+              WaitEmailVerifiedPageWidgets.sendVerifyEmailWidget(),
               WaitEmailVerifiedPageWidgets.attentionMessageWidget(),
               const SizedBox(height: 80), // height: 90以上でレイアウトエラー発生する様子。
               WaitEmailVerifiedPageWidgets.checkEmailVerifiedTimerWidget(),
@@ -68,13 +67,14 @@ class WaitEmailVerifiedPageWidgets {
     return widget;
   }
 
-  // sendVerifiyEmailWidget
-  static Widget sendVerifiyEmailWidget() {
+  // sendVerifyEmailWidget
+  static Widget sendVerifyEmailWidget() {
     //
     final Widget widget = Consumer(builder: (context, ref, child) {
-      return LoginSubmitWidget(
-        loginSubmitStateProvider:
-            ref.watch(WaitEmailVerifiedPageState.onSubmitStateProvider),
+      return OnSubmitButtonWidget(
+        onSubmitButtonStateNotifierProvider: ref.watch(
+            WaitEmailVerifiedPageState
+                .sendVerifyEmailOnSubmitStateNotifierProvider),
       );
     });
 

@@ -30,12 +30,12 @@ class SignInPageState {
 
   // --------------------------------------------------
   //
-  //  loginSubmitStateProvider
+  //  signInOnSubmitButtonStateNotifierProvider
   //
   // --------------------------------------------------
-  static const loginSubmitWidgetName = "サインイン";
+  static const pageTitle = "サインイン";
 
-  static final loginSubmitStateProvider = Provider.autoDispose(
+  static final signInOnSubmitButtonStateNotifierProvider = Provider.autoDispose(
     (ref) {
       bool isOnSubmitable = false;
 
@@ -84,13 +84,13 @@ class SignInPageState {
         isOnSubmitable = true;
       }
 
-      final loginSubmitStateNotifierProvider =
+      final signInOnSubmitButtonStateNotifierProvider =
           onSubmitButtonStateNotifierProviderCreator(
-        onSubmitButtonWidgetName: loginSubmitWidgetName,
+        onSubmitButtonWidgetName: pageTitle,
         onSubmit: buildSignInOnSubmit(),
       );
 
-      return loginSubmitStateNotifierProvider;
+      return signInOnSubmitButtonStateNotifierProvider;
     },
   );
 
