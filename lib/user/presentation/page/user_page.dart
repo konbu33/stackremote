@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 import '../../domain/user.dart';
-import '../widget/nickname_field_widget.dart';
 import 'user_page_state.dart';
 
 class UserPage extends HookConsumerWidget {
@@ -11,8 +10,10 @@ class UserPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final nickNameFieldState =
-        ref.watch(UserPageState.nickNameFieldStateNotifierProvider);
+    final nickNameFieldStateNotifierProvider =
+        ref.watch(UserPageState.nickNameFieldStateNotifierProviderOfProvider);
+
+    final nickNameFieldState = ref.watch(nickNameFieldStateNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -62,9 +63,14 @@ class UserDetailPageWidgets {
   // userNameField
   static Widget userNameField() {
     //
-    final Widget widget = NickNameFieldWidget(
-        nickNameFieldStateNotifierProvider:
-            UserPageState.nickNameFieldStateNotifierProvider);
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final nickNameFieldStateNotifierProvider =
+          ref.watch(UserPageState.nickNameFieldStateNotifierProviderOfProvider);
+
+      return NameFieldWidget(
+        nameFieldStateNotifierProvider: nickNameFieldStateNotifierProvider,
+      );
+    });
 
     return widget;
   }

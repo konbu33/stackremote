@@ -32,14 +32,18 @@ class ChannelJoinSubmitState with _$ChannelJoinSubmitState {
 // ChannelJoinSubmitStateNotifier
 //
 // --------------------------------------------------
-class ChannelJoinSubmitStateNotifier extends Notifier<ChannelJoinSubmitState> {
+class ChannelJoinSubmitStateNotifier
+    extends AutoDisposeNotifier<ChannelJoinSubmitState> {
   @override
   ChannelJoinSubmitState build() {
     void Function()? onSubmit() {
-      final state = ref.watch(
-          AgoraVideoChannelJoinPageState.channelNameFieldStateNotifierProvider);
+      final channelNameFieldStateNotifierProvider = ref.watch(
+          AgoraVideoChannelJoinPageState
+              .channelNameFieldStateNotifierProviderOfProvider);
 
-      return state.channelNameIsValidate.isValid == false
+      final state = ref.watch(channelNameFieldStateNotifierProvider);
+
+      return state.isValidate.isValid == false
           ? null
           : () {
               // channel参加
@@ -62,11 +66,11 @@ class ChannelJoinSubmitStateNotifier extends Notifier<ChannelJoinSubmitState> {
 // channelJoinSubmitStateNotifierProviderCreator
 //
 // --------------------------------------------------
-typedef ChannelJoinSubmitStateNotifierProvider
-    = NotifierProvider<ChannelJoinSubmitStateNotifier, ChannelJoinSubmitState>;
+typedef ChannelJoinSubmitStateNotifierProvider = AutoDisposeNotifierProvider<
+    ChannelJoinSubmitStateNotifier, ChannelJoinSubmitState>;
 
 ChannelJoinSubmitStateNotifierProvider
     channelJoinSubmitStateNotifierProviderCreator() {
-  return NotifierProvider<ChannelJoinSubmitStateNotifier,
+  return AutoDisposeNotifierProvider<ChannelJoinSubmitStateNotifier,
       ChannelJoinSubmitState>(() => ChannelJoinSubmitStateNotifier());
 }

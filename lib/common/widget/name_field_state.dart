@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/common/validation/validator.dart';
 
 import '../validation/validation.dart';
 
@@ -21,14 +22,16 @@ class NameFieldState with _$NameFieldState {
     required TextEditingController textEditingController,
     required Icon icon,
     required Validation isValidate,
-    required Validation Function(String) validator,
+    required Validator validator,
     required int minLength,
     required int maxLength,
   }) = _NameFieldState;
 
   factory NameFieldState.create({
     required String name,
-    required Validation Function(String) validator,
+    required Validator validator,
+    required int minLength,
+    required int maxLength,
   }) {
     return NameFieldState._(
       name: name,
@@ -38,8 +41,8 @@ class NameFieldState with _$NameFieldState {
       icon: const Icon(Icons.mail),
       isValidate: Validation.create(),
       validator: validator,
-      minLength: 8,
-      maxLength: 20,
+      minLength: minLength,
+      maxLength: maxLength,
     );
   }
 }
@@ -49,20 +52,26 @@ class NameFieldState with _$NameFieldState {
 // NameFieldStateNotifier
 //
 // --------------------------------------------------
-class NameFieldStateNotifier extends AutoDisposeNotifier<NameFieldState> {
+class NameFieldStateNotifier extends Notifier<NameFieldState> {
   NameFieldStateNotifier({
     required this.name,
     required this.validator,
+    required this.minLength,
+    required this.maxLength,
   });
 
   final String name;
-  final Validation Function(String) validator;
+  final Validator validator;
+  final int minLength;
+  final int maxLength;
 
   @override
   NameFieldState build() {
     final nameFieldState = NameFieldState.create(
       name: name,
       validator: validator,
+      minLength: minLength,
+      maxLength: maxLength,
     );
 
     return nameFieldState;
@@ -73,37 +82,11 @@ class NameFieldStateNotifier extends AutoDisposeNotifier<NameFieldState> {
         textEditingController: TextEditingController(text: value));
   }
 
-  void updateIsValidate(Validation validation) {
+  void checkIsValidate(String value) {
+    final validation = state.validator(value);
+
     state = state.copyWith(isValidate: validation);
   }
-
-  // Validation customValidator(String value) {
-  //   const defaultMessage = "";
-  //   const emptyMessage = "";
-
-  //   final minMaxLenghtMessage =
-  //       "${state.minLength}文字以上、${state.maxLength}文字以下で入力して下さい。";
-
-  //   if (value.isEmpty) {
-  //     final validation =
-  //         Validation.create(isValid: false, message: emptyMessage);
-  //     state = state.copyWith(isValidate: validation);
-  //     return validation;
-  //   }
-
-  //   if (value.length < state.minLength) {
-  //     final validation =
-  //         Validation.create(isValid: false, message: minMaxLenghtMessage);
-  //     state = state.copyWith(isValidate: validation);
-  //     return validation;
-  //   }
-
-  //   final validation =
-  //       Validation.create(isValid: true, message: defaultMessage);
-
-  //   state = state.copyWith(isValidate: validation);
-  //   return validation;
-  // }
 }
 
 // --------------------------------------------------
@@ -112,15 +95,21 @@ class NameFieldStateNotifier extends AutoDisposeNotifier<NameFieldState> {
 //
 // --------------------------------------------------
 typedef NameFieldStateNotifierProvider
-    = AutoDisposeNotifierProvider<NameFieldStateNotifier, NameFieldState>;
+    = NotifierProvider<NameFieldStateNotifier, NameFieldState>;
+
+typedef Validator = MinMaxLenghtValidator;
 
 NameFieldStateNotifierProvider nameFieldStateNotifierProviderCreator({
   required String name,
-  required Validation Function(String) validator,
+  required Validator validator,
+  required int minLength,
+  required int maxLength,
 }) {
-  return NotifierProvider.autoDispose<NameFieldStateNotifier, NameFieldState>(
+  return NotifierProvider<NameFieldStateNotifier, NameFieldState>(
       () => NameFieldStateNotifier(
             name: name,
             validator: validator,
+            minLength: minLength,
+            maxLength: maxLength,
           ));
 }

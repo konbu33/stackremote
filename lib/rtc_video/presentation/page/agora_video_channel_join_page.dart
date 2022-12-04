@@ -6,7 +6,6 @@ import '../../../menu/menu.dart';
 
 import '../widget/channel_join_progress_widget.dart';
 import '../widget/channel_join_submit_widget.dart';
-import '../widget/channel_name_field_widget.dart';
 
 import 'agora_video_channel_join_page_state.dart';
 
@@ -15,8 +14,12 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final channelNameFieldState = ref.watch(
-        AgoraVideoChannelJoinPageState.channelNameFieldStateNotifierProvider);
+    final channelNameFieldStateNotifierProvider = ref.watch(
+        AgoraVideoChannelJoinPageState
+            .channelNameFieldStateNotifierProviderOfProvider);
+
+    final channelNameFieldState =
+        ref.watch(channelNameFieldStateNotifierProvider);
 
     return Scaffold(
       drawer: AgoraVideoChannelJoinPageWidgets.menuWidget(),
@@ -96,10 +99,15 @@ class AgoraVideoChannelJoinPageWidgets {
   // channelNameFieldWidget
   static Widget channelNameFieldWidget() {
     //
-    final Widget widget = ChannelNameFieldWidget(
-      channelNameFieldStateNotifierProvider:
-          AgoraVideoChannelJoinPageState.channelNameFieldStateNotifierProvider,
-    );
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final channelNameFieldStateNotifierProvider = ref.watch(
+          AgoraVideoChannelJoinPageState
+              .channelNameFieldStateNotifierProviderOfProvider);
+
+      return NameFieldWidget(
+        nameFieldStateNotifierProvider: channelNameFieldStateNotifierProvider,
+      );
+    });
 
     return widget;
   }

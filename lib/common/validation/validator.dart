@@ -1,36 +1,55 @@
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'validation.dart';
 
-final customValidatorProvider = Provider((ref) {
-  Validation customValidator(String value) {
-    const minLength = 8;
-    const maxLength = 20;
+@immutable
+class MinMax {
+  const MinMax({
+    required this.min,
+    required this.max,
+  });
+
+  final int min;
+  final int max;
+}
+
+typedef MinMaxLenghtValidator = Validation Function(String?);
+
+final minMaxLenghtValidatorProvider =
+    Provider.family<MinMaxLenghtValidator, MinMax>((ref, minMax) {
+  Validation minMaxLenghtValidator(String? value) {
+    final int minLength = minMax.min;
+    final int maxLength = minMax.max;
 
     const defaultMessage = "";
     const emptyMessage = "";
-    const minMaxLenghtMessage = "$minLength文字以上、$maxLength文字以下で入力して下さい。";
+    final minMaxLenghtMessage = "$minLength文字以上、$maxLength文字以下で入力して下さい。";
+
+    if (value == null) {
+      final validation =
+          Validation.create(isValid: true, message: defaultMessage);
+
+      return validation;
+    }
 
     if (value.isEmpty) {
       final validation =
           Validation.create(isValid: false, message: emptyMessage);
-      // state = state.copyWith(isValidate: validation);
       return validation;
     }
 
     if (value.length < minLength) {
       final validation =
           Validation.create(isValid: false, message: minMaxLenghtMessage);
-      // state = state.copyWith(isValidate: validation);
       return validation;
     }
 
     final validation =
         Validation.create(isValid: true, message: defaultMessage);
 
-    // state = state.copyWith(isValidate: validation);
     return validation;
   }
 
-  return customValidator;
+  return minMaxLenghtValidator;
 });

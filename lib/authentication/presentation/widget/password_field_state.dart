@@ -48,8 +48,7 @@ class PasswordFieldState with _$PasswordFieldState {
 // PasswordFieldStateNotifier
 //
 // --------------------------------------------------
-class PasswordFieldStateNotifier
-    extends AutoDisposeNotifier<PasswordFieldState> {
+class PasswordFieldStateNotifier extends Notifier<PasswordFieldState> {
   @override
   PasswordFieldState build() {
     final passwordFieldState = PasswordFieldState.create();
@@ -97,10 +96,10 @@ class PasswordFieldStateNotifier
 //  passwordFieldStateNotifierProviderCreator
 //
 // --------------------------------------------------
-typedef PasswordFieldStateProvider = AutoDisposeNotifierProvider<
-    PasswordFieldStateNotifier, PasswordFieldState>;
+typedef PasswordFieldStateProvider
+    = NotifierProvider<PasswordFieldStateNotifier, PasswordFieldState>;
 
 PasswordFieldStateProvider passwordFieldStateNotifierProviderCreator() {
-  return NotifierProvider.autoDispose<PasswordFieldStateNotifier,
-      PasswordFieldState>(() => PasswordFieldStateNotifier());
+  return NotifierProvider<PasswordFieldStateNotifier, PasswordFieldState>(
+      () => PasswordFieldStateNotifier());
 }

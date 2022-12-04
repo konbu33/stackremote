@@ -12,11 +12,15 @@ class ChangePasswordPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final passwordField =
-        ref.watch(ChangePasswordPageState.passwordFieldStateProvider);
+    final passwordFieldStateProvider =
+        ref.watch(ChangePasswordPageState.passwordFieldStateProviderOfProvider);
 
-    final passwordFieldConfirm =
-        ref.watch(ChangePasswordPageState.passwordFieldConfirmStateProvider);
+    final passwordField = ref.watch(passwordFieldStateProvider);
+
+    final passwordFieldConfirmStateProvider = ref.watch(
+        ChangePasswordPageState.passwordFieldConfirmStateProviderOfProvider);
+
+    final passwordFieldConfirm = ref.watch(passwordFieldConfirmStateProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -78,19 +82,27 @@ class ChangePasswordPageWidgets {
 
   // Password Field Widget
   static Widget passwordField() {
-    final Widget widget = PasswordFieldWidget(
-      passwordFieldStateProvider:
-          ChangePasswordPageState.passwordFieldStateProvider,
-    );
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final passwordFieldStateProvider = ref
+          .watch(ChangePasswordPageState.passwordFieldStateProviderOfProvider);
+
+      return PasswordFieldWidget(
+        passwordFieldStateProvider: passwordFieldStateProvider,
+      );
+    });
     return widget;
   }
 
   // Password Field Widget
   static Widget passwordFieldConfirm() {
-    final Widget widget = PasswordFieldWidget(
-      passwordFieldStateProvider:
-          ChangePasswordPageState.passwordFieldConfirmStateProvider,
-    );
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final passwordFieldConfirmStateProvider = ref.watch(
+          ChangePasswordPageState.passwordFieldConfirmStateProviderOfProvider);
+
+      return PasswordFieldWidget(
+        passwordFieldStateProvider: passwordFieldConfirmStateProvider,
+      );
+    });
     return widget;
   }
 

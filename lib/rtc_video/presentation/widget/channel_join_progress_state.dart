@@ -15,7 +15,7 @@ import '../../domain/rtc_channel_state.dart';
 //   ChannelJoinProgressState
 //
 // --------------------------------------------------
-class ChannelJoinProgressState extends AsyncNotifier<void> {
+class ChannelJoinProgressState extends AutoDisposeAsyncNotifier<void> {
   @override
   void build() {
     // voidの場合、初期化不要。
@@ -97,9 +97,12 @@ class ChannelJoinProgressState extends AsyncNotifier<void> {
       // チャンネル名をアプリ内で状態として保持する
       //
       // --------------------------------------------------
-      final channelName = ref.watch(AgoraVideoChannelJoinPageState
-          .channelNameFieldStateNotifierProvider
-          .select((value) => value.channelNameFieldController.text));
+      final channelNameFieldStateNotifierProvider = ref.watch(
+          AgoraVideoChannelJoinPageState
+              .channelNameFieldStateNotifierProviderOfProvider);
+
+      final channelName = ref.watch(channelNameFieldStateNotifierProvider
+          .select((value) => value.textEditingController.text));
 
       ref.watch(channelNameProvider.notifier).update((state) => channelName);
 
@@ -181,10 +184,10 @@ class ChannelJoinProgressState extends AsyncNotifier<void> {
 //
 // --------------------------------------------------
 typedef ChannelJoinProgressStateProvider
-    = AsyncNotifierProvider<ChannelJoinProgressState, void>;
+    = AutoDisposeAsyncNotifierProvider<ChannelJoinProgressState, void>;
 
 ChannelJoinProgressStateProvider channelJoinProgressStateProviderCreator() {
-  return AsyncNotifierProvider<ChannelJoinProgressState, void>(() {
+  return AutoDisposeAsyncNotifierProvider<ChannelJoinProgressState, void>(() {
     return ChannelJoinProgressState();
   });
 }

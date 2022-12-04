@@ -19,20 +19,31 @@ class SignUpPageState {
   // static final loginIdFieldStateProvider =
   //     loginIdFieldStateNotifierProviderCreator();
 
-  static final loginIdFieldStateNotifierProvider = Provider((ref) {
-    const name = "メールアドレス";
-    final validator = ref.watch(customValidatorProvider);
+  static final loginIdFieldStateNotifierProviderOfProvider =
+      StateProvider.autoDispose((ref) {
+    NameFieldStateNotifierProvider loginIdFieldStateNotifierProviderCreator() {
+      const name = "メールアドレス";
 
-    final nameFieldStateNotifier = nameFieldStateNotifierProviderCreator(
-      name: name,
-      validator: validator,
-    );
+      const minMax = MinMax(min: 8, max: 20);
+      final minMaxLenghtValidator =
+          ref.watch(minMaxLenghtValidatorProvider(minMax));
 
-    return nameFieldStateNotifier;
+      final nameFieldStateNotifierProvider =
+          nameFieldStateNotifierProviderCreator(
+        name: name,
+        validator: minMaxLenghtValidator,
+        minLength: minMax.min,
+        maxLength: minMax.max,
+      );
+
+      return nameFieldStateNotifierProvider;
+    }
+
+    return loginIdFieldStateNotifierProviderCreator();
   });
 
-  static final passwordFieldStateProvider =
-      passwordFieldStateNotifierProviderCreator();
+  static final passwordFieldStateProviderOfProvider = StateProvider.autoDispose(
+      (ref) => passwordFieldStateNotifierProviderCreator());
 
   static final attentionMessageStateProvider =
       StateProvider.autoDispose((ref) => "");
@@ -48,9 +59,14 @@ class SignUpPageState {
     (ref) {
       bool isOnSubmitable = false;
 
-      final loginIdIsValidate = ref.watch(ref
-          .watch(loginIdFieldStateNotifierProvider)
+      final loginIdFieldStateNotifierProvider =
+          ref.watch(loginIdFieldStateNotifierProviderOfProvider);
+
+      final loginIdIsValidate = ref.watch(loginIdFieldStateNotifierProvider
           .select((value) => value.isValidate.isValid));
+
+      final passwordFieldStateProvider =
+          ref.watch(passwordFieldStateProviderOfProvider);
 
       final passwordIsValidate = ref.watch(passwordFieldStateProvider
           .select((value) => value.passwordIsValidate.isValid));
@@ -65,7 +81,7 @@ class SignUpPageState {
         }) =>
             () async {
               final email = ref
-                  .read(ref.read(loginIdFieldStateNotifierProvider))
+                  .read(loginIdFieldStateNotifierProvider)
                   .textEditingController
                   .text;
 

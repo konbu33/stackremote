@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/common/validation.dart';
 
 import 'name_field_state.dart';
 
@@ -14,29 +13,31 @@ class NameFieldWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(nameFieldStateNotifierProvider);
-    final notifier = ref.watch(nameFieldStateNotifierProvider.notifier);
+    final nameFieldState = ref.watch(nameFieldStateNotifierProvider);
+
+    final nameFieldStateNotifier =
+        ref.watch(nameFieldStateNotifierProvider.notifier);
 
     return Column(
       children: [
         TextFormField(
-          focusNode: state.focusNode,
-          key: state.formFieldKey,
-          controller: state.textEditingController,
+          focusNode: nameFieldState.focusNode,
+          key: nameFieldState.formFieldKey,
+          controller: nameFieldState.textEditingController,
           onChanged: (text) {
-            state.formFieldKey.currentState!.validate();
+            nameFieldState.formFieldKey.currentState!.validate();
           },
 
           // 入力値の長さ制限
-          maxLength: state.maxLength,
+          maxLength: nameFieldState.maxLength,
 
           // 入力フィールドの装飾
           decoration: InputDecoration(
             // フィールド名
-            label: Text(state.name),
+            label: Text(nameFieldState.name),
 
             // 入力フィールドの色・枠
-            prefixIcon: state.icon,
+            prefixIcon: nameFieldState.icon,
 
             // ヘルパー・エラーメッセージ表示
             counterText: "",
@@ -44,13 +45,12 @@ class NameFieldWidget extends HookConsumerWidget {
 
           // バリデーション
           validator: (value) {
-            final validation = state.validator(value ?? "");
-            notifier.updateIsValidate(validation);
+            nameFieldStateNotifier.checkIsValidate(value ?? "");
             return;
           },
         ),
         Text(
-          state.isValidate.message,
+          nameFieldState.isValidate.message,
           style: const TextStyle(color: Colors.red),
         ),
       ],

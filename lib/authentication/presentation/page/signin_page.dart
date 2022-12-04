@@ -12,11 +12,15 @@ class SignInPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginIdFieldState =
-        ref.watch(ref.watch(SignInPageState.loginIdFieldStateNotifierProvider));
+    final loginIdFieldStateNotifierProvider =
+        ref.watch(SignInPageState.loginIdFieldStateNotifierProviderOfProvider);
 
-    final passwordFieldState =
-        ref.watch(SignInPageState.passwordFieldStateProvider);
+    final loginIdFieldState = ref.watch(loginIdFieldStateNotifierProvider);
+
+    final passwordFieldStateProvider =
+        ref.watch(SignInPageState.passwordFieldStateProviderOfProvider);
+
+    final passwordFieldState = ref.watch(passwordFieldStateProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -77,9 +81,11 @@ class SignInPageWidgets {
   // Login Id Field Widget
   static Widget loginIdField() {
     final Widget widget = Consumer(builder: (context, ref, child) {
+      final loginIdFieldStateNotifierProvider = ref
+          .watch(SignInPageState.loginIdFieldStateNotifierProviderOfProvider);
+
       return NameFieldWidget(
-        nameFieldStateNotifierProvider:
-            ref.watch(SignInPageState.loginIdFieldStateNotifierProvider),
+        nameFieldStateNotifierProvider: loginIdFieldStateNotifierProvider,
       );
     });
     return widget;
@@ -87,9 +93,14 @@ class SignInPageWidgets {
 
   // Password Field Widget
   static Widget passwordField() {
-    final Widget widget = PasswordFieldWidget(
-      passwordFieldStateProvider: SignInPageState.passwordFieldStateProvider,
-    );
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final passwordFieldStateProvider =
+          ref.watch(SignInPageState.passwordFieldStateProviderOfProvider);
+
+      return PasswordFieldWidget(
+        passwordFieldStateProvider: passwordFieldStateProvider,
+      );
+    });
     return widget;
   }
 

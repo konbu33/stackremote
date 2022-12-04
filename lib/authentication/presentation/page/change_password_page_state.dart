@@ -17,8 +17,14 @@ class ChangePasswordPageState {
     //
 
     bool checkPasswordIsValidate() {
+      final passwordFieldStateProvider =
+          ref.watch(passwordFieldStateProviderOfProvider);
+
       final passwordIsValidate = ref.watch(passwordFieldStateProvider
           .select((value) => value.passwordIsValidate.isValid));
+
+      final passwordFieldConfirmStateProvider =
+          ref.watch(passwordFieldConfirmStateProviderOfProvider);
 
       final passwordIsValidateConfirm = ref.watch(
           passwordFieldConfirmStateProvider
@@ -41,7 +47,12 @@ class ChangePasswordPageState {
     //
 
     bool checkPasswordIsMatch() {
+      final passwordFieldStateProvider =
+          ref.watch(passwordFieldStateProviderOfProvider);
       final passwordFieldState = ref.watch(passwordFieldStateProvider);
+
+      final passwordFieldConfirmStateProvider =
+          ref.watch(passwordFieldConfirmStateProviderOfProvider);
 
       final passwordFieldConfirmState =
           ref.watch(passwordFieldConfirmStateProvider);
@@ -65,11 +76,12 @@ class ChangePasswordPageState {
   //
   // --------------------------------------------------
 
-  static final passwordFieldStateProvider =
-      passwordFieldStateNotifierProviderCreator();
+  static final passwordFieldStateProviderOfProvider = StateProvider.autoDispose(
+      (ref) => passwordFieldStateNotifierProviderCreator());
 
-  static final passwordFieldConfirmStateProvider =
-      passwordFieldStateNotifierProviderCreator();
+  static final passwordFieldConfirmStateProviderOfProvider =
+      StateProvider.autoDispose(
+          (ref) => passwordFieldStateNotifierProviderCreator());
 
   // --------------------------------------------------
   //
@@ -135,6 +147,9 @@ class ChangePasswordPageState {
             // FirebaseAuth.instance.sendPasswordResetEmail(email: email);
 
             // アプリ内のUIからパスワード変更する。
+            final passwordFieldStateProvider =
+                ref.read(passwordFieldStateProviderOfProvider);
+
             final newPassword = ref
                 .read(passwordFieldStateProvider)
                 .passwordFieldController
