@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/common/validation/validator.dart';
 
 import '../../../common/common.dart';
 import '../../usecase/current_user_send_verify_email.dart';

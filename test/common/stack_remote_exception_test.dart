@@ -16,7 +16,7 @@ void main() {
 
       expect(channelException.plugin, equals(plugin));
       expect(channelException.code, equals("unknown"));
-      expect(channelException.message, equals(null));
+      expect(channelException.message, equals(message));
       expect(channelException.stackTrace, equals(null));
     });
   });

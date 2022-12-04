@@ -3,8 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:stackremote/authentication/presentation/widget/loginid_field_state.dart';
-import 'package:stackremote/authentication/presentation/widget/loginid_field_widget.dart';
+import 'package:stackremote/common/common.dart';
 
 void main() {
   String title = "LoginId_field_widget";
@@ -17,12 +16,46 @@ void main() {
       await loadAppFonts();
 
       // given
-      final LoginIdFieldStateProvider loginIdFieldStateProvider =
-          loginIdFieldStateNotifierProviderCreator();
 
-      final widget = LoginIdFieldWidget(
-        loginIdFieldStateProvider: loginIdFieldStateProvider,
+      final container = ProviderContainer();
+
+      final loginIdFieldStateNotifierProviderOfProvider =
+          StateProvider.autoDispose((ref) {
+        NameFieldStateNotifierProvider
+            loginIdFieldStateNotifierProviderCreator() {
+          const name = "メールアドレス";
+
+          const minMax = MinMax(min: 8, max: 20);
+          final minMaxLenghtValidator =
+              ref.watch(minMaxLenghtValidatorProvider(minMax));
+
+          final nameFieldStateNotifierProvider =
+              nameFieldStateNotifierProviderCreator(
+            name: name,
+            validator: minMaxLenghtValidator,
+            minLength: minMax.min,
+            maxLength: minMax.max,
+          );
+
+          return nameFieldStateNotifierProvider;
+        }
+
+        return loginIdFieldStateNotifierProviderCreator();
+      });
+
+      final NameFieldStateNotifierProvider loginIdFieldStateNotifierProvider =
+          container.read(loginIdFieldStateNotifierProviderOfProvider);
+
+      final widget = NameFieldWidget(
+        nameFieldStateNotifierProvider: loginIdFieldStateNotifierProvider,
       );
+
+      // final LoginIdFieldStateProvider loginIdFieldStateProvider =
+      //     loginIdFieldStateNotifierProviderCreator();
+
+      // final widget = LoginIdFieldWidget(
+      //   loginIdFieldStateProvider: loginIdFieldStateProvider,
+      // );
 
       await tester.pumpWidgetBuilder(
           ProviderScope(
