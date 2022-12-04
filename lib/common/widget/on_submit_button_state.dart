@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 part 'on_submit_button_state.freezed.dart';
 
+typedef OnSubmitButtonFunction = void Function()? Function();
+
 // --------------------------------------------------
 //
 // OnSubmitButtonState
@@ -13,12 +15,12 @@ part 'on_submit_button_state.freezed.dart';
 class OnSubmitButtonState with _$OnSubmitButtonState {
   const factory OnSubmitButtonState._({
     required String onSubmitButtonWidgetName,
-    required Function? onSubmit,
+    required OnSubmitButtonFunction onSubmit,
   }) = _OnSubmitButtonState;
 
   factory OnSubmitButtonState.create({
     required String onSubmitButtonWidgetName,
-    required Function? onSubmit,
+    required OnSubmitButtonFunction onSubmit,
   }) =>
       OnSubmitButtonState._(
         onSubmitButtonWidgetName: onSubmitButtonWidgetName,
@@ -38,7 +40,7 @@ class OnSubmitButtonStateNotifier extends Notifier<OnSubmitButtonState> {
   });
 
   final String onSubmitButtonWidgetName;
-  final Function? onSubmit;
+  final OnSubmitButtonFunction onSubmit;
 
   @override
   OnSubmitButtonState build() {
@@ -60,7 +62,7 @@ typedef OnSubmitButtonStateNotifierProvider
 
 OnSubmitButtonStateNotifierProvider onSubmitButtonStateNotifierProviderCreator({
   required String onSubmitButtonWidgetName,
-  required Function? onSubmit,
+  required OnSubmitButtonFunction onSubmit,
 }) {
   return NotifierProvider<OnSubmitButtonStateNotifier, OnSubmitButtonState>(
     () => OnSubmitButtonStateNotifier(

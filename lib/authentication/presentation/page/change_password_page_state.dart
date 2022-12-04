@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
@@ -132,51 +130,46 @@ class ChangePasswordPageState {
     // --------------------------------------------------
     //  onSubmit関数の生成
     // --------------------------------------------------
-    Function? buildChangePasswordOnSubmit() {
+    void Function()? buildChangePasswordOnSubmit() {
       if (!isOnSubmitable) {
         return null;
       }
 
-      return ({
-        required BuildContext context,
-      }) =>
-          () async {
-            // メールアドレスにURLを送信し、そのURLを押下してもらい、Firebase側のUIからパスワード変更する。
-            // imporve: この方法の方が良い可能性あるため検討の余地あり。
-            // final email = ref.read(firebaseAuthUserStateNotifierProvider).email;
-            // FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      return () async {
+        // メールアドレスにURLを送信し、そのURLを押下してもらい、Firebase側のUIからパスワード変更する。
+        // imporve: この方法の方が良い可能性あるため検討の余地あり。
+        // final email = ref.read(firebaseAuthUserStateNotifierProvider).email;
+        // FirebaseAuth.instance.sendPasswordResetEmail(email: email);
 
-            // アプリ内のUIからパスワード変更する。
-            final passwordFieldStateProvider =
-                ref.read(passwordFieldStateProviderOfProvider);
+        // アプリ内のUIからパスワード変更する。
+        final passwordFieldStateProvider =
+            ref.read(passwordFieldStateProviderOfProvider);
 
-            final newPassword = ref
-                .read(passwordFieldStateProvider)
-                .passwordFieldController
-                .text;
+        final newPassword =
+            ref.read(passwordFieldStateProvider).passwordFieldController.text;
 
-            try {
-              final currentUserChangePasswordUsecase =
-                  ref.read(currentUserChangePasswordUsecaseProvider);
+        try {
+          final currentUserChangePasswordUsecase =
+              ref.read(currentUserChangePasswordUsecaseProvider);
 
-              await currentUserChangePasswordUsecase(
-                password: newPassword,
-              );
+          await currentUserChangePasswordUsecase(
+            password: newPassword,
+          );
 
-              const String message = "パスワード変更しました。";
-              ref
-                  .read(attentionMessageStateProvider.notifier)
-                  .update((state) => message);
-              //
+          const String message = "パスワード変更しました。";
+          ref
+              .read(attentionMessageStateProvider.notifier)
+              .update((state) => message);
+          //
 
-            } on StackremoteException catch (e) {
-              logger.d("$e");
+        } on StackremoteException catch (e) {
+          logger.d("$e");
 
-              ref
-                  .read(attentionMessageStateProvider.notifier)
-                  .update((state) => e.message);
-            }
-          };
+          ref
+              .read(attentionMessageStateProvider.notifier)
+              .update((state) => e.message);
+        }
+      };
     }
 
     passwordIsValidate = checkPasswordIsValidate();
@@ -192,7 +185,7 @@ class ChangePasswordPageState {
     final changePasswordOnSubmitButtonStateNotifierProvider =
         onSubmitButtonStateNotifierProviderCreator(
       onSubmitButtonWidgetName: pageTitle,
-      onSubmit: buildChangePasswordOnSubmit(),
+      onSubmit: buildChangePasswordOnSubmit,
     );
 
     return changePasswordOnSubmitButtonStateNotifierProvider;

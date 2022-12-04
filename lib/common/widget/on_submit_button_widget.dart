@@ -25,9 +25,7 @@ class OnSubmitButtonWidget extends HookConsumerWidget {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
             )),
-            onPressed: onSubmitButtonState.onSubmit == null
-                ? null
-                : onSubmitButtonState.onSubmit!(context: context),
+            onPressed: onSubmitButtonState.onSubmit(),
             child: Text(onSubmitButtonState.onSubmitButtonWidgetName),
           ),
         ),

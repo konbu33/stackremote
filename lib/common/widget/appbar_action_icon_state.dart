@@ -6,6 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 part 'appbar_action_icon_state.freezed.dart';
 
+typedef AppbarActionIconOnSubmitFunction = void Function()? Function();
+
 // --------------------------------------------------
 //
 //   AppbarActionIconState
@@ -16,13 +18,13 @@ class AppbarActionIconState with _$AppbarActionIconState {
   const factory AppbarActionIconState._({
     required String onSubmitWidgetName,
     required Icon icon,
-    required Function onSubmit,
+    required AppbarActionIconOnSubmitFunction onSubmit,
   }) = _AppbarActionIconState;
 
   factory AppbarActionIconState.create({
     required String onSubmitWidgetName,
     required Icon icon,
-    required Function onSubmit,
+    required AppbarActionIconOnSubmitFunction onSubmit,
   }) =>
       AppbarActionIconState._(
         onSubmitWidgetName: onSubmitWidgetName,

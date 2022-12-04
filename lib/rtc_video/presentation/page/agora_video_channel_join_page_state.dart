@@ -107,29 +107,26 @@ class AgoraVideoChannelJoinPageState {
           channelNameFieldStateNotifierProvider
               .select((value) => value.isValidate.isValid));
 
-      Function? buildSignInOnSubmit() {
+      void Function()? buildChannelJoinOnSubmit() {
         if (!isOnSubmitable) {
           return null;
         }
 
-        return ({
-          required BuildContext context,
-        }) =>
-            () async {
-              try {
-                // channel参加
-                ref
-                    .read(AgoraVideoChannelJoinPageState
-                        .channelJoinProgressStateProvider.notifier)
-                    .channelJoin();
+        return () async {
+          try {
+            // channel参加
+            ref
+                .read(AgoraVideoChannelJoinPageState
+                    .channelJoinProgressStateProvider.notifier)
+                .channelJoin();
 
-                //
-              } on StackremoteException catch (e) {
-                ref
-                    .read(attentionMessageStateProvider.notifier)
-                    .update((state) => e.message);
-              }
-            };
+            //
+          } on StackremoteException catch (e) {
+            ref
+                .read(attentionMessageStateProvider.notifier)
+                .update((state) => e.message);
+          }
+        };
       }
 
       if (channelNameIsValidate) {
@@ -139,7 +136,7 @@ class AgoraVideoChannelJoinPageState {
       final channelJoinOnSubmitButtonStateNotifierProvider =
           onSubmitButtonStateNotifierProviderCreator(
         onSubmitButtonWidgetName: pageTitle,
-        onSubmit: buildSignInOnSubmit(),
+        onSubmit: buildChannelJoinOnSubmit,
       );
 
       return channelJoinOnSubmitButtonStateNotifierProvider;

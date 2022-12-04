@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
@@ -70,45 +69,40 @@ class SignUpPageState {
       final passwordIsValidate = ref.watch(passwordFieldStateProvider
           .select((value) => value.passwordIsValidate.isValid));
 
-      Function? buildSignUpOnSubmit() {
+      void Function()? buildSignUpOnSubmit() {
         if (!isOnSubmitable) {
           return null;
         }
 
-        return ({
-          required BuildContext context,
-        }) =>
-            () async {
-              final email = ref
-                  .read(loginIdFieldStateNotifierProvider)
-                  .textEditingController
-                  .text;
+        return () async {
+          final email = ref
+              .read(loginIdFieldStateNotifierProvider)
+              .textEditingController
+              .text;
 
-              final password = ref
-                  .read(passwordFieldStateProvider)
-                  .passwordFieldController
-                  .text;
+          final password =
+              ref.read(passwordFieldStateProvider).passwordFieldController.text;
 
-              try {
-                // サービス利用登録
-                final serviceUseRegistrationUsecase =
-                    ref.read(serviceUseRegistrationUsecaseProvider);
+          try {
+            // サービス利用登録
+            final serviceUseRegistrationUsecase =
+                ref.read(serviceUseRegistrationUsecaseProvider);
 
-                await serviceUseRegistrationUsecase(email, password);
+            await serviceUseRegistrationUsecase(email, password);
 
-                // メールアドレス検証メール送信
-                final currentUserSendVerifyEmailUsecase =
-                    ref.read(currentUserSendVerifyEmailUsecaseProvider);
+            // メールアドレス検証メール送信
+            final currentUserSendVerifyEmailUsecase =
+                ref.read(currentUserSendVerifyEmailUsecaseProvider);
 
-                await currentUserSendVerifyEmailUsecase();
+            await currentUserSendVerifyEmailUsecase();
 
-                //
-              } on StackremoteException catch (e) {
-                ref
-                    .read(attentionMessageStateProvider.notifier)
-                    .update((state) => e.message);
-              }
-            };
+            //
+          } on StackremoteException catch (e) {
+            ref
+                .read(attentionMessageStateProvider.notifier)
+                .update((state) => e.message);
+          }
+        };
       }
 
       if (loginIdIsValidate && passwordIsValidate) {
@@ -118,7 +112,7 @@ class SignUpPageState {
       final signUpOnSubmitButtonStateNotifierProvider =
           onSubmitButtonStateNotifierProviderCreator(
         onSubmitButtonWidgetName: pageTitle,
-        onSubmit: buildSignUpOnSubmit(),
+        onSubmit: buildSignUpOnSubmit,
       );
 
       return signUpOnSubmitButtonStateNotifierProvider;

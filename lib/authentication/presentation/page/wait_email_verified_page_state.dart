@@ -69,35 +69,32 @@ class WaitEmailVerifiedPageState {
     // --------------------------------------------------
     //  onSubmit関数の生成
     // --------------------------------------------------
-    Function? buildSendVerifyMailOnSubmit() {
-      return ({
-        required BuildContext context,
-      }) =>
-          () async {
-            try {
-              // メールアドレス検証メール送信
-              final currentUserSendVerifyEmailUsecase =
-                  ref.read(currentUserSendVerifyEmailUsecaseProvider);
+    void Function()? buildSendVerifyMailOnSubmit() {
+      return () async {
+        try {
+          // メールアドレス検証メール送信
+          final currentUserSendVerifyEmailUsecase =
+              ref.read(currentUserSendVerifyEmailUsecaseProvider);
 
-              await currentUserSendVerifyEmailUsecase();
+          await currentUserSendVerifyEmailUsecase();
 
-              const String message = "メール再送しました。";
-              ref
-                  .read(attentionMessageStateProvider.notifier)
-                  .update((state) => message);
-              //
-            } on StackremoteException catch (e) {
-              ref
-                  .read(attentionMessageStateProvider.notifier)
-                  .update((state) => e.message);
-            }
-          };
+          const String message = "メール再送しました。";
+          ref
+              .read(attentionMessageStateProvider.notifier)
+              .update((state) => message);
+          //
+        } on StackremoteException catch (e) {
+          ref
+              .read(attentionMessageStateProvider.notifier)
+              .update((state) => e.message);
+        }
+      };
     }
 
     final sendVerifyEmailOnSubmitStateNotifierProvider =
         onSubmitButtonStateNotifierProviderCreator(
       onSubmitButtonWidgetName: "メール再送信",
-      onSubmit: buildSendVerifyMailOnSubmit(),
+      onSubmit: buildSendVerifyMailOnSubmit,
     );
 
     return sendVerifyEmailOnSubmitStateNotifierProvider;

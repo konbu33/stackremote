@@ -72,39 +72,33 @@ class SignInPageState {
       final passwordIsValidate = ref.watch(passwordFieldStateProvider
           .select((value) => value.passwordIsValidate.isValid));
 
-      Function? buildSignInOnSubmit() {
+      void Function()? buildSignInOnSubmit() {
         if (!isOnSubmitable) {
           return null;
         }
 
-        return ({
-          required BuildContext context,
-        }) =>
-            () async {
-              final email = ref
-                  .read(loginIdFieldStateNotifierProvider)
-                  .textEditingController
-                  .text;
+        return () async {
+          final email = ref
+              .read(loginIdFieldStateNotifierProvider)
+              .textEditingController
+              .text;
 
-              final password = ref
-                  .read(passwordFieldStateProvider)
-                  .passwordFieldController
-                  .text;
+          final password =
+              ref.read(passwordFieldStateProvider).passwordFieldController.text;
 
-              try {
-                // サインイン
-                final serviceSignInUsecase =
-                    ref.read(serviceSignInUsecaseProvider);
+          try {
+            // サインイン
+            final serviceSignInUsecase = ref.read(serviceSignInUsecaseProvider);
 
-                await serviceSignInUsecase(email, password);
+            await serviceSignInUsecase(email, password);
 
-                //
-              } on StackremoteException catch (e) {
-                ref
-                    .read(attentionMessageStateProvider.notifier)
-                    .update((state) => e.message);
-              }
-            };
+            //
+          } on StackremoteException catch (e) {
+            ref
+                .read(attentionMessageStateProvider.notifier)
+                .update((state) => e.message);
+          }
+        };
       }
 
       if (loginIdIsValidate && passwordIsValidate) {
@@ -114,7 +108,7 @@ class SignInPageState {
       final signInOnSubmitButtonStateNotifierProvider =
           onSubmitButtonStateNotifierProviderCreator(
         onSubmitButtonWidgetName: pageTitle,
-        onSubmit: buildSignInOnSubmit(),
+        onSubmit: buildSignInOnSubmit,
       );
 
       return signInOnSubmitButtonStateNotifierProvider;
