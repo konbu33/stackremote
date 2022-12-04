@@ -26,7 +26,8 @@ class ChannelJoinProgressState extends AutoDisposeAsyncNotifier<void> {
 
     void setMessage(String message) {
       ref
-          .read(AgoraVideoChannelJoinPageState.messageProvider.notifier)
+          .read(AgoraVideoChannelJoinPageState
+              .attentionMessageStateProvider.notifier)
           .update((state) => message);
     }
 
@@ -84,7 +85,8 @@ class ChannelJoinProgressState extends AutoDisposeAsyncNotifier<void> {
 
     void setMessage(String message) {
       ref
-          .read(AgoraVideoChannelJoinPageState.messageProvider.notifier)
+          .read(AgoraVideoChannelJoinPageState
+              .attentionMessageStateProvider.notifier)
           .update((state) => message);
     }
 

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/common/validation/validator.dart';
-import 'package:stackremote/common/widget/name_field_state.dart';
 
 // improve: authenticationのモジュールをimportしている点、疎結合に改善可能か検討の余地あり。
 import '../../../authentication/authentication.dart';
+import '../../../common/common.dart';
 import '../widget/channel_join_progress_state.dart';
-import '../widget/channel_join_submit_state.dart';
 
 class AgoraVideoChannelJoinPageState {
   // --------------------------------------------------
@@ -16,7 +14,8 @@ class AgoraVideoChannelJoinPageState {
   //
   // --------------------------------------------------
   static const pageTitle = "チャンネル参加";
-  static final messageProvider = StateProvider.autoDispose((ref) => "");
+  static final attentionMessageStateProvider =
+      StateProvider.autoDispose((ref) => "");
 
   // --------------------------------------------------
   //
@@ -50,8 +49,8 @@ class AgoraVideoChannelJoinPageState {
     return channelNameFieldStateNotifierProviderCreator();
   });
 
-  static final channelJoinSubmitStateNotifierProvider =
-      channelJoinSubmitStateNotifierProviderCreator();
+  // static final channelJoinSubmitStateNotifierProvider =
+  //     channelJoinSubmitStateNotifierProviderCreator();
 
   // --------------------------------------------------
   //
@@ -90,4 +89,60 @@ class AgoraVideoChannelJoinPageState {
 
     return signOutIconStateProvider;
   });
+
+  // --------------------------------------------------
+  //
+  //  channelJoinOnSubmitButtonStateNotifierProvider
+  //
+  // --------------------------------------------------
+  static final channelJoinOnSubmitButtonStateNotifierProvider =
+      Provider.autoDispose(
+    (ref) {
+      bool isOnSubmitable = false;
+
+      final channelNameFieldStateNotifierProvider =
+          ref.watch(channelNameFieldStateNotifierProviderOfProvider);
+
+      final channelNameIsValidate = ref.watch(
+          channelNameFieldStateNotifierProvider
+              .select((value) => value.isValidate.isValid));
+
+      Function? buildSignInOnSubmit() {
+        if (!isOnSubmitable) {
+          return null;
+        }
+
+        return ({
+          required BuildContext context,
+        }) =>
+            () async {
+              try {
+                // channel参加
+                ref
+                    .read(AgoraVideoChannelJoinPageState
+                        .channelJoinProgressStateProvider.notifier)
+                    .channelJoin();
+
+                //
+              } on StackremoteException catch (e) {
+                ref
+                    .read(attentionMessageStateProvider.notifier)
+                    .update((state) => e.message);
+              }
+            };
+      }
+
+      if (channelNameIsValidate) {
+        isOnSubmitable = true;
+      }
+
+      final channelJoinOnSubmitButtonStateNotifierProvider =
+          onSubmitButtonStateNotifierProviderCreator(
+        onSubmitButtonWidgetName: pageTitle,
+        onSubmit: buildSignInOnSubmit(),
+      );
+
+      return channelJoinOnSubmitButtonStateNotifierProvider;
+    },
+  );
 }

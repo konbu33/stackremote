@@ -5,7 +5,6 @@ import '../../../common/common.dart';
 import '../../../menu/menu.dart';
 
 import '../widget/channel_join_progress_widget.dart';
-import '../widget/channel_join_submit_widget.dart';
 
 import 'agora_video_channel_join_page_state.dart';
 
@@ -88,7 +87,7 @@ class AgoraVideoChannelJoinPageWidgets {
     final Widget widget = Consumer(builder: (context, ref, child) {
       const style = TextStyle(color: Colors.red);
       return Text(
-        ref.watch(AgoraVideoChannelJoinPageState.messageProvider),
+        ref.watch(AgoraVideoChannelJoinPageState.attentionMessageStateProvider),
         style: style,
       );
     });
@@ -114,10 +113,14 @@ class AgoraVideoChannelJoinPageWidgets {
 
   // Login Submit Widget
   static Widget channelJoinSubmitWidget() {
-    final Widget widget = ChannelJoinSubmitWidget(
-      channelJoinSubmitStateProvider:
-          AgoraVideoChannelJoinPageState.channelJoinSubmitStateNotifierProvider,
-    );
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      return OnSubmitButtonWidget(
+        onSubmitButtonStateNotifierProvider: ref.watch(
+          AgoraVideoChannelJoinPageState
+              .channelJoinOnSubmitButtonStateNotifierProvider,
+        ),
+      );
+    });
 
     return widget;
   }
