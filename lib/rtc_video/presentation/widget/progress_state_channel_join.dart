@@ -1,7 +1,7 @@
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../channel/domain/channel.dart';
+import '../../../common/common.dart';
 import '../page/rtc_video_channel_join_page_state.dart';
 import '../../usecase/channel_join.dart';
 import '../../usecase/create_rtc_id_token.dart';
@@ -60,7 +60,7 @@ final progressStateChannelJoinProvider = Provider((ref) {
           .update((state) => rtcIdToken);
 
       //
-    } on FirebaseFunctionsException catch (error) {
+    } on StackremoteException catch (error) {
       final message = "RTC_ID_TOKENの生成に失敗しました。: ${error.message}";
       setMessage(message);
 

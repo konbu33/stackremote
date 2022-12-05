@@ -68,6 +68,7 @@ class RtcVideoRepositoryAgora implements RtcVideoRepository {
       );
     } on Exception catch (e) {
       logger.d("$e");
+      rethrow;
     }
   }
 
@@ -84,6 +85,7 @@ class RtcVideoRepositoryAgora implements RtcVideoRepository {
       await rtcEngine.leaveChannel();
     } on Exception catch (e) {
       logger.d("$e");
+      rethrow;
     }
   }
 
@@ -152,8 +154,13 @@ class RtcVideoRepositoryAgora implements RtcVideoRepository {
       final rtcIdToken = rtcIdTokenData["rtcIdToken"];
 
       return rtcIdToken;
-    } on FirebaseFunctionsException catch (_) {
-      rethrow;
+    } on FirebaseFunctionsException catch (error, stackTrace) {
+      throw StackremoteException(
+        plugin: error.plugin,
+        message: error.message ?? "",
+        code: error.code,
+        stackTrace: stackTrace,
+      );
     }
   }
 }

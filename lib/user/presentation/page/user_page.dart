@@ -24,13 +24,20 @@ class UserPage extends HookConsumerWidget {
         children: [
           Form(
             key: GlobalKey<FormState>(),
-            child: Column(
+            child: Stack(
               children: [
-                UserDetailPageWidgets.currentNickNameWidget(),
-                const SizedBox(height: 40),
-                UserDetailPageWidgets.userNameField(),
-                const SizedBox(height: 40),
-                UserDetailPageWidgets.userUpdateButton(),
+                Column(
+                  children: [
+                    UserDetailPageWidgets.currentNickNameWidget(),
+                    const SizedBox(height: 40),
+                    UserDetailPageWidgets.attentionMessageWidget(),
+                    const SizedBox(height: 40),
+                    UserDetailPageWidgets.userNameField(),
+                    const SizedBox(height: 40),
+                    UserDetailPageWidgets.userUpdateButton(),
+                  ],
+                ),
+                UserDetailPageWidgets.updateUserProgressWidget(),
               ],
             ),
           ),
@@ -60,6 +67,18 @@ class UserDetailPageWidgets {
     return widget;
   }
 
+// attentionMessageWidget
+  static Widget attentionMessageWidget() {
+    const textStyle = TextStyle(color: Colors.red);
+    final Widget widget = DescriptionMessageWidget(
+      descriptionMessageStateProvider:
+          UserPageState.attentionMessageStateProvider,
+      textStyle: textStyle,
+    );
+
+    return widget;
+  }
+
   // userNameField
   static Widget userNameField() {
     //
@@ -86,6 +105,19 @@ class UserDetailPageWidgets {
         );
       },
     );
+
+    return widget;
+  }
+
+  static Widget updateUserProgressWidget() {
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final updateUserProgressStateNotifierProvider = ref.watch(
+          UserPageState.updateUserProgressStateNotifierProviderOfProvider);
+
+      return ProgressWidget(
+        progressStateNotifierProvider: updateUserProgressStateNotifierProvider,
+      );
+    });
 
     return widget;
   }

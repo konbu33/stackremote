@@ -2,6 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 import '../../domain/user.dart';
+import '../widget/progress_state_update_user.dart';
 
 class UserPageState {
   static const pageTitle = "ユーザ情報";
@@ -32,6 +33,21 @@ class UserPageState {
     return nickNameFieldStateNotifierProviderCreator();
   });
 
+  static final attentionMessageStateProvider =
+      StateProvider.autoDispose((ref) => "");
+
+  // --------------------------------------------------
+  //
+  //  updateUserProgressStateNotifierProviderOfProvider
+  //
+  // --------------------------------------------------
+  static final updateUserProgressStateNotifierProviderOfProvider =
+      Provider.autoDispose((ref) {
+    final function = ref.watch(progressStateUpdateUserProvider);
+
+    return progressStateNotifierProviderCreator(function: function);
+  });
+
   // --------------------------------------------------
   //
   // userUpdateOnSubmitButtonStateNotifierProvider
@@ -57,15 +73,22 @@ class UserPageState {
       }
 
       return () async {
-        final nickName = ref
-            .read(nickNameFieldStateNotifierProvider)
-            .textEditingController
-            .text;
+        final updateUserProgressStateNotifierProvider =
+            ref.read(updateUserProgressStateNotifierProviderOfProvider);
 
-        // ユーザ情報更新
-        final userStateNotifier = ref.read(userStateNotifierProvider.notifier);
+        ref
+            .read(updateUserProgressStateNotifierProvider.notifier)
+            .updateProgress();
 
-        userStateNotifier.setNickName(nickName);
+        // final nickName = ref
+        //     .read(nickNameFieldStateNotifierProvider)
+        //     .textEditingController
+        //     .text;
+
+        // // ユーザ情報更新
+        // final userStateNotifier = ref.read(userStateNotifierProvider.notifier);
+
+        // userStateNotifier.setNickName(nickName);
       };
     }
 

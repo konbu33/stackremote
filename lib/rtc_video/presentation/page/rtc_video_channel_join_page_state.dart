@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
 import '../widget/progress_state_channel_join.dart';
+import '../widget/progress_state_signout.dart';
 
 class RtcVideoChannelJoinPageState {
   // --------------------------------------------------
@@ -54,11 +55,22 @@ class RtcVideoChannelJoinPageState {
 
   // --------------------------------------------------
   //
-  //  channelJoinProgressStateProvider
+  //  channelJoinProgressStateProviderOfProvider
   //
   // --------------------------------------------------
   static final channelJoinProgressStateProviderOfProvider = Provider((ref) {
     final function = ref.watch(progressStateChannelJoinProvider);
+
+    return progressStateNotifierProviderCreator(function: function);
+  });
+
+  // --------------------------------------------------
+  //
+  //  signOutProgressStateNotifierProviderOfProvider
+  //
+  // --------------------------------------------------
+  static final signOutProgressStateNotifierProviderOfProvider = Provider((ref) {
+    final function = ref.watch(progressStateSignOutProvider);
 
     return progressStateNotifierProviderCreator(function: function);
   });
@@ -73,9 +85,12 @@ class RtcVideoChannelJoinPageState {
 
     void Function() buildSignOutIconOnSubmit() {
       return () async {
-        final serviceSignOutUsecase = ref.read(serviceSignOutUsecaseProvider);
+        final signOutProgressStateNotifierProvider =
+            ref.read(signOutProgressStateNotifierProviderOfProvider);
 
-        await serviceSignOutUsecase();
+        ref
+            .read(signOutProgressStateNotifierProvider.notifier)
+            .updateProgress();
       };
     }
 

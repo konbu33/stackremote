@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 import '../../usecase/current_user_send_verify_email.dart';
 import '../../usecase/service_signout.dart';
+import '../widget/progress_state_send_verify_email.dart';
+import '../widget/progress_state_signout.dart';
 
 class WaitEmailVerifiedPageState {
   static const pageTitle = "メールアドレス確認待ち";
@@ -22,6 +24,29 @@ class WaitEmailVerifiedPageState {
 
   // --------------------------------------------------
   //
+  //  sendVerifyEmailProgressStateNotifierProviderOfProvider
+  //
+  // --------------------------------------------------
+  static final sendVerifyEmailProgressStateNotifierProviderOfProvider =
+      Provider((ref) {
+    final function = ref.watch(progressStateSendVerifyEmailProvider);
+
+    return progressStateNotifierProviderCreator(function: function);
+  });
+
+  // --------------------------------------------------
+  //
+  //  signOutProgressStateNotifierProviderOfProvider
+  //
+  // --------------------------------------------------
+  static final signOutProgressStateNotifierProviderOfProvider = Provider((ref) {
+    final function = ref.watch(progressStateSignOutProvider);
+
+    return progressStateNotifierProviderCreator(function: function);
+  });
+
+  // --------------------------------------------------
+  //
   //   signOutIconStateProvider
   //
   // --------------------------------------------------
@@ -30,9 +55,12 @@ class WaitEmailVerifiedPageState {
 
     void Function() buildSignOutIconOnSubmit() {
       return () async {
-        final serviceSignOutUsecase = ref.read(serviceSignOutUsecaseProvider);
+        final signOutProgressStateNotifierProvider =
+            ref.read(signOutProgressStateNotifierProviderOfProvider);
 
-        await serviceSignOutUsecase();
+        ref
+            .read(signOutProgressStateNotifierProvider.notifier)
+            .updateProgress();
       };
     }
 
@@ -71,23 +99,11 @@ class WaitEmailVerifiedPageState {
     // --------------------------------------------------
     void Function()? buildSendVerifyMailOnSubmit() {
       return () async {
-        try {
-          // メールアドレス検証メール送信
-          final currentUserSendVerifyEmailUsecase =
-              ref.read(currentUserSendVerifyEmailUsecaseProvider);
-
-          await currentUserSendVerifyEmailUsecase();
-
-          const String message = "メール再送しました。";
-          ref
-              .read(attentionMessageStateProvider.notifier)
-              .update((state) => message);
-          //
-        } on StackremoteException catch (e) {
-          ref
-              .read(attentionMessageStateProvider.notifier)
-              .update((state) => e.message);
-        }
+        final sendVerifyEmailProgressStateNotifierProvider =
+            ref.read(sendVerifyEmailProgressStateNotifierProviderOfProvider);
+        ref
+            .read(sendVerifyEmailProgressStateNotifierProvider.notifier)
+            .updateProgress();
       };
     }
 

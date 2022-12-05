@@ -1,10 +1,9 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
-import '../../usecase/current_user_send_verify_email.dart';
-import '../../usecase/service_use_registration.dart';
 
 import '../widget/password_field_state.dart';
+import '../widget/progress_state_signup.dart';
 
 class SignUpPageState {
   // --------------------------------------------------
@@ -48,6 +47,18 @@ class SignUpPageState {
 
   // --------------------------------------------------
   //
+  //  signUpProgressStateNotifierProviderOfProvider
+  //
+  // --------------------------------------------------
+  static final signUpProgressStateNotifierProviderOfProvider =
+      Provider.autoDispose((ref) {
+    final function = ref.watch(progressStateSignUpProvider);
+
+    return progressStateNotifierProviderCreator(function: function);
+  });
+
+  // --------------------------------------------------
+  //
   //  signUpOnSubmitButtonStateNotifierProvider
   //
   // --------------------------------------------------
@@ -75,33 +86,12 @@ class SignUpPageState {
         }
 
         return () async {
-          final email = ref
-              .read(loginIdFieldStateNotifierProvider)
-              .textEditingController
-              .text;
+          final signUpProgressStateNotifierProvider =
+              ref.read(signUpProgressStateNotifierProviderOfProvider);
 
-          final password =
-              ref.read(passwordFieldStateProvider).passwordFieldController.text;
-
-          try {
-            // サービス利用登録
-            final serviceUseRegistrationUsecase =
-                ref.read(serviceUseRegistrationUsecaseProvider);
-
-            await serviceUseRegistrationUsecase(email, password);
-
-            // メールアドレス検証メール送信
-            final currentUserSendVerifyEmailUsecase =
-                ref.read(currentUserSendVerifyEmailUsecaseProvider);
-
-            await currentUserSendVerifyEmailUsecase();
-
-            //
-          } on StackremoteException catch (e) {
-            ref
-                .read(attentionMessageStateProvider.notifier)
-                .update((state) => e.message);
-          }
+          ref
+              .read(signUpProgressStateNotifierProvider.notifier)
+              .updateProgress();
         };
       }
 

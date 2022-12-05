@@ -38,7 +38,7 @@ class MenuWidget extends StatelessWidget {
                           // Drawerを閉じる
                           Navigator.pop(context);
 
-                          context.push('/changepassword');
+                          context.push('/change_password');
                         },
                       ),
                       ListTile(

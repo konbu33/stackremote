@@ -3,9 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../../usecase/service_signin.dart';
-
 import '../widget/password_field_state.dart';
+import '../widget/progress_state_signin.dart';
 
 class SignInPageState {
   // --------------------------------------------------
@@ -52,6 +51,18 @@ class SignInPageState {
 
   // --------------------------------------------------
   //
+  //  signInProgressStateNotifierProviderOfProvider
+  //
+  // --------------------------------------------------
+  static final signInProgressStateNotifierProviderOfProvider =
+      Provider.autoDispose((ref) {
+    final function = ref.watch(progressStateSignInProvider);
+
+    return progressStateNotifierProviderCreator(function: function);
+  });
+
+  // --------------------------------------------------
+  //
   //  signInOnSubmitButtonStateNotifierProvider
   //
   // --------------------------------------------------
@@ -78,26 +89,12 @@ class SignInPageState {
         }
 
         return () async {
-          final email = ref
-              .read(loginIdFieldStateNotifierProvider)
-              .textEditingController
-              .text;
+          final signInProgressStateNotifierProvider =
+              ref.read(signInProgressStateNotifierProviderOfProvider);
 
-          final password =
-              ref.read(passwordFieldStateProvider).passwordFieldController.text;
-
-          try {
-            // サインイン
-            final serviceSignInUsecase = ref.read(serviceSignInUsecaseProvider);
-
-            await serviceSignInUsecase(email, password);
-
-            //
-          } on StackremoteException catch (e) {
-            ref
-                .read(attentionMessageStateProvider.notifier)
-                .update((state) => e.message);
-          }
+          ref
+              .read(signInProgressStateNotifierProvider.notifier)
+              .updateProgress();
         };
       }
 

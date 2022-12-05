@@ -30,6 +30,8 @@ final progressStateChannelLeaveProvider = Provider((ref) {
     // --------------------------------------------------
     try {
       final channelLeaveUsecase = ref.read(channelLeaveUsecaseProvider);
+
+      await Future.delayed(const Duration(seconds: 1));
       await channelLeaveUsecase();
 
       //

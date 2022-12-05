@@ -34,16 +34,21 @@ class ChangePasswordPage extends HookConsumerWidget {
         children: [
           Form(
             key: GlobalKey<FormState>(),
-            child: Column(
+            child: Stack(
               children: [
-                ChangePasswordPageWidgets.descriptionMessageWidget(),
-                ChangePasswordPageWidgets.attentionMessageWidget(),
-                const SizedBox(height: 40),
-                ChangePasswordPageWidgets.passwordField(),
-                const SizedBox(height: 40),
-                ChangePasswordPageWidgets.passwordFieldConfirm(),
-                const SizedBox(height: 40),
-                ChangePasswordPageWidgets.changePasswordButton(),
+                Column(
+                  children: [
+                    ChangePasswordPageWidgets.descriptionMessageWidget(),
+                    ChangePasswordPageWidgets.attentionMessageWidget(),
+                    const SizedBox(height: 40),
+                    ChangePasswordPageWidgets.passwordField(),
+                    const SizedBox(height: 40),
+                    ChangePasswordPageWidgets.passwordFieldConfirm(),
+                    const SizedBox(height: 40),
+                    ChangePasswordPageWidgets.changePasswordButton(),
+                  ],
+                ),
+                ChangePasswordPageWidgets.progressWidget(),
               ],
             ),
           ),
@@ -116,6 +121,22 @@ class ChangePasswordPageWidgets {
         );
       },
     );
+
+    return widget;
+  }
+
+  // progressWidget
+  static Widget progressWidget() {
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final signInProgressStateNotifierProvider = ref.watch(
+        ChangePasswordPageState
+            .changePasswordProgressStateNotifierProviderOfProvider,
+      );
+
+      return ProgressWidget(
+        progressStateNotifierProvider: signInProgressStateNotifierProvider,
+      );
+    });
 
     return widget;
   }

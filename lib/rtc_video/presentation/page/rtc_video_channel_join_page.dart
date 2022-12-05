@@ -44,6 +44,7 @@ class RtcVideoChannelJoinPage extends HookConsumerWidget {
                 ),
               ),
               RtcVideoChannelJoinPageWidgets.channelJoinProgressWidget(),
+              RtcVideoChannelJoinPageWidgets.signOutProgressWidget(),
             ],
           ),
         ],
@@ -132,6 +133,21 @@ class RtcVideoChannelJoinPageWidgets {
 
       return ProgressWidget(
         progressStateNotifierProvider: channelJoinProgressStateProvider,
+      );
+    });
+
+    return widget;
+  }
+
+  //
+  static Widget signOutProgressWidget() {
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final signOutProgressStateNotifierProvider = ref.watch(
+          RtcVideoChannelJoinPageState
+              .signOutProgressStateNotifierProviderOfProvider);
+
+      return ProgressWidget(
+        progressStateNotifierProvider: signOutProgressStateNotifierProvider,
       );
     });
 

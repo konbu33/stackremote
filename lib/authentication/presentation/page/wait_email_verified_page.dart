@@ -22,14 +22,20 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: const [],
         children: [
-          Column(
+          Stack(
             children: [
-              WaitEmailVerifiedPageWidgets.descriptionMessageWidget(),
-              const SizedBox(height: 30),
-              WaitEmailVerifiedPageWidgets.sendVerifyEmailWidget(),
-              WaitEmailVerifiedPageWidgets.attentionMessageWidget(),
-              const SizedBox(height: 80), // height: 90以上でレイアウトエラー発生する様子。
-              WaitEmailVerifiedPageWidgets.checkEmailVerifiedTimerWidget(),
+              Column(
+                children: [
+                  WaitEmailVerifiedPageWidgets.descriptionMessageWidget(),
+                  const SizedBox(height: 30),
+                  WaitEmailVerifiedPageWidgets.sendVerifyEmailWidget(),
+                  WaitEmailVerifiedPageWidgets.attentionMessageWidget(),
+                  const SizedBox(height: 80), // height: 90以上でレイアウトエラー発生する様子。
+                  WaitEmailVerifiedPageWidgets.checkEmailVerifiedTimerWidget(),
+                ],
+              ),
+              WaitEmailVerifiedPageWidgets.signOutProgressWidget(),
+              WaitEmailVerifiedPageWidgets.sendVerifyEmailProgressWidget(),
             ],
           ),
         ],
@@ -109,6 +115,37 @@ class WaitEmailVerifiedPageWidgets {
 
       return const SizedBox();
     });
+    return widget;
+  }
+
+  // progressWidget
+  static Widget signOutProgressWidget() {
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final signOutProgressStateNotifierProvider = ref.watch(
+          WaitEmailVerifiedPageState
+              .signOutProgressStateNotifierProviderOfProvider);
+
+      return ProgressWidget(
+        progressStateNotifierProvider: signOutProgressStateNotifierProvider,
+      );
+    });
+
+    return widget;
+  }
+
+  // progressWidget
+  static Widget sendVerifyEmailProgressWidget() {
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final sendVerifyEmailProgressStateNotifierProvider = ref.watch(
+          WaitEmailVerifiedPageState
+              .sendVerifyEmailProgressStateNotifierProviderOfProvider);
+
+      return ProgressWidget(
+        progressStateNotifierProvider:
+            sendVerifyEmailProgressStateNotifierProvider,
+      );
+    });
+
     return widget;
   }
 }
