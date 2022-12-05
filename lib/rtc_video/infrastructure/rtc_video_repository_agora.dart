@@ -7,15 +7,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../common/common.dart';
-import 'agora_rtc_video_engine_provider.dart';
+import 'rtc_video_engine_agora.dart';
 import 'rtc_video_repository.dart';
 
 final rtcVideoRepositoryAgoraCreatorProvider = Provider((ref) {
   Future<RtcVideoRepositoryAgora> rtcVideoRepositoryAgoraCreator() async {
-    final agoraRtcEngineCreator = ref.watch(agoraRtcEngineCreatorProvider);
-    final rtcEngine = await agoraRtcEngineCreator();
+    final rtcVideoEngineAgoraCreator =
+        ref.watch(rtcVideoEngineAgoraCreatorProvider);
+    final rtcVideoEngineAgora = await rtcVideoEngineAgoraCreator();
 
-    return RtcVideoRepositoryAgora(rtcEngine: rtcEngine);
+    return RtcVideoRepositoryAgora(rtcEngine: rtcVideoEngineAgora);
   }
 
   return rtcVideoRepositoryAgoraCreator;

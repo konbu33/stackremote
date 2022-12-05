@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_remote_view.dart';
 
-class AgoraVideoRemotePreviewWidget extends StatelessWidget {
-  const AgoraVideoRemotePreviewWidget({
+class RtcVideoRemotePreviewWidget extends StatelessWidget {
+  const RtcVideoRemotePreviewWidget({
     Key? key,
     required this.channelName,
     required this.remoteUid,

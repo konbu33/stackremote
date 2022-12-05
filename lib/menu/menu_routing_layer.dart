@@ -43,28 +43,28 @@ final menuRouterProvider = Provider(
     // improve：肥大化しそうなため、分割を検討
     return GoRouter(
       // デフォルト表示されるルーティング先
-      initialLocation: '/agoravideochanneljoin',
+      initialLocation: '/rtc_video_channel_join',
 
       // ルーティング先
       // improve：ルーティング先をグループ化してコンポーネント化し、着脱容易にしたい。
       routes: [
         //  デフォルト表示
         GoRoute(
-          path: '/agoravideochanneljoin',
+          path: '/rtc_video_channel_join',
           builder: (context, state) {
-            return const AgoraVideoChannelJoinPage();
+            return const RtcVideoChannelJoinPage();
           },
         ),
 
         GoRoute(
-          path: '/agoravideo',
+          path: '/rtc_video',
           builder: (context, state) {
-            return const AgoraVideoPage();
+            return const RtcVideoPage();
           },
         ),
 
         GoRoute(
-          path: '/changepassword',
+          path: '/change_password',
           builder: (context, state) => const ChangePasswordPage(),
         ),
 
@@ -84,10 +84,10 @@ final menuRouterProvider = Provider(
         // rtc channel join済・未joinの状態を監視し、
         // 状態が変化した場合、リダイレクト操作が実施される。
         if (isJoinedChannel) {
-          if (state.subloc == '/agoravideo') {
+          if (state.subloc == '/rtc_video') {
             return null;
           } else {
-            return '/agoravideo';
+            return '/rtc_video';
           }
         }
 

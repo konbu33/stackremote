@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart';
 
-class AgoraVideoLocalPreviewWidget extends StatelessWidget {
-  const AgoraVideoLocalPreviewWidget({
+class RtcVideoLocalPreviewWidget extends StatelessWidget {
+  const RtcVideoLocalPreviewWidget({
     Key? key,
   }) : super(key: key);
 

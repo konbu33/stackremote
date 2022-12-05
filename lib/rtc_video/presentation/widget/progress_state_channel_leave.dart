@@ -2,20 +2,20 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../usecase/channel_leave.dart';
 import '../../usecase/channel_leave_clear_user_in_db.dart';
-import '../page/agora_video_channel_join_page_state.dart';
+import '../page/rtc_video_channel_join_page_state.dart';
 
 // --------------------------------------------------
 //
-//   channelLeaveProgressFunctionProvider
+//   progressStateChannelLeaveProvider
 //
 // --------------------------------------------------
-final channelLeaveProgressFunctionProvider = Provider((ref) {
+final progressStateChannelLeaveProvider = Provider((ref) {
   //
 
   Future<void> channelLeave() async {
     void setMessage(String message) {
       ref
-          .read(AgoraVideoChannelJoinPageState
+          .read(RtcVideoChannelJoinPageState
               .attentionMessageStateProvider.notifier)
           .update((state) => "${DateTime.now()}: $message");
     }

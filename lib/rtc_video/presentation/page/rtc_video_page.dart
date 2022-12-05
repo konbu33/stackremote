@@ -9,13 +9,13 @@ import '../../../pointer/pointer.dart';
 import '../../../user/user.dart';
 import '../../domain/rtc_channel_state.dart';
 
-import '../widget/agora_video_local_preview_widget.dart';
-import '../widget/agora_video_remote_preview_widget.dart';
+import '../widget/rtc_video_local_preview_widget.dart';
+import '../widget/rtc_video_remote_preview_widget.dart';
 
-import 'agora_video_page_state.dart';
+import 'rtc_video_page_state.dart';
 
-class AgoraVideoPage extends HookConsumerWidget {
-  const AgoraVideoPage({Key? key}) : super(key: key);
+class RtcVideoPage extends HookConsumerWidget {
+  const RtcVideoPage({Key? key}) : super(key: key);
 
 // ---------------------------------------------------
 //
@@ -37,7 +37,7 @@ class AgoraVideoPage extends HookConsumerWidget {
           child: Text(channelName),
         ),
         actions: [
-          AgoraVideoPageWidgets.buildLeaveChannelIconWidget(),
+          RtcVideoPageWidgets.buildLeaveChannelIconWidget(),
         ],
       ),
       body: PointerOverlayWidget(
@@ -45,9 +45,9 @@ class AgoraVideoPage extends HookConsumerWidget {
           child: Stack(
             children: [
               Center(
-                child: ref.watch(AgoraVideoPageState.viewSwitchProvider)
-                    ? AgoraVideoPageWidgets.buildRemotePreviewWidget()
-                    : AgoraVideoPageWidgets.buildLocalPreviewWidget(),
+                child: ref.watch(RtcVideoPageState.viewSwitchProvider)
+                    ? RtcVideoPageWidgets.buildRemotePreviewWidget()
+                    : RtcVideoPageWidgets.buildLocalPreviewWidget(),
               ),
               Align(
                 alignment: Alignment.topLeft,
@@ -58,19 +58,19 @@ class AgoraVideoPage extends HookConsumerWidget {
                   child: GestureDetector(
                     onTap: () {
                       ref
-                          .read(AgoraVideoPageState.viewSwitchProvider.notifier)
+                          .read(RtcVideoPageState.viewSwitchProvider.notifier)
                           .update((state) => !state);
                     },
                     child: Center(
-                      child: ref.watch(AgoraVideoPageState.viewSwitchProvider)
-                          ? AgoraVideoPageWidgets.buildLocalPreviewWidget()
-                          : AgoraVideoPageWidgets.buildRemotePreviewWidget(),
+                      child: ref.watch(RtcVideoPageState.viewSwitchProvider)
+                          ? RtcVideoPageWidgets.buildLocalPreviewWidget()
+                          : RtcVideoPageWidgets.buildRemotePreviewWidget(),
                     ),
                   ),
                 ),
               ),
-              AgoraVideoPageWidgets.buildDisplayState(),
-              AgoraVideoPageWidgets.channelLeaveProgressWidget(),
+              RtcVideoPageWidgets.buildDisplayState(),
+              RtcVideoPageWidgets.channelLeaveProgressWidget(),
             ],
           ),
         ),
@@ -87,13 +87,13 @@ class AgoraVideoPage extends HookConsumerWidget {
 //
 // ---------------------------------------------------
 
-class AgoraVideoPageWidgets {
+class RtcVideoPageWidgets {
   // buildLeaveChannelIconWidget
   static Widget buildLeaveChannelIconWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       return AppbarAcitonIconWidget(
         appbarActionIconStateNotifierProvider: ref.watch(
-            AgoraVideoPageState.channelLeaveSubmitIconStateNotifierProvider),
+            RtcVideoPageState.channelLeaveSubmitIconStateNotifierProvider),
       );
     }));
 
@@ -103,7 +103,7 @@ class AgoraVideoPageWidgets {
   // Local Preview Widget
   static Widget buildLocalPreviewWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      return const AgoraVideoLocalPreviewWidget();
+      return const RtcVideoLocalPreviewWidget();
     }));
     return widget;
   }
@@ -114,7 +114,7 @@ class AgoraVideoPageWidgets {
       final channelName = ref.watch(channelNameProvider);
       final remoteUid = ref.watch(RtcChannelState.remoteUidProvider);
 
-      return AgoraVideoRemotePreviewWidget(
+      return RtcVideoRemotePreviewWidget(
         channelName: channelName,
         remoteUid: remoteUid,
       );
@@ -149,7 +149,7 @@ class AgoraVideoPageWidgets {
   static Widget channelLeaveProgressWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       final channelLeaveProgressStateNotifierProvider = ref.watch(
-          AgoraVideoPageState
+          RtcVideoPageState
               .channelLeaveProgressStateNotifierProviderOfProvider);
 
       return ProgressWidget(

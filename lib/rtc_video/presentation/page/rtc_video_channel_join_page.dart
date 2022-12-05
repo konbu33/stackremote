@@ -4,26 +4,26 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 import '../../../menu/menu.dart';
 
-import 'agora_video_channel_join_page_state.dart';
+import 'rtc_video_channel_join_page_state.dart';
 
-class AgoraVideoChannelJoinPage extends HookConsumerWidget {
-  const AgoraVideoChannelJoinPage({Key? key}) : super(key: key);
+class RtcVideoChannelJoinPage extends HookConsumerWidget {
+  const RtcVideoChannelJoinPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final channelNameFieldStateNotifierProvider = ref.watch(
-        AgoraVideoChannelJoinPageState
+        RtcVideoChannelJoinPageState
             .channelNameFieldStateNotifierProviderOfProvider);
 
     final channelNameFieldState =
         ref.watch(channelNameFieldStateNotifierProvider);
 
     return Scaffold(
-      drawer: AgoraVideoChannelJoinPageWidgets.menuWidget(),
+      drawer: RtcVideoChannelJoinPageWidgets.menuWidget(),
       appBar: AppBar(
-        title: const Text(AgoraVideoChannelJoinPageState.pageTitle),
+        title: const Text(RtcVideoChannelJoinPageState.pageTitle),
         actions: [
-          AgoraVideoChannelJoinPageWidgets.signOutIconButton(),
+          RtcVideoChannelJoinPageWidgets.signOutIconButton(),
         ],
       ),
       body: ScaffoldBodyBaseLayoutWidget(
@@ -35,15 +35,15 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
                 key: GlobalKey<FormState>(),
                 child: Column(
                   children: [
-                    AgoraVideoChannelJoinPageWidgets.messageWidget(),
+                    RtcVideoChannelJoinPageWidgets.messageWidget(),
                     const SizedBox(height: 40),
-                    AgoraVideoChannelJoinPageWidgets.channelNameFieldWidget(),
+                    RtcVideoChannelJoinPageWidgets.channelNameFieldWidget(),
                     const SizedBox(height: 40),
-                    AgoraVideoChannelJoinPageWidgets.channelJoinSubmitWidget(),
+                    RtcVideoChannelJoinPageWidgets.channelJoinSubmitWidget(),
                   ],
                 ),
               ),
-              AgoraVideoChannelJoinPageWidgets.channelJoinProgressWidget(),
+              RtcVideoChannelJoinPageWidgets.channelJoinProgressWidget(),
             ],
           ),
         ],
@@ -52,7 +52,7 @@ class AgoraVideoChannelJoinPage extends HookConsumerWidget {
   }
 }
 
-class AgoraVideoChannelJoinPageWidgets {
+class RtcVideoChannelJoinPageWidgets {
   // menu
   static Widget menuWidget() {
     final Widget widget = Consumer(
@@ -70,8 +70,8 @@ class AgoraVideoChannelJoinPageWidgets {
     final Widget widget = Consumer(
       builder: ((context, ref, child) {
         return AppbarAcitonIconWidget(
-          appbarActionIconStateNotifierProvider: ref
-              .watch(AgoraVideoChannelJoinPageState.signOutIconStateProvider),
+          appbarActionIconStateNotifierProvider:
+              ref.watch(RtcVideoChannelJoinPageState.signOutIconStateProvider),
         );
       }),
     );
@@ -85,7 +85,7 @@ class AgoraVideoChannelJoinPageWidgets {
     final Widget widget = Consumer(builder: (context, ref, child) {
       const style = TextStyle(color: Colors.red);
       return Text(
-        ref.watch(AgoraVideoChannelJoinPageState.attentionMessageStateProvider),
+        ref.watch(RtcVideoChannelJoinPageState.attentionMessageStateProvider),
         style: style,
       );
     });
@@ -98,7 +98,7 @@ class AgoraVideoChannelJoinPageWidgets {
     //
     final Widget widget = Consumer(builder: (context, ref, child) {
       final channelNameFieldStateNotifierProvider = ref.watch(
-          AgoraVideoChannelJoinPageState
+          RtcVideoChannelJoinPageState
               .channelNameFieldStateNotifierProviderOfProvider);
 
       return NameFieldWidget(
@@ -114,7 +114,7 @@ class AgoraVideoChannelJoinPageWidgets {
     final Widget widget = Consumer(builder: (context, ref, child) {
       return OnSubmitButtonWidget(
         onSubmitButtonStateNotifierProvider: ref.watch(
-          AgoraVideoChannelJoinPageState
+          RtcVideoChannelJoinPageState
               .channelJoinOnSubmitButtonStateNotifierProvider,
         ),
       );
@@ -127,7 +127,7 @@ class AgoraVideoChannelJoinPageWidgets {
   static Widget channelJoinProgressWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       final channelJoinProgressStateProvider = ref.watch(
-          AgoraVideoChannelJoinPageState
+          RtcVideoChannelJoinPageState
               .channelJoinProgressStateProviderOfProvider);
 
       return ProgressWidget(

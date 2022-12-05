@@ -69,7 +69,7 @@ final authenticationRouterProvider = Provider(
                   builder: (context, state) => const SignUpPage()),
             ]),
         GoRoute(
-            path: '/waitmailverified',
+            path: '/wait_mail_verified',
             builder: (context, state) => const WaitEmailVerifiedPage()),
       ],
 
@@ -87,10 +87,10 @@ final authenticationRouterProvider = Provider(
         // サインイン済み & メールアドレス未検証の場合のリダイレクト動作
         if (isSignIn) {
           if (!isEmailVerified) {
-            if (state.subloc == '/waitmailverified') {
+            if (state.subloc == '/wait_mail_verified') {
               return null;
             } else {
-              return '/waitmailverified';
+              return '/wait_mail_verified';
             }
           }
         }

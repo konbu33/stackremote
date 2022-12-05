@@ -2,7 +2,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../channel/domain/channel.dart';
-import '../page/agora_video_channel_join_page_state.dart';
+import '../page/rtc_video_channel_join_page_state.dart';
 import '../../usecase/channel_join.dart';
 import '../../usecase/create_rtc_id_token.dart';
 import '../../usecase/channel_join_register_channel_and_user_in_db.dart';
@@ -10,17 +10,17 @@ import '../../domain/rtc_channel_state.dart';
 
 // --------------------------------------------------
 //
-//   channelJoinProgressFunctionProvider
+//   progressStateChannelJoinProvider
 //
 // --------------------------------------------------
 
-final channelJoinProgressFunctionProvider = Provider((ref) {
+final progressStateChannelJoinProvider = Provider((ref) {
   //
 
   Future<void> channelJoin() async {
     void setMessage(String message) {
       ref
-          .read(AgoraVideoChannelJoinPageState
+          .read(RtcVideoChannelJoinPageState
               .attentionMessageStateProvider.notifier)
           .update((state) => "${DateTime.now()}: $message");
     }
@@ -35,7 +35,7 @@ final channelJoinProgressFunctionProvider = Provider((ref) {
     //
     // --------------------------------------------------
     final channelNameFieldStateNotifierProvider = ref.watch(
-        AgoraVideoChannelJoinPageState
+        RtcVideoChannelJoinPageState
             .channelNameFieldStateNotifierProviderOfProvider);
 
     final channelName = ref.watch(channelNameFieldStateNotifierProvider

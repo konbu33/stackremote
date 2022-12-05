@@ -32,9 +32,9 @@ final tempLogConfigCreatorProvider = Provider((ref) {
       // print("appDocPath : ${appDocPath}");
 
       final LogConfig tempLogConfig =
-          LogConfig(filePath: "$tempPath/agora.temp.log");
+          LogConfig(filePath: "$tempPath/rtc_video_engine_agora.temp.log");
       // final LogConfig logConfig = LogConfig();
-      // LogConfig(filePath: "${tempPath}/custom_agora.log");
+      // LogConfig(filePath: "${tempPath}/rtc_video_engine_agora.custom.log");
 
       return tempLogConfig;
     } catch (e, s) {
@@ -46,10 +46,10 @@ final tempLogConfigCreatorProvider = Provider((ref) {
   return tempLogConfigCreator;
 });
 
-final agoraRtcEngineCreatorProvider = Provider((ref) {
+final rtcVideoEngineAgoraCreatorProvider = Provider((ref) {
   //
 
-  Future<RtcEngine> agoraRtcEngineCreator() async {
+  Future<RtcEngine> rtcVideoEngineAgoraCreator() async {
     final appIdCreator = ref.watch(appIdCreatorProvider);
     final appId = appIdCreator();
 
@@ -108,5 +108,5 @@ final agoraRtcEngineCreatorProvider = Provider((ref) {
     return engine;
   }
 
-  return agoraRtcEngineCreator;
+  return rtcVideoEngineAgoraCreator;
 });

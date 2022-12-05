@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/presentation/widget/channel_leave_progress.dart';
 
 import '../../../common/common.dart';
+import '../widget/progress_state_channel_leave.dart';
 
-class AgoraVideoPageState {
+class RtcVideoPageState {
   // --------------------------------------------------
   //
   //   viewSwitchProvider
@@ -19,7 +19,7 @@ class AgoraVideoPageState {
   // --------------------------------------------------
   static final channelLeaveProgressStateNotifierProviderOfProvider =
       Provider((ref) {
-    final function = ref.watch(channelLeaveProgressFunctionProvider);
+    final function = ref.watch(progressStateChannelLeaveProvider);
 
     return progressStateNotifierProviderCreator(function: function);
   });
