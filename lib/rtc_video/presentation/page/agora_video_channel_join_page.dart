@@ -4,8 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 import '../../../menu/menu.dart';
 
-import '../widget/channel_join_progress_widget.dart';
-
 import 'agora_video_channel_join_page_state.dart';
 
 class AgoraVideoChannelJoinPage extends HookConsumerWidget {
@@ -127,10 +125,15 @@ class AgoraVideoChannelJoinPageWidgets {
 
   //
   static Widget channelJoinProgressWidget() {
-    final Widget widget = ChannelJoinProgressWidget(
-      channelJoinProgressStateProvider:
-          AgoraVideoChannelJoinPageState.channelJoinProgressStateProvider,
-    );
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final channelJoinProgressStateProvider = ref.watch(
+          AgoraVideoChannelJoinPageState
+              .channelJoinProgressStateProviderOfProvider);
+
+      return ProgressWidget(
+        progressStateNotifierProvider: channelJoinProgressStateProvider,
+      );
+    });
 
     return widget;
   }

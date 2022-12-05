@@ -12,7 +12,6 @@ import '../../domain/rtc_channel_state.dart';
 import '../widget/agora_video_local_preview_widget.dart';
 import '../widget/agora_video_remote_preview_widget.dart';
 
-import '../widget/channel_join_progress_widget.dart';
 import 'agora_video_page_state.dart';
 
 class AgoraVideoPage extends HookConsumerWidget {
@@ -148,10 +147,16 @@ class AgoraVideoPageWidgets {
   }
 
   static Widget channelLeaveProgressWidget() {
-    final Widget widget = ChannelJoinProgressWidget(
-      channelJoinProgressStateProvider:
-          AgoraVideoPageState.channelLeaveProgressStateProvider,
-    );
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final channelLeaveProgressStateNotifierProvider = ref.watch(
+          AgoraVideoPageState
+              .channelLeaveProgressStateNotifierProviderOfProvider);
+
+      return ProgressWidget(
+        progressStateNotifierProvider:
+            channelLeaveProgressStateNotifierProvider,
+      );
+    });
 
     return widget;
   }

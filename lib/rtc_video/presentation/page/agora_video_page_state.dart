@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/rtc_video/presentation/widget/channel_leave_progress.dart';
 
 import '../../../common/common.dart';
-import '../widget/channel_join_progress_state.dart';
 
 class AgoraVideoPageState {
   // --------------------------------------------------
@@ -17,8 +17,12 @@ class AgoraVideoPageState {
   //  channelJoinProgressStateProvider
   //
   // --------------------------------------------------
-  static final channelLeaveProgressStateProvider =
-      channelJoinProgressStateProviderCreator();
+  static final channelLeaveProgressStateNotifierProviderOfProvider =
+      Provider((ref) {
+    final function = ref.watch(channelLeaveProgressFunctionProvider);
+
+    return progressStateNotifierProviderCreator(function: function);
+  });
 
   // --------------------------------------------------
   //
@@ -29,7 +33,12 @@ class AgoraVideoPageState {
     (ref) {
       void Function() buidChannelLeaveOnSubmit() {
         return () async {
-          ref.read(channelLeaveProgressStateProvider.notifier).channelLeave();
+          final channelLeaveProgressStateNotifierProvider =
+              ref.read(channelLeaveProgressStateNotifierProviderOfProvider);
+
+          ref
+              .read(channelLeaveProgressStateNotifierProvider.notifier)
+              .updateProgress();
         };
       }
 

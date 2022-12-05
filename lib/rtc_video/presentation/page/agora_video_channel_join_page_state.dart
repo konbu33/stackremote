@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // improve: authenticationのモジュールをimportしている点、疎結合に改善可能か検討の余地あり。
 import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
-import '../widget/channel_join_progress_state.dart';
+import '../widget/channel_join_progress.dart';
 
 class AgoraVideoChannelJoinPageState {
   // --------------------------------------------------
@@ -57,8 +57,11 @@ class AgoraVideoChannelJoinPageState {
   //  channelJoinProgressStateProvider
   //
   // --------------------------------------------------
-  static final channelJoinProgressStateProvider =
-      channelJoinProgressStateProviderCreator();
+  static final channelJoinProgressStateProviderOfProvider = Provider((ref) {
+    final function = ref.watch(channelJoinProgressFunctionProvider);
+
+    return progressStateNotifierProviderCreator(function: function);
+  });
 
   // --------------------------------------------------
   //
@@ -115,10 +118,13 @@ class AgoraVideoChannelJoinPageState {
         return () async {
           try {
             // channel参加
+            final channelJoinProgressStateProvider = ref.read(
+                AgoraVideoChannelJoinPageState
+                    .channelJoinProgressStateProviderOfProvider);
+
             ref
-                .read(AgoraVideoChannelJoinPageState
-                    .channelJoinProgressStateProvider.notifier)
-                .channelJoin();
+                .read(channelJoinProgressStateProvider.notifier)
+                .updateProgress();
 
             //
           } on StackremoteException catch (e) {
