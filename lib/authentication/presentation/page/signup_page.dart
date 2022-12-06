@@ -3,9 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../widget/password_field_widget.dart';
+import '../../authentication.dart';
 
-import 'signin_page_state.dart';
 import 'signup_page_state.dart';
 
 class SignUpPage extends HookConsumerWidget {
@@ -29,9 +28,12 @@ class SignUpPage extends HookConsumerWidget {
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {
+            // ref
+            //     .read(SignInPageState.isSignUpPagePushProvider.notifier)
+            //     .update((state) => false);
             ref
-                .read(SignInPageState.isSignUpPagePushProvider.notifier)
-                .update((state) => false);
+                .read(authenticationRoutingCurrentPathProvider.notifier)
+                .update((state) => AuthenticationRoutingPath.signIn);
           },
           icon: const Icon(Icons.arrow_back),
         ),

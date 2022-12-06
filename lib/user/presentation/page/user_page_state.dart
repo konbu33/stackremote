@@ -2,7 +2,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 import '../../domain/user.dart';
-import '../widget/progress_state_update_user.dart';
 
 class UserPageState {
   static const pageTitle = "ユーザ情報";
@@ -38,18 +37,6 @@ class UserPageState {
 
   // --------------------------------------------------
   //
-  //  updateUserProgressStateNotifierProviderOfProvider
-  //
-  // --------------------------------------------------
-  static final updateUserProgressStateNotifierProviderOfProvider =
-      Provider.autoDispose((ref) {
-    final function = ref.watch(progressStateUpdateUserProvider);
-
-    return progressStateNotifierProviderCreator(function: function);
-  });
-
-  // --------------------------------------------------
-  //
   // userUpdateOnSubmitButtonStateNotifierProvider
   //
   // --------------------------------------------------
@@ -73,22 +60,48 @@ class UserPageState {
       }
 
       return () async {
-        final updateUserProgressStateNotifierProvider =
-            ref.read(updateUserProgressStateNotifierProviderOfProvider);
+        void updateUser() {
+          void setMessage(String message) {
+            ref
+                .read(UserPageState.attentionMessageStateProvider.notifier)
+                .update((state) => "${DateTime.now()}: $message");
+          }
 
-        ref
-            .read(updateUserProgressStateNotifierProvider.notifier)
-            .updateProgress();
+          // const message = "ユーザ情報更新中";
+          // setMessage(message);
 
-        // final nickName = ref
-        //     .read(nickNameFieldStateNotifierProvider)
-        //     .textEditingController
-        //     .text;
+          // --------------------------------------------------
+          //
+          // ユーザ情報更新
+          //
+          // --------------------------------------------------
+          try {
+            final nickNameFieldStateNotifierProvider = ref.watch(
+                UserPageState.nickNameFieldStateNotifierProviderOfProvider);
 
-        // // ユーザ情報更新
-        // final userStateNotifier = ref.read(userStateNotifierProvider.notifier);
+            final nickName = ref
+                .read(nickNameFieldStateNotifierProvider)
+                .textEditingController
+                .text;
 
-        // userStateNotifier.setNickName(nickName);
+            // ユーザ情報更新
+            final userStateNotifier =
+                ref.read(userStateNotifierProvider.notifier);
+
+            userStateNotifier.setNickName(nickName);
+
+            // const message = "ユーザ情報を更新しました。";
+            // setMessage(message);
+
+            //
+          } on StackremoteException catch (e) {
+            setMessage(e.message);
+          }
+
+          //
+        }
+
+        updateUser();
       };
     }
 

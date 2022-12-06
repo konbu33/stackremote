@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
+import '../../authentication.dart';
 import '../widget/password_field_state.dart';
 import '../widget/progress_state_signin.dart';
 
@@ -44,7 +45,7 @@ class SignInPageState {
   static final passwordFieldStateProviderOfProvider = StateProvider.autoDispose(
       (ref) => passwordFieldStateNotifierProviderCreator());
 
-  static final isSignUpPagePushProvider = StateProvider((ref) => false);
+  // static final isSignUpPagePushProvider = StateProvider((ref) => false);
 
   static final attentionMessageStateProvider =
       StateProvider.autoDispose((ref) => "");
@@ -123,7 +124,10 @@ class SignInPageState {
 
     void Function() buildGoToSignUpIconOnSubmit() {
       return () {
-        ref.read(isSignUpPagePushProvider.notifier).update((state) => true);
+        // ref.read(isSignUpPagePushProvider.notifier).update((state) => true);
+        ref
+            .read(authenticationRoutingCurrentPathProvider.notifier)
+            .update((state) => AuthenticationRoutingPath.signInSignUp);
       };
     }
 

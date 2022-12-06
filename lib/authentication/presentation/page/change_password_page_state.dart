@@ -2,7 +2,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../../usecase/current_user_change_password.dart';
 import '../widget/password_field_state.dart';
 import '../widget/progress_state_change_password.dart';
 

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// improve: authenticationのモジュールをimportしている点、疎結合に改善可能か検討の余地あり。
-import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
 import '../widget/progress_state_channel_join.dart';
 import '../widget/progress_state_signout.dart';

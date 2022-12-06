@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/menu/menu.dart';
 
 import '../../../common/common.dart';
 import '../../domain/user.dart';
@@ -18,26 +19,30 @@ class UserPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: UserDetailPageWidgets.pageTitleWidget(),
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            ref
+                .read(menuRoutingCurrentPathProvider.notifier)
+                .update((state) => MenuRoutingPath.rtcVideoChannelJoin);
+          },
+        ),
       ),
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: [nickNameFieldState.focusNode],
         children: [
           Form(
             key: GlobalKey<FormState>(),
-            child: Stack(
+            child: Column(
               children: [
-                Column(
-                  children: [
-                    UserDetailPageWidgets.currentNickNameWidget(),
-                    const SizedBox(height: 40),
-                    UserDetailPageWidgets.attentionMessageWidget(),
-                    const SizedBox(height: 40),
-                    UserDetailPageWidgets.userNameField(),
-                    const SizedBox(height: 40),
-                    UserDetailPageWidgets.userUpdateButton(),
-                  ],
-                ),
-                UserDetailPageWidgets.updateUserProgressWidget(),
+                UserDetailPageWidgets.currentNickNameWidget(),
+                const SizedBox(height: 40),
+                UserDetailPageWidgets.attentionMessageWidget(),
+                const SizedBox(height: 40),
+                UserDetailPageWidgets.userNameField(),
+                const SizedBox(height: 40),
+                UserDetailPageWidgets.userUpdateButton(),
               ],
             ),
           ),
@@ -105,19 +110,6 @@ class UserDetailPageWidgets {
         );
       },
     );
-
-    return widget;
-  }
-
-  static Widget updateUserProgressWidget() {
-    final Widget widget = Consumer(builder: (context, ref, child) {
-      final updateUserProgressStateNotifierProvider = ref.watch(
-          UserPageState.updateUserProgressStateNotifierProviderOfProvider);
-
-      return ProgressWidget(
-        progressStateNotifierProvider: updateUserProgressStateNotifierProvider,
-      );
-    });
 
     return widget;
   }
