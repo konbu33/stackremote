@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
-import 'alert_dialog_widget.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({Key? key}) : super(key: key);
@@ -61,7 +61,7 @@ class MenuWidget extends StatelessWidget {
                         await showDialog(
                           context: context,
                           builder: (context) {
-                            return const AlertDialogWidget();
+                            return const ServiceUseCancellationWidget();
                           },
                         ).then((value) {
                           // Drawerを閉じる
