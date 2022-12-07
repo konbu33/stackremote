@@ -29,23 +29,23 @@ class RtcVideoChannelJoinPage extends HookConsumerWidget {
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: [channelNameFieldState.focusNode],
         children: [
-          Stack(
-            children: [
-              Form(
-                key: GlobalKey<FormState>(),
-                child: Column(
+          Form(
+            key: GlobalKey<FormState>(),
+            child: Column(
+              children: [
+                Stack(
                   children: [
-                    RtcVideoChannelJoinPageWidgets.messageWidget(),
-                    const SizedBox(height: 40),
-                    RtcVideoChannelJoinPageWidgets.channelNameFieldWidget(),
-                    const SizedBox(height: 40),
-                    RtcVideoChannelJoinPageWidgets.channelJoinSubmitWidget(),
+                    RtcVideoChannelJoinPageWidgets.attentionMessageWidget(),
+                    RtcVideoChannelJoinPageWidgets.signOutProgressWidget(),
+                    RtcVideoChannelJoinPageWidgets.channelJoinProgressWidget(),
                   ],
                 ),
-              ),
-              RtcVideoChannelJoinPageWidgets.channelJoinProgressWidget(),
-              RtcVideoChannelJoinPageWidgets.signOutProgressWidget(),
-            ],
+                const SizedBox(height: 40),
+                RtcVideoChannelJoinPageWidgets.channelNameFieldWidget(),
+                const SizedBox(height: 40),
+                RtcVideoChannelJoinPageWidgets.channelJoinSubmitWidget(),
+              ],
+            ),
           ),
         ],
       ),
@@ -81,7 +81,7 @@ class RtcVideoChannelJoinPageWidgets {
   }
 
   // Message Widget
-  static Widget messageWidget() {
+  static Widget attentionMessageWidget() {
     //
     final Widget widget = Consumer(builder: (context, ref, child) {
       const style = TextStyle(color: Colors.red);

@@ -34,6 +34,9 @@ final progressStateSignOutProvider = Provider((ref) {
       await Future.delayed(const Duration(seconds: 1));
       await serviceSignOutUsecase();
 
+      const String message = "サインアウトしました。";
+      setMessage(message);
+
       //
     } on StackremoteException catch (e) {
       setMessage(e.message);

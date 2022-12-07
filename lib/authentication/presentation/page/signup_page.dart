@@ -46,20 +46,20 @@ class SignUpPage extends HookConsumerWidget {
         children: [
           Form(
             key: GlobalKey<FormState>(),
-            child: Stack(
+            child: Column(
               children: [
-                Column(
+                Stack(
                   children: [
                     SignUpPageWidgets.attentionMessageWidget(),
-                    const SizedBox(height: 30),
-                    SignUpPageWidgets.loginIdField(),
-                    const SizedBox(height: 30),
-                    SignUpPageWidgets.passwordField(),
-                    const SizedBox(height: 40),
-                    SignUpPageWidgets.loginSubmitWidget(),
+                    SignUpPageWidgets.signUpProgressWidget(),
                   ],
                 ),
-                SignUpPageWidgets.progressWidget(),
+                const SizedBox(height: 30),
+                SignUpPageWidgets.loginIdField(),
+                const SizedBox(height: 30),
+                SignUpPageWidgets.passwordField(),
+                const SizedBox(height: 40),
+                SignUpPageWidgets.loginSubmitWidget(),
               ],
             ),
           ),
@@ -119,8 +119,8 @@ class SignUpPageWidgets {
     return widget;
   }
 
-  // progressWidget
-  static Widget progressWidget() {
+  // signUpProgressWidget
+  static Widget signUpProgressWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       final signUpProgressStateNotifierProvider = ref
           .watch(SignUpPageState.signUpProgressStateNotifierProviderOfProvider);

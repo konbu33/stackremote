@@ -37,20 +37,20 @@ class SignInPage extends HookConsumerWidget {
         children: [
           Form(
             key: GlobalKey<FormState>(),
-            child: Stack(
+            child: Column(
               children: [
-                Column(
+                Stack(
                   children: [
                     SignInPageWidgets.attentionMessageWidget(),
-                    const SizedBox(height: 30),
-                    SignInPageWidgets.loginIdField(),
-                    const SizedBox(height: 30),
-                    SignInPageWidgets.passwordField(),
-                    const SizedBox(height: 40),
-                    SignInPageWidgets.loginSubmitWidget(),
+                    SignInPageWidgets.signInProgressWidget(),
                   ],
                 ),
-                SignInPageWidgets.progressWidget(),
+                const SizedBox(height: 30),
+                SignInPageWidgets.loginIdField(),
+                const SizedBox(height: 30),
+                SignInPageWidgets.passwordField(),
+                const SizedBox(height: 40),
+                SignInPageWidgets.loginSubmitWidget(),
               ],
             ),
           ),
@@ -121,8 +121,8 @@ class SignInPageWidgets {
     return widget;
   }
 
-  // progressWidget
-  static Widget progressWidget() {
+  // signInProgressWidget
+  static Widget signInProgressWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       final signInProgressStateNotifierProvider = ref
           .watch(SignInPageState.signInProgressStateNotifierProviderOfProvider);

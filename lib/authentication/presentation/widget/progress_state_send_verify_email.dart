@@ -33,6 +33,7 @@ final progressStateSendVerifyEmailProvider = Provider((ref) {
       final currentUserSendVerifyEmailUsecase =
           ref.read(currentUserSendVerifyEmailUsecaseProvider);
 
+      await Future.delayed(const Duration(seconds: 1));
       await currentUserSendVerifyEmailUsecase();
 
       const String message = "メール再送しました。";

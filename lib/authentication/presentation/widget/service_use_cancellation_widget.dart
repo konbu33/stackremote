@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/authentication/presentation/widget/service_use_cancellation_state.dart';
 
+import '../../../common/common.dart';
+
 class ServiceUseCancellationWidget extends HookConsumerWidget {
   const ServiceUseCancellationWidget({Key? key}) : super(key: key);
 
@@ -14,7 +16,14 @@ class ServiceUseCancellationWidget extends HookConsumerWidget {
         children: [
           const SizedBox(height: 10),
           ServiceUseCancellationWidgetParts.buildDescriptionMessageWidget(),
-          ServiceUseCancellationWidgetParts.buildAttentionMessageWidget(),
+          const SizedBox(height: 30),
+          Stack(
+            children: [
+              ServiceUseCancellationWidgetParts.buildAttentionMessageWidget(),
+              ServiceUseCancellationWidgetParts
+                  .buildServiceUseCancellationProgressWidget(),
+            ],
+          ),
         ],
       ),
       actions: [
@@ -54,7 +63,6 @@ class ServiceUseCancellationWidgetParts {
 
       return Column(
         children: [
-          const SizedBox(height: 30),
           Text(
             attentionMessage,
             style: style,
@@ -76,10 +84,12 @@ class ServiceUseCancellationWidgetParts {
       final serviceUseCancellationOnSubmit = ref.watch(
           ServiceUseCancellationState.serviceUseCancellationOnSubmitProvider);
 
-      return TextButton(
-        onPressed: isVisibleYesButton ? serviceUseCancellationOnSubmit() : null,
-        child: const Text("はい"),
-      );
+      return isVisibleYesButton
+          ? TextButton(
+              onPressed: serviceUseCancellationOnSubmit(),
+              child: const Text("はい"),
+            )
+          : const SizedBox();
     });
 
     return widget;
@@ -89,11 +99,33 @@ class ServiceUseCancellationWidgetParts {
   static Widget buildNoButtonWidget() {
     Widget widget = Consumer(builder: (context, ref, child) {
       //
+      final isVisibleYesButton =
+          ref.watch(ServiceUseCancellationState.isVisibleYesButtonProvider);
+
+      final buttonDisplayName = isVisibleYesButton ? "いいえ" : "閉じる";
+
       return TextButton(
         onPressed: () {
           Navigator.pop(context);
         },
-        child: const Text("いいえ"),
+        child: Text(buttonDisplayName),
+      );
+    });
+
+    return widget;
+  }
+
+  // buildServiceUseCancellationProgressWidget
+  static Widget buildServiceUseCancellationProgressWidget() {
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final serviceUseCancellationProgressStateNotifierProvider = ref.watch(
+        ServiceUseCancellationState
+            .serviceUseCancellationProgressStateNotifierProviderOfProvider,
+      );
+
+      return ProgressWidget(
+        progressStateNotifierProvider:
+            serviceUseCancellationProgressStateNotifierProvider,
       );
     });
 

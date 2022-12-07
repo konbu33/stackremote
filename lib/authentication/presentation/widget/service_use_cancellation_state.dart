@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../authentication.dart';
-import '../../usecase/service_use_cancellation.dart';
 import '../../../common/common.dart';
+import 'progress_state_service_use_cancellation.dart';
 
 class ServiceUseCancellationState {
   // --------------------------------------------------
@@ -21,6 +18,18 @@ class ServiceUseCancellationState {
 
   // --------------------------------------------------
   //
+  //  changePasswordProgressStateNotifierProviderOfProvider
+  //
+  // --------------------------------------------------
+  static final serviceUseCancellationProgressStateNotifierProviderOfProvider =
+      Provider((ref) {
+    final function = ref.watch(progressStateServiceUseCancellationProvider);
+
+    return progressStateNotifierProviderCreator(function: function);
+  });
+
+  // --------------------------------------------------
+  //
   //  serviceUseCancellationOnSubmitProvider
   //
   // --------------------------------------------------
@@ -28,40 +37,12 @@ class ServiceUseCancellationState {
     void Function()? serviceUseCancellationOnSubmit() {
       //
       return () async {
-        final serviceUseCancellationUsecase =
-            ref.read(serviceUseCancellationUsecaseProvider);
-
-        try {
-          await serviceUseCancellationUsecase();
-          const message = "登録したメールアドレスを削除しました。";
-          ref
-              .read(attentionMessageStateProvider.notifier)
-              .update((state) => message);
-
-          sleep(const Duration(seconds: 3));
-
-          final notifier =
-              ref.read(firebaseAuthUserStateNotifierProvider.notifier);
-          notifier.updateIsSignIn(false);
-
-          //
-        } on StackremoteException catch (e) {
-          ref
-              .read(attentionMessageStateProvider.notifier)
-              .update((state) => e.message);
-
-          switch (e.code) {
-            case "requires-recent-login":
-              //
-              ref
-                  .read(isVisibleYesButtonProvider.notifier)
-                  .update((state) => false);
-
-              break;
-
-            default:
-          }
-        }
+        final serviceUseCancellationProgressStateNotifierProvider = ref.read(
+            serviceUseCancellationProgressStateNotifierProviderOfProvider);
+        ref
+            .read(serviceUseCancellationProgressStateNotifierProvider.notifier)
+            .updateProgress();
+        //
       };
     }
 
