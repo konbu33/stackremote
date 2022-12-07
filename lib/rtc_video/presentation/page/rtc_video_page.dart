@@ -37,7 +37,7 @@ class RtcVideoPage extends HookConsumerWidget {
           child: Text(channelName),
         ),
         actions: [
-          RtcVideoPageWidgets.buildLeaveChannelIconWidget(),
+          RtcVideoPageWidgets.channelLeaveIconWidget(),
         ],
       ),
       body: PointerOverlayWidget(
@@ -46,8 +46,8 @@ class RtcVideoPage extends HookConsumerWidget {
             children: [
               Center(
                 child: ref.watch(RtcVideoPageState.viewSwitchProvider)
-                    ? RtcVideoPageWidgets.buildRemotePreviewWidget()
-                    : RtcVideoPageWidgets.buildLocalPreviewWidget(),
+                    ? RtcVideoPageWidgets.remotePreviewWidget()
+                    : RtcVideoPageWidgets.localPreviewWidget(),
               ),
               Align(
                 alignment: Alignment.topLeft,
@@ -63,13 +63,13 @@ class RtcVideoPage extends HookConsumerWidget {
                     },
                     child: Center(
                       child: ref.watch(RtcVideoPageState.viewSwitchProvider)
-                          ? RtcVideoPageWidgets.buildLocalPreviewWidget()
-                          : RtcVideoPageWidgets.buildRemotePreviewWidget(),
+                          ? RtcVideoPageWidgets.localPreviewWidget()
+                          : RtcVideoPageWidgets.remotePreviewWidget(),
                     ),
                   ),
                 ),
               ),
-              RtcVideoPageWidgets.buildDisplayState(),
+              RtcVideoPageWidgets.getUserStateWidget(),
               RtcVideoPageWidgets.channelLeaveProgressWidget(),
             ],
           ),
@@ -88,8 +88,8 @@ class RtcVideoPage extends HookConsumerWidget {
 // ---------------------------------------------------
 
 class RtcVideoPageWidgets {
-  // buildLeaveChannelIconWidget
-  static Widget buildLeaveChannelIconWidget() {
+  // channelLeaveIconWidget
+  static Widget channelLeaveIconWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       return AppbarAcitonIconWidget(
         appbarActionIconStateNotifierProvider: ref.watch(
@@ -100,16 +100,16 @@ class RtcVideoPageWidgets {
     return widget;
   }
 
-  // Local Preview Widget
-  static Widget buildLocalPreviewWidget() {
+  // localPreviewWidget
+  static Widget localPreviewWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       return const RtcVideoLocalPreviewWidget();
     }));
     return widget;
   }
 
-  // Remote Preview Widget
-  static Widget buildRemotePreviewWidget() {
+  // remotePreviewWidget
+  static Widget remotePreviewWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       final channelName = ref.watch(channelNameProvider);
       final remoteUid = ref.watch(RtcVideoState.remoteUidProvider);
@@ -123,8 +123,8 @@ class RtcVideoPageWidgets {
     return widget;
   }
 
-  // Display State Widget
-  static Widget buildDisplayState() {
+  // getUserStateWidget
+  static Widget getUserStateWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       final channelState = ref.watch(channelStateNotifierProvider);
       logger.d("videochannel: $channelState");
@@ -146,6 +146,7 @@ class RtcVideoPageWidgets {
     return widget;
   }
 
+  // channelLeaveProgressWidget
   static Widget channelLeaveProgressWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       final channelLeaveProgressStateNotifierProvider = ref.watch(

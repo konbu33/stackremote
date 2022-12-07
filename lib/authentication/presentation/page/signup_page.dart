@@ -55,11 +55,11 @@ class SignUpPage extends HookConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: 30),
-                SignUpPageWidgets.loginIdField(),
+                SignUpPageWidgets.loginIdFieldWidget(),
                 const SizedBox(height: 30),
-                SignUpPageWidgets.passwordField(),
+                SignUpPageWidgets.passwordFieldWidget(),
                 const SizedBox(height: 40),
-                SignUpPageWidgets.loginSubmitWidget(),
+                SignUpPageWidgets.signUpOnSubmitWidget(),
               ],
             ),
           ),
@@ -81,8 +81,8 @@ class SignUpPageWidgets {
     return widget;
   }
 
-  // Login Id Field Widget
-  static Widget loginIdField() {
+  // loginIdFieldWidget
+  static Widget loginIdFieldWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       final loginIdFieldStateNotifierProvider = ref
           .watch(SignUpPageState.loginIdFieldStateNotifierProviderOfProvider);
@@ -94,8 +94,8 @@ class SignUpPageWidgets {
     return widget;
   }
 
-  // Password Field Widget
-  static Widget passwordField() {
+  // passwordFieldWidget
+  static Widget passwordFieldWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       final passwordFieldStateProvider =
           ref.watch(SignUpPageState.passwordFieldStateProviderOfProvider);
@@ -107,8 +107,8 @@ class SignUpPageWidgets {
     return widget;
   }
 
-  // Login Submit Widget
-  static Widget loginSubmitWidget() {
+  // signUpOnSubmitWidget
+  static Widget signUpOnSubmitWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       return OnSubmitButtonWidget(
         onSubmitButtonStateNotifierProvider: ref

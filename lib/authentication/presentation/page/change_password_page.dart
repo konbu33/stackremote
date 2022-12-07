@@ -54,11 +54,11 @@ class ChangePasswordPage extends HookConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: 40),
-                ChangePasswordPageWidgets.passwordField(),
+                ChangePasswordPageWidgets.passwordFieldWidget(),
                 const SizedBox(height: 40),
-                ChangePasswordPageWidgets.passwordFieldConfirm(),
+                ChangePasswordPageWidgets.passwordFieldConfirmWidget(),
                 const SizedBox(height: 40),
-                ChangePasswordPageWidgets.changePasswordButton(),
+                ChangePasswordPageWidgets.changePasswordButtonWidget(),
               ],
             ),
           ),
@@ -69,7 +69,7 @@ class ChangePasswordPage extends HookConsumerWidget {
 }
 
 class ChangePasswordPageWidgets {
-  // Description
+  // descriptionMessageWidget
   static Widget descriptionMessageWidget() {
     const textStyle = TextStyle(color: Colors.grey);
 
@@ -81,7 +81,7 @@ class ChangePasswordPageWidgets {
     return widget;
   }
 
-  // Message
+  // attentionMessageWidget
   static Widget attentionMessageWidget() {
     const textStyle = TextStyle(color: Colors.red);
 
@@ -95,8 +95,8 @@ class ChangePasswordPageWidgets {
     return widget;
   }
 
-  // Password Field Widget
-  static Widget passwordField() {
+  // passwordFieldWidget
+  static Widget passwordFieldWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       final passwordFieldStateProvider = ref
           .watch(ChangePasswordPageState.passwordFieldStateProviderOfProvider);
@@ -108,8 +108,8 @@ class ChangePasswordPageWidgets {
     return widget;
   }
 
-  // Password Field Widget
-  static Widget passwordFieldConfirm() {
+  // passwordFieldConfirmWidget
+  static Widget passwordFieldConfirmWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       final passwordFieldConfirmStateProvider = ref.watch(
           ChangePasswordPageState.passwordFieldConfirmStateProviderOfProvider);
@@ -121,8 +121,8 @@ class ChangePasswordPageWidgets {
     return widget;
   }
 
-  // Submit Button
-  static Widget changePasswordButton() {
+  // changePasswordButtonWidget
+  static Widget changePasswordButtonWidget() {
     final Widget widget = Consumer(
       builder: (context, ref, child) {
         return OnSubmitButtonWidget(

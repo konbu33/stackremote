@@ -10,47 +10,47 @@ class ServiceUseCancellationWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
-      title: ServiceUseCancellationWidgetParts.buildTitleWidget(),
+      title: ServiceUseCancellationWidgetParts.titleWidget(),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 10),
-          ServiceUseCancellationWidgetParts.buildDescriptionMessageWidget(),
+          ServiceUseCancellationWidgetParts.descriptionMessageWidget(),
           const SizedBox(height: 30),
           Stack(
             children: [
-              ServiceUseCancellationWidgetParts.buildAttentionMessageWidget(),
+              ServiceUseCancellationWidgetParts.attentionMessageWidget(),
               ServiceUseCancellationWidgetParts
-                  .buildServiceUseCancellationProgressWidget(),
+                  .serviceUseCancellationProgressWidget(),
             ],
           ),
         ],
       ),
       actions: [
-        ServiceUseCancellationWidgetParts.buildYesButtonWidget(),
-        ServiceUseCancellationWidgetParts.buildNoButtonWidget(),
+        ServiceUseCancellationWidgetParts.yesButtonWidget(),
+        ServiceUseCancellationWidgetParts.noButtonWidget(),
       ],
     );
   }
 }
 
 class ServiceUseCancellationWidgetParts {
-  //
-  static Widget buildTitleWidget() {
+  // titleWidget
+  static Widget titleWidget() {
     Widget widget = const Text("サービス利用登録解除");
 
     return widget;
   }
 
-  //
-  static Widget buildDescriptionMessageWidget() {
+  // descriptionMessageWidget
+  static Widget descriptionMessageWidget() {
     Widget widget = const Text("「サービス利用登録時に登録したメールアドレス」を削除し、サービスの利用を止めますか？");
 
     return widget;
   }
 
-  //
-  static Widget buildAttentionMessageWidget() {
+  // attentionMessageWidget
+  static Widget attentionMessageWidget() {
     Widget widget = Consumer(builder: (context, ref, child) {
       //
 
@@ -74,8 +74,8 @@ class ServiceUseCancellationWidgetParts {
     return widget;
   }
 
-  //
-  static Widget buildYesButtonWidget() {
+  // yesButtonWidget
+  static Widget yesButtonWidget() {
     Widget widget = Consumer(builder: (context, ref, child) {
       //
       final isVisibleYesButton =
@@ -95,8 +95,8 @@ class ServiceUseCancellationWidgetParts {
     return widget;
   }
 
-  //
-  static Widget buildNoButtonWidget() {
+  // noButtonWidget
+  static Widget noButtonWidget() {
     Widget widget = Consumer(builder: (context, ref, child) {
       //
       final isVisibleYesButton =
@@ -115,8 +115,8 @@ class ServiceUseCancellationWidgetParts {
     return widget;
   }
 
-  // buildServiceUseCancellationProgressWidget
-  static Widget buildServiceUseCancellationProgressWidget() {
+  // serviceUseCancellationProgressWidget
+  static Widget serviceUseCancellationProgressWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       final serviceUseCancellationProgressStateNotifierProvider = ref.watch(
         ServiceUseCancellationState
