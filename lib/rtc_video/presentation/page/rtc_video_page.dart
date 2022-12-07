@@ -7,7 +7,7 @@ import '../../../common/common.dart';
 import '../../../pointer/pointer.dart';
 
 import '../../../user/user.dart';
-import '../../domain/rtc_channel_state.dart';
+import '../../domain/rtc_video_state.dart';
 
 import '../widget/rtc_video_local_preview_widget.dart';
 import '../widget/rtc_video_remote_preview_widget.dart';
@@ -112,7 +112,7 @@ class RtcVideoPageWidgets {
   static Widget buildRemotePreviewWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       final channelName = ref.watch(channelNameProvider);
-      final remoteUid = ref.watch(RtcChannelState.remoteUidProvider);
+      final remoteUid = ref.watch(RtcVideoState.remoteUidProvider);
 
       return RtcVideoRemotePreviewWidget(
         channelName: channelName,

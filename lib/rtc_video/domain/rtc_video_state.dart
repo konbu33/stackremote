@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ulid/ulid.dart';
 
-class RtcChannelState {
+class RtcVideoState {
   static final rtcIdTokenProvider = StateProvider((ref) => "");
 
   static final account = Ulid().toString();

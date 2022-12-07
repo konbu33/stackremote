@@ -6,7 +6,7 @@ import '../page/rtc_video_channel_join_page_state.dart';
 import '../../usecase/channel_join.dart';
 import '../../usecase/create_rtc_id_token.dart';
 import '../../usecase/channel_join_register_channel_and_user_in_db.dart';
-import '../../domain/rtc_channel_state.dart';
+import '../../domain/rtc_video_state.dart';
 
 // --------------------------------------------------
 //
@@ -56,7 +56,7 @@ final progressStateChannelJoinProvider = Provider((ref) {
       final rtcIdToken = await createRtcIdTokenUsecase();
 
       ref
-          .watch(RtcChannelState.rtcIdTokenProvider.notifier)
+          .watch(RtcVideoState.rtcIdTokenProvider.notifier)
           .update((state) => rtcIdToken);
 
       //

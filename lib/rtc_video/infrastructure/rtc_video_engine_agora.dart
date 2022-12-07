@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../common/common.dart';
-import '../domain/rtc_channel_state.dart';
+import '../domain/rtc_video_state.dart';
 
 final appIdCreatorProvider = Provider((ref) {
   String appIdCreator() {
@@ -72,28 +72,28 @@ final rtcVideoEngineAgoraCreatorProvider = Provider((ref) {
       // チャンネル参加が成功した場合
       joinChannelSuccess: (String channel, int uid, int elapsed) {
         ref
-            .watch(RtcChannelState.isJoinedChannelProvider.notifier)
+            .watch(RtcVideoState.isJoinedChannelProvider.notifier)
             .update((state) => true);
       },
 
       // 他ユーザがチャンネル参加してきた場合
       userJoined: (int uid, int elapsed) {
         ref
-            .watch(RtcChannelState.remoteUidProvider.notifier)
+            .watch(RtcVideoState.remoteUidProvider.notifier)
             .update((state) => uid);
       },
 
       // チャンネル参加がオフラインになった場合
       userOffline: (int uid, UserOfflineReason reason) {
         ref
-            .watch(RtcChannelState.remoteUidProvider.notifier)
+            .watch(RtcVideoState.remoteUidProvider.notifier)
             .update((state) => 0);
       },
 
       // チャンネル離脱した場合
       leaveChannel: (RtcStats rtcStats) {
         ref
-            .watch(RtcChannelState.isJoinedChannelProvider.notifier)
+            .watch(RtcVideoState.isJoinedChannelProvider.notifier)
             .update((state) => false);
       },
     );

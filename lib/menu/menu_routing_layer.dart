@@ -111,7 +111,7 @@ final menuRouterProvider = Provider((ref) {
 // --------------------------------------------------
 
 final menuRoutingCurrentPathProvider = StateProvider((ref) {
-  final isJoinedChannel = ref.watch(RtcChannelState.isJoinedChannelProvider);
+  final isJoinedChannel = ref.watch(RtcVideoState.isJoinedChannelProvider);
 
   // rtc channel join済・未joinの状態を監視し、
   // 状態が変化した場合、リダイレクト操作が実施される。
