@@ -3,9 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../widget/appbar_action_icon_widget.dart';
-import '../widget/login_submit_widget.dart';
-import '../widget/loginid_field_widget.dart';
 import '../widget/password_field_widget.dart';
 
 import 'signin_page_state.dart';
@@ -15,15 +12,19 @@ class SignInPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginIdFieldState =
-        ref.watch(SignInPageState.loginIdFieldStateProvider);
+    final loginIdFieldStateNotifierProvider =
+        ref.watch(SignInPageState.loginIdFieldStateNotifierProviderOfProvider);
 
-    final passwordFieldState =
-        ref.watch(SignInPageState.passwordFieldStateProvider);
+    final loginIdFieldState = ref.watch(loginIdFieldStateNotifierProvider);
+
+    final passwordFieldStateProvider =
+        ref.watch(SignInPageState.passwordFieldStateProviderOfProvider);
+
+    final passwordFieldState = ref.watch(passwordFieldStateProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(SignInPageState.loginSubmitWidgetName),
+        title: const Text(SignInPageState.pageTitle),
         actions: [
           SignInPageWidgets.goToSignUpWidget(),
         ],
@@ -38,6 +39,13 @@ class SignInPage extends HookConsumerWidget {
             key: GlobalKey<FormState>(),
             child: Column(
               children: [
+                Stack(
+                  children: [
+                    SignInPageWidgets.attentionMessageWidget(),
+                    SignInPageWidgets.signInProgressWidget(),
+                  ],
+                ),
+                const SizedBox(height: 30),
                 SignInPageWidgets.loginIdField(),
                 const SizedBox(height: 30),
                 SignInPageWidgets.passwordField(),
@@ -57,37 +65,73 @@ class SignInPageWidgets {
   static Widget goToSignUpWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       return AppbarAcitonIconWidget(
-        appbarActionIconStateProvider:
+        appbarActionIconStateNotifierProvider:
             ref.watch(SignInPageState.goToSignUpIconStateProvider),
       );
     });
     return widget;
   }
 
+  // attentionMessageWidget
+  static Widget attentionMessageWidget() {
+    const textStyle = TextStyle(color: Colors.red);
+    final Widget widget = DescriptionMessageWidget(
+      descriptionMessageStateProvider:
+          SignInPageState.attentionMessageStateProvider,
+      textStyle: textStyle,
+    );
+    return widget;
+  }
+
   // Login Id Field Widget
   static Widget loginIdField() {
-    final Widget widget = LoginIdFieldWidget(
-      loginIdFieldStateProvider: SignInPageState.loginIdFieldStateProvider,
-    );
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final loginIdFieldStateNotifierProvider = ref
+          .watch(SignInPageState.loginIdFieldStateNotifierProviderOfProvider);
+
+      return NameFieldWidget(
+        nameFieldStateNotifierProvider: loginIdFieldStateNotifierProvider,
+      );
+    });
     return widget;
   }
 
   // Password Field Widget
   static Widget passwordField() {
-    final Widget widget = PasswordFieldWidget(
-      passwordFieldStateProvider: SignInPageState.passwordFieldStateProvider,
-    );
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final passwordFieldStateProvider =
+          ref.watch(SignInPageState.passwordFieldStateProviderOfProvider);
+
+      return PasswordFieldWidget(
+        passwordFieldStateProvider: passwordFieldStateProvider,
+      );
+    });
     return widget;
   }
 
   // Login Submit Widget
   static Widget loginSubmitWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
-      return LoginSubmitWidget(
-        loginSubmitStateProvider:
-            ref.watch(SignInPageState.loginSubmitStateProvider),
+      return OnSubmitButtonWidget(
+        onSubmitButtonStateNotifierProvider: ref
+            .watch(SignInPageState.signInOnSubmitButtonStateNotifierProvider),
       );
     });
+
+    return widget;
+  }
+
+  // signInProgressWidget
+  static Widget signInProgressWidget() {
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final signInProgressStateNotifierProvider = ref
+          .watch(SignInPageState.signInProgressStateNotifierProviderOfProvider);
+
+      return ProgressWidget(
+        progressStateNotifierProvider: signInProgressStateNotifierProvider,
+      );
+    });
+
     return widget;
   }
 }

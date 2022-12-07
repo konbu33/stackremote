@@ -7,7 +7,7 @@ void main() {
     test('createファクトリメソッドでインスタンス生成した場合、users属性の値がデフォルト値(空リスト)であること', () {
       // given
       // when
-      final users = Users.create();
+      final users = Users.create(users: []);
 
       // then
       expect(users.users, []);

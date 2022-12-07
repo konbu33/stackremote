@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-part 'snackbar_widget.freezed.dart';
 
 // --------------------------------------------------
 //
@@ -14,19 +11,20 @@ final snackBarWidgetProvider = Provider((ref) {
     T e,
     Function createMessage,
   ) {
+    final snackBarStateProvider = StateProvider((ref) => "");
+
+    // メッセージ生成
     final message = createMessage(e);
 
     // snackbarにメッセージ設定
-    final notifier = ref.watch(snackBarStateProvider.notifier);
-    notifier.setMessage(message);
+    ref.watch(snackBarStateProvider.notifier).update((state) => message);
 
     // notifierでstate更新した直後に、ref.watch指定すると、
     // '_didChangeDependency == false'エラー発生するため、ref.read指定する。
     // サインアウト後、1回目の認証でパスワード誤った場合に、エラー発生した。
-    final snackBarState = ref.read(snackBarStateProvider);
 
     final SnackBar snackBar = SnackBar(
-      content: Text(snackBarState.message),
+      content: Text(ref.read(snackBarStateProvider)),
     );
 
     return snackBar;
@@ -34,51 +32,3 @@ final snackBarWidgetProvider = Provider((ref) {
 
   return buildSnackBarWidget;
 });
-
-// --------------------------------------------------
-//
-// SnackBarState
-//
-// --------------------------------------------------
-@freezed
-class SnackBarState with _$SnackBarState {
-  const factory SnackBarState._({
-    required String message,
-  }) = _SnackBarState;
-
-  factory SnackBarState.create({
-    required String message,
-  }) =>
-      SnackBarState._(
-        message: message,
-      );
-}
-
-class SnackBarStateNotifier extends StateNotifier<SnackBarState> {
-  SnackBarStateNotifier({
-    String? message,
-  }) : super(SnackBarState.create(
-          message: message ?? "",
-        ));
-
-  void setMessage(String message) {
-    state = state.copyWith(message: message);
-  }
-}
-
-typedef SnackBarStateProvider
-    = StateNotifierProvider<SnackBarStateNotifier, SnackBarState>;
-
-SnackBarStateProvider snackBarStateNotifierProviderCreator({
-  String? message,
-}) {
-  final snackBarStateProvider =
-      StateNotifierProvider<SnackBarStateNotifier, SnackBarState>(
-          (ref) => SnackBarStateNotifier(
-                message: message ?? "",
-              ));
-
-  return snackBarStateProvider;
-}
-
-final snackBarStateProvider = snackBarStateNotifierProviderCreator();

@@ -6,7 +6,7 @@ part 'firebase_auth_user.freezed.dart';
 
 // --------------------------------------------------
 //
-//   Freezed
+//   FirebaseAuthUser
 //
 // --------------------------------------------------
 @freezed
@@ -41,22 +41,13 @@ class FirebaseAuthUser with _$FirebaseAuthUser {
 
 // --------------------------------------------------
 //
-//  StateNotifier
+//  FirebaseAuthUserStateNotifier
 //
 // --------------------------------------------------
-class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
-  FirebaseAuthUserStateNotifier({
-    String? email,
-  }) : super(FirebaseAuthUser.create(
-          email: email ?? "",
-        )) {
-    initial();
-  }
-
-  void initial() {
-    state = FirebaseAuthUser.create(
-      email: "",
-    );
+class FirebaseAuthUserStateNotifier extends Notifier<FirebaseAuthUser> {
+  @override
+  FirebaseAuthUser build() {
+    return FirebaseAuthUser.create(email: "");
   }
 
   void userInformationRegiser(FirebaseAuthUser user) {
@@ -81,10 +72,23 @@ class FirebaseAuthUserStateNotifier extends StateNotifier<FirebaseAuthUser> {
 
 // --------------------------------------------------
 //
-//  StateNotifierProvider
+//  firebaseAuthUserStateNotifierProviderCreator
+//
+// --------------------------------------------------
+typedef FirebaseAuthUserStateNotifierProvider
+    = NotifierProvider<FirebaseAuthUserStateNotifier, FirebaseAuthUser>;
+
+FirebaseAuthUserStateNotifierProvider
+    firebaseAuthUserStateNotifierProviderCreator() {
+  return NotifierProvider<FirebaseAuthUserStateNotifier, FirebaseAuthUser>(
+    () => FirebaseAuthUserStateNotifier(),
+  );
+}
+
+// --------------------------------------------------
+//
+//  firebaseAuthUserStateNotifierProvider
 //
 // --------------------------------------------------
 final firebaseAuthUserStateNotifierProvider =
-    StateNotifierProvider<FirebaseAuthUserStateNotifier, FirebaseAuthUser>(
-  (ref) => FirebaseAuthUserStateNotifier(),
-);
+    firebaseAuthUserStateNotifierProviderCreator();

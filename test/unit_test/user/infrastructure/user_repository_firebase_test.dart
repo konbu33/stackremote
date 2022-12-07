@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/rtc_video.dart';
+import 'package:stackremote/channel/channel.dart';
+// import 'package:stackremote/rtc_video/rtc_video.dart';
 import 'package:stackremote/user/domain/user.dart';
 import 'package:stackremote/user/domain/user_repository.dart';
 import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
@@ -29,11 +30,16 @@ void main() {
     container = ProviderContainer(overrides: [
       firebaseFirestoreInstanceProvider
           .overrideWithValue(FakeFirebaseFirestore()),
-      RtcChannelStateNotifierProviderList.rtcChannelStateNotifierProvider
-          .overrideWith((ref) => FakeRtcChannelStateNotifier()),
+
+      channelNameProvider
+          .overrideWith((ref) => ref.watch(fakeChannelNameProvider)),
+
+      // rtcChannelStateNotifierProvider
+      //     .overrideWith((ref) => FakeRtcChannelStateNotifier()),
     ]);
 
     // userRepository生成
+    // final fakeChannelName = container.read(channelNameProvider);
     userRepository = container.read(userRepositoryFirebaseProvider);
   });
 

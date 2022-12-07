@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:stackremote/authentication/authentication.dart';
+
+import '../authentication.dart';
 
 abstract class AuthenticationService {
   AuthenticationService({

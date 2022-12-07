@@ -18,7 +18,7 @@ void main() {
     final container = ProviderContainer(overrides: [
       //
       firebaseAuthUserStateNotifierProvider
-          .overrideWith((ref) => FakeFirebaseAuthUserStateNotifier()),
+          .overrideWith(() => FakeFirebaseAuthUserStateNotifier()),
       //
       userRepositoryFirebaseProvider.overrideWithValue(userRepository),
     ]);

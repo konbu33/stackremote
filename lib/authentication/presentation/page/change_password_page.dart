@@ -3,8 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../widget/description_message_widget.dart';
-import '../widget/login_submit_widget.dart';
+import '../../../menu/menu.dart';
 import '../widget/password_field_widget.dart';
 
 import 'change_password_page_state.dart';
@@ -14,15 +13,28 @@ class ChangePasswordPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final passwordField =
-        ref.watch(ChangePasswordPageState.passwordFieldStateProvider);
+    final passwordFieldStateProvider =
+        ref.watch(ChangePasswordPageState.passwordFieldStateProviderOfProvider);
 
-    final passwordFieldConfirm =
-        ref.watch(ChangePasswordPageState.passwordFieldConfirmStateProvider);
+    final passwordField = ref.watch(passwordFieldStateProvider);
+
+    final passwordFieldConfirmStateProvider = ref.watch(
+        ChangePasswordPageState.passwordFieldConfirmStateProviderOfProvider);
+
+    final passwordFieldConfirm = ref.watch(passwordFieldConfirmStateProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: ChangePasswordPageWidgets.pageTitleWidget(),
+        title: const Text(ChangePasswordPageState.pageTitle),
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            ref
+                .read(menuRoutingCurrentPathProvider.notifier)
+                .update((state) => MenuRoutingPath.rtcVideoChannelJoin);
+          },
+        ),
       ),
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: [
@@ -35,7 +47,12 @@ class ChangePasswordPage extends HookConsumerWidget {
             child: Column(
               children: [
                 ChangePasswordPageWidgets.descriptionMessageWidget(),
-                ChangePasswordPageWidgets.attentionMessageWidget(),
+                Stack(
+                  children: [
+                    ChangePasswordPageWidgets.attentionMessageWidget(),
+                    ChangePasswordPageWidgets.changePasswordProgressWidget(),
+                  ],
+                ),
                 const SizedBox(height: 40),
                 ChangePasswordPageWidgets.passwordField(),
                 const SizedBox(height: 40),
@@ -52,12 +69,6 @@ class ChangePasswordPage extends HookConsumerWidget {
 }
 
 class ChangePasswordPageWidgets {
-  // Page Title
-  static Widget pageTitleWidget() {
-    const Widget widget = Text(ChangePasswordPageState.pageTitle);
-    return widget;
-  }
-
   // Description
   static Widget descriptionMessageWidget() {
     const textStyle = TextStyle(color: Colors.grey);
@@ -77,7 +88,7 @@ class ChangePasswordPageWidgets {
     final Widget widget = Consumer(builder: (context, ref, child) {
       return DescriptionMessageWidget(
         descriptionMessageStateProvider:
-            ref.watch(ChangePasswordPageState.attentionMessageStateProvider),
+            ChangePasswordPageState.attentionMessageStateProvider,
         textStyle: textStyle,
       );
     });
@@ -86,19 +97,27 @@ class ChangePasswordPageWidgets {
 
   // Password Field Widget
   static Widget passwordField() {
-    final Widget widget = PasswordFieldWidget(
-      passwordFieldStateProvider:
-          ChangePasswordPageState.passwordFieldStateProvider,
-    );
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final passwordFieldStateProvider = ref
+          .watch(ChangePasswordPageState.passwordFieldStateProviderOfProvider);
+
+      return PasswordFieldWidget(
+        passwordFieldStateProvider: passwordFieldStateProvider,
+      );
+    });
     return widget;
   }
 
   // Password Field Widget
   static Widget passwordFieldConfirm() {
-    final Widget widget = PasswordFieldWidget(
-      passwordFieldStateProvider:
-          ChangePasswordPageState.passwordFieldConfirmStateProvider,
-    );
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final passwordFieldConfirmStateProvider = ref.watch(
+          ChangePasswordPageState.passwordFieldConfirmStateProviderOfProvider);
+
+      return PasswordFieldWidget(
+        passwordFieldStateProvider: passwordFieldConfirmStateProvider,
+      );
+    });
     return widget;
   }
 
@@ -106,12 +125,28 @@ class ChangePasswordPageWidgets {
   static Widget changePasswordButton() {
     final Widget widget = Consumer(
       builder: (context, ref, child) {
-        return LoginSubmitWidget(
-          loginSubmitStateProvider:
-              ref.watch(ChangePasswordPageState.onSubmitStateProvider),
+        return OnSubmitButtonWidget(
+          onSubmitButtonStateNotifierProvider: ref.watch(ChangePasswordPageState
+              .changePasswordOnSubmitButtonStateNotifierProvider),
         );
       },
     );
+
+    return widget;
+  }
+
+  // changePasswordProgressWidget
+  static Widget changePasswordProgressWidget() {
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final signInProgressStateNotifierProvider = ref.watch(
+        ChangePasswordPageState
+            .changePasswordProgressStateNotifierProviderOfProvider,
+      );
+
+      return ProgressWidget(
+        progressStateNotifierProvider: signInProgressStateNotifierProvider,
+      );
+    });
 
     return widget;
   }

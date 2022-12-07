@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
-import 'alert_dialog_widget.dart';
+import '../../menu.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({Key? key}) : super(key: key);
@@ -29,48 +29,13 @@ class MenuWidget extends StatelessWidget {
                 Expanded(
                   child: ListView(
                     children: [
-                      const DrawerHeader(
-                        child: Text("メニュー"),
-                      ),
-                      ListTile(
-                        title: const Text("パスワード変更"),
-                        onTap: () {
-                          // Drawerを閉じる
-                          Navigator.pop(context);
-
-                          context.push('/changepassword');
-                        },
-                      ),
-                      ListTile(
-                        title: const Text("ユーザ情報"),
-                        onTap: () {
-                          // Drawerを閉じる
-                          Navigator.pop(context);
-
-                          context.push('/user');
-                        },
-                      ),
+                      const DrawerHeader(child: Text("メニュー")),
+                      MenuWidgetParts.buildGoToChangePassword(),
+                      MenuWidgetParts.buildGoToUser(),
                     ],
                   ),
                 ),
-                Consumer(
-                  builder: (context, ref, child) {
-                    return ListTile(
-                      title: const Text("サービス利用登録解"),
-                      onTap: () async {
-                        await showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const AlertDialogWidget();
-                          },
-                        ).then((value) {
-                          // Drawerを閉じる
-                          Navigator.pop(context);
-                        });
-                      },
-                    );
-                  },
-                ),
+                MenuWidgetParts.buildGoToServiceUseCancellation(),
                 const SizedBox(height: 10),
               ],
             ),
@@ -78,5 +43,76 @@ class MenuWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class MenuWidgetParts {
+  //
+  static Widget buildGoToChangePassword() {
+    Widget widget = Consumer(
+      builder: (context, ref, child) {
+        return ListTile(
+          title: const Text("パスワード変更"),
+          onTap: () {
+            // // Drawerを閉じる
+            // Navigator.pop(context);
+
+            // context.push('/change_password');
+
+            ref
+                .read(menuRoutingCurrentPathProvider.notifier)
+                .update((state) => MenuRoutingPath.changePassword);
+          },
+        );
+      },
+    );
+
+    return widget;
+  }
+
+  //
+  static Widget buildGoToUser() {
+    Widget widget = Consumer(
+      builder: (context, ref, child) {
+        return ListTile(
+          title: const Text("ユーザ情報"),
+          onTap: () {
+            // // Drawerを閉じる
+            // Navigator.pop(context);
+
+            // context.push('/user');
+            ref
+                .read(menuRoutingCurrentPathProvider.notifier)
+                .update((state) => MenuRoutingPath.user);
+          },
+        );
+      },
+    );
+
+    return widget;
+  }
+
+  //
+  static Widget buildGoToServiceUseCancellation() {
+    Widget widget = Consumer(
+      builder: (context, ref, child) {
+        return ListTile(
+          title: const Text("サービス利用登録解"),
+          onTap: () async {
+            await showDialog(
+              context: context,
+              builder: (context) {
+                return const ServiceUseCancellationWidget();
+              },
+            ).then((value) {
+              // Drawerを閉じる
+              Navigator.pop(context);
+            });
+          },
+        );
+      },
+    );
+
+    return widget;
   }
 }

@@ -25,7 +25,7 @@ void main() {
     setUp(() {
       container = ProviderContainer(overrides: [
         firebaseAuthUserStateNotifierProvider
-            .overrideWith((ref) => FakeFirebaseAuthUserStateNotifier()),
+            .overrideWith(() => FakeFirebaseAuthUserStateNotifier()),
       ]);
 
       userStateNotifier = container.read(userStateNotifierProvider.notifier);
@@ -102,7 +102,7 @@ void main() {
       expect(userState.pointerPosition, pointerPosition);
     });
 
-    test("initialメソッドを実行した場合、元の属性の値にリセットされること", () {
+    test("buildメソッドを実行した場合、元の属性の値にリセットされること", () {
       // given
 
       // when
@@ -121,7 +121,7 @@ void main() {
       expect(userState.nickName, "${changeNickName.substring(0, 8)}...");
       expect(userState.pointerPosition, pointerPosition);
 
-      userStateNotifier.initial();
+      userStateNotifier.build();
       userState = container.read(userStateNotifierProvider);
       expect(userState.comment, comment);
       expect(userState.email, email);

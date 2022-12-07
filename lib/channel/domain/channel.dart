@@ -7,9 +7,11 @@ import '../../common/common.dart';
 part 'channel.freezed.dart';
 part 'channel.g.dart';
 
+final channelNameProvider = StateProvider((ref) => "");
+
 // --------------------------------------------------
 //
-//   Freezed
+//   Channel
 //
 // --------------------------------------------------
 @freezed
@@ -35,11 +37,14 @@ class Channel with _$Channel {
 
 // --------------------------------------------------
 //
-//  StateNotifier
+//  ChannelStateNotifier
 //
 // --------------------------------------------------
-class ChannelStateNotifier extends StateNotifier<Channel> {
-  ChannelStateNotifier() : super(Channel.create());
+class ChannelStateNotifier extends Notifier<Channel> {
+  @override
+  Channel build() {
+    return Channel.create();
+  }
 
   void setChannelState(Channel channel) {
     state = state.copyWith(
@@ -51,10 +56,21 @@ class ChannelStateNotifier extends StateNotifier<Channel> {
 
 // --------------------------------------------------
 //
-//  StateNotifierProvider
+//  channelStateNotifierProviderCreator
 //
 // --------------------------------------------------
-final channelStateNotifierProvider =
-    StateNotifierProvider<ChannelStateNotifier, Channel>(
-  (ref) => ChannelStateNotifier(),
-);
+typedef ChannelStateNotifierProvider
+    = NotifierProvider<ChannelStateNotifier, Channel>;
+
+ChannelStateNotifierProvider channelStateNotifierProviderCreator() {
+  return NotifierProvider<ChannelStateNotifier, Channel>(
+    () => ChannelStateNotifier(),
+  );
+}
+
+// --------------------------------------------------
+//
+//  channelStateNotifierProvider
+//
+// --------------------------------------------------
+final channelStateNotifierProvider = channelStateNotifierProviderCreator();

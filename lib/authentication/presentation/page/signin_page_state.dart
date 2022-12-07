@@ -1,111 +1,115 @@
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../../common/create_firebse_auth_exception_message.dart';
-import '../../usecase/service_signin.dart';
-
-import '../widget/appbar_action_icon_state.dart';
-import '../widget/login_submit_state.dart';
-import '../widget/loginid_field_state.dart';
+import '../../authentication.dart';
 import '../widget/password_field_state.dart';
+import '../widget/progress_state_signin.dart';
 
 class SignInPageState {
-  const SignInPageState();
-
   // --------------------------------------------------
   //
   //  loginIdFieldStateProvider
   //  passwordFieldStateProvider
+  //  isSignUpPagePushProvider
+  //  attentionMessageProvider
   //
   // --------------------------------------------------
-  static final loginIdFieldStateProvider =
-      loginIdFieldStateNotifierProviderCreator();
+  // static final loginIdFieldStateProvider =
+  //     loginIdFieldStateNotifierProviderCreator();
 
-  static final passwordFieldStateProvider =
-      passwordFieldStateNotifierProviderCreator();
+  static final loginIdFieldStateNotifierProviderOfProvider =
+      StateProvider.autoDispose((ref) {
+    NameFieldStateNotifierProvider loginIdFieldStateNotifierProviderCreator() {
+      const name = "メールアドレス";
+
+      const minMax = MinMax(min: 8, max: 20);
+      final minMaxLenghtValidator =
+          ref.watch(minMaxLenghtValidatorProvider(minMax));
+
+      final nameFieldStateNotifierProvider =
+          nameFieldStateNotifierProviderCreator(
+        name: name,
+        validator: minMaxLenghtValidator,
+        minLength: minMax.min,
+        maxLength: minMax.max,
+      );
+
+      return nameFieldStateNotifierProvider;
+    }
+
+    return loginIdFieldStateNotifierProviderCreator();
+  });
+
+  static final passwordFieldStateProviderOfProvider = StateProvider.autoDispose(
+      (ref) => passwordFieldStateNotifierProviderCreator());
+
+  // static final isSignUpPagePushProvider = StateProvider((ref) => false);
+
+  static final attentionMessageStateProvider =
+      StateProvider.autoDispose((ref) => "");
 
   // --------------------------------------------------
   //
-  //  loginSubmitStateProvider
+  //  signInProgressStateNotifierProviderOfProvider
   //
   // --------------------------------------------------
-  static const loginSubmitWidgetName = "サインイン";
+  static final signInProgressStateNotifierProviderOfProvider =
+      Provider.autoDispose((ref) {
+    final function = ref.watch(progressStateSignInProvider);
 
-  static final loginSubmitStateProvider = Provider.autoDispose(
+    return progressStateNotifierProviderCreator(function: function);
+  });
+
+  // --------------------------------------------------
+  //
+  //  signInOnSubmitButtonStateNotifierProvider
+  //
+  // --------------------------------------------------
+  static const pageTitle = "サインイン";
+
+  static final signInOnSubmitButtonStateNotifierProvider = Provider.autoDispose(
     (ref) {
       bool isOnSubmitable = false;
+      final loginIdFieldStateNotifierProvider =
+          ref.watch(loginIdFieldStateNotifierProviderOfProvider);
 
-      final loginIdIsValidate = ref.watch(loginIdFieldStateProvider
-          .select((value) => value.loginIdIsValidate.isValid));
+      final loginIdIsValidate = ref.watch(loginIdFieldStateNotifierProvider
+          .select((value) => value.isValidate.isValid));
+
+      final passwordFieldStateProvider =
+          ref.watch(passwordFieldStateProviderOfProvider);
 
       final passwordIsValidate = ref.watch(passwordFieldStateProvider
           .select((value) => value.passwordIsValidate.isValid));
 
-      Function? buildSignInOnSubmit() {
+      void Function()? buildSignInOnSubmit() {
         if (!isOnSubmitable) {
           return null;
         }
 
-        return ({
-          required BuildContext context,
-        }) =>
-            () async {
-              final email = ref
-                  .read(loginIdFieldStateProvider)
-                  .loginIdFieldController
-                  .text;
+        return () async {
+          final signInProgressStateNotifierProvider =
+              ref.read(signInProgressStateNotifierProviderOfProvider);
 
-              final password = ref
-                  .read(passwordFieldStateProvider)
-                  .passwordFieldController
-                  .text;
-
-              try {
-                // サインイン
-                final serviceSignInUsecase =
-                    ref.read(serviceSignInUsecaseProvider);
-
-                await serviceSignInUsecase(email, password);
-
-                //
-              } on firebase_auth.FirebaseAuthException catch (e) {
-                logger.d("$e");
-
-                void displayNotificationMessage() {
-                  final createFirebaseAuthExceptionMessage =
-                      ref.read(createFirebaseAuthExceptionMessageProvider);
-
-                  final buildSnackBarWidget = ref.read(snackBarWidgetProvider);
-
-                  final snackBar =
-                      buildSnackBarWidget<firebase_auth.FirebaseAuthException>(
-                    e,
-                    createFirebaseAuthExceptionMessage,
-                  );
-
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }
-
-                displayNotificationMessage();
-              }
-            };
+          ref
+              .read(signInProgressStateNotifierProvider.notifier)
+              .updateProgress();
+        };
       }
 
       if (loginIdIsValidate && passwordIsValidate) {
         isOnSubmitable = true;
       }
 
-      final loginSubmitStateNotifierProvider =
-          loginSubmitStateNotifierProviderCreator(
-        loginSubmitWidgetName: loginSubmitWidgetName,
-        onSubmit: buildSignInOnSubmit(),
+      final signInOnSubmitButtonStateNotifierProvider =
+          onSubmitButtonStateNotifierProviderCreator(
+        onSubmitButtonWidgetName: pageTitle,
+        onSubmit: buildSignInOnSubmit,
       );
 
-      return loginSubmitStateNotifierProvider;
+      return signInOnSubmitButtonStateNotifierProvider;
     },
   );
 
@@ -114,24 +118,28 @@ class SignInPageState {
   //  goToSignUpIconStateProvider
   //
   // --------------------------------------------------
-  static const goToSignUpIconOnSubmitWidgetName = "サービス利用登録";
 
   static final goToSignUpIconStateProvider = Provider((ref) {
     //
 
-    Function? buildGoToSignUpIconOnSubmit() {
-      return ({
-        required BuildContext context,
-      }) =>
-          () {
-            context.push('/signup');
-          };
+    void Function() buildGoToSignUpIconOnSubmit() {
+      return () {
+        // ref.read(isSignUpPagePushProvider.notifier).update((state) => true);
+        ref
+            .read(authenticationRoutingCurrentPathProvider.notifier)
+            .update((state) => AuthenticationRoutingPath.signInSignUp);
+      };
     }
 
-    final appbarActionIconStateProvider = appbarActionIconStateProviderCreator(
-      onSubmitWidgetName: goToSignUpIconOnSubmitWidgetName,
+    final appbarActionIconState = AppbarActionIconState.create(
+      onSubmitWidgetName: "サービス利用登録",
       icon: const Icon(Icons.person_add),
-      onSubmit: buildGoToSignUpIconOnSubmit(),
+      onSubmit: buildGoToSignUpIconOnSubmit,
+    );
+
+    final appbarActionIconStateProvider =
+        appbarActionIconStateNotifierProviderCreator(
+      appbarActionIconState: appbarActionIconState,
     );
 
     return appbarActionIconStateProvider;

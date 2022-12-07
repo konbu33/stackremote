@@ -4,10 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 
 import '../../usecase/check_email_verified.dart';
-import '../widget/appbar_action_icon_widget.dart';
 
-import '../widget/description_message_widget.dart';
-import '../widget/login_submit_widget.dart';
 import 'wait_email_verified_page_state.dart';
 
 class WaitEmailVerifiedPage extends HookConsumerWidget {
@@ -28,9 +25,15 @@ class WaitEmailVerifiedPage extends HookConsumerWidget {
           Column(
             children: [
               WaitEmailVerifiedPageWidgets.descriptionMessageWidget(),
+              Stack(
+                children: [
+                  WaitEmailVerifiedPageWidgets.attentionMessageWidget(),
+                  WaitEmailVerifiedPageWidgets.signOutProgressWidget(),
+                  WaitEmailVerifiedPageWidgets.sendVerifyEmailProgressWidget(),
+                ],
+              ),
               const SizedBox(height: 30),
-              WaitEmailVerifiedPageWidgets.sendVerifiyEmailWidget(),
-              WaitEmailVerifiedPageWidgets.attentionMessageWidget(),
+              WaitEmailVerifiedPageWidgets.sendVerifyEmailWidget(),
               const SizedBox(height: 80), // height: 90以上でレイアウトエラー発生する様子。
               WaitEmailVerifiedPageWidgets.checkEmailVerifiedTimerWidget(),
             ],
@@ -50,7 +53,7 @@ class WaitEmailVerifiedPageWidgets {
     final Widget widget = Consumer(
       builder: ((context, ref, child) {
         return AppbarAcitonIconWidget(
-          appbarActionIconStateProvider:
+          appbarActionIconStateNotifierProvider:
               ref.watch(WaitEmailVerifiedPageState.signOutIconStateProvider),
         );
       }),
@@ -59,7 +62,7 @@ class WaitEmailVerifiedPageWidgets {
     return widget;
   }
 
-  // messageWidget
+  // descriptionMessageWidget
   static Widget descriptionMessageWidget() {
     //
     final Widget widget = DescriptionMessageWidget(
@@ -70,13 +73,14 @@ class WaitEmailVerifiedPageWidgets {
     return widget;
   }
 
-  // sendVerifiyEmailWidget
-  static Widget sendVerifiyEmailWidget() {
+  // sendVerifyEmailWidget
+  static Widget sendVerifyEmailWidget() {
     //
     final Widget widget = Consumer(builder: (context, ref, child) {
-      return LoginSubmitWidget(
-        loginSubmitStateProvider:
-            ref.watch(WaitEmailVerifiedPageState.onSubmitStateProvider),
+      return OnSubmitButtonWidget(
+        onSubmitButtonStateNotifierProvider: ref.watch(
+            WaitEmailVerifiedPageState
+                .sendVerifyEmailOnSubmitStateNotifierProvider),
       );
     });
 
@@ -111,6 +115,37 @@ class WaitEmailVerifiedPageWidgets {
 
       return const SizedBox();
     });
+    return widget;
+  }
+
+  // signOutProgressWidget
+  static Widget signOutProgressWidget() {
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final signOutProgressStateNotifierProvider = ref.watch(
+          WaitEmailVerifiedPageState
+              .signOutProgressStateNotifierProviderOfProvider);
+
+      return ProgressWidget(
+        progressStateNotifierProvider: signOutProgressStateNotifierProvider,
+      );
+    });
+
+    return widget;
+  }
+
+  // sendVerifyEmailProgressWidget
+  static Widget sendVerifyEmailProgressWidget() {
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final sendVerifyEmailProgressStateNotifierProvider = ref.watch(
+          WaitEmailVerifiedPageState
+              .sendVerifyEmailProgressStateNotifierProviderOfProvider);
+
+      return ProgressWidget(
+        progressStateNotifierProvider:
+            sendVerifyEmailProgressStateNotifierProvider,
+      );
+    });
+
     return widget;
   }
 }

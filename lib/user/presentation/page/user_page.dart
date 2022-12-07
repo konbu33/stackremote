@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/user/domain/user.dart';
-
-// improve: authentication関連への依存関係を無くしたい。
-import '../../../authentication/authentication.dart';
+import 'package:stackremote/menu/menu.dart';
 
 import '../../../common/common.dart';
-import '../widget/nickname_field_widget.dart';
+import '../../domain/user.dart';
 import 'user_page_state.dart';
 
 class UserPage extends HookConsumerWidget {
@@ -14,28 +11,38 @@ class UserPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(userPageStateControllerProvider);
+    final nickNameFieldStateNotifierProvider =
+        ref.watch(UserPageState.nickNameFieldStateNotifierProviderOfProvider);
 
-    final userState = ref.watch(userStateNotifierProvider);
+    final nickNameFieldState = ref.watch(nickNameFieldStateNotifierProvider);
 
-    final nickNameFieldState =
-        ref.watch(state.nickNameFieldStateNotifierProvider);
     return Scaffold(
       appBar: AppBar(
-        title: UserDetailPageWidgets.pageTitleWidget(state),
+        title: UserDetailPageWidgets.pageTitleWidget(),
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            ref
+                .read(menuRoutingCurrentPathProvider.notifier)
+                .update((state) => MenuRoutingPath.rtcVideoChannelJoin);
+          },
+        ),
       ),
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: [nickNameFieldState.focusNode],
         children: [
           Form(
-            key: state.userPageformValueKey,
+            key: GlobalKey<FormState>(),
             child: Column(
               children: [
-                Text("現在のニックネーム：${userState.nickName}"),
+                UserDetailPageWidgets.currentNickNameWidget(),
                 const SizedBox(height: 40),
-                UserDetailPageWidgets.userNameField(state),
+                UserDetailPageWidgets.attentionMessageWidget(),
                 const SizedBox(height: 40),
-                UserDetailPageWidgets.userUpdateButton(state),
+                UserDetailPageWidgets.userNameField(),
+                const SizedBox(height: 40),
+                UserDetailPageWidgets.userUpdateButton(),
               ],
             ),
           ),
@@ -46,41 +53,63 @@ class UserPage extends HookConsumerWidget {
 }
 
 class UserDetailPageWidgets {
-  // Page Title
-  static Widget pageTitleWidget(UserPageState state) {
-    final Widget widget = Text(state.pageTitle);
+  // Page pageTitleWidget
+  static Widget pageTitleWidget() {
+    //
+    const Widget widget = Text(UserPageState.pageTitle);
     return widget;
   }
 
-  // User Name Field
-  static Widget userNameField(UserPageState state) {
-    final Widget widget = NickNameFieldWidget(
-        nickNameFieldStateNotifierProvider:
-            state.nickNameFieldStateNotifierProvider);
+  // currentNickNameWidget
+  static Widget currentNickNameWidget() {
+    //
+    final Widget widget = Consumer(
+      builder: (context, ref, child) {
+        final userState = ref.watch(userStateNotifierProvider);
+        return Text("現在のニックネーム：${userState.nickName}");
+      },
+    );
+    return widget;
+  }
+
+// attentionMessageWidget
+  static Widget attentionMessageWidget() {
+    const textStyle = TextStyle(color: Colors.red);
+    final Widget widget = DescriptionMessageWidget(
+      descriptionMessageStateProvider:
+          UserPageState.attentionMessageStateProvider,
+      textStyle: textStyle,
+    );
 
     return widget;
   }
 
-  // User Update Button
-  static Widget userUpdateButton(UserPageState state) {
-    final Widget widget = Consumer(builder: ((context, ref, child) {
-      final loginIdIsValidate = ref.watch(state
-          .nickNameFieldStateNotifierProvider
-          .select((value) => value.nickNameIsValidate.isValid));
+  // userNameField
+  static Widget userNameField() {
+    //
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final nickNameFieldStateNotifierProvider =
+          ref.watch(UserPageState.nickNameFieldStateNotifierProviderOfProvider);
 
-      if (loginIdIsValidate != state.isOnSubmitable) {
-        // improve: addPostFrameCallbackの代替として、StatefulWidgetのmountedなど検討。
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          final notifier = ref.watch(userPageStateControllerProvider.notifier);
-          notifier.updateIsOnSubmitable(loginIdIsValidate);
-          notifier.setUserUpdateOnSubmit();
-        });
-      }
-
-      return LoginSubmitWidget(
-        loginSubmitStateProvider: state.userUpdateSubmitStateProvider,
+      return NameFieldWidget(
+        nameFieldStateNotifierProvider: nickNameFieldStateNotifierProvider,
       );
-    }));
+    });
+
+    return widget;
+  }
+
+  // userUpdateButton
+  static Widget userUpdateButton() {
+    //
+    final Widget widget = Consumer(
+      builder: (context, ref, child) {
+        return OnSubmitButtonWidget(
+          onSubmitButtonStateNotifierProvider: ref.watch(
+              UserPageState.userUpdateOnSubmitButtonStateNotifierProvider),
+        );
+      },
+    );
 
     return widget;
   }

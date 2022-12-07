@@ -25,7 +25,7 @@ void main() {
     // 一方、StateNotifierProviderの場合は、overrideWith メソッドを利用する必要がありそう。
     final container = ProviderContainer(overrides: [
       //
-      userStateNotifierProvider.overrideWith((ref) => FakeUserStateNotifier()),
+      userStateNotifierProvider.overrideWith(() => FakeUserStateNotifier()),
 
       //
       userRepositoryFirebaseProvider.overrideWithValue(userRepository),

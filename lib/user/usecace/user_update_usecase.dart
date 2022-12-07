@@ -23,6 +23,7 @@ final userUpdateUsecaseProvider = Provider((ref) {
     T? leavedAt,
     String? nickName,
     Offset? pointerPosition,
+    Offset? displayPointerPosition,
   }) async {
     final Map<String, dynamic> data = {};
 
@@ -47,7 +48,17 @@ final userUpdateUsecaseProvider = Provider((ref) {
       );
     }
 
-    userRepository.update(
+    if (displayPointerPosition != null) {
+      data.addAll(
+        {
+          ...data,
+          "displayPointerPosition":
+              const OffsetConverter().toJson(displayPointerPosition),
+        },
+      );
+    }
+
+    await userRepository.update(
       email: firebaseAuthUser.email,
       data: data,
     );

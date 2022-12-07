@@ -1,122 +1,116 @@
-// StateNotifier
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// Freezed
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
-import '../../../authentication/authentication.dart';
-
+import '../../../common/common.dart';
 import '../../domain/user.dart';
 
-import '../widget/nickname_field_state.dart';
+class UserPageState {
+  static const pageTitle = "ユーザ情報";
 
-part 'user_page_state.freezed.dart';
+  // static final nickNameFieldStateNotifierProvider =
+  //     nickNameFieldStateNotifierProviderCreator();
 
-// --------------------------------------------------
-//
-// Freezed
-//
-// --------------------------------------------------
-@freezed
-class UserPageState with _$UserPageState {
-  // Private Constructor
-  const factory UserPageState._({
-    // Page Title
-    required String pageTitle,
+  static final nickNameFieldStateNotifierProviderOfProvider =
+      StateProvider.autoDispose((ref) {
+    NameFieldStateNotifierProvider nickNameFieldStateNotifierProviderCreator() {
+      const name = "ニックネーム";
 
-    // Form
-    required GlobalKey<FormState> userPageformValueKey,
+      const minMax = MinMax(min: 0, max: 20);
+      final minMaxLenghtValidator =
+          ref.watch(minMaxLenghtValidatorProvider(minMax));
 
-    // User Name Field
-    required NickNameFieldStateNotifierProvider
-        nickNameFieldStateNotifierProvider,
-
-    // User Update Button
-    // required UserUpdateUsecase userUpdateUsecase,
-    required LoginSubmitStateProvider userUpdateSubmitStateProvider,
-
-    // ignore: unused_element
-    @Default(false) bool isOnSubmitable,
-  }) = _UserPageState;
-
-  // Factory Constructor
-  factory UserPageState.create() => UserPageState._(
-        // Page Title
-        pageTitle: "ユーザ情報",
-
-        // Form
-        userPageformValueKey: GlobalKey<FormState>(),
-
-        // User Name Field
-        nickNameFieldStateNotifierProvider:
-            nickNameFieldStateNotifierProviderCreator(),
-
-        userUpdateSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
-          loginSubmitWidgetName: "ユーザ更新",
-          onSubmit: null,
-        ),
+      final nameFieldStateNotifierProvider =
+          nameFieldStateNotifierProviderCreator(
+        name: name,
+        validator: minMaxLenghtValidator,
+        minLength: minMax.min,
+        maxLength: minMax.max,
       );
-}
 
-// --------------------------------------------------
-//
-// StateNotifier
-//
-// --------------------------------------------------
-class UserPageStateController extends StateNotifier<UserPageState> {
-  UserPageStateController({
-    required this.ref,
-  }) : super(UserPageState.create());
+      return nameFieldStateNotifierProvider;
+    }
 
-  // ref
-  final Ref ref;
+    return nickNameFieldStateNotifierProviderCreator();
+  });
 
-  void updateIsOnSubmitable(bool isOnSubmitable) {
-    state = state.copyWith(isOnSubmitable: isOnSubmitable);
-  }
+  static final attentionMessageStateProvider =
+      StateProvider.autoDispose((ref) => "");
 
-  void setUserUpdateOnSubmit() {
-    Function? buildOnSubmit() {
-      if (!state.isOnSubmitable) {
+  // --------------------------------------------------
+  //
+  // userUpdateOnSubmitButtonStateNotifierProvider
+  //
+  // --------------------------------------------------
+  static final userUpdateOnSubmitButtonStateNotifierProvider =
+      Provider.autoDispose((ref) {
+    bool isOnSubmitable = false;
+
+    final nickNameFieldStateNotifierProvider =
+        ref.watch(nickNameFieldStateNotifierProviderOfProvider);
+
+    final loginIdIsValidate = ref.watch(nickNameFieldStateNotifierProvider
+        .select((value) => value.isValidate.isValid));
+
+    if (loginIdIsValidate != isOnSubmitable) {
+      isOnSubmitable = loginIdIsValidate;
+    }
+
+    void Function()? buildUserUpdateOnSubmit() {
+      if (!isOnSubmitable) {
         return null;
       }
 
-      return ({
-        required BuildContext context,
-      }) =>
-          () {
+      return () async {
+        void updateUser() {
+          void setMessage(String message) {
+            ref
+                .read(UserPageState.attentionMessageStateProvider.notifier)
+                .update((state) => "${DateTime.now()}: $message");
+          }
+
+          // const message = "ユーザ情報更新中";
+          // setMessage(message);
+
+          // --------------------------------------------------
+          //
+          // ユーザ情報更新
+          //
+          // --------------------------------------------------
+          try {
+            final nickNameFieldStateNotifierProvider = ref.watch(
+                UserPageState.nickNameFieldStateNotifierProviderOfProvider);
+
             final nickName = ref
-                .read(state.nickNameFieldStateNotifierProvider)
-                .nickNameFieldController
+                .read(nickNameFieldStateNotifierProvider)
+                .textEditingController
                 .text;
 
             // ユーザ情報更新
-            final notifier = ref.read(userStateNotifierProvider.notifier);
-            notifier.setNickName(nickName);
+            final userStateNotifier =
+                ref.read(userStateNotifierProvider.notifier);
 
-            ref
-                .read(state.nickNameFieldStateNotifierProvider.notifier)
-                .initial();
-          };
+            userStateNotifier.setNickName(nickName);
+
+            // const message = "ユーザ情報を更新しました。";
+            // setMessage(message);
+
+            //
+          } on StackremoteException catch (e) {
+            setMessage(e.message);
+          }
+
+          //
+        }
+
+        updateUser();
+      };
     }
 
-    state = state.copyWith(
-      userUpdateSubmitStateProvider: loginSubmitStateNotifierProviderCreator(
-        loginSubmitWidgetName: "ユーザ更新",
-        onSubmit: buildOnSubmit(),
-      ),
+    final userUpdateOnSubmitButtonStateNotifierProvider =
+        onSubmitButtonStateNotifierProviderCreator(
+      onSubmitButtonWidgetName: "$pageTitle更新",
+      onSubmit: buildUserUpdateOnSubmit,
     );
-  }
-}
 
-// --------------------------------------------------
-//
-// StateNotifierProvider
-//
-// --------------------------------------------------
-final userPageStateControllerProvider =
-    StateNotifierProvider<UserPageStateController, UserPageState>(
-  (ref) => UserPageStateController(ref: ref),
-);
+    return userUpdateOnSubmitButtonStateNotifierProvider;
+  });
+}

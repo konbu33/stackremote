@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/authentication/authentication.dart';
 
 import '../common/common.dart';
 import 'domain/firebase_auth_user.dart';
 import 'presentation/page/signin_page.dart';
+// import 'presentation/page/signin_page_state.dart';
 import 'presentation/page/signup_page.dart';
 import 'presentation/page/wait_email_verified_page.dart';
 
@@ -36,6 +38,24 @@ class AuthenticationRoutingLayer extends HookConsumerWidget {
 
 // --------------------------------------------------
 //
+// AuthenticationRoutingPath
+//
+// --------------------------------------------------
+enum AuthenticationRoutingPath {
+  signIn(path: '/signin'),
+  signUp(path: 'signup'),
+  signInSignUp(path: '/signin/signup'),
+  waitMailVerified(path: '/wait_mail_verified');
+
+  const AuthenticationRoutingPath({
+    required this.path,
+  });
+
+  final String path;
+}
+
+// --------------------------------------------------
+//
 // go_router
 //
 // --------------------------------------------------
@@ -44,47 +64,93 @@ final authenticationRouterProvider = Provider(
     // improve：肥大化しそうなため、分割を検討
     return GoRouter(
       // デフォルト表示されるルーティング先
-      initialLocation: '/',
+      initialLocation: AuthenticationRoutingPath.signIn.path,
 
       // ルーティング先
       // improve：ルーティング先をグループ化してコンポーネント化し、着脱容易にしたい。
       routes: [
-        // デフォルト表示
-        GoRoute(path: '/', builder: (context, state) => const SignInPage()),
-
         // サインイン・サインアップ
         GoRoute(
-            path: '/signin', builder: (context, state) => const SignInPage()),
+            path: AuthenticationRoutingPath.signIn.path,
+            builder: (context, state) => const SignInPage(),
+            routes: [
+              GoRoute(
+                  path: AuthenticationRoutingPath.signUp.path,
+                  builder: (context, state) => const SignUpPage()),
+            ]),
         GoRoute(
-            path: '/signup', builder: (context, state) => const SignUpPage()),
-        GoRoute(
-            path: '/waitmailverified',
+            path: AuthenticationRoutingPath.waitMailVerified.path,
             builder: (context, state) => const WaitEmailVerifiedPage()),
       ],
 
       // リダイレクト設定
       // improve：if文での分岐を抽象化したい。
       redirect: (state) {
-        // 「本アプリ側のログイン状態 + メールアドレス検証済・未検証」をwatch。
-        // 本アプリ側のログイン状態が変化したら、ルーティングに反映される。
-        final isSignIn = ref.watch(firebaseAuthUserStateNotifierProvider
-            .select((value) => value.isSignIn));
+        final authenticationRoutingCurrentPath =
+            ref.watch(authenticationRoutingCurrentPathProvider);
 
-        final isEmailVerified = ref.watch(firebaseAuthUserStateNotifierProvider
-            .select((value) => value.emailVerified));
+        return authenticationRoutingCurrentPath.path == state.subloc
+            ? null
+            : authenticationRoutingCurrentPath.path;
 
-        // サインイン済み & メールアドレス未検証の場合のリダイレクト動作
-        if (isSignIn) {
-          if (!isEmailVerified) {
-            if (state.subloc == '/waitmailverified') {
-              return null;
-            } else {
-              return '/waitmailverified';
-            }
-          }
-        }
-        return null;
+        // // 「本アプリ側のログイン状態 + メールアドレス検証済・未検証」をwatch。
+        // // 本アプリ側のログイン状態が変化したら、ルーティングに反映される。
+        // final isSignIn = ref.watch(firebaseAuthUserStateNotifierProvider
+        //     .select((value) => value.isSignIn));
+
+        // final isEmailVerified = ref.watch(firebaseAuthUserStateNotifierProvider
+        //     .select((value) => value.emailVerified));
+
+        // // サインイン済み & メールアドレス未検証の場合のリダイレクト動作
+        // if (isSignIn) {
+        //   if (!isEmailVerified) {
+        //     if (state.subloc == '/wait_mail_verified') {
+        //       return null;
+        //     } else {
+        //       return '/wait_mail_verified';
+        //     }
+        //   }
+        // }
+        // return null;
       },
     );
   },
 );
+
+// --------------------------------------------------
+//
+// authenticationRoutingCurrentPathProvider
+//
+// --------------------------------------------------
+final authenticationRoutingCurrentPathProvider = StateProvider((ref) {
+  // // --------------------------------------------------
+  // // Goto SignUp
+  // // --------------------------------------------------
+  // final isSignUpPagePush = ref.watch(SignInPageState.isSignUpPagePushProvider);
+  // if (isSignUpPagePush) return AuthenticationRoutingPath.signInSignUp;
+
+  // --------------------------------------------------
+  // Goto  WaitVerifyEmail
+  // --------------------------------------------------
+  // 「本アプリ側のログイン状態 + メールアドレス検証済・未検証」をwatch。
+  // 本アプリ側のログイン状態が変化したら、ルーティングに反映される。
+  final isSignIn = ref.watch(
+      firebaseAuthUserStateNotifierProvider.select((value) => value.isSignIn));
+
+  final isEmailVerified = ref.watch(firebaseAuthUserStateNotifierProvider
+      .select((value) => value.emailVerified));
+
+  // サインイン済み & メールアドレス未検証の場合のリダイレクト動作
+  if (isSignIn) {
+    if (!isEmailVerified) {
+      return AuthenticationRoutingPath.waitMailVerified;
+      // if (state.subloc == '/wait_mail_verified') {
+      //   return null;
+      // } else {
+      //   return '/wait_mail_verified';
+      // }
+    }
+  }
+
+  return AuthenticationRoutingPath.signIn;
+});

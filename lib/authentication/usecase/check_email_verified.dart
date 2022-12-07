@@ -1,7 +1,5 @@
 import 'dart:async';
 
-// improve: この依存を解消したい。
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/common.dart';
@@ -42,7 +40,7 @@ final checkEmailVerifiedUsecaseProvider = Provider.autoDispose((ref) {
 
             timer.cancel();
           }
-        } on firebase_auth.FirebaseAuthException catch (e) {
+        } on StackremoteException catch (e) {
           switch (e.code) {
             case "current-user-null":
               timer.cancel();

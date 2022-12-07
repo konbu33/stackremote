@@ -13,6 +13,7 @@ void main() {
     Timestamp? leavedAt = Timestamp.now();
     const String nickName = "xxx";
     const Offset pointerPosition = Offset(10, 10);
+    const Offset displayPointerPosition = Offset(20, 20);
 
     final user = User.reconstruct(
       comment: comment,
@@ -23,6 +24,7 @@ void main() {
       leavedAt: leavedAt,
       nickName: nickName,
       pointerPosition: pointerPosition,
+      displayPointerPosition: displayPointerPosition,
     );
 
     test(
@@ -37,6 +39,7 @@ void main() {
       const Timestamp? leavedAt = null;
       const String nickName = "";
       const Offset pointerPosition = Offset(0, 0);
+      const Offset displayPointerPosition = Offset(0, 0);
 
       // when
       final user = User.create(
@@ -52,6 +55,7 @@ void main() {
       expect(user.leavedAt, leavedAt);
       expect(user.nickName, nickName);
       expect(user.pointerPosition, pointerPosition);
+      expect(user.displayPointerPosition, displayPointerPosition);
     });
 
     test("reconstructファクトリメソッドでインスタンス生成した場合、各属性の値が引数の値と同じであること", () {
@@ -68,6 +72,7 @@ void main() {
       expect(user.leavedAt, leavedAt);
       expect(user.nickName, nickName);
       expect(user.pointerPosition, pointerPosition);
+      expect(user.displayPointerPosition, displayPointerPosition);
     });
 
     test("userの生成的コンストラクタ,プライベートコンストラクタを利用したインスタンス生成が不可なこと", () {
@@ -101,6 +106,9 @@ void main() {
       expect(userToJson["pointerPosition"],
           '{"dx":${user.pointerPosition.dx},"dy":${user.pointerPosition.dy}}');
 
+      expect(userToJson["displayPointerPosition"],
+          '{"dx":${user.displayPointerPosition.dx},"dy":${user.displayPointerPosition.dy}}');
+
       // Object <- Json
       final User userFromJson = User.fromJson(userToJson);
       expect(userFromJson.comment, user.comment);
@@ -111,6 +119,7 @@ void main() {
       expect(userFromJson.leavedAt!.toDate(), user.leavedAt!.toDate());
       expect(userFromJson.nickName, user.nickName);
       expect(userFromJson.pointerPosition, user.pointerPosition);
+      expect(userFromJson.displayPointerPosition, user.displayPointerPosition);
     });
   });
 }

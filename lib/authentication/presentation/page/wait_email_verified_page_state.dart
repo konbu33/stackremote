@@ -1,22 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
-import '../../common/create_firebse_auth_exception_message.dart';
-import '../../usecase/current_user_send_verify_email.dart';
-import '../../usecase/service_signout.dart';
-
-import '../widget/appbar_action_icon_state.dart';
-import '../widget/description_message_state.dart';
-import '../widget/login_submit_state.dart';
+import '../widget/progress_state_send_verify_email.dart';
+import '../widget/progress_state_signout.dart';
 
 class WaitEmailVerifiedPageState {
-  const WaitEmailVerifiedPageState();
-
   static const pageTitle = "メールアドレス確認待ち";
-
-  static const signOutIconButtonName = "サインアウト";
 
   static const String message = ''' 
     あなたが「サービス利用登録時に登録したメールアドレス」の持ち主かどうか、確認待ちの状態です。
@@ -28,8 +18,30 @@ class WaitEmailVerifiedPageState {
   ''';
 
   static final descriptionMessageStateProvider =
-      descriptionMessageStateProviderCreator(
-          message: message.replaceAll(" ", ""));
+      StateProvider.autoDispose((ref) => message.replaceAll(" ", ""));
+
+  // --------------------------------------------------
+  //
+  //  sendVerifyEmailProgressStateNotifierProviderOfProvider
+  //
+  // --------------------------------------------------
+  static final sendVerifyEmailProgressStateNotifierProviderOfProvider =
+      Provider((ref) {
+    final function = ref.watch(progressStateSendVerifyEmailProvider);
+
+    return progressStateNotifierProviderCreator(function: function);
+  });
+
+  // --------------------------------------------------
+  //
+  //  signOutProgressStateNotifierProviderOfProvider
+  //
+  // --------------------------------------------------
+  static final signOutProgressStateNotifierProviderOfProvider = Provider((ref) {
+    final function = ref.watch(progressStateSignOutProvider);
+
+    return progressStateNotifierProviderCreator(function: function);
+  });
 
   // --------------------------------------------------
   //
@@ -39,22 +51,26 @@ class WaitEmailVerifiedPageState {
   static final signOutIconStateProvider = Provider((ref) {
     //
 
-    Function buildSignOutIconOnSubmit() {
-      return ({
-        required BuildContext context,
-      }) =>
-          () async {
-            final serviceSignOutUsecase =
-                ref.read(serviceSignOutUsecaseProvider);
+    void Function() buildSignOutIconOnSubmit() {
+      return () async {
+        final signOutProgressStateNotifierProvider =
+            ref.read(signOutProgressStateNotifierProviderOfProvider);
 
-            await serviceSignOutUsecase();
-          };
+        ref
+            .read(signOutProgressStateNotifierProvider.notifier)
+            .updateProgress();
+      };
     }
 
-    final signOutIconStateProvider = appbarActionIconStateProviderCreator(
-      onSubmitWidgetName: signOutIconButtonName,
+    final appbarActionIconState = AppbarActionIconState.create(
+      onSubmitWidgetName: "サインアウト",
       icon: const Icon(Icons.logout),
-      onSubmit: buildSignOutIconOnSubmit(),
+      onSubmit: buildSignOutIconOnSubmit,
+    );
+
+    final signOutIconStateProvider =
+        appbarActionIconStateNotifierProviderCreator(
+      appbarActionIconState: appbarActionIconState,
     );
 
     return signOutIconStateProvider;
@@ -65,54 +81,36 @@ class WaitEmailVerifiedPageState {
   //   attentionMessageStateProvider
   //
   // --------------------------------------------------
+
   static final attentionMessageStateProvider =
-      descriptionMessageStateProviderCreator();
+      StateProvider.autoDispose((ref) => "");
 
-// --------------------------------------------------
-//
-//   onSubmitStateProvider
-//
-// --------------------------------------------------
-  static final onSubmitStateProvider = Provider.autoDispose((ref) {
-    final attentionMessageStateNotifier =
-        ref.watch(attentionMessageStateProvider.notifier);
-
+  // --------------------------------------------------
+  //
+  //   onSubmitStateProvider
+  //
+  // --------------------------------------------------
+  static final sendVerifyEmailOnSubmitStateNotifierProvider =
+      Provider.autoDispose((ref) {
     // --------------------------------------------------
     //  onSubmit関数の生成
     // --------------------------------------------------
-    Function? buildSendVerifyMailOnSubmit() {
-      return ({
-        required BuildContext context,
-      }) =>
-          () async {
-            try {
-              // メールアドレス検証メール送信
-              final currentUserSendVerifyEmailUsecase =
-                  ref.read(currentUserSendVerifyEmailUsecaseProvider);
-
-              await currentUserSendVerifyEmailUsecase();
-
-              const String message = "メール再送しました。";
-              attentionMessageStateNotifier.setMessage(message);
-              //
-
-            } on firebase_auth.FirebaseAuthException catch (e) {
-              logger.d("$e");
-
-              final createFirebaseExceptionMessage =
-                  ref.read(createFirebaseAuthExceptionMessageProvider);
-
-              final String message = createFirebaseExceptionMessage(e);
-              attentionMessageStateNotifier.setMessage(message);
-            }
-          };
+    void Function()? buildSendVerifyMailOnSubmit() {
+      return () async {
+        final sendVerifyEmailProgressStateNotifierProvider =
+            ref.read(sendVerifyEmailProgressStateNotifierProviderOfProvider);
+        ref
+            .read(sendVerifyEmailProgressStateNotifierProvider.notifier)
+            .updateProgress();
+      };
     }
 
-    final onSubmitStateProvider = loginSubmitStateNotifierProviderCreator(
-      loginSubmitWidgetName: "メール再送信",
-      onSubmit: buildSendVerifyMailOnSubmit(),
+    final sendVerifyEmailOnSubmitStateNotifierProvider =
+        onSubmitButtonStateNotifierProviderCreator(
+      onSubmitButtonWidgetName: "メール再送信",
+      onSubmit: buildSendVerifyMailOnSubmit,
     );
 
-    return onSubmitStateProvider;
+    return sendVerifyEmailOnSubmitStateNotifierProvider;
   });
 }

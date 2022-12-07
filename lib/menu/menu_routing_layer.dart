@@ -35,65 +35,87 @@ class MenuRoutingLayer extends HookConsumerWidget {
 
 // --------------------------------------------------
 //
+// MenuRoutingPath
+//
+// --------------------------------------------------
+enum MenuRoutingPath {
+  rtcVideoChannelJoin(path: '/rtc_video_channel_join'),
+  rtcVideo(path: '/rtc_video'),
+  changePassword(path: '/change_password'),
+  user(path: '/user');
+
+  const MenuRoutingPath({
+    required this.path,
+  });
+
+  final String path;
+}
+
+// --------------------------------------------------
+//
 // go_router
 //
 // --------------------------------------------------
-final menuRouterProvider = Provider(
-  (ref) {
-    // improve：肥大化しそうなため、分割を検討
-    return GoRouter(
-      // デフォルト表示されるルーティング先
-      initialLocation: '/agoravideochanneljoin',
+final menuRouterProvider = Provider((ref) {
+  // improve：肥大化しそうなため、分割を検討
 
-      // ルーティング先
-      // improve：ルーティング先をグループ化してコンポーネント化し、着脱容易にしたい。
-      routes: [
-        //  デフォルト表示
-        GoRoute(
-          path: '/agoravideochanneljoin',
-          builder: (context, state) {
-            return const AgoraVideoChannelJoinPage();
-          },
-        ),
+  return GoRouter(
+    // デフォルト表示されるルーティング先
+    // initialLocation: '/rtc_video_channel_join',
+    initialLocation: MenuRoutingPath.rtcVideoChannelJoin.path,
 
-        GoRoute(
-          path: '/agoravideo',
-          builder: (context, state) {
-            return const AgoraVideoPage();
-          },
-        ),
+    // ルーティング先
+    // improve：ルーティング先をグループ化してコンポーネント化し、着脱容易にしたい。
+    routes: [
+      //  デフォルト表示
+      GoRoute(
+        path: MenuRoutingPath.rtcVideoChannelJoin.path,
+        builder: (context, state) {
+          return const RtcVideoChannelJoinPage();
+        },
+      ),
 
-        GoRoute(
-          path: '/changepassword',
-          builder: (context, state) => const ChangePasswordPage(),
-        ),
+      GoRoute(
+        path: MenuRoutingPath.rtcVideo.path,
+        builder: (context, state) {
+          return const RtcVideoPage();
+        },
+      ),
 
-        GoRoute(
-          path: '/user',
-          builder: (context, state) => const UserPage(),
-        ),
-      ],
+      GoRoute(
+        path: MenuRoutingPath.changePassword.path,
+        builder: (context, state) => const ChangePasswordPage(),
+      ),
 
-      // リダイレクト設定
-      // improve：if文での分岐を抽象化したい。
-      redirect: (state) {
-        // rtc channel join済・未joinの状態監視
-        final RtcChannelState rtcChannelState = ref.watch(
-            RtcChannelStateNotifierProviderList
-                .rtcChannelStateNotifierProvider);
+      GoRoute(
+        path: MenuRoutingPath.user.path,
+        builder: (context, state) => const UserPage(),
+      ),
+    ],
 
-        // rtc channel join済・未joinの状態を監視し、
-        // 状態が変化した場合、リダイレクト操作が実施される。
-        if (rtcChannelState.joined) {
-          if (state.subloc == '/agoravideo') {
-            return null;
-          } else {
-            return '/agoravideo';
-          }
-        }
+    // リダイレクト設定
+    redirect: (state) {
+      final menuRoutingCurrentPage = ref.watch(menuRoutingCurrentPathProvider);
 
-        return null;
-      },
-    );
-  },
-);
+      return menuRoutingCurrentPage.path == state.subloc
+          ? null
+          : menuRoutingCurrentPage.path;
+    },
+  );
+});
+
+// --------------------------------------------------
+//
+// menuRoutingCurrentPathProvider
+//
+// --------------------------------------------------
+
+final menuRoutingCurrentPathProvider = StateProvider((ref) {
+  final isJoinedChannel = ref.watch(RtcVideoState.isJoinedChannelProvider);
+
+  // rtc channel join済・未joinの状態を監視し、
+  // 状態が変化した場合、リダイレクト操作が実施される。
+  if (isJoinedChannel) return MenuRoutingPath.rtcVideo;
+
+  return MenuRoutingPath.rtcVideoChannelJoin;
+});
