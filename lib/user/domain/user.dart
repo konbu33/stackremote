@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/rtc_video/domain/rtc_video_state.dart';
 
 import '../../authentication/authentication.dart';
 import '../../common/common.dart';
@@ -28,15 +29,18 @@ class User with _$User {
     @Default("") String nickName,
     @Default(Offset(0, 0)) @OffsetConverter() Offset pointerPosition,
     @Default(Offset(0, 0)) @OffsetConverter() Offset displayPointerPosition,
+    required int rtcVideoUid,
   }) = _User;
 
   factory User.create({
     required String email,
     String? nickName,
+    int? rtcVideoUid,
   }) =>
       User._(
         email: email,
         nickName: nickName ?? "",
+        rtcVideoUid: rtcVideoUid ?? 0,
       );
 
   factory User.reconstruct({
@@ -49,6 +53,7 @@ class User with _$User {
     String? nickName,
     Offset? pointerPosition,
     Offset? displayPointerPosition,
+    int? rtcVideoUid,
   }) =>
       User._(
         comment: comment ?? "",
@@ -60,6 +65,7 @@ class User with _$User {
         nickName: nickName ?? "",
         pointerPosition: pointerPosition ?? const Offset(0, 0),
         displayPointerPosition: displayPointerPosition ?? const Offset(0, 0),
+        rtcVideoUid: rtcVideoUid ?? 0,
       );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -70,7 +76,7 @@ class User with _$User {
 //  UserStateNotifier
 //
 // --------------------------------------------------
-class UserStateNotifier extends Notifier<User> {
+class UserStateNotifier extends AutoDisposeNotifier<User> {
   @override
   User build() {
     final email = ref.watch(
@@ -90,7 +96,13 @@ class UserStateNotifier extends Notifier<User> {
 
     final nickName = initialSetNickName(email.split("@")[0]);
 
-    final user = User.create(email: email, nickName: nickName);
+    final rtcVideoUid = RtcVideoState.localUid;
+
+    final user = User.create(
+      email: email,
+      nickName: nickName,
+      rtcVideoUid: rtcVideoUid,
+    );
 
     // build関数で初期化処理を行いたい場合、return + stateへの代入が必要な様子。
     // build関数で初期化処理を行いたいケースは無いかもしれない。
@@ -122,4 +134,5 @@ class UserStateNotifier extends Notifier<User> {
 //
 // --------------------------------------------------
 final userStateNotifierProvider =
-    NotifierProvider<UserStateNotifier, User>(() => UserStateNotifier());
+    AutoDisposeNotifierProvider<UserStateNotifier, User>(
+        () => UserStateNotifier());

@@ -56,7 +56,8 @@ class RtcVideoChannelJoinPageState {
   //  channelJoinProgressStateProviderOfProvider
   //
   // --------------------------------------------------
-  static final channelJoinProgressStateProviderOfProvider = Provider((ref) {
+  static final channelJoinProgressStateProviderOfProvider =
+      Provider.autoDispose((ref) {
     final function = ref.watch(progressStateChannelJoinProvider);
 
     return progressStateNotifierProviderCreator(function: function);
@@ -129,22 +130,12 @@ class RtcVideoChannelJoinPageState {
         }
 
         return () async {
-          try {
-            // channel参加
-            final channelJoinProgressStateProvider = ref.read(
-                RtcVideoChannelJoinPageState
-                    .channelJoinProgressStateProviderOfProvider);
+          // channel参加
+          final channelJoinProgressStateProvider = ref.read(
+              RtcVideoChannelJoinPageState
+                  .channelJoinProgressStateProviderOfProvider);
 
-            ref
-                .read(channelJoinProgressStateProvider.notifier)
-                .updateProgress();
-
-            //
-          } on StackremoteException catch (e) {
-            ref
-                .read(attentionMessageStateProvider.notifier)
-                .update((state) => e.message);
-          }
+          ref.read(channelJoinProgressStateProvider.notifier).updateProgress();
         };
       }
 

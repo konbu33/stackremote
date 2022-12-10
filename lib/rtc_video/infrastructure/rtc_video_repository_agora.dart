@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -66,6 +67,14 @@ class RtcVideoRepositoryAgora implements RtcVideoRepository {
         optionalInfo,
         optionalUid,
       );
+    } on PlatformException catch (e) {
+      //  PlatformException(-17, request to join channel is rejected, null, null)
+      logger.d(
+          "code: ${e.code}, message: ${e.message}, details: ${e.details}, stackTrace: ${e.stacktrace}");
+
+      rethrow;
+
+      //
     } on Exception catch (e) {
       logger.d("$e");
       rethrow;

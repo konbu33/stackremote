@@ -5,7 +5,8 @@ import '../../channel/channel.dart';
 import '../../common/common.dart';
 import '../../user/user.dart';
 
-final channelJoinRegisterChannelAndUserInDBUsecaseProvider = Provider((ref) {
+final channelJoinRegisterChannelAndUserInDBUsecaseProvider =
+    Provider.autoDispose((ref) {
   //
 
   Future<void> execute() async {

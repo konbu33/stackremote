@@ -177,7 +177,7 @@ class FakeUserState extends Fake implements User {
   final Offset pointerPosition = user.pointerPosition;
 }
 
-class FakeUserStateNotifier extends Notifier<User>
+class FakeUserStateNotifier extends AutoDisposeNotifier<User>
     implements UserStateNotifier {
   @override
   User build() {

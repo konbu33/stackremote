@@ -24,6 +24,7 @@ final userUpdateUsecaseProvider = Provider((ref) {
     String? nickName,
     Offset? pointerPosition,
     Offset? displayPointerPosition,
+    int? rtcVideoUid,
   }) async {
     final Map<String, dynamic> data = {};
 
@@ -57,6 +58,8 @@ final userUpdateUsecaseProvider = Provider((ref) {
         },
       );
     }
+
+    if (rtcVideoUid != null) data.addAll({...data, "rtcVideoUid": rtcVideoUid});
 
     await userRepository.update(
       email: firebaseAuthUser.email,

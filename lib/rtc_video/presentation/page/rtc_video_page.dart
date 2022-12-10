@@ -7,11 +7,9 @@ import '../../../common/common.dart';
 import '../../../pointer/pointer.dart';
 
 import '../../../user/user.dart';
-import '../../domain/rtc_video_state.dart';
 
-import '../widget/rtc_video_local_preview_widget.dart';
-import '../widget/rtc_video_remote_preview_widget.dart';
-
+import '../widget/video_main_widget.dart';
+import '../widget/video_sub_layer_widget.dart';
 import 'rtc_video_page_state.dart';
 
 class RtcVideoPage extends HookConsumerWidget {
@@ -44,31 +42,8 @@ class RtcVideoPage extends HookConsumerWidget {
         child: Flexible(
           child: Stack(
             children: [
-              Center(
-                child: ref.watch(RtcVideoPageState.viewSwitchProvider)
-                    ? RtcVideoPageWidgets.remotePreviewWidget()
-                    : RtcVideoPageWidgets.localPreviewWidget(),
-              ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  color: Colors.blue,
-                  child: GestureDetector(
-                    onTap: () {
-                      ref
-                          .read(RtcVideoPageState.viewSwitchProvider.notifier)
-                          .update((state) => !state);
-                    },
-                    child: Center(
-                      child: ref.watch(RtcVideoPageState.viewSwitchProvider)
-                          ? RtcVideoPageWidgets.localPreviewWidget()
-                          : RtcVideoPageWidgets.remotePreviewWidget(),
-                    ),
-                  ),
-                ),
-              ),
+              RtcVideoPageWidgets.videoMainWidget(),
+              RtcVideoPageWidgets.videoSubWidget(),
               RtcVideoPageWidgets.getUserStateWidget(),
               RtcVideoPageWidgets.channelLeaveProgressWidget(),
             ],
@@ -100,25 +75,16 @@ class RtcVideoPageWidgets {
     return widget;
   }
 
-  // localPreviewWidget
-  static Widget localPreviewWidget() {
-    final Widget widget = Consumer(builder: ((context, ref, child) {
-      return const RtcVideoLocalPreviewWidget();
-    }));
+  // videoMainWidget
+  static Widget videoMainWidget() {
+    const Widget widget = VideoMainWidget();
+
     return widget;
   }
 
-  // remotePreviewWidget
-  static Widget remotePreviewWidget() {
-    final Widget widget = Consumer(builder: ((context, ref, child) {
-      final channelName = ref.watch(channelNameProvider);
-      final remoteUid = ref.watch(RtcVideoState.remoteUidProvider);
-
-      return RtcVideoRemotePreviewWidget(
-        channelName: channelName,
-        remoteUid: remoteUid,
-      );
-    }));
+  // videoSubWidget
+  static Widget videoSubWidget() {
+    const Widget widget = SubVideoLayerWidget(); // return child;
 
     return widget;
   }
