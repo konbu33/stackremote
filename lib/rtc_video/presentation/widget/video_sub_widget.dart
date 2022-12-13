@@ -37,7 +37,6 @@ class VideoSubWidget extends StatelessWidget {
 // --------------------------------------------------
 
 final opacityProvider = StateProvider((ref) => 1.0);
-final visibilityProvider = StateProvider((ref) => true);
 
 class DraggableWidget extends SingleChildStatelessWidget {
   const DraggableWidget({super.key, super.child});
@@ -49,30 +48,19 @@ class DraggableWidget extends SingleChildStatelessWidget {
         builder: (context, ref, child) {
           //
 
-          final newChild = Visibility(
-            visible: ref.watch(visibilityProvider),
-            maintainState: true,
-            maintainSize: true,
-            maintainAnimation: true,
-            child: child ?? const Text("no child"),
-          );
-
-          // final newChild = Opacity(
-          //     opacity: ref.watch(opacityProvider),
-          //     child: child); //?? const Text("no child");
+          final newChild =
+              Opacity(opacity: ref.watch(opacityProvider), child: child);
 
           return Draggable(
             data: 0,
             onDragStarted: () {
-              // ref.read(opacityProvider.notifier).update((state) => 0.0);
-              ref.read(visibilityProvider.notifier).update((state) => false);
+              ref.read(opacityProvider.notifier).update((state) => 0.0);
             },
             // onDragCompleted: () {
             //   //
             // },
             onDragEnd: (draggableDetails) {
-              // ref.read(opacityProvider.notifier).update((state) => 1.0);
-              ref.read(visibilityProvider.notifier).update((state) => true);
+              ref.read(opacityProvider.notifier).update((state) => 1.0);
             },
             feedback: newChild,
             childWhenDragging: newChild,
