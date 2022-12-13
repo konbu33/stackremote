@@ -12,6 +12,9 @@ final currentUidOfVideoMainProvider = StateProvider.autoDispose((ref) {
   return currentUid;
 });
 
+final videoSubLayerAlignmentProvider =
+    StateProvider.autoDispose((ref) => AlignmentDirectional.bottomEnd);
+
 class VideoMainWidget extends StatelessWidget {
   const VideoMainWidget({Key? key}) : super(key: key);
 

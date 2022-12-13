@@ -1,23 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nested/nested.dart';
 
 import '../../../common/common.dart';
-
-// --------------------------------------------------
-//
-//   VideoSubState
-//
-// --------------------------------------------------
-class VideoSubState {
-  final remotePreviewIsDragStartProvider = StateProvider((ref) => false);
-
-  final remotePreviewPositionProvider =
-      StateProvider((ref) => const Offset(300, 300));
-
-  final remotePreviewSizeProvider =
-      StateProvider((ref) => const Size(100, 120));
-}
+import 'video_main_widget.dart';
 
 // --------------------------------------------------
 //
@@ -32,48 +20,36 @@ class VideoSubWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final videoSubState = VideoSubState();
 
-    return Nested(
-      children: [
-        PositionedWidget(videoSubState: videoSubState),
-        DraggableWidget(videoSubState: videoSubState),
-        ClippedVideoWidget(videoSubState: videoSubState),
-      ],
-      child: child,
-    );
-  }
-}
+    return child;
+    // return ClippedVideoWidget(child: DraggableWidget(child: child));
+    // return Nested(
+    //   children: const [
+    //     ClippedVideoWidget(),
+    //     DraggableWidget(),
+    //   ],
+    //   child: child,
+    //   // Container(
+    //   //   color: Colors.blue,
+    //   //   height: 100,
+    //   //   width: 200,
+    //   //   child: Column(children: [
+    //   //     Text("${ref.watch(remotePreviewIsDragStartProvider)}",
+    //   //         style: textStyle),
+    //   //     Text("${ref.watch(videoSubLayerAlignmentProvider)}",
+    //   //         style: textStyle),
+    //   //   ]),
+    //   // ),
+    // );
 
-// --------------------------------------------------
-//
-//   PositionedWidget
-//
-// --------------------------------------------------
-class PositionedWidget extends SingleChildStatelessWidget {
-  const PositionedWidget({super.key, super.child, required this.videoSubState});
-
-  final VideoSubState videoSubState;
-
-  @override
-  Widget buildWithChild(BuildContext context, Widget? child) {
-    return Consumer(
-        child: child,
-        builder: (context, ref, child) {
-          final remotePreviewPosition =
-              ref.watch(videoSubState.remotePreviewPositionProvider);
-
-          return Positioned(
-            top: remotePreviewPosition.dy,
-            left: remotePreviewPosition.dx,
-            child: Column(
-              children: [
-                child ?? const Text("no child"),
-                Text("$remotePreviewPosition"),
-              ],
-            ),
-          );
-        });
+    // return Nested(
+    //   children: [
+    //     // PositionedWidget(videoSubState: videoSubState),
+    //     DraggableWidget(videoSubState: videoSubState),
+    //     ClippedVideoWidget(videoSubState: videoSubState),
+    //   ],
+    //   child: child,
+    // );
   }
 }
 
@@ -83,10 +59,12 @@ class PositionedWidget extends SingleChildStatelessWidget {
 //
 // --------------------------------------------------
 
-class DraggableWidget extends SingleChildStatelessWidget {
-  const DraggableWidget({super.key, super.child, required this.videoSubState});
+final remotePreviewIsDragStartProvider = StateProvider((ref) => false);
 
-  final VideoSubState videoSubState;
+class DraggableWidget extends SingleChildStatelessWidget {
+  const DraggableWidget({super.key, super.child, required this.rtcVideoUid});
+
+  final int rtcVideoUid;
 
   @override
   Widget buildWithChild(BuildContext context, Widget? child) {
@@ -94,28 +72,26 @@ class DraggableWidget extends SingleChildStatelessWidget {
         child: child,
         builder: (context, ref, child) {
           return Draggable(
+            // data: rtcVideoUid,
             onDragStarted: () {
               ref
-                  .read(videoSubState.remotePreviewIsDragStartProvider.notifier)
+                  .read(remotePreviewIsDragStartProvider.notifier)
                   .update((state) => true);
             },
-            onDragUpdate: (draggableDetails) {
-              ref
-                  .read(videoSubState.remotePreviewPositionProvider.notifier)
-                  .update((state) {
-                logger.d(
-                    "draggableDetails state: $state, delta: ${draggableDetails.delta}, local: ${draggableDetails.localPosition}");
-
-                return state + draggableDetails.delta;
-              });
-            },
+            // onDragCompleted: () {
+            //   //
+            //   // final videoSubLayerAlignment =
+            //   //     ref.watch(videoSubLayerAlignmentProvider);
+            //   // logger.d("videoSubLayerAlignment: $videoSubLayerAlignment");
+            // },
             onDragEnd: (draggableDetails) {
               ref
-                  .read(videoSubState.remotePreviewIsDragStartProvider.notifier)
+                  .read(remotePreviewIsDragStartProvider.notifier)
                   .update((state) => false);
             },
             feedback: child ?? const Text("no child"),
-            child: ref.watch(videoSubState.remotePreviewIsDragStartProvider)
+            // feedback: const Text("no child"),
+            child: ref.watch(remotePreviewIsDragStartProvider)
                 ? const SizedBox()
                 : child ?? const Text("no child"),
           );
@@ -128,20 +104,17 @@ class DraggableWidget extends SingleChildStatelessWidget {
 //   ClippedVideo
 //
 // --------------------------------------------------
+final remotePreviewSizeProvider = StateProvider((ref) => const Size(100, 120));
 
 class ClippedVideoWidget extends SingleChildStatelessWidget {
-  const ClippedVideoWidget(
-      {super.key, super.child, required this.videoSubState});
-
-  final VideoSubState videoSubState;
+  const ClippedVideoWidget({super.key, super.child});
 
   @override
   Widget buildWithChild(BuildContext context, Widget? child) {
     return Consumer(
         child: child,
         builder: (context, ref, child) {
-          final remotePreviewSize =
-              ref.watch(videoSubState.remotePreviewSizeProvider);
+          final remotePreviewSize = ref.watch(remotePreviewSizeProvider);
 
           return Container(
             width: remotePreviewSize.width,
@@ -158,5 +131,93 @@ class ClippedVideoWidget extends SingleChildStatelessWidget {
             ),
           );
         });
+  }
+}
+
+class DragTargetWidget extends HookConsumerWidget {
+  const DragTargetWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dragTargetTopLeft = DragTarget<int>(
+      builder: (context, candidateData, rejectedData) {
+        return Container(
+            alignment: Alignment.center,
+            color: Colors.transparent,
+            child: const Text("dragTargetTopLeft"));
+      },
+      onAccept: (data) {
+        logger.d("dt: TopLeft: $data");
+        ref
+            .read(videoSubLayerAlignmentProvider.notifier)
+            .update((state) => AlignmentDirectional.topStart);
+      },
+    );
+
+    final dragTargetTopRight = DragTarget<int>(
+      builder: (context, candidateData, rejectedData) {
+        return Container(
+            alignment: Alignment.center,
+            color: Colors.transparent,
+            child: const Text("dragTargetTopRight"));
+      },
+      onAccept: (data) {
+        logger.d("dt: TopRight: $data");
+        ref
+            .read(videoSubLayerAlignmentProvider.notifier)
+            .update((state) => AlignmentDirectional.topEnd);
+      },
+    );
+
+    final dragTargetBottomLeft = DragTarget<int>(
+      builder: (context, candidateData, rejectedData) {
+        return Container(
+            alignment: Alignment.center,
+            color: Colors.transparent,
+            child: const Text("dragTargetBottomLeft"));
+      },
+      onAccept: (data) {
+        logger.d("dt: BottomLeft: $data");
+        ref
+            .read(videoSubLayerAlignmentProvider.notifier)
+            .update((state) => AlignmentDirectional.bottomStart);
+      },
+    );
+
+    final dragTargetBottomRight = DragTarget<int>(
+      builder: (context, candidateData, rejectedData) {
+        return Container(
+            alignment: Alignment.center,
+            color: Colors.transparent,
+            child: const Text("dragTargetBottomRight"));
+      },
+      onAccept: (data) {
+        logger.d("dt: BottomRight: $data");
+        ref
+            .read(videoSubLayerAlignmentProvider.notifier)
+            .update((state) => AlignmentDirectional.bottomEnd);
+      },
+    );
+
+    return Column(
+      children: [
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(child: dragTargetTopLeft),
+              Expanded(child: dragTargetTopRight),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(child: dragTargetBottomLeft),
+              Expanded(child: dragTargetBottomRight),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

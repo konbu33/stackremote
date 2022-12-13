@@ -65,6 +65,7 @@ dependencies:
   nested: ^1.0.0
   # firebase_analytics: ^10.0.1
   firebase_analytics: ^9.3.8
+  draggable_widget: ^2.0.0
 
 dev_dependencies:
   integration_test:
