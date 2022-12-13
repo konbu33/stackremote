@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../user/user.dart';
 import 'rtc_video_local_preview_widget.dart';
 import 'rtc_video_remote_preview_widget.dart';
+import 'video_sub_layer_widget.dart';
 
 final currentUidOfVideoMainProvider = StateProvider.autoDispose((ref) {
   final currentUid =
@@ -11,9 +12,6 @@ final currentUidOfVideoMainProvider = StateProvider.autoDispose((ref) {
 
   return currentUid;
 });
-
-final videoSubLayerAlignmentProvider =
-    StateProvider.autoDispose((ref) => AlignmentDirectional.bottomEnd);
 
 class VideoMainWidget extends StatelessWidget {
   const VideoMainWidget({Key? key}) : super(key: key);
@@ -34,6 +32,7 @@ class VideoMainWidget extends StatelessWidget {
                 : RtcVideoRemotePreviewWidget(remoteUid: currentUid),
           ),
           Text("currentUid : $currentUid"),
+          Text("Alignment: ${ref.watch(videoSubLayerAlignmentProvider)}"),
         ],
       );
     });

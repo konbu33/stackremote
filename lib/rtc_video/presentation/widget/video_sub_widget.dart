@@ -1,11 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nested/nested.dart';
 
-import '../../../common/common.dart';
-import 'video_main_widget.dart';
+import 'video_sub_layer_widget.dart';
 
 // --------------------------------------------------
 //
@@ -22,31 +19,11 @@ class VideoSubWidget extends StatelessWidget {
     //
 
     return child;
-    // return ClippedVideoWidget(child: DraggableWidget(child: child));
+
     // return Nested(
     //   children: const [
     //     ClippedVideoWidget(),
     //     DraggableWidget(),
-    //   ],
-    //   child: child,
-    //   // Container(
-    //   //   color: Colors.blue,
-    //   //   height: 100,
-    //   //   width: 200,
-    //   //   child: Column(children: [
-    //   //     Text("${ref.watch(remotePreviewIsDragStartProvider)}",
-    //   //         style: textStyle),
-    //   //     Text("${ref.watch(videoSubLayerAlignmentProvider)}",
-    //   //         style: textStyle),
-    //   //   ]),
-    //   // ),
-    // );
-
-    // return Nested(
-    //   children: [
-    //     // PositionedWidget(videoSubState: videoSubState),
-    //     DraggableWidget(videoSubState: videoSubState),
-    //     ClippedVideoWidget(videoSubState: videoSubState),
     //   ],
     //   child: child,
     // );
@@ -59,41 +36,47 @@ class VideoSubWidget extends StatelessWidget {
 //
 // --------------------------------------------------
 
-final remotePreviewIsDragStartProvider = StateProvider((ref) => false);
+final opacityProvider = StateProvider((ref) => 1.0);
+final visibilityProvider = StateProvider((ref) => true);
 
 class DraggableWidget extends SingleChildStatelessWidget {
-  const DraggableWidget({super.key, super.child, required this.rtcVideoUid});
-
-  final int rtcVideoUid;
+  const DraggableWidget({super.key, super.child});
 
   @override
   Widget buildWithChild(BuildContext context, Widget? child) {
     return Consumer(
         child: child,
         builder: (context, ref, child) {
+          //
+
+          final newChild = Visibility(
+            visible: ref.watch(visibilityProvider),
+            maintainState: true,
+            maintainSize: true,
+            maintainAnimation: true,
+            child: child ?? const Text("no child"),
+          );
+
+          // final newChild = Opacity(
+          //     opacity: ref.watch(opacityProvider),
+          //     child: child); //?? const Text("no child");
+
           return Draggable(
-            // data: rtcVideoUid,
+            data: 0,
             onDragStarted: () {
-              ref
-                  .read(remotePreviewIsDragStartProvider.notifier)
-                  .update((state) => true);
+              // ref.read(opacityProvider.notifier).update((state) => 0.0);
+              ref.read(visibilityProvider.notifier).update((state) => false);
             },
             // onDragCompleted: () {
             //   //
-            //   // final videoSubLayerAlignment =
-            //   //     ref.watch(videoSubLayerAlignmentProvider);
-            //   // logger.d("videoSubLayerAlignment: $videoSubLayerAlignment");
             // },
             onDragEnd: (draggableDetails) {
-              ref
-                  .read(remotePreviewIsDragStartProvider.notifier)
-                  .update((state) => false);
+              // ref.read(opacityProvider.notifier).update((state) => 1.0);
+              ref.read(visibilityProvider.notifier).update((state) => true);
             },
-            feedback: child ?? const Text("no child"),
-            // feedback: const Text("no child"),
-            child: ref.watch(remotePreviewIsDragStartProvider)
-                ? const SizedBox()
-                : child ?? const Text("no child"),
+            feedback: newChild,
+            childWhenDragging: newChild,
+            child: newChild,
           );
         });
   }
@@ -147,7 +130,6 @@ class DragTargetWidget extends HookConsumerWidget {
             child: const Text("dragTargetTopLeft"));
       },
       onAccept: (data) {
-        logger.d("dt: TopLeft: $data");
         ref
             .read(videoSubLayerAlignmentProvider.notifier)
             .update((state) => AlignmentDirectional.topStart);
@@ -162,7 +144,6 @@ class DragTargetWidget extends HookConsumerWidget {
             child: const Text("dragTargetTopRight"));
       },
       onAccept: (data) {
-        logger.d("dt: TopRight: $data");
         ref
             .read(videoSubLayerAlignmentProvider.notifier)
             .update((state) => AlignmentDirectional.topEnd);
@@ -177,7 +158,6 @@ class DragTargetWidget extends HookConsumerWidget {
             child: const Text("dragTargetBottomLeft"));
       },
       onAccept: (data) {
-        logger.d("dt: BottomLeft: $data");
         ref
             .read(videoSubLayerAlignmentProvider.notifier)
             .update((state) => AlignmentDirectional.bottomStart);
@@ -192,7 +172,6 @@ class DragTargetWidget extends HookConsumerWidget {
             child: const Text("dragTargetBottomRight"));
       },
       onAccept: (data) {
-        logger.d("dt: BottomRight: $data");
         ref
             .read(videoSubLayerAlignmentProvider.notifier)
             .update((state) => AlignmentDirectional.bottomEnd);
