@@ -1,190 +1,140 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nested/nested.dart';
 
-import 'video_sub_layer_widget.dart';
+import '../../../common/common.dart';
+import '../../../user/user.dart';
 
-// --------------------------------------------------
-//
-//   VideoSubWidget
-//
-// --------------------------------------------------
+import 'clipped_video_widget.dart';
+import 'drag_target_widget.dart';
+import 'draggable_widget.dart';
+
+import 'rtc_video_local_preview_widget.dart';
+import 'rtc_video_remote_preview_widget.dart';
+import 'video_sub_state.dart';
+
 class VideoSubWidget extends StatelessWidget {
-  const VideoSubWidget({super.key, required this.child});
-
-  final Widget child;
+  const VideoSubWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    //
+    final child = Consumer(builder: (context, ref, child) {
+      final videoSubWidgetListCreator =
+          ref.watch(VideoSubWidgetParts.videoSubWidgetListCreatorProvider);
+
+      final videoSubWidgetList = videoSubWidgetListCreator();
+
+      return videoSubWidgetList.isEmpty
+          ? const SizedBox()
+          : Stack(
+              alignment:
+                  ref.watch(VideoSubState.videoSubLayerAlignmentProvider),
+              children: [
+                Expanded(
+                  child: VideoSubWidgetParts.dragTargetWidget(),
+                ),
+                VideoSubWidgetParts.draggableWidget(videoSubWidgetList),
+              ],
+            );
+    });
 
     return child;
-
-    // return Nested(
-    //   children: const [
-    //     ClippedVideoWidget(),
-    //     DraggableWidget(),
-    //   ],
-    //   child: child,
-    // );
   }
 }
 
-// --------------------------------------------------
-//
-//   DraggableWidget
-//
-// --------------------------------------------------
+class VideoSubWidgetParts {
+  // dragTargetWidget
+  static Widget dragTargetWidget() {
+    final widget = DragTargetWidget(
+      videoSubLayerAlignmentProvider:
+          VideoSubState.videoSubLayerAlignmentProvider,
+    );
 
-final opacityProvider = StateProvider((ref) => 1.0);
-
-class DraggableWidget extends SingleChildStatelessWidget {
-  const DraggableWidget({super.key, super.child});
-
-  @override
-  Widget buildWithChild(BuildContext context, Widget? child) {
-    return Consumer(
-        child: child,
-        builder: (context, ref, child) {
-          //
-
-          final newChild =
-              Opacity(opacity: ref.watch(opacityProvider), child: child);
-
-          return Draggable(
-            data: 0,
-            onDragStarted: () {
-              ref.read(opacityProvider.notifier).update((state) => 0.0);
-            },
-            // onDragCompleted: () {
-            //   //
-            // },
-            onDragEnd: (draggableDetails) {
-              ref.read(opacityProvider.notifier).update((state) => 1.0);
-            },
-            feedback: newChild,
-            childWhenDragging: newChild,
-            child: newChild,
-          );
-        });
+    return widget;
   }
-}
 
-// --------------------------------------------------
-//
-//   ClippedVideo
-//
-// --------------------------------------------------
-final remotePreviewSizeProvider = StateProvider((ref) => const Size(100, 120));
+  // draggableWidget
+  static Widget draggableWidget(List<Widget> videoSubWidgetList) {
+    final widget = DraggableWidget(child: Wrap(children: videoSubWidgetList));
 
-class ClippedVideoWidget extends SingleChildStatelessWidget {
-  const ClippedVideoWidget({super.key, super.child});
+    return widget;
+  }
 
-  @override
-  Widget buildWithChild(BuildContext context, Widget? child) {
-    return Consumer(
-        child: child,
-        builder: (context, ref, child) {
-          final remotePreviewSize = ref.watch(remotePreviewSizeProvider);
+  // videoSubWidgetListCreatorProvider
+  static final videoSubWidgetListCreatorProvider = Provider.autoDispose((ref) {
+    //
 
-          return Container(
-            width: remotePreviewSize.width,
-            height: remotePreviewSize.height,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              border: Border.all(
-                color: Colors.white24,
+    List<Widget> videoSubWidgetListCreator() {
+      //
+      final localUid = ref.watch(
+          userStateNotifierProvider.select((value) => value.rtcVideoUid));
+
+      final currentUid = ref.watch(VideoSubState.currentUidOfVideoMainProvider);
+
+      final usersState = ref.watch(usersStateNotifierProvider);
+
+      final videoSubWidgetListNullable = usersState.users.map((user) {
+        logger.d(
+            "currentUid : $currentUid, remoteUid : ${user.rtcVideoUid}, leaveAt : ${user.leavedAt}");
+
+        // チャンネル離脱後のユーザは非表示
+        if (user.leavedAt != null) return null;
+
+        // メインVideoに表示中のcurrentユーザは非表示
+        if (user.rtcVideoUid == currentUid) return null;
+
+        final child = GestureDetector(
+          onTap: () {
+            ref
+                .read(VideoSubState.currentUidOfVideoMainProvider.notifier)
+                .update((state) => user.rtcVideoUid);
+          },
+          child: Column(
+            children: [
+              Expanded(
+                // --------------------------------------------------
+                // subのvideoViewを表示する際、
+                // local用のvideoPreviewで表示するか、あるいは，
+                // remote用のvideoPreviewで表示するか
+                // --------------------------------------------------
+
+                // --------------------------------------------------
+                // mainのvideoViewにlocalのvideoが表示されている場合、
+                // --------------------------------------------------
+                child: currentUid == localUid
+
+                    // subのvideoViewに表示するのは、remoteのvideoのみになるはずなので、
+                    // すべてremote用videoPreviewで表示する。
+                    ? RtcVideoRemotePreviewWidget(remoteUid: user.rtcVideoUid)
+
+                    // --------------------------------------------------
+                    // mainのvideoViewにlocalのvideoが表示されていない場合、
+                    // --------------------------------------------------
+                    : user.rtcVideoUid == localUid
+
+                        // localのUidだったら、local用videoPreviewで表示する。
+                        ? const RtcVideoLocalPreviewWidget()
+
+                        // それ以外は、remote用videoPreviewで表示する。
+                        : RtcVideoRemotePreviewWidget(
+                            remoteUid: user.rtcVideoUid),
+
+                //
               ),
-            ),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              child: child,
-            ),
-          );
-        });
-  }
-}
-
-class DragTargetWidget extends HookConsumerWidget {
-  const DragTargetWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final dragTargetTopLeft = DragTarget<int>(
-      builder: (context, candidateData, rejectedData) {
-        return Container(
-            alignment: Alignment.center,
-            color: Colors.transparent,
-            child: const Text("dragTargetTopLeft"));
-      },
-      onAccept: (data) {
-        ref
-            .read(videoSubLayerAlignmentProvider.notifier)
-            .update((state) => AlignmentDirectional.topStart);
-      },
-    );
-
-    final dragTargetTopRight = DragTarget<int>(
-      builder: (context, candidateData, rejectedData) {
-        return Container(
-            alignment: Alignment.center,
-            color: Colors.transparent,
-            child: const Text("dragTargetTopRight"));
-      },
-      onAccept: (data) {
-        ref
-            .read(videoSubLayerAlignmentProvider.notifier)
-            .update((state) => AlignmentDirectional.topEnd);
-      },
-    );
-
-    final dragTargetBottomLeft = DragTarget<int>(
-      builder: (context, candidateData, rejectedData) {
-        return Container(
-            alignment: Alignment.center,
-            color: Colors.transparent,
-            child: const Text("dragTargetBottomLeft"));
-      },
-      onAccept: (data) {
-        ref
-            .read(videoSubLayerAlignmentProvider.notifier)
-            .update((state) => AlignmentDirectional.bottomStart);
-      },
-    );
-
-    final dragTargetBottomRight = DragTarget<int>(
-      builder: (context, candidateData, rejectedData) {
-        return Container(
-            alignment: Alignment.center,
-            color: Colors.transparent,
-            child: const Text("dragTargetBottomRight"));
-      },
-      onAccept: (data) {
-        ref
-            .read(videoSubLayerAlignmentProvider.notifier)
-            .update((state) => AlignmentDirectional.bottomEnd);
-      },
-    );
-
-    return Column(
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              Expanded(child: dragTargetTopLeft),
-              Expanded(child: dragTargetTopRight),
+              Text("${user.rtcVideoUid}"),
             ],
           ),
-        ),
-        Expanded(
-          child: Row(
-            children: [
-              Expanded(child: dragTargetBottomLeft),
-              Expanded(child: dragTargetBottomRight),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+        );
+
+        return ClippedVideoWidget(child: child);
+
+        //
+      }).toList();
+
+      final videoSubWidgetList =
+          videoSubWidgetListNullable.whereType<Widget>().toList();
+      return videoSubWidgetList;
+    }
+
+    return videoSubWidgetListCreator;
+  });
 }

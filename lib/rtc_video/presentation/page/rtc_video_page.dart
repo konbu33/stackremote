@@ -9,7 +9,7 @@ import '../../../pointer/pointer.dart';
 import '../../../user/user.dart';
 
 import '../widget/video_main_widget.dart';
-import '../widget/video_sub_layer_widget.dart';
+import '../widget/video_sub_widget.dart';
 import 'rtc_video_page_state.dart';
 
 class RtcVideoPage extends HookConsumerWidget {
@@ -84,7 +84,7 @@ class RtcVideoPageWidgets {
 
   // videoSubWidget
   static Widget videoSubWidget() {
-    const Widget widget = SubVideoLayerWidget(); // return child;
+    const Widget widget = VideoSubWidget();
 
     return widget;
   }
