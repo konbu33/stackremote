@@ -29,9 +29,7 @@ class VideoSubWidget extends StatelessWidget {
               alignment:
                   ref.watch(VideoSubState.videoSubLayerAlignmentProvider),
               children: [
-                Expanded(
-                  child: VideoSubWidgetParts.dragTargetWidget(),
-                ),
+                VideoSubWidgetParts.dragTargetWidget(),
                 VideoSubWidgetParts.draggableWidget(videoSubWidgetList),
               ],
             );
