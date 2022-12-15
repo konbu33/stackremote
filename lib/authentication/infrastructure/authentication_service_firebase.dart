@@ -282,6 +282,9 @@ class AuthenticationServiceFirebase implements AuthenticationService {
         message: FirebaseAuthExceptionEnum.messageToJapanese(e),
         stackTrace: e.stackTrace,
       );
+    } on Exception catch (e, s) {
+      logger.d("$e, $s");
+      rethrow;
     }
   }
 

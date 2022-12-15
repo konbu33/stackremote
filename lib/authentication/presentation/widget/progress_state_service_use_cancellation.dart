@@ -33,13 +33,11 @@ final progressStateServiceUseCancellationProvider = Provider((ref) {
         ref.read(serviceUseCancellationUsecaseProvider);
 
     try {
-      await Future.delayed(const Duration(seconds: 1));
       await serviceUseCancellationUsecase();
 
       const message = "登録したメールアドレスを削除しました。";
       setMessage(message);
 
-      await Future.delayed(const Duration(seconds: 1));
       final notifier = ref.read(firebaseAuthUserStateNotifierProvider.notifier);
       notifier.updateIsSignIn(false);
 
@@ -59,6 +57,9 @@ final progressStateServiceUseCancellationProvider = Provider((ref) {
 
         default:
       }
+    } on Exception catch (e, s) {
+      logger.d(e.toString());
+      setMessage(e.toString());
     }
   }
 

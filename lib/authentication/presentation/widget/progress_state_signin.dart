@@ -50,6 +50,9 @@ final progressStateSignInProvider = Provider.autoDispose((ref) {
       //
     } on StackremoteException catch (e) {
       setMessage(e.message);
+    } on Exception catch (e, s) {
+      logger.d(e.toString());
+      setMessage(e.toString());
     }
 
     //
