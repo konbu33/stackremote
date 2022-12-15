@@ -22,7 +22,7 @@ class AppbarAcitonIconWidget extends HookConsumerWidget {
       margin: const EdgeInsets.only(right: 5),
       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
       child: IconButton(
-        onPressed: appbarActionIconState.onSubmit(),
+        onPressed: appbarActionIconState.onSubmit(context: context),
         icon: appbarActionIconState.icon,
         tooltip: appbarActionIconState.onSubmitWidgetName,
       ),

@@ -32,21 +32,21 @@ class RtcVideoPageState {
   // --------------------------------------------------
   static final channelLeaveSubmitIconStateNotifierProvider = Provider(
     (ref) {
-      void Function() buidChannelLeaveOnSubmit() {
-        return () async {
-          final channelLeaveProgressStateNotifierProvider =
-              ref.read(channelLeaveProgressStateNotifierProviderOfProvider);
+      AppbarActionIconOnSubmitFunction buidChannelLeaveOnSubmit() {
+        return ({required BuildContext context}) => () async {
+              final channelLeaveProgressStateNotifierProvider =
+                  ref.read(channelLeaveProgressStateNotifierProviderOfProvider);
 
-          ref
-              .read(channelLeaveProgressStateNotifierProvider.notifier)
-              .updateProgress();
-        };
+              ref
+                  .read(channelLeaveProgressStateNotifierProvider.notifier)
+                  .updateProgress();
+            };
       }
 
       final appbarActionIconState = AppbarActionIconState.create(
         onSubmitWidgetName: "チャンネル離脱",
         icon: const Icon(Icons.exit_to_app),
-        onSubmit: buidChannelLeaveOnSubmit,
+        onSubmit: buidChannelLeaveOnSubmit(),
       );
 
       final appbarActionIconStateNotifierProvider =

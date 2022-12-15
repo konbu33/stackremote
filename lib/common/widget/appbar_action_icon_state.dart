@@ -6,7 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 part 'appbar_action_icon_state.freezed.dart';
 
-typedef AppbarActionIconOnSubmitFunction = void Function()? Function();
+typedef AppbarActionIconOnSubmitFunction = void Function()? Function(
+    {required BuildContext context});
 
 // --------------------------------------------------
 //

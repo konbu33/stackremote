@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -86,6 +87,14 @@ final authenticationRouterProvider = Provider(
       // リダイレクト設定
       // improve：if文での分岐を抽象化したい。
       redirect: (state) {
+        // improve:
+        // 状態変化させてredirectで画面遷移する場合、TextFormFieldにFocusがあたった状態で画面遷移すると、
+        // 下記エラーが発生するため、回避するために、一時的にcontext.goを利用する。
+        // RenderBox was not laid out: RenderTransform#97b19 NEEDS-LAYOUT NEEDS-PAINT
+        if (state.subloc == AuthenticationRoutingPath.signInSignUp.path) {
+          return null;
+        }
+
         final authenticationRoutingCurrentPath =
             ref.watch(authenticationRoutingCurrentPathProvider);
 
