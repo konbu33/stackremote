@@ -2,9 +2,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/common/validation/validator.dart';
 
-import '../validation/validation.dart';
+import '../common.dart';
 
 part 'name_field_state.freezed.dart';
 

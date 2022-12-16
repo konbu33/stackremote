@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/presentation/widget/service_use_cancellation_state.dart';
 
 import '../../../common/common.dart';
+import 'service_use_cancellation_state.dart';
 
 class ServiceUseCancellationWidget extends HookConsumerWidget {
   const ServiceUseCancellationWidget({Key? key}) : super(key: key);

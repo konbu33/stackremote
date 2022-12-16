@@ -3,9 +3,9 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/common/firebase_auth_exception_enum.dart';
 
 import '../../common/common.dart';
+import '../common/firebase_auth_exception_enum.dart';
 import '../domain/firebase_auth_user.dart';
 import 'authentication_service.dart';
 

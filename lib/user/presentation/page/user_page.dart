@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/menu/menu.dart';
 
 import '../../../common/common.dart';
+import '../../../menu/menu.dart';
 import '../../domain/user.dart';
 import 'user_page_state.dart';
 

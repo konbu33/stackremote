@@ -57,7 +57,7 @@ final progressStateServiceUseCancellationProvider = Provider((ref) {
 
         default:
       }
-    } on Exception catch (e, s) {
+    } on Exception catch (e) {
       logger.d(e.toString());
       setMessage(e.toString());
     }

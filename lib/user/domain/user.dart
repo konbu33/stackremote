@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/domain/rtc_video_state.dart';
 
 import '../../authentication/authentication.dart';
 import '../../common/common.dart';
+import '../../rtc_video/rtc_video.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
