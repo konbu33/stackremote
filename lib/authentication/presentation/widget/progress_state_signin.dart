@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../common/common.dart';
 import '../../usecase/service_signin.dart';
@@ -13,10 +14,11 @@ final progressStateSignInProvider = Provider.autoDispose((ref) {
   //
 
   Future<void> signIn() async {
+    final dateTimeNow = DateFormat('yyyy/MM/dd HH:mm').format(DateTime.now());
     void setMessage(String message) {
       ref
           .read(SignInPageState.attentionMessageStateProvider.notifier)
-          .update((state) => "${DateTime.now()}: $message");
+          .update((state) => "$dateTimeNow: $message");
     }
 
     const message = "サインイン中";

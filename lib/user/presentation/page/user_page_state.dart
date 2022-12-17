@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../common/common.dart';
 import '../../domain/user.dart';
@@ -61,10 +62,13 @@ class UserPageState {
 
       return () async {
         void updateUser() {
+          final dateTimeNow =
+              DateFormat('yyyy/MM/dd HH:mm').format(DateTime.now());
+
           void setMessage(String message) {
             ref
                 .read(UserPageState.attentionMessageStateProvider.notifier)
-                .update((state) => "${DateTime.now()}: $message");
+                .update((state) => "$dateTimeNow: $message");
           }
 
           // const message = "ユーザ情報更新中";

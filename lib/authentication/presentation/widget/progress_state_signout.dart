@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../common/common.dart';
 import '../../usecase/service_signout.dart';
@@ -13,11 +14,12 @@ final progressStateSignOutProvider = Provider((ref) {
   //
 
   Future<void> signOut() async {
+    final dateTimeNow = DateFormat('yyyy/MM/dd HH:mm').format(DateTime.now());
     void setMessage(String message) {
       ref
           .read(
               WaitEmailVerifiedPageState.attentionMessageStateProvider.notifier)
-          .update((state) => "${DateTime.now()}: $message");
+          .update((state) => "$dateTimeNow: $message");
     }
 
     const message = "サインアウト中";

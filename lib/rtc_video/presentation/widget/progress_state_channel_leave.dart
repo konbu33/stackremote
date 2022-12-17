@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../usecase/channel_leave.dart';
 import '../../usecase/channel_leave_clear_user_in_db.dart';
@@ -13,11 +14,12 @@ final progressStateChannelLeaveProvider = Provider((ref) {
   //
 
   Future<void> channelLeave() async {
+    final dateTimeNow = DateFormat('yyyy/MM/dd HH:mm').format(DateTime.now());
     void setMessage(String message) {
       ref
           .read(RtcVideoChannelJoinPageState
               .attentionMessageStateProvider.notifier)
-          .update((state) => "${DateTime.now()}: $message");
+          .update((state) => "$dateTimeNow: $message");
     }
 
     const message = "チャンネル離脱待機中";

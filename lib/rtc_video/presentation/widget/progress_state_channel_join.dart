@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../channel/domain/channel.dart';
 import '../../../common/common.dart';
@@ -21,11 +22,12 @@ final progressStateChannelJoinProvider = Provider.autoDispose((ref) {
   //
 
   Future<void> channelJoin() async {
+    final dateTimeNow = DateFormat('yyyy/MM/dd HH:mm').format(DateTime.now());
     void setMessage(String message) {
       ref
           .read(RtcVideoChannelJoinPageState
               .attentionMessageStateProvider.notifier)
-          .update((state) => "${DateTime.now()}: $message");
+          .update((state) => "$dateTimeNow: $message");
     }
 
     const message = "チャンネル参加待機中";

@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../common/common.dart';
 import '../../usecase/current_user_send_verify_email.dart';
@@ -14,10 +15,11 @@ final progressStateSignUpProvider = Provider.autoDispose((ref) {
   //
 
   Future<void> signUp() async {
+    final dateTimeNow = DateFormat('yyyy/MM/dd HH:mm').format(DateTime.now());
     void setMessage(String message) {
       ref
           .read(SignUpPageState.attentionMessageStateProvider.notifier)
-          .update((state) => "${DateTime.now()}: $message");
+          .update((state) => "$dateTimeNow: $message");
     }
 
     const message = "サービス利用登録中";
