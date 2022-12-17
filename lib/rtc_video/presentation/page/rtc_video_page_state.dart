@@ -13,6 +13,10 @@ class RtcVideoPageState {
   static final viewSwitchProvider = StateProvider.autoDispose((ref) => false);
 
   static final positionProvider = StateProvider((ref) => const Offset(0, 0));
+
+  static final attentionMessageStateProvider =
+      StateProvider.autoDispose((ref) => "");
+
   // --------------------------------------------------
   //
   //  channelLeaveProgressStateNotifierProviderOfProvider

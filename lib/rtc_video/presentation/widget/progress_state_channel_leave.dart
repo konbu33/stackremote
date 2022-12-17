@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../../usecase/channel_leave.dart';
 import '../../usecase/channel_leave_clear_user_in_db.dart';
-import '../page/rtc_video_channel_join_page_state.dart';
+import '../page/rtc_video_page_state.dart';
 
 // --------------------------------------------------
 //
@@ -17,8 +17,7 @@ final progressStateChannelLeaveProvider = Provider((ref) {
     final dateTimeNow = DateFormat('yyyy/MM/dd HH:mm').format(DateTime.now());
     void setMessage(String message) {
       ref
-          .read(RtcVideoChannelJoinPageState
-              .attentionMessageStateProvider.notifier)
+          .read(RtcVideoPageState.attentionMessageStateProvider.notifier)
           .update((state) => "$dateTimeNow: $message");
     }
 

@@ -45,6 +45,7 @@ class RtcVideoPage extends HookConsumerWidget {
               RtcVideoPageWidgets.videoMainWidget(),
               RtcVideoPageWidgets.videoSubWidget(),
               RtcVideoPageWidgets.getUserStateWidget(),
+              RtcVideoPageWidgets.attentionMessageWidget(),
               RtcVideoPageWidgets.channelLeaveProgressWidget(),
             ],
           ),
@@ -108,6 +109,20 @@ class RtcVideoPageWidgets {
 
       return const SizedBox();
     }));
+
+    return widget;
+  }
+
+  // attentionMessageWidget
+  static Widget attentionMessageWidget() {
+    //
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      const style = TextStyle(color: Colors.red);
+      return Text(
+        ref.watch(RtcVideoPageState.attentionMessageStateProvider),
+        style: style,
+      );
+    });
 
     return widget;
   }
