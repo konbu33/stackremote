@@ -69,10 +69,11 @@ class UserPageWidgets {
         return Text("現在のニックネーム：${userState.nickName}");
       },
     );
+
     return widget;
   }
 
-// attentionMessageWidget
+  // attentionMessageWidget
   static Widget attentionMessageWidget() {
     const textStyle = TextStyle(color: Colors.red);
     final Widget widget = DescriptionMessageWidget(

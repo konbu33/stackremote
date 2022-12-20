@@ -69,6 +69,7 @@ class SignInPageWidgets {
             ref.watch(SignInPageState.goToSignUpIconStateProvider),
       );
     });
+
     return widget;
   }
 
@@ -80,6 +81,7 @@ class SignInPageWidgets {
           SignInPageState.attentionMessageStateProvider,
       textStyle: textStyle,
     );
+
     return widget;
   }
 
@@ -93,6 +95,7 @@ class SignInPageWidgets {
         nameFieldStateNotifierProvider: loginIdFieldStateNotifierProvider,
       );
     });
+
     return widget;
   }
 
@@ -106,6 +109,7 @@ class SignInPageWidgets {
         passwordFieldStateProvider: passwordFieldStateProvider,
       );
     });
+
     return widget;
   }
 

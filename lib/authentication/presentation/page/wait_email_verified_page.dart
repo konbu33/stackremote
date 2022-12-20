@@ -98,6 +98,7 @@ class WaitEmailVerifiedPageWidgets {
         textStyle: textStyle,
       );
     });
+
     return widget;
   }
 
@@ -115,6 +116,7 @@ class WaitEmailVerifiedPageWidgets {
 
       return const SizedBox();
     });
+
     return widget;
   }
 

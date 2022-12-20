@@ -47,6 +47,7 @@ class ChangePasswordPage extends HookConsumerWidget {
             child: Column(
               children: [
                 ChangePasswordPageWidgets.descriptionMessageWidget(),
+                const SizedBox(height: 20),
                 Stack(
                   children: [
                     ChangePasswordPageWidgets.attentionMessageWidget(),
@@ -78,6 +79,7 @@ class ChangePasswordPageWidgets {
           ChangePasswordPageState.descriptionMessageStateProvider,
       textStyle: textStyle,
     );
+
     return widget;
   }
 
@@ -92,6 +94,7 @@ class ChangePasswordPageWidgets {
         textStyle: textStyle,
       );
     });
+
     return widget;
   }
 
@@ -105,6 +108,7 @@ class ChangePasswordPageWidgets {
         passwordFieldStateProvider: passwordFieldStateProvider,
       );
     });
+
     return widget;
   }
 
@@ -118,6 +122,7 @@ class ChangePasswordPageWidgets {
         passwordFieldStateProvider: passwordFieldConfirmStateProvider,
       );
     });
+
     return widget;
   }
 

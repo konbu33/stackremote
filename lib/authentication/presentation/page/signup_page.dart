@@ -81,6 +81,7 @@ class SignUpPageWidgets {
           SignUpPageState.attentionMessageStateProvider,
       textStyle: textStyle,
     );
+
     return widget;
   }
 
@@ -94,6 +95,7 @@ class SignUpPageWidgets {
         nameFieldStateNotifierProvider: loginIdFieldStateNotifierProvider,
       );
     });
+
     return widget;
   }
 
@@ -107,6 +109,7 @@ class SignUpPageWidgets {
         passwordFieldStateProvider: passwordFieldStateProvider,
       );
     });
+
     return widget;
   }
 
