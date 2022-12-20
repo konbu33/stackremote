@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/pointer/domain/pointer_state.dart';
 
-import '../../../user/user.dart';
 import 'pointer_overlay_state.dart';
 
 class PointerWidgetLocal extends HookConsumerWidget {
@@ -49,10 +49,11 @@ class PointerWidgetLocal extends HookConsumerWidget {
               ),
 
               onChanged: (value) {
-                final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
-                userUpdateUsecase(
-                  comment: commentTextEidtingController.text,
-                );
+                final pointerStateNotifier =
+                    ref.read(pointerStateNotifierProvider.notifier);
+
+                pointerStateNotifier
+                    .updateComment(commentTextEidtingController.text);
               },
 
               // 画面タップすることで、TextFormFieldからフォーカスを外せるようにする。

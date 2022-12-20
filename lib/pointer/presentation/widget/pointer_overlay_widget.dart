@@ -16,6 +16,7 @@ class PointerOverlayWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // localのpointerState更新時に、リモートDB上へも反映するhooks
+    ref.watch(updateUserCommentProvider);
     ref.watch(updateUserIsOnLongPressingProvider);
     ref.watch(updateUserPointerPositionProvider);
 

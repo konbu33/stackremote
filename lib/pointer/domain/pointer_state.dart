@@ -71,6 +71,10 @@ class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
     );
   }
 
+  void updateComment(String comment) {
+    state = state.copyWith(comment: comment);
+  }
+
   void updateIsOnLongPressing(bool isOnLongPressing) {
     state = state.copyWith(isOnLongPressing: isOnLongPressing);
   }
@@ -114,6 +118,22 @@ class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
 final pointerStateNotifierProvider =
     NotifierProvider.autoDispose<PointerStateNotifier, PointerState>(
         () => PointerStateNotifier());
+
+// --------------------------------------------------
+//
+// updateUserCommentProvider
+//
+// --------------------------------------------------
+final updateUserCommentProvider = Provider.autoDispose((ref) async {
+  final comment =
+      ref.watch(pointerStateNotifierProvider.select((value) => value.comment));
+
+  final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
+
+  await userUpdateUsecase(
+    comment: comment,
+  );
+});
 
 // --------------------------------------------------
 //
