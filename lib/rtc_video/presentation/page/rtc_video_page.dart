@@ -115,14 +115,14 @@ class RtcVideoPageWidgets {
 
   // attentionMessageWidget
   static Widget attentionMessageWidget() {
-    //
-    final Widget widget = Consumer(builder: (context, ref, child) {
-      const style = TextStyle(color: Colors.red);
-      return Text(
-        ref.watch(RtcVideoPageState.attentionMessageStateProvider),
-        style: style,
-      );
-    });
+    const textStyle = TextStyle(color: Colors.red);
+    final Widget widget = Center(
+      child: DescriptionMessageWidget(
+        descriptionMessageStateProvider:
+            RtcVideoPageState.attentionMessageStateProvider,
+        textStyle: textStyle,
+      ),
+    );
 
     return widget;
   }

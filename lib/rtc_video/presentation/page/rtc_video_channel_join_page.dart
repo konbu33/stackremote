@@ -82,14 +82,12 @@ class RtcVideoChannelJoinPageWidgets {
 
   // attentionMessageWidget
   static Widget attentionMessageWidget() {
-    //
-    final Widget widget = Consumer(builder: (context, ref, child) {
-      const style = TextStyle(color: Colors.red);
-      return Text(
-        ref.watch(RtcVideoChannelJoinPageState.attentionMessageStateProvider),
-        style: style,
-      );
-    });
+    const textStyle = TextStyle(color: Colors.red);
+    final Widget widget = DescriptionMessageWidget(
+      descriptionMessageStateProvider:
+          RtcVideoChannelJoinPageState.attentionMessageStateProvider,
+      textStyle: textStyle,
+    );
 
     return widget;
   }

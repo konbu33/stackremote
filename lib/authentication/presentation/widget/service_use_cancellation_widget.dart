@@ -51,28 +51,48 @@ class ServiceUseCancellationWidgetParts {
 
   // attentionMessageWidget
   static Widget attentionMessageWidget() {
-    Widget widget = Consumer(builder: (context, ref, child) {
-      //
+    const textStyle = TextStyle(color: Colors.red);
 
-      TextStyle style = const TextStyle(color: Colors.red);
-
+    final Widget widget = Consumer(builder: (context, ref, child) {
       final attentionMessage =
           ref.watch(ServiceUseCancellationState.attentionMessageStateProvider);
 
       if (attentionMessage.isEmpty) return const SizedBox();
 
-      return Column(
-        children: [
-          Text(
-            attentionMessage,
-            style: style,
-          ),
-        ],
+      return DescriptionMessageWidget(
+        descriptionMessageStateProvider:
+            ServiceUseCancellationState.attentionMessageStateProvider,
+        textStyle: textStyle,
       );
     });
 
     return widget;
   }
+
+  // // attentionMessageWidget
+  // static Widget attentionMessageWidget() {
+  //   Widget widget = Consumer(builder: (context, ref, child) {
+  //     //
+
+  //     TextStyle style = const TextStyle(color: Colors.red);
+
+  //     final attentionMessage =
+  //         ref.watch(ServiceUseCancellationState.attentionMessageStateProvider);
+
+  //     if (attentionMessage.isEmpty) return const SizedBox();
+
+  //     return Column(
+  //       children: [
+  //         Text(
+  //           attentionMessage,
+  //           style: style,
+  //         ),
+  //       ],
+  //     );
+  //   });
+
+  //   return widget;
+  // }
 
   // yesButtonWidget
   static Widget yesButtonWidget() {
