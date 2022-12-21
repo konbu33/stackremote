@@ -11,37 +11,10 @@ import '../../common/common.dart';
 import '../../pointer/domain/pointer_state.dart';
 import '../../rtc_video/rtc_video.dart';
 import '../user.dart';
+import 'nick_name.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
-
-final nickNameCreatorProvider = Provider((ref) {
-  //
-  String nickNameCreator(String newNickName) {
-    String nickName = newNickName;
-
-    const lengthLimit = 8;
-    if (nickName.length > lengthLimit) {
-      nickName = nickName.substring(0, lengthLimit);
-      nickName += "...";
-    }
-
-    return nickName;
-  }
-
-  return nickNameCreator;
-});
-
-final nickNameProvider = StateProvider((ref) {
-  //
-
-  final email = ref.watch(
-      firebaseAuthUserStateNotifierProvider.select((value) => value.email));
-
-  final nickNameCreator = ref.watch(nickNameCreatorProvider);
-
-  return nickNameCreator(email.split("@")[0]);
-});
 
 // --------------------------------------------------
 //
@@ -124,7 +97,7 @@ class UserStateNotifier extends AutoDisposeNotifier<User> {
     final isOnLongPressing = ref.watch(
         pointerStateNotifierProvider.select((value) => value.isOnLongPressing));
 
-    final nickName = ref.watch(nickNameProvider);
+    final nickName = ref.watch(NickName.nickNameProvider);
 
     final pointerPosition = ref.watch(
         pointerStateNotifierProvider.select((value) => value.pointerPosition));

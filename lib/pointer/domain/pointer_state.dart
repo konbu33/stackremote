@@ -2,10 +2,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication/authentication.dart';
-import 'package:stackremote/user/user.dart';
 
+import '../../authentication/authentication.dart';
 import '../../common/common.dart';
+import '../../user/domain/nick_name.dart';
 
 part 'pointer_state.freezed.dart';
 part 'pointer_state.g.dart';
@@ -67,7 +67,7 @@ class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
     final email = ref.watch(
         firebaseAuthUserStateNotifierProvider.select((value) => value.email));
 
-    final nickName = ref.watch(nickNameProvider);
+    final nickName = ref.watch(NickName.nickNameProvider);
 
     return PointerState.create(
       email: email,
