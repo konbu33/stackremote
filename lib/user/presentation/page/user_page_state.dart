@@ -89,10 +89,10 @@ class UserPageState {
                 .text;
 
             // ユーザ情報更新
-            final userStateNotifier =
-                ref.read(userStateNotifierProvider.notifier);
-
-            userStateNotifier.setNickName(nickName);
+            ref.read(nickNameProvider.notifier).update((state) {
+              final nickNameCreator = ref.watch(nickNameCreatorProvider);
+              return nickNameCreator(nickName);
+            });
 
             // const message = "ユーザ情報を更新しました。";
             // setMessage(message);

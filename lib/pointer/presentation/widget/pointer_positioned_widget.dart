@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../common/common.dart';
 import '../../domain/pointer_state.dart';
 import 'pointer_widget_local.dart';
 import 'pointer_widget_remote.dart';
@@ -32,6 +33,7 @@ class PointerPositionedWidget extends HookConsumerWidget {
       child: Builder(
         builder: (context) {
           final pointerState = ref.watch(pointerStateNotifierProvider);
+          logger.d("xxxxx pointerState: $pointerState");
           if (email == pointerState.email) {
             return PointerWidgetLocal(
               nickName: nickName,

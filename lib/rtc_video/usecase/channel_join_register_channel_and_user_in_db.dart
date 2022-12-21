@@ -1,6 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../authentication/authentication.dart';
 import '../../channel/channel.dart';
 import '../../common/common.dart';
 import '../../user/user.dart';
@@ -24,14 +23,14 @@ final channelJoinRegisterChannelAndUserInDBUsecaseProvider =
           ref.watch(channelStateNotifierProvider.notifier);
       channelStateNotifier.setChannelState(channel);
 
-      // チャンネルのホストユーザか否か確認、ホストユーザ以外の場合
-      final channelState = ref.watch(channelStateNotifierProvider);
-      final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);
+      // // チャンネルのホストユーザか否か確認、ホストユーザ以外の場合
+      // final channelState = ref.watch(channelStateNotifierProvider);
+      // final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);
 
-      if (channelState.hostUserEmail != firebaseAuthUser.email) {
-        final userStateNotifier = ref.watch(userStateNotifierProvider.notifier);
-        userStateNotifier.updateIsHost(false);
-      }
+      // if (channelState.hostUserEmail != firebaseAuthUser.email) {
+      //   final userStateNotifier = ref.watch(userStateNotifierProvider.notifier);
+      //   userStateNotifier.updateIsHost(false);
+      // }
 
       //
     } on StackremoteException catch (e) {

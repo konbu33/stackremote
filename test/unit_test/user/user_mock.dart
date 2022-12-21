@@ -183,12 +183,4 @@ class FakeUserStateNotifier extends AutoDisposeNotifier<User>
   User build() {
     return FakeUserState();
   }
-
-  @override
-  String setNickName(String value) {
-    return "";
-  }
-
-  @override
-  void updateIsHost(bool value) {}
 }

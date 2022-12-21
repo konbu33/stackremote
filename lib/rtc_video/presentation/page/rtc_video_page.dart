@@ -107,6 +107,11 @@ class RtcVideoPageWidgets {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
 
+      // localのpointerState更新時に、リモートDB上へも反映するhooks
+      ref.watch(updateUserCommentProvider);
+      ref.watch(updateUserIsOnLongPressingProvider);
+      ref.watch(updateUserPointerPositionProvider);
+
       return const SizedBox();
     }));
 

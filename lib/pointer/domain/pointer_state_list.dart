@@ -42,9 +42,29 @@ class PointerStateList with _$PointerStateList {
 class PointerStateListStateNotifier extends Notifier<PointerStateList> {
   @override
   PointerStateList build() {
-    final pointerStateList = ref.watch(pointerStateListProvider);
+    final userStateList =
+        ref.watch(usersStateNotifierProvider.select((value) => value.users));
 
-    // logger.d("pointerStateList - $pointerStateList");
+    if (userStateList.isEmpty) {
+      return PointerStateList.create(pointerStateList: []);
+    }
+
+    final pointerStateList = userStateList.map((user) {
+      //
+
+      final pointerState = PointerState.reconstruct(
+        comment: user.comment,
+        email: user.email,
+        isOnLongPressing: user.isOnLongPressing,
+        nickName: user.nickName,
+        pointerPosition: user.pointerPosition,
+        displayPointerPosition: user.displayPointerPosition,
+      );
+
+      return pointerState;
+
+      //
+    }).toList();
 
     final newPointerStateList =
         PointerStateList.create(pointerStateList: pointerStateList);
@@ -61,32 +81,3 @@ class PointerStateListStateNotifier extends Notifier<PointerStateList> {
 final pointerStateListStateNotifierProvider =
     NotifierProvider<PointerStateListStateNotifier, PointerStateList>(
         () => PointerStateListStateNotifier());
-
-// --------------------------------------------------
-//
-// pointerStateListProvider
-//
-// --------------------------------------------------
-final pointerStateListProvider = Provider((ref) {
-  final usersState = ref.watch(usersStateNotifierProvider);
-
-  final pointerStateList = usersState.users.map((user) {
-    PointerState userToPointerState(User user) {
-      final pointerState = PointerState.reconstruct(
-        comment: user.comment,
-        email: user.email,
-        isOnLongPressing: user.isOnLongPressing,
-        nickName: user.nickName,
-        pointerPosition: user.pointerPosition,
-        displayPointerPosition: user.displayPointerPosition,
-      );
-
-      return pointerState;
-    }
-
-    final pointerStateList = userToPointerState(user);
-    return pointerStateList;
-  }).toList();
-
-  return pointerStateList;
-});

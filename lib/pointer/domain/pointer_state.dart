@@ -2,9 +2,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/authentication/authentication.dart';
+import 'package:stackremote/user/user.dart';
 
 import '../../common/common.dart';
-import '../../user/user.dart';
 
 part 'pointer_state.freezed.dart';
 part 'pointer_state.g.dart';
@@ -26,11 +27,11 @@ class PointerState with _$PointerState {
   }) = _PointerState;
 
   factory PointerState.create({
-    required String email,
+    String? email,
     String? nickName,
   }) =>
       PointerState._(
-        email: email,
+        email: email ?? "",
         nickName: nickName ?? "",
       );
 
@@ -63,11 +64,14 @@ class PointerState with _$PointerState {
 class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
   @override
   PointerState build() {
-    final userState = ref.watch(userStateNotifierProvider);
+    final email = ref.watch(
+        firebaseAuthUserStateNotifierProvider.select((value) => value.email));
+
+    final nickName = ref.watch(nickNameProvider);
 
     return PointerState.create(
-      email: userState.email,
-      nickName: userState.nickName,
+      email: email,
+      nickName: nickName,
     );
   }
 
@@ -118,55 +122,3 @@ class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
 final pointerStateNotifierProvider =
     NotifierProvider.autoDispose<PointerStateNotifier, PointerState>(
         () => PointerStateNotifier());
-
-// --------------------------------------------------
-//
-// updateUserCommentProvider
-//
-// --------------------------------------------------
-final updateUserCommentProvider = Provider.autoDispose((ref) async {
-  final comment =
-      ref.watch(pointerStateNotifierProvider.select((value) => value.comment));
-
-  final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
-
-  await userUpdateUsecase(
-    comment: comment,
-  );
-});
-
-// --------------------------------------------------
-//
-// updateUserIsOnLongPressingProvider
-//
-// --------------------------------------------------
-final updateUserIsOnLongPressingProvider = Provider.autoDispose((ref) async {
-  final isOnLongPressing = ref.watch(
-      pointerStateNotifierProvider.select((value) => value.isOnLongPressing));
-
-  final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
-
-  await userUpdateUsecase(
-    isOnLongPressing: isOnLongPressing,
-  );
-});
-
-// --------------------------------------------------
-//
-// updateUserPointerPositionProvider
-//
-// --------------------------------------------------
-final updateUserPointerPositionProvider = Provider.autoDispose((ref) async {
-  final pointerPosition = ref.watch(
-      pointerStateNotifierProvider.select((value) => value.pointerPosition));
-
-  final displayPointerPosition = ref.watch(pointerStateNotifierProvider
-      .select((value) => value.displayPointerPosition));
-
-  final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
-
-  await userUpdateUsecase(
-    pointerPosition: pointerPosition,
-    displayPointerPosition: displayPointerPosition,
-  );
-});

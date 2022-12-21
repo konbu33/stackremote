@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../domain/pointer_state.dart';
 import 'pointer_overlay_state.dart';
 import 'pointer_widget_list.dart';
 
@@ -15,11 +14,6 @@ class PointerOverlayWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // localのpointerState更新時に、リモートDB上へも反映するhooks
-    ref.watch(updateUserCommentProvider);
-    ref.watch(updateUserIsOnLongPressingProvider);
-    ref.watch(updateUserPointerPositionProvider);
-
     // onXXX の読み込み
     final onTap = ref.watch(PointerOverlayState.onTapProvider);
 

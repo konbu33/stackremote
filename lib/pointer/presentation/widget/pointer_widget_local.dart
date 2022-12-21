@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/pointer/domain/pointer_state.dart';
 
+import '../../domain/pointer_state.dart';
 import 'pointer_overlay_state.dart';
 
 class PointerWidgetLocal extends HookConsumerWidget {

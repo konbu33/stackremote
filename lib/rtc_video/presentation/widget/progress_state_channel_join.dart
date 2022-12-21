@@ -127,7 +127,7 @@ final progressStateChannelJoinProvider = Provider.autoDispose((ref) {
         ref.watch(channelJoinRegisterChannelAndUserInDBUsecaseProvider);
 
     try {
-      registerChannelAndUserInDBUsecase();
+      await registerChannelAndUserInDBUsecase();
     } on Exception catch (e, s) {
       final message = "Channel or User情報の登録に失敗しました。: $e, $s";
       setMessage(message);

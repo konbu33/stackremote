@@ -20,7 +20,7 @@ void main() {
 
     late ProviderContainer container;
     late User userState;
-    late UserStateNotifier userStateNotifier;
+    // late UserStateNotifier userStateNotifier;
 
     setUp(() {
       container = ProviderContainer(overrides: [
@@ -28,7 +28,7 @@ void main() {
             .overrideWith(() => FakeFirebaseAuthUserStateNotifier()),
       ]);
 
-      userStateNotifier = container.read(userStateNotifierProvider.notifier);
+      // userStateNotifier = container.read(userStateNotifierProvider.notifier);
 
       // given
       userState = container.read(userStateNotifierProvider);
@@ -42,6 +42,7 @@ void main() {
       expect(userState.pointerPosition, pointerPosition);
     });
 
+/*
     test("updateIsHostメソッドを実行した場合、isHost属性のみ値が変更され、それ以外の属性は値が変更されないこと", () {
       // given
 
@@ -132,5 +133,7 @@ void main() {
       expect(userState.nickName, nickName);
       expect(userState.pointerPosition, pointerPosition);
     });
+
+*/
   });
 }
