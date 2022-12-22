@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/common.dart';
+import '../channel.dart';
 
 part 'channel.freezed.dart';
 part 'channel.g.dart';
@@ -43,15 +44,25 @@ class Channel with _$Channel {
 class ChannelStateNotifier extends Notifier<Channel> {
   @override
   Channel build() {
-    return Channel.create();
+    final channelState = ref.watch(channelStateFutureProvider);
+
+    final channel = channelState.when(data: (data) {
+      return data;
+    }, error: (error, stackTrace) {
+      return Channel.create();
+    }, loading: () {
+      return Channel.create();
+    });
+
+    return channel;
   }
 
-  void setChannelState(Channel channel) {
-    state = state.copyWith(
-      createAt: channel.createAt,
-      hostUserEmail: channel.hostUserEmail,
-    );
-  }
+  // void setChannelState(Channel channel) {
+  //   state = state.copyWith(
+  //     createAt: channel.createAt,
+  //     hostUserEmail: channel.hostUserEmail,
+  //   );
+  // }
 }
 
 // --------------------------------------------------
@@ -74,3 +85,15 @@ ChannelStateNotifierProvider channelStateNotifierProviderCreator() {
 //
 // --------------------------------------------------
 final channelStateNotifierProvider = channelStateNotifierProviderCreator();
+
+// --------------------------------------------------
+//
+//  channelStateFutureProvider
+//
+// --------------------------------------------------
+final channelStateFutureProvider = FutureProvider<Channel>((ref) async {
+  final channelGetUsecase = ref.watch(channelGetUsecaseProvider);
+  final channel = await channelGetUsecase();
+
+  return channel;
+});

@@ -16,12 +16,13 @@ final channelJoinRegisterChannelAndUserInDBUsecaseProvider =
     try {
       // チャンネルのデータ取得
       final channelGetUsecase = ref.watch(channelGetUsecaseProvider);
-      final channel = await channelGetUsecase();
+      await channelGetUsecase();
+      // final channel = await channelGetUsecase();
 
-      // チャンネル情報をアプリ内の状態として保持
-      final channelStateNotifier =
-          ref.watch(channelStateNotifierProvider.notifier);
-      channelStateNotifier.setChannelState(channel);
+      // // チャンネル情報をアプリ内の状態として保持
+      // final channelStateNotifier =
+      //     ref.watch(channelStateNotifierProvider.notifier);
+      // channelStateNotifier.setChannelState(channel);
 
       // // チャンネルのホストユーザか否か確認、ホストユーザ以外の場合
       // final channelState = ref.watch(channelStateNotifierProvider);
@@ -55,16 +56,19 @@ final channelJoinRegisterChannelAndUserInDBUsecaseProvider =
       final channelSetUsecase = ref.watch(channelSetUsecaseProvider);
       await channelSetUsecase();
 
-      // チャンネルのデータ取得
-      final channelGetUsecase = ref.watch(channelGetUsecaseProvider);
-      final channel = await channelGetUsecase();
+      // // チャンネルのデータ取得
+      // final channelGetUsecase = ref.watch(channelGetUsecaseProvider);
+      // final channel = await channelGetUsecase();
 
-      // チャンネルが存在する場合
-      // チャンネル情報をアプリ内の状態として保持
-      final channelStateNotifier =
-          ref.watch(channelStateNotifierProvider.notifier);
-      channelStateNotifier.setChannelState(channel);
+      // // チャンネルが存在する場合
+      // // チャンネル情報をアプリ内の状態として保持
+      // final channelStateNotifier =
+      //     ref.watch(channelStateNotifierProvider.notifier);
+      // channelStateNotifier.setChannelState(channel);
     }
+
+    // channel情報取得し、アプリ内で保持
+    ref.invalidate(channelStateFutureProvider);
 
     // ユーザ登録
     final userSetUsecase = ref.watch(userSetUsecaseProvider);
