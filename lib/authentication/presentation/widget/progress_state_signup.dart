@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -59,7 +61,7 @@ final progressStateSignUpProvider = Provider.autoDispose((ref) {
       // awaitで待つと、下記エラーが発生するため、awaitで待たず、非同期で実行する。
       // エラー原因は、推測だが、awaitで待っている間に、authStateChangesでログイン状態の変化を検知し、redirect処理が実行され、画面遷移が発生することが関連していると考えられる。
       // E/flutter (30541): [ERROR:flutter/lib/ui/ui_dart_state.cc(198)] Unhandled Exception: Bad state: Future already completed
-      currentUserSendVerifyEmailUsecase();
+      unawaited(currentUserSendVerifyEmailUsecase());
 
       //
     } on StackremoteException catch (e) {
