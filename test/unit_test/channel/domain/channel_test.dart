@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+// import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/channel/domain/channel.dart';
 
 void main() {
@@ -98,6 +98,7 @@ void main() {
     //
   });
 
+/*
   group('ChannelStateNotifier', () {
     //
     test('setChannelStateメソッドの引数で指定された値になること', () {
@@ -130,4 +131,6 @@ void main() {
 
     //
   });
+
+*/
 }
