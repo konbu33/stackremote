@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -127,7 +129,7 @@ final progressStateChannelJoinProvider = Provider.autoDispose((ref) {
         ref.watch(channelJoinRegisterChannelAndUserInDBUsecaseProvider);
 
     try {
-      await registerChannelAndUserInDBUsecase();
+      unawaited(registerChannelAndUserInDBUsecase());
     } on Exception catch (e, s) {
       final message = "Channel or User情報の登録に失敗しました。: $e, $s";
       setMessage(message);
