@@ -56,7 +56,8 @@ class RtcVideoChannelJoinPageState {
   //  channelJoinProgressStateProviderOfProvider
   //
   // --------------------------------------------------
-  static final channelJoinProgressStateProviderOfProvider = Provider((ref) {
+  static final channelJoinProgressStateProviderOfProvider =
+      Provider.autoDispose((ref) {
     final function = ref.watch(progressStateChannelJoinProvider);
 
     return progressStateNotifierProviderCreator(function: function);
@@ -81,21 +82,21 @@ class RtcVideoChannelJoinPageState {
   static final signOutIconStateProvider = Provider((ref) {
     //
 
-    void Function() buildSignOutIconOnSubmit() {
-      return () async {
-        final signOutProgressStateNotifierProvider =
-            ref.read(signOutProgressStateNotifierProviderOfProvider);
+    AppbarActionIconOnSubmitFunction buildSignOutIconOnSubmit() {
+      return ({required BuildContext context}) => () async {
+            final signOutProgressStateNotifierProvider =
+                ref.read(signOutProgressStateNotifierProviderOfProvider);
 
-        ref
-            .read(signOutProgressStateNotifierProvider.notifier)
-            .updateProgress();
-      };
+            ref
+                .read(signOutProgressStateNotifierProvider.notifier)
+                .updateProgress();
+          };
     }
 
     final appbarActionIconState = AppbarActionIconState.create(
       onSubmitWidgetName: "サインアウト",
       icon: const Icon(Icons.logout),
-      onSubmit: buildSignOutIconOnSubmit,
+      onSubmit: buildSignOutIconOnSubmit(),
     );
 
     final signOutIconStateProvider =
@@ -129,22 +130,12 @@ class RtcVideoChannelJoinPageState {
         }
 
         return () async {
-          try {
-            // channel参加
-            final channelJoinProgressStateProvider = ref.read(
-                RtcVideoChannelJoinPageState
-                    .channelJoinProgressStateProviderOfProvider);
+          // channel参加
+          final channelJoinProgressStateProvider = ref.read(
+              RtcVideoChannelJoinPageState
+                  .channelJoinProgressStateProviderOfProvider);
 
-            ref
-                .read(channelJoinProgressStateProvider.notifier)
-                .updateProgress();
-
-            //
-          } on StackremoteException catch (e) {
-            ref
-                .read(attentionMessageStateProvider.notifier)
-                .update((state) => e.message);
-          }
+          ref.read(channelJoinProgressStateProvider.notifier).updateProgress();
         };
       }
 

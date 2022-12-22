@@ -71,6 +71,9 @@ final rtcVideoEngineAgoraCreatorProvider = Provider((ref) {
     final handler = RtcEngineEventHandler(
       // チャンネル参加が成功した場合
       joinChannelSuccess: (String channel, int uid, int elapsed) {
+        logger.d(
+            "agora joinChannelSuccess: channel: $channel, uid: $uid, elapsed: $elapsed");
+
         ref
             .watch(RtcVideoState.isJoinedChannelProvider.notifier)
             .update((state) => true);
@@ -78,6 +81,8 @@ final rtcVideoEngineAgoraCreatorProvider = Provider((ref) {
 
       // 他ユーザがチャンネル参加してきた場合
       userJoined: (int uid, int elapsed) {
+        logger.d("agora userJoined: uid: $uid, elapsed: $elapsed");
+
         ref
             .watch(RtcVideoState.remoteUidProvider.notifier)
             .update((state) => uid);
@@ -85,6 +90,8 @@ final rtcVideoEngineAgoraCreatorProvider = Provider((ref) {
 
       // チャンネル参加がオフラインになった場合
       userOffline: (int uid, UserOfflineReason reason) {
+        logger.d("agora userOffline: uid: $uid, reason: $reason");
+
         ref
             .watch(RtcVideoState.remoteUidProvider.notifier)
             .update((state) => 0);
@@ -92,9 +99,25 @@ final rtcVideoEngineAgoraCreatorProvider = Provider((ref) {
 
       // チャンネル離脱した場合
       leaveChannel: (RtcStats rtcStats) {
+        logger.d("agora leaveChannel: rtcStats: $rtcStats");
+
         ref
             .watch(RtcVideoState.isJoinedChannelProvider.notifier)
             .update((state) => false);
+      },
+
+      rejoinChannelSuccess: (String channel, int uid, int elapsed) {
+        logger.d(
+            "agora rejoinChannelSuccess: channel: $channel, uid: $uid, elapsed: $elapsed");
+      },
+
+      connectionLost: () {
+        logger.d("agora connectionLost: ");
+      },
+
+      error: (ErrorCode err) {
+        logger
+            .d("agora error: index: ${err.index}, name: ${err.name},err: $err");
       },
     );
 

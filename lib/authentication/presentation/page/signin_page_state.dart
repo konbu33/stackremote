@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
@@ -122,19 +123,25 @@ class SignInPageState {
   static final goToSignUpIconStateProvider = Provider((ref) {
     //
 
-    void Function() buildGoToSignUpIconOnSubmit() {
-      return () {
-        // ref.read(isSignUpPagePushProvider.notifier).update((state) => true);
-        ref
-            .read(authenticationRoutingCurrentPathProvider.notifier)
-            .update((state) => AuthenticationRoutingPath.signInSignUp);
-      };
+    AppbarActionIconOnSubmitFunction buildGoToSignUpIconOnSubmit() {
+      return ({required BuildContext context}) => () {
+            // ref
+            //     .read(authenticationRoutingCurrentPathProvider.notifier)
+            //     .update((state) => AuthenticationRoutingPath.signInSignUp);
+
+            // improve:
+            // 状態変化させてredirectで画面遷移する場合、TextFormFieldにFocusがあたった状態で画面遷移すると、
+            // 下記エラーが発生するため、回避するために、一時的にcontext.goを利用する。
+            // RenderBox was not laid out: RenderTransform#97b19 NEEDS-LAYOUT NEEDS-PAINT
+
+            context.go(AuthenticationRoutingPath.signInSignUp.path);
+          };
     }
 
     final appbarActionIconState = AppbarActionIconState.create(
       onSubmitWidgetName: "サービス利用登録",
       icon: const Icon(Icons.person_add),
-      onSubmit: buildGoToSignUpIconOnSubmit,
+      onSubmit: buildGoToSignUpIconOnSubmit(),
     );
 
     final appbarActionIconStateProvider =

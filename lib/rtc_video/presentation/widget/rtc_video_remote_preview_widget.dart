@@ -1,20 +1,22 @@
-// import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_remote_view.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class RtcVideoRemotePreviewWidget extends StatelessWidget {
+import '../../../channel/channel.dart';
+
+class RtcVideoRemotePreviewWidget extends HookConsumerWidget {
   const RtcVideoRemotePreviewWidget({
-    Key? key,
-    required this.channelName,
+    super.key,
     required this.remoteUid,
-  }) : super(key: key);
+  });
 
-  final String channelName;
   final int remoteUid;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final channelName = ref.watch(channelNameProvider);
+
     const notExistRemoteUserWidget = Text(
       'Please wait remote user join',
       textAlign: TextAlign.center,

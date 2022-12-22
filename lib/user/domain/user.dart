@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../authentication/authentication.dart';
+import '../../channel/channel.dart';
 import '../../common/common.dart';
+import '../../pointer/domain/pointer_state.dart';
+import '../../rtc_video/rtc_video.dart';
+import '../user.dart';
+import 'nick_name.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
@@ -28,15 +33,18 @@ class User with _$User {
     @Default("") String nickName,
     @Default(Offset(0, 0)) @OffsetConverter() Offset pointerPosition,
     @Default(Offset(0, 0)) @OffsetConverter() Offset displayPointerPosition,
+    required int rtcVideoUid,
   }) = _User;
 
   factory User.create({
     required String email,
     String? nickName,
+    int? rtcVideoUid,
   }) =>
       User._(
         email: email,
         nickName: nickName ?? "",
+        rtcVideoUid: rtcVideoUid ?? 0,
       );
 
   factory User.reconstruct({
@@ -49,6 +57,7 @@ class User with _$User {
     String? nickName,
     Offset? pointerPosition,
     Offset? displayPointerPosition,
+    int? rtcVideoUid,
   }) =>
       User._(
         comment: comment ?? "",
@@ -60,6 +69,7 @@ class User with _$User {
         nickName: nickName ?? "",
         pointerPosition: pointerPosition ?? const Offset(0, 0),
         displayPointerPosition: displayPointerPosition ?? const Offset(0, 0),
+        rtcVideoUid: rtcVideoUid ?? 0,
       );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -70,49 +80,46 @@ class User with _$User {
 //  UserStateNotifier
 //
 // --------------------------------------------------
-class UserStateNotifier extends Notifier<User> {
+class UserStateNotifier extends AutoDisposeNotifier<User> {
   @override
   User build() {
+    final comment = ref
+        .watch(pointerStateNotifierProvider.select((value) => value.comment));
+
     final email = ref.watch(
         firebaseAuthUserStateNotifierProvider.select((value) => value.email));
 
-    String initialSetNickName(String newNickName) {
-      String nickName = newNickName;
+    final hostUserEmail = ref.watch(
+        channelStateNotifierProvider.select((value) => value.hostUserEmail));
 
-      const lengthLimit = 8;
-      if (nickName.length > lengthLimit) {
-        nickName = nickName.substring(0, lengthLimit);
-        nickName += "...";
-      }
+    final isHost = email == hostUserEmail;
 
-      return nickName;
-    }
+    final isOnLongPressing = ref.watch(
+        pointerStateNotifierProvider.select((value) => value.isOnLongPressing));
 
-    final nickName = initialSetNickName(email.split("@")[0]);
+    final nickName = ref.watch(NickName.nickNameProvider);
 
-    final user = User.create(email: email, nickName: nickName);
+    final pointerPosition = ref.watch(
+        pointerStateNotifierProvider.select((value) => value.pointerPosition));
 
-    // build関数で初期化処理を行いたい場合、return + stateへの代入が必要な様子。
-    // build関数で初期化処理を行いたいケースは無いかもしれない。
-    state = user;
+    final displayPointerPosition = ref.watch(pointerStateNotifierProvider
+        .select((value) => value.displayPointerPosition));
 
+    final rtcVideoUid = RtcVideoState.localUid;
+
+    final user = User.reconstruct(
+      comment: comment,
+      email: email,
+      isHost: isHost,
+      isOnLongPressing: isOnLongPressing,
+      nickName: nickName,
+      pointerPosition: pointerPosition,
+      displayPointerPosition: displayPointerPosition,
+      rtcVideoUid: rtcVideoUid,
+    );
+
+    logger.d("userState: $user");
     return user;
-  }
-
-  void setNickName(String newNickName) {
-    String nickName = newNickName;
-
-    const lengthLimit = 8;
-    if (nickName.length > lengthLimit) {
-      nickName = nickName.substring(0, lengthLimit);
-      nickName += "...";
-    }
-
-    state = state.copyWith(nickName: nickName);
-  }
-
-  void updateIsHost(bool isHost) {
-    state = state.copyWith(isHost: isHost);
   }
 }
 
@@ -122,4 +129,57 @@ class UserStateNotifier extends Notifier<User> {
 //
 // --------------------------------------------------
 final userStateNotifierProvider =
-    NotifierProvider<UserStateNotifier, User>(() => UserStateNotifier());
+    AutoDisposeNotifierProvider<UserStateNotifier, User>(
+        () => UserStateNotifier());
+
+// --------------------------------------------------
+//
+// updateUserCommentProvider
+//
+// --------------------------------------------------
+final updateUserCommentProvider = Provider.autoDispose((ref) async {
+  final comment =
+      ref.watch(userStateNotifierProvider.select((value) => value.comment));
+
+  final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
+
+  await userUpdateUsecase(
+    comment: comment,
+  );
+});
+
+// --------------------------------------------------
+//
+// updateUserIsOnLongPressingProvider
+//
+// --------------------------------------------------
+final updateUserIsOnLongPressingProvider = Provider.autoDispose((ref) async {
+  final isOnLongPressing = ref.watch(
+      userStateNotifierProvider.select((value) => value.isOnLongPressing));
+
+  final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
+
+  await userUpdateUsecase(
+    isOnLongPressing: isOnLongPressing,
+  );
+});
+
+// --------------------------------------------------
+//
+// updateUserPointerPositionProvider
+//
+// --------------------------------------------------
+final updateUserPointerPositionProvider = Provider.autoDispose((ref) async {
+  final pointerPosition = ref.watch(
+      userStateNotifierProvider.select((value) => value.pointerPosition));
+
+  final displayPointerPosition = ref.watch(userStateNotifierProvider
+      .select((value) => value.displayPointerPosition));
+
+  final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
+
+  await userUpdateUsecase(
+    pointerPosition: pointerPosition,
+    displayPointerPosition: displayPointerPosition,
+  );
+});

@@ -7,7 +7,7 @@ git pull --rebase origin dev
 git br -vv
 
 # get current branch name
-currentBranch=$(git br | tail -n1 | sed 's/* //g')
+currentBranch=$(git br | grep -E "^\*" | sed 's/* //g')
 echo "currentBranch : $currentBranch"
 
 # rebase from dev branch

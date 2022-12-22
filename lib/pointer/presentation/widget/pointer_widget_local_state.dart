@@ -9,8 +9,12 @@ import '../../domain/pointer_state.dart';
 //
 // --------------------------------------------------
 class PointerWidgetLocalState {
-  final commentTextEidtingController = Provider.autoDispose((ref) {
-    return TextEditingController();
+  final commentTextEidtingController = StateProvider.autoDispose((ref) {
+    // stateの初期化時のみ、commentを引数に指定したいため、watch指定せずに、read指定している。
+    final comment =
+        ref.read(pointerStateNotifierProvider.select((value) => value.comment));
+
+    return TextEditingController(text: comment);
   });
 
   final focusNode = FocusNode();

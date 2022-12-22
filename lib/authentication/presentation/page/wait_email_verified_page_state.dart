@@ -51,21 +51,21 @@ class WaitEmailVerifiedPageState {
   static final signOutIconStateProvider = Provider((ref) {
     //
 
-    void Function() buildSignOutIconOnSubmit() {
-      return () async {
-        final signOutProgressStateNotifierProvider =
-            ref.read(signOutProgressStateNotifierProviderOfProvider);
+    AppbarActionIconOnSubmitFunction buildSignOutIconOnSubmit() {
+      return ({required BuildContext context}) => () async {
+            final signOutProgressStateNotifierProvider =
+                ref.read(signOutProgressStateNotifierProviderOfProvider);
 
-        ref
-            .read(signOutProgressStateNotifierProvider.notifier)
-            .updateProgress();
-      };
+            ref
+                .read(signOutProgressStateNotifierProvider.notifier)
+                .updateProgress();
+          };
     }
 
     final appbarActionIconState = AppbarActionIconState.create(
       onSubmitWidgetName: "サインアウト",
       icon: const Icon(Icons.logout),
-      onSubmit: buildSignOutIconOnSubmit,
+      onSubmit: buildSignOutIconOnSubmit(),
     );
 
     final signOutIconStateProvider =

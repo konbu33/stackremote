@@ -23,7 +23,7 @@ class RtcVideoChannelJoinPage extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text(RtcVideoChannelJoinPageState.pageTitle),
         actions: [
-          RtcVideoChannelJoinPageWidgets.signOutIconButton(),
+          RtcVideoChannelJoinPageWidgets.signOutIconButtonWidget(),
         ],
       ),
       body: ScaffoldBodyBaseLayoutWidget(
@@ -43,7 +43,7 @@ class RtcVideoChannelJoinPage extends HookConsumerWidget {
                 const SizedBox(height: 40),
                 RtcVideoChannelJoinPageWidgets.channelNameFieldWidget(),
                 const SizedBox(height: 40),
-                RtcVideoChannelJoinPageWidgets.channelJoinSubmitWidget(),
+                RtcVideoChannelJoinPageWidgets.channelJoinOnSubmitWidget(),
               ],
             ),
           ),
@@ -54,7 +54,7 @@ class RtcVideoChannelJoinPage extends HookConsumerWidget {
 }
 
 class RtcVideoChannelJoinPageWidgets {
-  // menu
+  // menuWidget
   static Widget menuWidget() {
     final Widget widget = Consumer(
       builder: (context, ref, child) {
@@ -65,8 +65,8 @@ class RtcVideoChannelJoinPageWidgets {
     return widget;
   }
 
-  // signOutIconButton
-  static Widget signOutIconButton() {
+  // signOutIconButtonWidget
+  static Widget signOutIconButtonWidget() {
     //
     final Widget widget = Consumer(
       builder: ((context, ref, child) {
@@ -80,16 +80,14 @@ class RtcVideoChannelJoinPageWidgets {
     return widget;
   }
 
-  // Message Widget
+  // attentionMessageWidget
   static Widget attentionMessageWidget() {
-    //
-    final Widget widget = Consumer(builder: (context, ref, child) {
-      const style = TextStyle(color: Colors.red);
-      return Text(
-        ref.watch(RtcVideoChannelJoinPageState.attentionMessageStateProvider),
-        style: style,
-      );
-    });
+    const textStyle = TextStyle(color: Colors.red);
+    final Widget widget = DescriptionMessageWidget(
+      descriptionMessageStateProvider:
+          RtcVideoChannelJoinPageState.attentionMessageStateProvider,
+      textStyle: textStyle,
+    );
 
     return widget;
   }
@@ -110,8 +108,8 @@ class RtcVideoChannelJoinPageWidgets {
     return widget;
   }
 
-  // Login Submit Widget
-  static Widget channelJoinSubmitWidget() {
+  // channelJoinOnSubmitWidget
+  static Widget channelJoinOnSubmitWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       return OnSubmitButtonWidget(
         onSubmitButtonStateNotifierProvider: ref.watch(
@@ -124,7 +122,7 @@ class RtcVideoChannelJoinPageWidgets {
     return widget;
   }
 
-  //
+  // channelJoinProgressWidget
   static Widget channelJoinProgressWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       final channelJoinProgressStateProvider = ref.watch(
@@ -139,7 +137,7 @@ class RtcVideoChannelJoinPageWidgets {
     return widget;
   }
 
-  //
+  // signOutProgressWidget
   static Widget signOutProgressWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       final signOutProgressStateNotifierProvider = ref.watch(

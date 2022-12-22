@@ -7,11 +7,9 @@ import '../../../common/common.dart';
 import '../../../pointer/pointer.dart';
 
 import '../../../user/user.dart';
-import '../../domain/rtc_video_state.dart';
 
-import '../widget/rtc_video_local_preview_widget.dart';
-import '../widget/rtc_video_remote_preview_widget.dart';
-
+import '../widget/video_main_widget.dart';
+import '../widget/video_sub_widget.dart';
 import 'rtc_video_page_state.dart';
 
 class RtcVideoPage extends HookConsumerWidget {
@@ -37,42 +35,18 @@ class RtcVideoPage extends HookConsumerWidget {
           child: Text(channelName),
         ),
         actions: [
-          RtcVideoPageWidgets.buildLeaveChannelIconWidget(),
+          RtcVideoPageWidgets.channelLeaveIconWidget(),
         ],
       ),
       body: PointerOverlayWidget(
-        child: Flexible(
-          child: Stack(
-            children: [
-              Center(
-                child: ref.watch(RtcVideoPageState.viewSwitchProvider)
-                    ? RtcVideoPageWidgets.buildRemotePreviewWidget()
-                    : RtcVideoPageWidgets.buildLocalPreviewWidget(),
-              ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  color: Colors.blue,
-                  child: GestureDetector(
-                    onTap: () {
-                      ref
-                          .read(RtcVideoPageState.viewSwitchProvider.notifier)
-                          .update((state) => !state);
-                    },
-                    child: Center(
-                      child: ref.watch(RtcVideoPageState.viewSwitchProvider)
-                          ? RtcVideoPageWidgets.buildLocalPreviewWidget()
-                          : RtcVideoPageWidgets.buildRemotePreviewWidget(),
-                    ),
-                  ),
-                ),
-              ),
-              RtcVideoPageWidgets.buildDisplayState(),
-              RtcVideoPageWidgets.channelLeaveProgressWidget(),
-            ],
-          ),
+        child: Stack(
+          children: [
+            RtcVideoPageWidgets.videoMainWidget(),
+            RtcVideoPageWidgets.videoSubWidget(),
+            RtcVideoPageWidgets.getUserStateWidget(),
+            RtcVideoPageWidgets.attentionMessageWidget(),
+            RtcVideoPageWidgets.channelLeaveProgressWidget(),
+          ],
         ),
       ),
     );
@@ -88,8 +62,8 @@ class RtcVideoPage extends HookConsumerWidget {
 // ---------------------------------------------------
 
 class RtcVideoPageWidgets {
-  // buildLeaveChannelIconWidget
-  static Widget buildLeaveChannelIconWidget() {
+  // channelLeaveIconWidget
+  static Widget channelLeaveIconWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       return AppbarAcitonIconWidget(
         appbarActionIconStateNotifierProvider: ref.watch(
@@ -100,45 +74,42 @@ class RtcVideoPageWidgets {
     return widget;
   }
 
-  // Local Preview Widget
-  static Widget buildLocalPreviewWidget() {
-    final Widget widget = Consumer(builder: ((context, ref, child) {
-      return const RtcVideoLocalPreviewWidget();
-    }));
-    return widget;
-  }
-
-  // Remote Preview Widget
-  static Widget buildRemotePreviewWidget() {
-    final Widget widget = Consumer(builder: ((context, ref, child) {
-      final channelName = ref.watch(channelNameProvider);
-      final remoteUid = ref.watch(RtcVideoState.remoteUidProvider);
-
-      return RtcVideoRemotePreviewWidget(
-        channelName: channelName,
-        remoteUid: remoteUid,
-      );
-    }));
+  // videoMainWidget
+  static Widget videoMainWidget() {
+    const Widget widget = VideoMainWidget();
 
     return widget;
   }
 
-  // Display State Widget
-  static Widget buildDisplayState() {
+  // videoSubWidget
+  static Widget videoSubWidget() {
+    const Widget widget = VideoSubWidget();
+
+    return widget;
+  }
+
+  // getUserStateWidget
+  static Widget getUserStateWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      final channelState = ref.watch(channelStateNotifierProvider);
-      logger.d("videochannel: $channelState");
+      // final channelState = ref.watch(channelStateNotifierProvider);
+      // logger.d("videochannel: $channelState");
 
-      final userState = ref.watch(userStateNotifierProvider);
-      logger.d("videouser: $userState");
+      // final userState = ref.watch(userStateNotifierProvider);
+      // logger.d("videouser: $userState");
 
+      // users情報取得に失敗した場合、通知する。
       final usersState = ref.watch(usersStateNotifierProvider);
-      logger.d("videousers: $usersState");
+      // logger.d("videousers: $usersState");
 
       if (usersState.isGetDataError) {
         const snackBar = SnackBar(content: Text("ユーザ情報の取得に失敗しました。"));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
+
+      // localのpointerState更新時に、リモートDB上へも反映するhooks
+      ref.watch(updateUserCommentProvider);
+      ref.watch(updateUserIsOnLongPressingProvider);
+      ref.watch(updateUserPointerPositionProvider);
 
       return const SizedBox();
     }));
@@ -146,6 +117,21 @@ class RtcVideoPageWidgets {
     return widget;
   }
 
+  // attentionMessageWidget
+  static Widget attentionMessageWidget() {
+    const textStyle = TextStyle(color: Colors.red);
+    final Widget widget = Center(
+      child: DescriptionMessageWidget(
+        descriptionMessageStateProvider:
+            RtcVideoPageState.attentionMessageStateProvider,
+        textStyle: textStyle,
+      ),
+    );
+
+    return widget;
+  }
+
+  // channelLeaveProgressWidget
   static Widget channelLeaveProgressWidget() {
     final Widget widget = Consumer(builder: (context, ref, child) {
       final channelLeaveProgressStateNotifierProvider = ref.watch(

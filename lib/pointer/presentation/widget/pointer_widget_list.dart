@@ -11,10 +11,9 @@ class PointerWidgetList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
       //
-      final pointerStateListState =
-          ref.watch(pointerStateListStateNotifierProvider);
 
-      final pointerStateList = pointerStateListState.pointerStateList;
+      final pointerStateList = ref.watch(pointerStateListStateNotifierProvider
+          .select((value) => value.pointerStateList));
 
       if (pointerStateList.isEmpty) {
         return Stack(children: const []);
@@ -23,26 +22,24 @@ class PointerWidgetList extends StatelessWidget {
       List<Widget?> pointerWidgetListNullable =
           pointerStateList.map((pointerState) {
         //
-
         if (pointerState.isOnLongPressing) {
-          final widget = PointerPositionedWidget(
+          final pointerPositionedWidget = PointerPositionedWidget(
             comment: pointerState.comment,
             dx: pointerState.displayPointerPosition.dx,
             dy: pointerState.displayPointerPosition.dy,
             email: pointerState.email,
             nickName: pointerState.nickName,
           );
-          return widget;
+
+          return pointerPositionedWidget;
         }
 
         //
         return null;
-
-        //
       }).toList();
 
       // nullを除去
-      final List<Widget> pointerWidgetList =
+      final pointerWidgetList =
           pointerWidgetListNullable.whereType<Widget>().toList();
 
       return Stack(children: pointerWidgetList);

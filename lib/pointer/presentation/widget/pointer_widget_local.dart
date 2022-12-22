@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../user/user.dart';
+import '../../domain/pointer_state.dart';
 import 'pointer_overlay_state.dart';
 
 class PointerWidgetLocal extends HookConsumerWidget {
@@ -32,7 +31,17 @@ class PointerWidgetLocal extends HookConsumerWidget {
         // Pointerを左上に固定
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(CupertinoIcons.arrow_up_left),
+          Transform.translate(
+            offset: const Offset(11, -8),
+            child: Transform.rotate(
+              angle: -0.9,
+              child: Icon(
+                Icons.navigation,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+          // const Icon(CupertinoIcons.arrow_up_left),
           SizedBox(
             width: 100,
             child: TextFormField(
@@ -49,10 +58,11 @@ class PointerWidgetLocal extends HookConsumerWidget {
               ),
 
               onChanged: (value) {
-                final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
-                userUpdateUsecase(
-                  comment: commentTextEidtingController.text,
-                );
+                final pointerStateNotifier =
+                    ref.read(pointerStateNotifierProvider.notifier);
+
+                pointerStateNotifier
+                    .updateComment(commentTextEidtingController.text);
               },
 
               // 画面タップすることで、TextFormFieldからフォーカスを外せるようにする。

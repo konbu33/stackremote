@@ -30,12 +30,12 @@ class MenuWidget extends StatelessWidget {
                   child: ListView(
                     children: [
                       const DrawerHeader(child: Text("メニュー")),
-                      MenuWidgetParts.buildGoToChangePassword(),
-                      MenuWidgetParts.buildGoToUser(),
+                      MenuWidgetParts.goToChangePasswordPageWidget(),
+                      MenuWidgetParts.goToUserPageWidget(),
                     ],
                   ),
                 ),
-                MenuWidgetParts.buildGoToServiceUseCancellation(),
+                MenuWidgetParts.goToServiceUseCancellationWidget(),
                 const SizedBox(height: 10),
               ],
             ),
@@ -47,8 +47,8 @@ class MenuWidget extends StatelessWidget {
 }
 
 class MenuWidgetParts {
-  //
-  static Widget buildGoToChangePassword() {
+  // goToChangePasswordPageWidget
+  static Widget goToChangePasswordPageWidget() {
     Widget widget = Consumer(
       builder: (context, ref, child) {
         return ListTile(
@@ -70,8 +70,8 @@ class MenuWidgetParts {
     return widget;
   }
 
-  //
-  static Widget buildGoToUser() {
+  // goToUserPageWidget
+  static Widget goToUserPageWidget() {
     Widget widget = Consumer(
       builder: (context, ref, child) {
         return ListTile(
@@ -92,8 +92,8 @@ class MenuWidgetParts {
     return widget;
   }
 
-  //
-  static Widget buildGoToServiceUseCancellation() {
+  // goToServiceUseCancellationWidget
+  static Widget goToServiceUseCancellationWidget() {
     Widget widget = Consumer(
       builder: (context, ref, child) {
         return ListTile(

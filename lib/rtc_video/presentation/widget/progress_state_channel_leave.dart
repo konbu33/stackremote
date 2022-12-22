@@ -1,8 +1,10 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
+import '../../../pointer/pointer.dart';
 import '../../usecase/channel_leave.dart';
 import '../../usecase/channel_leave_clear_user_in_db.dart';
-import '../page/rtc_video_channel_join_page_state.dart';
+import '../page/rtc_video_page_state.dart';
 
 // --------------------------------------------------
 //
@@ -13,11 +15,11 @@ final progressStateChannelLeaveProvider = Provider((ref) {
   //
 
   Future<void> channelLeave() async {
+    final dateTimeNow = DateFormat('yyyy/MM/dd HH:mm').format(DateTime.now());
     void setMessage(String message) {
       ref
-          .read(RtcVideoChannelJoinPageState
-              .attentionMessageStateProvider.notifier)
-          .update((state) => "${DateTime.now()}: $message");
+          .read(RtcVideoPageState.attentionMessageStateProvider.notifier)
+          .update((state) => "$dateTimeNow: $message");
     }
 
     const message = "チャンネル離脱待機中";
@@ -59,6 +61,13 @@ final progressStateChannelLeaveProvider = Provider((ref) {
 
       return;
     }
+
+    // --------------------------------------------------
+    //
+    // pointerState初期化
+    //
+    // --------------------------------------------------
+    ref.invalidate(pointerStateNotifierProvider);
 
     //
   }

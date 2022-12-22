@@ -19,14 +19,16 @@ class DescriptionMessageWidget extends StatelessWidget {
 
       if (descriptionMessageState.isEmpty) return const SizedBox();
 
-      return Column(
-        children: [
-          const SizedBox(height: 20),
-          Text(
-            descriptionMessageState,
-            style: textStyle,
-          ),
-        ],
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              descriptionMessageState,
+              style: textStyle,
+            ),
+          ],
+        ),
       );
     });
   }

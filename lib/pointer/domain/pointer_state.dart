@@ -3,8 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../authentication/authentication.dart';
 import '../../common/common.dart';
-import '../../user/user.dart';
+import '../../user/domain/nick_name.dart';
 
 part 'pointer_state.freezed.dart';
 part 'pointer_state.g.dart';
@@ -26,11 +27,11 @@ class PointerState with _$PointerState {
   }) = _PointerState;
 
   factory PointerState.create({
-    required String email,
+    String? email,
     String? nickName,
   }) =>
       PointerState._(
-        email: email,
+        email: email ?? "",
         nickName: nickName ?? "",
       );
 
@@ -63,12 +64,22 @@ class PointerState with _$PointerState {
 class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
   @override
   PointerState build() {
-    final userState = ref.watch(userStateNotifierProvider);
+    final email = ref.watch(
+        firebaseAuthUserStateNotifierProvider.select((value) => value.email));
 
-    return PointerState.create(
-      email: userState.email,
-      nickName: userState.nickName,
+    final nickName = ref.watch(NickName.nickNameProvider);
+
+    final pointerState = PointerState.create(
+      email: email,
+      nickName: nickName,
     );
+
+    logger.d("pointerState: $pointerState");
+    return pointerState;
+  }
+
+  void updateComment(String comment) {
+    state = state.copyWith(comment: comment);
   }
 
   void updateIsOnLongPressing(bool isOnLongPressing) {
@@ -114,39 +125,3 @@ class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
 final pointerStateNotifierProvider =
     NotifierProvider.autoDispose<PointerStateNotifier, PointerState>(
         () => PointerStateNotifier());
-
-// --------------------------------------------------
-//
-// updateUserIsOnLongPressingProvider
-//
-// --------------------------------------------------
-final updateUserIsOnLongPressingProvider = Provider.autoDispose((ref) async {
-  final isOnLongPressing = ref.watch(
-      pointerStateNotifierProvider.select((value) => value.isOnLongPressing));
-
-  final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
-
-  await userUpdateUsecase(
-    isOnLongPressing: isOnLongPressing,
-  );
-});
-
-// --------------------------------------------------
-//
-// updateUserPointerPositionProvider
-//
-// --------------------------------------------------
-final updateUserPointerPositionProvider = Provider.autoDispose((ref) async {
-  final pointerPosition = ref.watch(
-      pointerStateNotifierProvider.select((value) => value.pointerPosition));
-
-  final displayPointerPosition = ref.watch(pointerStateNotifierProvider
-      .select((value) => value.displayPointerPosition));
-
-  final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
-
-  await userUpdateUsecase(
-    pointerPosition: pointerPosition,
-    displayPointerPosition: displayPointerPosition,
-  );
-});

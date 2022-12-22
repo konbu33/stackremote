@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -19,7 +18,16 @@ class PointerWidgetRemote extends HookConsumerWidget {
         // Pointerを左上に固定
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(CupertinoIcons.arrow_up_left),
+          Transform.translate(
+            offset: const Offset(11, -8),
+            child: Transform.rotate(
+              angle: -0.9,
+              child: const Icon(
+                Icons.navigation,
+                color: Colors.black,
+              ),
+            ),
+          ),
           SizedBox(
             width: 100,
             child: TextFormField(

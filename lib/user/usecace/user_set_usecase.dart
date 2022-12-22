@@ -4,7 +4,7 @@ import '../domain/user.dart';
 import '../domain/user_repository.dart';
 import '../infrastructure/user_repository_firestore.dart';
 
-final userSetUsecaseProvider = Provider((ref) {
+final userSetUsecaseProvider = Provider.autoDispose((ref) {
   final UserRepository userRepository =
       ref.watch(userRepositoryFirebaseProvider);
 

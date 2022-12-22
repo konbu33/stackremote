@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/menu/menu.dart';
 
 import '../../../common/common.dart';
+import '../../../menu/menu.dart';
 import '../../domain/user.dart';
 import 'user_page_state.dart';
 
@@ -18,7 +18,7 @@ class UserPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: UserDetailPageWidgets.pageTitleWidget(),
+        title: UserPageWidgets.pageTitleWidget(),
         automaticallyImplyLeading: false,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -36,13 +36,13 @@ class UserPage extends HookConsumerWidget {
             key: GlobalKey<FormState>(),
             child: Column(
               children: [
-                UserDetailPageWidgets.currentNickNameWidget(),
+                UserPageWidgets.currentNickNameWidget(),
                 const SizedBox(height: 40),
-                UserDetailPageWidgets.attentionMessageWidget(),
+                UserPageWidgets.attentionMessageWidget(),
                 const SizedBox(height: 40),
-                UserDetailPageWidgets.userNameField(),
+                UserPageWidgets.userNameFieldWidget(),
                 const SizedBox(height: 40),
-                UserDetailPageWidgets.userUpdateButton(),
+                UserPageWidgets.userUpdateButtonWidget(),
               ],
             ),
           ),
@@ -52,8 +52,8 @@ class UserPage extends HookConsumerWidget {
   }
 }
 
-class UserDetailPageWidgets {
-  // Page pageTitleWidget
+class UserPageWidgets {
+  // pageTitleWidget
   static Widget pageTitleWidget() {
     //
     const Widget widget = Text(UserPageState.pageTitle);
@@ -69,10 +69,11 @@ class UserDetailPageWidgets {
         return Text("現在のニックネーム：${userState.nickName}");
       },
     );
+
     return widget;
   }
 
-// attentionMessageWidget
+  // attentionMessageWidget
   static Widget attentionMessageWidget() {
     const textStyle = TextStyle(color: Colors.red);
     final Widget widget = DescriptionMessageWidget(
@@ -85,7 +86,7 @@ class UserDetailPageWidgets {
   }
 
   // userNameField
-  static Widget userNameField() {
+  static Widget userNameFieldWidget() {
     //
     final Widget widget = Consumer(builder: (context, ref, child) {
       final nickNameFieldStateNotifierProvider =
@@ -100,7 +101,7 @@ class UserDetailPageWidgets {
   }
 
   // userUpdateButton
-  static Widget userUpdateButton() {
+  static Widget userUpdateButtonWidget() {
     //
     final Widget widget = Consumer(
       builder: (context, ref, child) {

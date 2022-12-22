@@ -1,13 +1,11 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../common/common.dart';
-import '../../domain/user.dart';
+import '../../domain/nick_name.dart';
 
 class UserPageState {
   static const pageTitle = "ユーザ情報";
-
-  // static final nickNameFieldStateNotifierProvider =
-  //     nickNameFieldStateNotifierProviderCreator();
 
   static final nickNameFieldStateNotifierProviderOfProvider =
       StateProvider.autoDispose((ref) {
@@ -61,10 +59,13 @@ class UserPageState {
 
       return () async {
         void updateUser() {
+          final dateTimeNow =
+              DateFormat('yyyy/MM/dd HH:mm').format(DateTime.now());
+
           void setMessage(String message) {
             ref
                 .read(UserPageState.attentionMessageStateProvider.notifier)
-                .update((state) => "${DateTime.now()}: $message");
+                .update((state) => "$dateTimeNow: $message");
           }
 
           // const message = "ユーザ情報更新中";
@@ -85,13 +86,12 @@ class UserPageState {
                 .text;
 
             // ユーザ情報更新
-            final userStateNotifier =
-                ref.read(userStateNotifierProvider.notifier);
+            ref.read(NickName.nickNameProvider.notifier).update((state) {
+              final nickNameCreator =
+                  ref.watch(NickName.nickNameCreatorProvider);
 
-            userStateNotifier.setNickName(nickName);
-
-            // const message = "ユーザ情報を更新しました。";
-            // setMessage(message);
+              return nickNameCreator(nickName);
+            });
 
             //
           } on StackremoteException catch (e) {

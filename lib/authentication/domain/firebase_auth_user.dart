@@ -2,6 +2,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../common/common.dart';
+import '../authentication.dart';
+
 part 'firebase_auth_user.freezed.dart';
 
 // --------------------------------------------------
@@ -47,7 +50,20 @@ class FirebaseAuthUser with _$FirebaseAuthUser {
 class FirebaseAuthUserStateNotifier extends Notifier<FirebaseAuthUser> {
   @override
   FirebaseAuthUser build() {
-    return FirebaseAuthUser.create(email: "");
+    // 認証状況の変移をwatch開始
+    final firebaseAuthUserSteram = ref.watch(firebaseAuthUserSteramProvider);
+
+    final firebaseAuthUser = firebaseAuthUserSteram.when(data: (data) {
+      return data;
+    }, error: (error, stackTrace) {
+      return FirebaseAuthUser.create(email: "");
+    }, loading: () {
+      return FirebaseAuthUser.create(email: "");
+    });
+
+    logger.d(firebaseAuthUser);
+
+    return firebaseAuthUser;
   }
 
   void userInformationRegiser(FirebaseAuthUser user) {
@@ -92,3 +108,18 @@ FirebaseAuthUserStateNotifierProvider
 // --------------------------------------------------
 final firebaseAuthUserStateNotifierProvider =
     firebaseAuthUserStateNotifierProviderCreator();
+
+// --------------------------------------------------
+//
+//  firebaseAuthUserStateNotifierProvider
+//
+// --------------------------------------------------
+final firebaseAuthUserSteramProvider = StreamProvider((ref) {
+  final checkAuthStateChangesUsecase =
+      ref.watch(checkAuthStateChangesUsecaseProvider);
+
+  final Stream<FirebaseAuthUser> firebaseAuthUserStream =
+      checkAuthStateChangesUsecase();
+
+  return firebaseAuthUserStream;
+});

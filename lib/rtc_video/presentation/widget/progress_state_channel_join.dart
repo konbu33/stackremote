@@ -1,7 +1,13 @@
+import 'dart:async';
+
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../channel/domain/channel.dart';
 import '../../../common/common.dart';
+import '../../usecase/channel_leave.dart';
+import '../../usecase/channel_leave_clear_user_in_db.dart';
 import '../page/rtc_video_channel_join_page_state.dart';
 import '../../usecase/channel_join.dart';
 import '../../usecase/create_rtc_id_token.dart';
@@ -14,15 +20,16 @@ import '../../domain/rtc_video_state.dart';
 //
 // --------------------------------------------------
 
-final progressStateChannelJoinProvider = Provider((ref) {
+final progressStateChannelJoinProvider = Provider.autoDispose((ref) {
   //
 
   Future<void> channelJoin() async {
+    final dateTimeNow = DateFormat('yyyy/MM/dd HH:mm').format(DateTime.now());
     void setMessage(String message) {
       ref
           .read(RtcVideoChannelJoinPageState
               .attentionMessageStateProvider.notifier)
-          .update((state) => "${DateTime.now()}: $message");
+          .update((state) => "$dateTimeNow: $message");
     }
 
     const message = "チャンネル参加待機中";
@@ -77,8 +84,36 @@ final progressStateChannelJoinProvider = Provider((ref) {
       await channelJoinUsecase();
 
       //
-    } on Exception catch (e, s) {
-      final message = "Channelへの参加に失敗しました。$e, $s";
+    } on PlatformException catch (e) {
+      logger.d(
+          "code: ${e.code}, message: ${e.message}, details: ${e.details}, stackTrace: ${e.stacktrace}");
+
+      // --------------------------------------------------
+      // ChannelJoinがReject発生した場合、明示的にLeaveした後、再度Join実施
+      // --------------------------------------------------
+      final errorMessage = e.message ?? "";
+      if (errorMessage.contains(RegExp('join.*reject'))) {
+        //
+        final message = "Channelへの参加が拒否されました。$e";
+        setMessage(message);
+
+        // channelLeave
+        final channelLeaveUsecase = ref.read(channelLeaveUsecaseProvider);
+        await channelLeaveUsecase();
+
+        // channelLeaveClearUserInDB
+        final channelLeaveClearUserInDBUsecase =
+            ref.read(channelLeaveClearUserInDBUsecaseProvider);
+        await channelLeaveClearUserInDBUsecase();
+
+        // channelJoin
+        final channelJoinUsecase = ref.read(channelJoinUsecaseProvider);
+        await channelJoinUsecase();
+      }
+
+      //
+    } on Exception catch (e) {
+      final message = "Channelへの参加に失敗しました。$e";
       setMessage(message);
 
       return;
@@ -94,7 +129,7 @@ final progressStateChannelJoinProvider = Provider((ref) {
         ref.watch(channelJoinRegisterChannelAndUserInDBUsecaseProvider);
 
     try {
-      registerChannelAndUserInDBUsecase();
+      unawaited(registerChannelAndUserInDBUsecase());
     } on Exception catch (e, s) {
       final message = "Channel or User情報の登録に失敗しました。: $e, $s";
       setMessage(message);
