@@ -7,10 +7,10 @@ typedef VideoSubLayerAlignmentProvider
 class DragTargetWidget extends StatelessWidget {
   const DragTargetWidget({
     Key? key,
-    required this.videoSubLayerAlignmentProvider,
+    required this.updateVideoSubLayerAlignment,
   }) : super(key: key);
 
-  final VideoSubLayerAlignmentProvider videoSubLayerAlignmentProvider;
+  final void Function(AlignmentDirectional) updateVideoSubLayerAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +22,7 @@ class DragTargetWidget extends StatelessWidget {
             return const Center();
           },
           onAccept: (data) {
-            ref
-                .read(videoSubLayerAlignmentProvider.notifier)
-                .update((state) => alignmentDirectional);
+            updateVideoSubLayerAlignment(alignmentDirectional);
           },
         );
       }

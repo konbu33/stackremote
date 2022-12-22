@@ -13,7 +13,14 @@ class VideoMainWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
-      final currentUid = ref.watch(VideoSubState.currentUidOfVideoMainProvider);
+      final currentUidOfVideoMain = ref.watch(videoSubStateNotifierProvider
+          .select((value) => value.currentUidOfVideoMain));
+
+      final videoSubLayerAlignment = ref.watch(videoSubStateNotifierProvider
+          .select((value) => value.videoSubLayerAlignment));
+
+      final isOnTapIgnore = ref.watch(
+          videoSubStateNotifierProvider.select((value) => value.isOnTapIgnore));
 
       final localUid = ref.watch(
           userStateNotifierProvider.select((value) => value.rtcVideoUid));
@@ -21,13 +28,13 @@ class VideoMainWidget extends StatelessWidget {
       return Column(
         children: [
           Expanded(
-            child: currentUid == localUid
+            child: currentUidOfVideoMain == localUid
                 ? const RtcVideoLocalPreviewWidget()
-                : RtcVideoRemotePreviewWidget(remoteUid: currentUid),
+                : RtcVideoRemotePreviewWidget(remoteUid: currentUidOfVideoMain),
           ),
-          Text("currentUid : $currentUid"),
-          Text(
-              "Alignment: ${ref.watch(VideoSubState.videoSubLayerAlignmentProvider)}"),
+          Text("currentUidOfVideoMain: $currentUidOfVideoMain"),
+          Text("videoSubLayerAlignment: $videoSubLayerAlignment"),
+          Text("isOnTapIgnore: $isOnTapIgnore"),
         ],
       );
     });

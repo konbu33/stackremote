@@ -23,11 +23,13 @@ class VideoSubWidget extends StatelessWidget {
 
       final videoSubWidgetList = videoSubWidgetListCreator();
 
+      final videoSubLayerAlignment = ref.watch(videoSubStateNotifierProvider
+          .select((value) => value.videoSubLayerAlignment));
+
       return videoSubWidgetList.isEmpty
           ? const SizedBox()
           : Stack(
-              alignment:
-                  ref.watch(VideoSubState.videoSubLayerAlignmentProvider),
+              alignment: videoSubLayerAlignment,
               children: [
                 VideoSubWidgetParts.dragTargetWidget(),
                 VideoSubWidgetParts.draggableWidget(videoSubWidgetList),
@@ -42,10 +44,15 @@ class VideoSubWidget extends StatelessWidget {
 class VideoSubWidgetParts {
   // dragTargetWidget
   static Widget dragTargetWidget() {
-    final widget = DragTargetWidget(
-      videoSubLayerAlignmentProvider:
-          VideoSubState.videoSubLayerAlignmentProvider,
-    );
+    final widget = Consumer(builder: (context, ref, child) {
+      final updateVideoSubLayerAlignment = ref
+          .watch(videoSubStateNotifierProvider.notifier)
+          .updateVideoSubLayerAlignment;
+
+      return DragTargetWidget(
+        updateVideoSubLayerAlignment: updateVideoSubLayerAlignment,
+      );
+    });
 
     return widget;
   }
@@ -66,60 +73,71 @@ class VideoSubWidgetParts {
       final localUid = ref.watch(
           userStateNotifierProvider.select((value) => value.rtcVideoUid));
 
-      final currentUid = ref.watch(VideoSubState.currentUidOfVideoMainProvider);
+      final currentUidOfVideoMain = ref.watch(videoSubStateNotifierProvider
+          .select((value) => value.currentUidOfVideoMain));
+
+      final isOnTapIgnore = ref.watch(
+          videoSubStateNotifierProvider.select((value) => value.isOnTapIgnore));
+
+      final videoSubStateNotifier =
+          ref.watch(videoSubStateNotifierProvider.notifier);
 
       final usersState = ref.watch(usersStateNotifierProvider);
 
       final videoSubWidgetListNullable = usersState.users.map((user) {
         logger.d(
-            "currentUid : $currentUid, remoteUid : ${user.rtcVideoUid}, leaveAt : ${user.leavedAt}");
+            "currentUidOfVideoMain : $currentUidOfVideoMain, remoteUid : ${user.rtcVideoUid}, leaveAt : ${user.leavedAt}");
 
         // チャンネル離脱後のユーザは非表示
         if (user.leavedAt != null) return null;
 
         // メインVideoに表示中のcurrentユーザは非表示
-        if (user.rtcVideoUid == currentUid) return null;
+        if (user.rtcVideoUid == currentUidOfVideoMain) return null;
 
-        final child = GestureDetector(
-          onTap: () {
-            ref
-                .read(VideoSubState.currentUidOfVideoMainProvider.notifier)
-                .update((state) => user.rtcVideoUid);
-          },
-          child: Column(
-            children: [
-              Expanded(
-                // --------------------------------------------------
-                // subのvideoViewを表示する際、
-                // local用のvideoPreviewで表示するか、あるいは，
-                // remote用のvideoPreviewで表示するか
-                // --------------------------------------------------
+        final child = AbsorbPointer(
+          absorbing: isOnTapIgnore,
+          child: GestureDetector(
+            onTap: () {
+              videoSubStateNotifier
+                  .updateCurrentUidOfVideoMain(user.rtcVideoUid);
 
-                // --------------------------------------------------
-                // mainのvideoViewにlocalのvideoが表示されている場合、
-                // --------------------------------------------------
-                child: currentUid == localUid
+              videoSubStateNotifier.updateIsOnTapIgnore();
+            },
+            child: Column(
+              children: [
+                Expanded(
+                  // --------------------------------------------------
+                  // subのvideoViewを表示する際、
+                  // local用のvideoPreviewで表示するか、あるいは，
+                  // remote用のvideoPreviewで表示するか
+                  // --------------------------------------------------
 
-                    // subのvideoViewに表示するのは、remoteのvideoのみになるはずなので、
-                    // すべてremote用videoPreviewで表示する。
-                    ? RtcVideoRemotePreviewWidget(remoteUid: user.rtcVideoUid)
+                  // --------------------------------------------------
+                  // mainのvideoViewにlocalのvideoが表示されている場合、
+                  // --------------------------------------------------
+                  child: currentUidOfVideoMain == localUid
 
-                    // --------------------------------------------------
-                    // mainのvideoViewにlocalのvideoが表示されていない場合、
-                    // --------------------------------------------------
-                    : user.rtcVideoUid == localUid
+                      // subのvideoViewに表示するのは、remoteのvideoのみになるはずなので、
+                      // すべてremote用videoPreviewで表示する。
+                      ? RtcVideoRemotePreviewWidget(remoteUid: user.rtcVideoUid)
 
-                        // localのUidだったら、local用videoPreviewで表示する。
-                        ? const RtcVideoLocalPreviewWidget()
+                      // --------------------------------------------------
+                      // mainのvideoViewにlocalのvideoが表示されていない場合、
+                      // --------------------------------------------------
+                      : user.rtcVideoUid == localUid
 
-                        // それ以外は、remote用videoPreviewで表示する。
-                        : RtcVideoRemotePreviewWidget(
-                            remoteUid: user.rtcVideoUid),
+                          // localのUidだったら、local用videoPreviewで表示する。
+                          ? const RtcVideoLocalPreviewWidget()
 
-                //
-              ),
-              Text("${user.rtcVideoUid}"),
-            ],
+                          // それ以外は、remote用videoPreviewで表示する。
+                          : RtcVideoRemotePreviewWidget(
+                              remoteUid: user.rtcVideoUid),
+
+                  //
+                ),
+                Text("${user.rtcVideoUid}"),
+              ],
+            ),
           ),
         );
 
