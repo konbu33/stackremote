@@ -118,6 +118,7 @@ class UserStateNotifier extends AutoDisposeNotifier<User> {
       rtcVideoUid: rtcVideoUid,
     );
 
+    logger.d("userState: $user");
     return user;
   }
 }

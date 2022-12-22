@@ -69,10 +69,13 @@ class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
 
     final nickName = ref.watch(NickName.nickNameProvider);
 
-    return PointerState.create(
+    final pointerState = PointerState.create(
       email: email,
       nickName: nickName,
     );
+
+    logger.d("pointerState: $pointerState");
+    return pointerState;
   }
 
   void updateComment(String comment) {

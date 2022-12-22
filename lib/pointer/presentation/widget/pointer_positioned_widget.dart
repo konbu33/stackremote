@@ -33,7 +33,6 @@ class PointerPositionedWidget extends HookConsumerWidget {
       child: Builder(
         builder: (context) {
           final pointerState = ref.watch(pointerStateNotifierProvider);
-          logger.d("xxxxx pointerState: $pointerState");
           if (email == pointerState.email) {
             return PointerWidgetLocal(
               nickName: nickName,

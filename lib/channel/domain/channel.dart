@@ -54,6 +54,7 @@ class ChannelStateNotifier extends Notifier<Channel> {
       return Channel.create();
     });
 
+    logger.d("channelState: $channel");
     return channel;
   }
 

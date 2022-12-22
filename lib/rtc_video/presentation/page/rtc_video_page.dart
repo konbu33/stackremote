@@ -91,14 +91,15 @@ class RtcVideoPageWidgets {
   // getUserStateWidget
   static Widget getUserStateWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      final channelState = ref.watch(channelStateNotifierProvider);
-      logger.d("videochannel: $channelState");
+      // final channelState = ref.watch(channelStateNotifierProvider);
+      // logger.d("videochannel: $channelState");
 
-      final userState = ref.watch(userStateNotifierProvider);
-      logger.d("videouser: $userState");
+      // final userState = ref.watch(userStateNotifierProvider);
+      // logger.d("videouser: $userState");
 
+      // users情報取得に失敗した場合、通知する。
       final usersState = ref.watch(usersStateNotifierProvider);
-      logger.d("videousers: $usersState");
+      // logger.d("videousers: $usersState");
 
       if (usersState.isGetDataError) {
         const snackBar = SnackBar(content: Text("ユーザ情報の取得に失敗しました。"));
