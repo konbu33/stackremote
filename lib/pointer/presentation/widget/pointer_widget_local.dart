@@ -32,7 +32,17 @@ class PointerWidgetLocal extends HookConsumerWidget {
         // Pointerを左上に固定
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(CupertinoIcons.arrow_up_left),
+          Transform.translate(
+            offset: const Offset(11, -8),
+            child: Transform.rotate(
+              angle: -0.9,
+              child: Icon(
+                Icons.navigation,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+          // const Icon(CupertinoIcons.arrow_up_left),
           SizedBox(
             width: 100,
             child: TextFormField(
