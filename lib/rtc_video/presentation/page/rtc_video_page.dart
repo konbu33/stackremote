@@ -39,16 +39,14 @@ class RtcVideoPage extends HookConsumerWidget {
         ],
       ),
       body: PointerOverlayWidget(
-        child: Flexible(
-          child: Stack(
-            children: [
-              RtcVideoPageWidgets.videoMainWidget(),
-              RtcVideoPageWidgets.videoSubWidget(),
-              RtcVideoPageWidgets.getUserStateWidget(),
-              RtcVideoPageWidgets.attentionMessageWidget(),
-              RtcVideoPageWidgets.channelLeaveProgressWidget(),
-            ],
-          ),
+        child: Stack(
+          children: [
+            RtcVideoPageWidgets.videoMainWidget(),
+            RtcVideoPageWidgets.videoSubWidget(),
+            RtcVideoPageWidgets.getUserStateWidget(),
+            RtcVideoPageWidgets.attentionMessageWidget(),
+            RtcVideoPageWidgets.channelLeaveProgressWidget(),
+          ],
         ),
       ),
     );
