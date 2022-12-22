@@ -59,7 +59,15 @@ class VideoSubWidgetParts {
 
   // draggableWidget
   static Widget draggableWidget(List<Widget> videoSubWidgetList) {
-    final widget = DraggableWidget(child: Wrap(children: videoSubWidgetList));
+    final widget = DraggableWidget(
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        child: Wrap(
+          spacing: 10,
+          children: videoSubWidgetList,
+        ),
+      ),
+    );
 
     return widget;
   }
