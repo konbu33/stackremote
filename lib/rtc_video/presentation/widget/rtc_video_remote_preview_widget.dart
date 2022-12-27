@@ -1,9 +1,11 @@
-import 'package:flutter/foundation.dart';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
-import 'package:agora_rtc_engine/rtc_remote_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../channel/channel.dart';
+import '../../../common/common.dart';
+import '../../infrastructure/rtc_video_engine_agora.dart';
+import 'rtc_video_local_preview_widget.dart';
 
 class RtcVideoRemotePreviewWidget extends HookConsumerWidget {
   const RtcVideoRemotePreviewWidget({
@@ -15,30 +17,68 @@ class RtcVideoRemotePreviewWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final channelName = ref.watch(channelNameProvider);
+    return Consumer(builder: (context, ref, child) {
+      //
 
-    const notExistRemoteUserWidget = Text(
-      'Please wait remote user join',
-      textAlign: TextAlign.center,
-    );
+      final rtcVideoEngineAgora =
+          ref.watch(rtcVideoEngineAgoraNotifierProvider);
 
-    if (remoteUid == 0) return notExistRemoteUserWidget;
+      final channelName = ref.watch(channelNameProvider);
 
-    switch (defaultTargetPlatform) {
-      case TargetPlatform.android:
-        return SurfaceView(uid: remoteUid, channelId: channelName);
+      final videoViewControllerRemote = VideoViewController.remote(
+        rtcEngine: rtcVideoEngineAgora!,
+        canvas: VideoCanvas(uid: remoteUid),
+        connection: RtcConnection(channelId: channelName),
+        useFlutterTexture: ref.watch(isUseFlutterTextureProvider),
+        useAndroidSurfaceView: ref.watch(isUseAndroidSurfaceViewProvider),
+      );
 
-      case TargetPlatform.iOS:
-        return SurfaceView(uid: remoteUid, channelId: channelName);
+      logger
+          .d("preview remote : data rtcVideoEngineAgora: $rtcVideoEngineAgora");
 
-      case TargetPlatform.windows:
-        return TextureView(uid: remoteUid, channelId: channelName);
+      logger.d(
+          "preview remote : data useFlutterTexture: ${videoViewControllerRemote.useFlutterTexture}");
+      logger.d(
+          "preview remote : data useAndroidSurfaceView: ${videoViewControllerRemote.useAndroidSurfaceView}");
+      logger.d(
+          "preview remote : data channelId: ${videoViewControllerRemote.connection.channelId}");
+      logger.d(
+          "preview remote : data localUid: ${videoViewControllerRemote.connection.localUid}");
 
-      case TargetPlatform.macOS:
-        return TextureView(uid: remoteUid, channelId: channelName);
+      return AgoraVideoView(controller: videoViewControllerRemote);
 
-      default:
-        return notExistRemoteUserWidget;
-    }
+      // return rtcVideoEngineAgora.when(data: (rtcEngine) {
+      //   //
+      //   final videoViewControllerRemote = VideoViewController.remote(
+      //     rtcEngine: rtcEngine,
+      //     canvas: VideoCanvas(uid: remoteUid),
+      //     connection: RtcConnection(channelId: channelName),
+      //     useFlutterTexture: ref.watch(isUseFlutterTextureProvider),
+      //     useAndroidSurfaceView: ref.watch(isUseAndroidSurfaceViewProvider),
+      //   );
+
+      //   logger.d(
+      //       "preview remote : data useFlutterTexture: ${videoViewControllerRemote.useFlutterTexture}");
+      //   logger.d(
+      //       "preview remote : data useAndroidSurfaceView: ${videoViewControllerRemote.useAndroidSurfaceView}");
+      //   logger.d(
+      //       "preview remote : data channelId: ${videoViewControllerRemote.connection.channelId}");
+      //   logger.d(
+      //       "preview remote : data localUid: ${videoViewControllerRemote.connection.localUid}");
+
+      //   logger.d(
+      //       "preview remote : data rtcEngine: ${videoViewControllerRemote.rtcEngine}");
+
+      //   return AgoraVideoView(controller: videoViewControllerRemote);
+      // }, error: (error, stackTrace) {
+      //   logger.d("preview remote : error ");
+
+      //   return Text("error: $error, stackTrace: $stackTrace");
+      // }, loading: () {
+      //   logger.d("preview remote : loading");
+
+      //   return const CircularProgressIndicator();
+      // });
+    });
   }
 }

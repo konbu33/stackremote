@@ -54,8 +54,8 @@ dependencies:
   # cloud_firestore: ^4.0.1
   cloud_firestore: ^3.5.1
   ulid: ^2.0.0
-  # agora_rtc_engine: ^6.0.0
-  agora_rtc_engine: ^5.3.1
+  agora_rtc_engine: ^6.1.0
+  # agora_rtc_engine: ^5.3.1
   flutter_hooks: ^0.18.5+1
   intl: ^0.17.0
   # cloud_functions: ^4.0.1

@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+// import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
@@ -59,38 +60,44 @@ final rtcVideoEngineAgoraCreatorProvider = Provider((ref) {
 
     // 接続先のAgoraのプロジェクトをAppIdで指定
     // ログ出力先も指定
-    final RtcEngineContext context = RtcEngineContext(
-      appId,
+    final engine = createAgoraRtcEngine();
+
+    final context = RtcEngineContext(
+      appId: appId,
       logConfig: tempLogConfig,
     );
 
     // RTC client instance作成
-    final engine = await RtcEngine.createWithContext(context);
+    // final engine = await RtcEngine.createWithContext(context);
+
+    await engine.initialize(context);
 
     // イベントハンドラ定義
     final handler = RtcEngineEventHandler(
       // チャンネル参加が成功した場合
-      joinChannelSuccess: (String channel, int uid, int elapsed) {
+      onJoinChannelSuccess: ((connection, elapsed) {
         logger.d(
-            "agora joinChannelSuccess: channel: $channel, uid: $uid, elapsed: $elapsed");
+            "agora onJoinChannelSuccess: channelId: ${connection.channelId}, localUid: ${connection.localUid}, elapsed: $elapsed");
 
         ref
             .watch(RtcVideoState.isJoinedChannelProvider.notifier)
             .update((state) => true);
-      },
+      }),
 
       // 他ユーザがチャンネル参加してきた場合
-      userJoined: (int uid, int elapsed) {
-        logger.d("agora userJoined: uid: $uid, elapsed: $elapsed");
+      onUserJoined: ((connection, remoteUid, elapsed) {
+        logger.d(
+            "agora onUserJoined: connection: ${connection.toString()}, remoteUid: $remoteUid, elapsed: $elapsed");
 
         ref
             .watch(RtcVideoState.remoteUidProvider.notifier)
-            .update((state) => uid);
-      },
+            .update((state) => remoteUid);
+      }),
 
       // チャンネル参加がオフラインになった場合
-      userOffline: (int uid, UserOfflineReason reason) {
-        logger.d("agora userOffline: uid: $uid, reason: $reason");
+      onUserOffline: (connection, remoteUid, reason) {
+        logger.d(
+            "agora onUserOffline: connection: ${connection.toString()}, remoteUid: $remoteUid, reason: $reason");
 
         ref
             .watch(RtcVideoState.remoteUidProvider.notifier)
@@ -98,38 +105,85 @@ final rtcVideoEngineAgoraCreatorProvider = Provider((ref) {
       },
 
       // チャンネル離脱した場合
-      leaveChannel: (RtcStats rtcStats) {
-        logger.d("agora leaveChannel: rtcStats: $rtcStats");
+      onLeaveChannel: ((connection, rtcStats) {
+        logger.d(
+            "agora onLeaveChannel: connection: ${connection.toString()}, rtcStats: $rtcStats");
 
         ref
             .watch(RtcVideoState.isJoinedChannelProvider.notifier)
             .update((state) => false);
-      },
+      }),
 
-      rejoinChannelSuccess: (String channel, int uid, int elapsed) {
+      onRejoinChannelSuccess: (connection, elapsed) {
         logger.d(
-            "agora rejoinChannelSuccess: channel: $channel, uid: $uid, elapsed: $elapsed");
+            "agora onRejoinChannelSuccess:  connection: ${connection.toString()}, elapsed: $elapsed");
       },
 
-      connectionLost: () {
-        logger.d("agora connectionLost: ");
-      },
+      onConnectionLost: ((connection) {
+        logger.d("agora onConnectionLost: ");
+      }),
 
-      error: (ErrorCode err) {
-        logger
-            .d("agora error: index: ${err.index}, name: ${err.name},err: $err");
-      },
+      onError: ((err, msg) {
+        logger.d(
+            "agora onError: index: ${err.index}, name: ${err.name},err: $err");
+      }),
     );
 
     // イベントハンドラ指定
-    engine.setEventHandler(handler);
+    // engine.setEventHandler(handler);
+    engine.registerEventHandler(handler);
 
     // ビデオ有効化
     // チャンネルに参加する前にこのメソッドを呼び出した場合、ビデオモードで通話が開始されます。
     await engine.enableVideo();
+
+    // ビデオのエンコーディング設定
+    const videoEncoderConfiguration = VideoEncoderConfiguration(
+      dimensions: VideoDimensions(width: 640, height: 360),
+      frameRate: 15,
+      bitrate: 0,
+    );
+
+    await engine.setVideoEncoderConfiguration(videoEncoderConfiguration);
 
     return engine;
   }
 
   return rtcVideoEngineAgoraCreator;
 });
+
+final rtcVideoEngineAgoraFutureProvider =
+    FutureProvider<RtcEngine>((ref) async {
+  final rtcVideoEngineAgoraCreator =
+      ref.watch(rtcVideoEngineAgoraCreatorProvider);
+
+  return await rtcVideoEngineAgoraCreator();
+});
+
+class RtcVideoEngineAgoraNotifier extends Notifier<RtcEngine?> {
+  @override
+  RtcEngine? build() {
+    final rtcVideoEngineAgora = ref.watch(rtcVideoEngineAgoraFutureProvider);
+
+    final rtcEngine = rtcVideoEngineAgora.when(data: (data) {
+      return data;
+    }, error: (error, stackTrace) {
+      return null;
+    }, loading: () {
+      return null;
+    });
+
+    return rtcEngine;
+  }
+}
+
+final rtcVideoEngineAgoraNotifierProvider =
+    NotifierProvider<RtcVideoEngineAgoraNotifier, RtcEngine?>(
+        () => RtcVideoEngineAgoraNotifier());
+
+// final rtcVideoEngineAgoraStateProvider = StateProvider((ref) {
+//   final rtcVideoEngineAgoraCreator =
+//       ref.watch(rtcVideoEngineAgoraCreatorProvider);
+
+//   return rtcVideoEngineAgoraCreator();
+// });

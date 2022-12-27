@@ -1,4 +1,5 @@
-import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+// import 'package:agora_rtc_engine/rtc_engine.dart';
 
 abstract class RtcVideoRepository {
   const RtcVideoRepository({
@@ -12,7 +13,7 @@ abstract class RtcVideoRepository {
   Future<void> channelJoin({
     required String token,
     required String channelName,
-    required String? optionalInfo,
+    // required ChannelMediaOptions channelMediaOptions,
     required int optionalUid,
   });
 

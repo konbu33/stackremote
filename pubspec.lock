@@ -21,7 +21,7 @@ packages:
       name: agora_rtc_engine
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.3.1"
+    version: "6.1.0"
   analyzer:
     dependency: transitive
     description:
@@ -556,6 +556,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  iris_event:
+    dependency: transitive
+    description:
+      name: iris_event
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   js:
     dependency: transitive
     description:
