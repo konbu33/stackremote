@@ -94,7 +94,7 @@ final menuRouterProvider = Provider((ref) {
     ],
 
     // リダイレクト設定
-    redirect: (state) {
+    redirect: (context, state) {
       final menuRoutingCurrentPage = ref.watch(menuRoutingCurrentPathProvider);
 
       return menuRoutingCurrentPage.path == state.subloc
