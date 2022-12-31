@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+// import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -13,11 +14,9 @@ import 'rtc_video_repository.dart';
 
 final rtcVideoRepositoryAgoraCreatorProvider = Provider((ref) {
   Future<RtcVideoRepositoryAgora> rtcVideoRepositoryAgoraCreator() async {
-    final rtcVideoEngineAgoraCreator =
-        ref.watch(rtcVideoEngineAgoraCreatorProvider);
-    final rtcVideoEngineAgora = await rtcVideoEngineAgoraCreator();
+    final rtcVideoEngineAgora = ref.watch(rtcVideoEngineAgoraNotifierProvider);
 
-    return RtcVideoRepositoryAgora(rtcEngine: rtcVideoEngineAgora);
+    return RtcVideoRepositoryAgora(rtcEngine: rtcVideoEngineAgora!);
   }
 
   return rtcVideoRepositoryAgoraCreator;
@@ -53,19 +52,24 @@ class RtcVideoRepositoryAgora implements RtcVideoRepository {
   Future<void> channelJoin({
     required String token,
     required String channelName,
-    required String? optionalInfo,
+    // required ChannelMediaOptions channelMediaOptions,
     required int optionalUid,
   }) async {
     try {
       //
       await androidPermissionRequest();
 
+      const channelMediaOptions = ChannelMediaOptions(
+        channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+        clientRoleType: ClientRoleType.clientRoleBroadcaster,
+      );
+
       //
       await rtcEngine.joinChannel(
-        token,
-        channelName,
-        optionalInfo,
-        optionalUid,
+        token: token,
+        channelId: channelName,
+        uid: optionalUid,
+        options: channelMediaOptions,
       );
     } on PlatformException catch (e) {
       //  PlatformException(-17, request to join channel is rejected, null, null)

@@ -83,7 +83,7 @@ final authenticationRouterProvider = Provider(
 
       // リダイレクト設定
       // improve：if文での分岐を抽象化したい。
-      redirect: (state) {
+      redirect: (context, state) {
         // improve:
         // 状態変化させてredirectで画面遷移する場合、TextFormFieldにFocusがあたった状態で画面遷移すると、
         // 下記エラーが発生するため、回避するために、一時的にcontext.goを利用する。
