@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../authentication/authentication.dart';
@@ -54,14 +55,10 @@ class MenuWidgetParts {
         return ListTile(
           title: const Text("パスワード変更"),
           onTap: () {
-            // // Drawerを閉じる
-            // Navigator.pop(context);
+            // Drawerを閉じる
+            Navigator.pop(context);
 
-            // context.push('/change_password');
-
-            ref
-                .read(menuRoutingCurrentPathProvider.notifier)
-                .update((state) => MenuRoutingPath.changePassword);
+            context.go(MenuRoutingPath.rtcVideoChannelJoinChangePassword.path);
           },
         );
       },
@@ -77,13 +74,10 @@ class MenuWidgetParts {
         return ListTile(
           title: const Text("ユーザ情報"),
           onTap: () {
-            // // Drawerを閉じる
-            // Navigator.pop(context);
+            // Drawerを閉じる
+            Navigator.pop(context);
 
-            // context.push('/user');
-            ref
-                .read(menuRoutingCurrentPathProvider.notifier)
-                .update((state) => MenuRoutingPath.user);
+            context.go(MenuRoutingPath.rtcVideoChannelJoinUser.path);
           },
         );
       },

@@ -40,9 +40,15 @@ class MenuRoutingLayer extends HookConsumerWidget {
 // --------------------------------------------------
 enum MenuRoutingPath {
   rtcVideoChannelJoin(path: '/rtc_video_channel_join'),
-  rtcVideo(path: '/rtc_video'),
-  changePassword(path: '/change_password'),
-  user(path: '/user');
+
+  changePassword(path: 'change_password'),
+  rtcVideoChannelJoinChangePassword(
+      path: '/rtc_video_channel_join/change_password'),
+
+  user(path: 'user'),
+  rtcVideoChannelJoinUser(path: '/rtc_video_channel_join/user'),
+
+  rtcVideo(path: '/rtc_video');
 
   const MenuRoutingPath({
     required this.path,
@@ -61,7 +67,6 @@ final menuRouterProvider = Provider((ref) {
 
   return GoRouter(
     // デフォルト表示されるルーティング先
-    // initialLocation: '/rtc_video_channel_join',
     initialLocation: MenuRoutingPath.rtcVideoChannelJoin.path,
 
     // ルーティング先
@@ -73,6 +78,16 @@ final menuRouterProvider = Provider((ref) {
         builder: (context, state) {
           return const RtcVideoChannelJoinPage();
         },
+        routes: [
+          GoRoute(
+            path: MenuRoutingPath.changePassword.path,
+            builder: (context, state) => const ChangePasswordPage(),
+          ),
+          GoRoute(
+            path: MenuRoutingPath.user.path,
+            builder: (context, state) => const UserPage(),
+          ),
+        ],
       ),
 
       GoRoute(
@@ -81,41 +96,17 @@ final menuRouterProvider = Provider((ref) {
           return const RtcVideoPage();
         },
       ),
-
-      GoRoute(
-        path: MenuRoutingPath.changePassword.path,
-        builder: (context, state) => const ChangePasswordPage(),
-      ),
-
-      GoRoute(
-        path: MenuRoutingPath.user.path,
-        builder: (context, state) => const UserPage(),
-      ),
     ],
 
     // リダイレクト設定
     redirect: (context, state) {
-      final menuRoutingCurrentPage = ref.watch(menuRoutingCurrentPathProvider);
+      // rtc channel join済の場合
+      final isJoinedChannel = ref.watch(RtcVideoState.isJoinedChannelProvider);
+      if (isJoinedChannel) return MenuRoutingPath.rtcVideo.path;
 
-      return menuRoutingCurrentPage.path == state.subloc
-          ? null
-          : menuRoutingCurrentPage.path;
+      // rtc channel join未の場合、
+      // context.goなどで明示的に指定さている場合、指定先へ遷移。 未指定の場合、initialLocationへ遷移
+      return null;
     },
   );
-});
-
-// --------------------------------------------------
-//
-// menuRoutingCurrentPathProvider
-//
-// --------------------------------------------------
-
-final menuRoutingCurrentPathProvider = StateProvider((ref) {
-  final isJoinedChannel = ref.watch(RtcVideoState.isJoinedChannelProvider);
-
-  // rtc channel join済・未joinの状態を監視し、
-  // 状態が変化した場合、リダイレクト操作が実施される。
-  if (isJoinedChannel) return MenuRoutingPath.rtcVideo;
-
-  return MenuRoutingPath.rtcVideoChannelJoin;
 });
