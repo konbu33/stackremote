@@ -103,8 +103,8 @@ class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
 
     // Pointerが指に被るため、ずらす
     final adjustmentPointerPosition = Offset(
-      pointerPosition.dx - 55,
-      pointerPosition.dy + 5,
+      pointerPosition.dx - 100,
+      pointerPosition.dy - 100,
     );
 
     // 0以下の位置は0とする
