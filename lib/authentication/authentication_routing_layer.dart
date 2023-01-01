@@ -19,10 +19,7 @@ class AuthenticationRoutingLayer extends HookConsumerWidget {
       debugShowCheckedModeBanner: false,
 
       // go_router設定
-      // improve: go_router 5.0以降は、routerConfig属性でまとめて設設可能そう。
-      routerDelegate: router.routerDelegate,
-      routeInformationParser: router.routeInformationParser,
-      routeInformationProvider: router.routeInformationProvider,
+      routerConfig: router,
 
       // NestedLayerの最深部にchildとしてルーティング先を配置
       builder: (context, child) {
@@ -82,81 +79,28 @@ final authenticationRouterProvider = Provider(
       ],
 
       // リダイレクト設定
-      // improve：if文での分岐を抽象化したい。
       redirect: (context, state) {
-        // improve:
-        // 状態変化させてredirectで画面遷移する場合、TextFormFieldにFocusがあたった状態で画面遷移すると、
-        // 下記エラーが発生するため、回避するために、一時的にcontext.goを利用する。
-        // RenderBox was not laid out: RenderTransform#97b19 NEEDS-LAYOUT NEEDS-PAINT
-        if (state.subloc == AuthenticationRoutingPath.signInSignUp.path) {
-          return null;
+        // 「本アプリ側のログイン状態 + メールアドレス検証済・未検証」をwatch。
+        // 本アプリ側のログイン状態が変化したら、ルーティングに反映される。
+        final isSignIn = ref.watch(firebaseAuthUserStateNotifierProvider
+            .select((value) => value.isSignIn));
+
+        final isEmailVerified = ref.watch(firebaseAuthUserStateNotifierProvider
+            .select((value) => value.emailVerified));
+
+        // サインイン済み & メールアドレス検証済の場合、上位のWidgetでrouter自体を切り替えて画面遷移している。
+        // サインイン済み & メールアドレス未検証の場合のリダイレクト動作
+        if (isSignIn) {
+          if (!isEmailVerified) {
+            return AuthenticationRoutingPath.waitMailVerified.path;
+          }
         }
 
-        final authenticationRoutingCurrentPath =
-            ref.watch(authenticationRoutingCurrentPathProvider);
-
-        return authenticationRoutingCurrentPath.path == state.subloc
-            ? null
-            : authenticationRoutingCurrentPath.path;
-
-        // // 「本アプリ側のログイン状態 + メールアドレス検証済・未検証」をwatch。
-        // // 本アプリ側のログイン状態が変化したら、ルーティングに反映される。
-        // final isSignIn = ref.watch(firebaseAuthUserStateNotifierProvider
-        //     .select((value) => value.isSignIn));
-
-        // final isEmailVerified = ref.watch(firebaseAuthUserStateNotifierProvider
-        //     .select((value) => value.emailVerified));
-
-        // // サインイン済み & メールアドレス未検証の場合のリダイレクト動作
-        // if (isSignIn) {
-        //   if (!isEmailVerified) {
-        //     if (state.subloc == '/wait_mail_verified') {
-        //       return null;
-        //     } else {
-        //       return '/wait_mail_verified';
-        //     }
-        //   }
-        // }
-        // return null;
+        // 未サインイン & メールアドレス未検証の場合、
+        // context.goなどで明示的に指定された場合、指定された先へ遷移(例えば、signUp)。
+        // 未指定の場合、initialLocation へ遷移。
+        return null;
       },
     );
   },
 );
-
-// --------------------------------------------------
-//
-// authenticationRoutingCurrentPathProvider
-//
-// --------------------------------------------------
-final authenticationRoutingCurrentPathProvider = StateProvider((ref) {
-  // // --------------------------------------------------
-  // // Goto SignUp
-  // // --------------------------------------------------
-  // final isSignUpPagePush = ref.watch(SignInPageState.isSignUpPagePushProvider);
-  // if (isSignUpPagePush) return AuthenticationRoutingPath.signInSignUp;
-
-  // --------------------------------------------------
-  // Goto  WaitVerifyEmail
-  // --------------------------------------------------
-  // 「本アプリ側のログイン状態 + メールアドレス検証済・未検証」をwatch。
-  // 本アプリ側のログイン状態が変化したら、ルーティングに反映される。
-  final isSignIn = ref.watch(
-      firebaseAuthUserStateNotifierProvider.select((value) => value.isSignIn));
-
-  final isEmailVerified = ref.watch(firebaseAuthUserStateNotifierProvider
-      .select((value) => value.emailVerified));
-
-  // サインイン済み & メールアドレス未検証の場合のリダイレクト動作
-  if (isSignIn) {
-    if (!isEmailVerified) {
-      return AuthenticationRoutingPath.waitMailVerified;
-      // if (state.subloc == '/wait_mail_verified') {
-      //   return null;
-      // } else {
-      //   return '/wait_mail_verified';
-      // }
-    }
-  }
-
-  return AuthenticationRoutingPath.signIn;
-});

@@ -18,10 +18,7 @@ class MenuRoutingLayer extends HookConsumerWidget {
       debugShowCheckedModeBanner: false,
 
       // go_router設定
-      // go_router 5.0以降は、routerConfig属性でまとめて設設可能そう。
-      routerDelegate: router.routerDelegate,
-      routeInformationParser: router.routeInformationParser,
-      routeInformationProvider: router.routeInformationProvider,
+      routerConfig: router,
 
       // NestedLayerの最深部にchildとしてルーティング先を配置
       builder: (context, child) {
@@ -100,12 +97,16 @@ final menuRouterProvider = Provider((ref) {
 
     // リダイレクト設定
     redirect: (context, state) {
+      // 「channelJoinの状態」をwatch。
+      // channelJoinの状態が変化したら、ルーティングに反映される。
+
       // rtc channel join済の場合
       final isJoinedChannel = ref.watch(RtcVideoState.isJoinedChannelProvider);
       if (isJoinedChannel) return MenuRoutingPath.rtcVideo.path;
 
       // rtc channel join未の場合、
-      // context.goなどで明示的に指定さている場合、指定先へ遷移。 未指定の場合、initialLocationへ遷移
+      // context.goなどで明示的に指定さている場合、指定先へ遷移(例えば、changePassword)。
+      // 未指定の場合、initialLocationへ遷移
       return null;
     },
   );
