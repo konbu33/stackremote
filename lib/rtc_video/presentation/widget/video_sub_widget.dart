@@ -143,7 +143,7 @@ class VideoSubWidgetParts {
 
                   //
                 ),
-                Text("${user.rtcVideoUid}"),
+                // Text("${user.rtcVideoUid}"),
               ],
             ),
           ),

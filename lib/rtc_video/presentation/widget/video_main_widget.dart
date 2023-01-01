@@ -16,11 +16,11 @@ class VideoMainWidget extends StatelessWidget {
       final currentUidOfVideoMain = ref.watch(videoSubStateNotifierProvider
           .select((value) => value.currentUidOfVideoMain));
 
-      final videoSubLayerAlignment = ref.watch(videoSubStateNotifierProvider
-          .select((value) => value.videoSubLayerAlignment));
+      // final videoSubLayerAlignment = ref.watch(videoSubStateNotifierProvider
+      //     .select((value) => value.videoSubLayerAlignment));
 
-      final isOnTapIgnore = ref.watch(
-          videoSubStateNotifierProvider.select((value) => value.isOnTapIgnore));
+      // final isOnTapIgnore = ref.watch(
+      //     videoSubStateNotifierProvider.select((value) => value.isOnTapIgnore));
 
       final localUid = ref.watch(
           userStateNotifierProvider.select((value) => value.rtcVideoUid));
@@ -32,9 +32,9 @@ class VideoMainWidget extends StatelessWidget {
                 ? const RtcVideoLocalPreviewWidget()
                 : RtcVideoRemotePreviewWidget(remoteUid: currentUidOfVideoMain),
           ),
-          Text("currentUidOfVideoMain: $currentUidOfVideoMain"),
-          Text("videoSubLayerAlignment: $videoSubLayerAlignment"),
-          Text("isOnTapIgnore: $isOnTapIgnore"),
+          // Text("currentUidOfVideoMain: $currentUidOfVideoMain"),
+          // Text("videoSubLayerAlignment: $videoSubLayerAlignment"),
+          // Text("isOnTapIgnore: $isOnTapIgnore"),
         ],
       );
     });

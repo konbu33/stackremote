@@ -29,12 +29,14 @@ class RtcVideoPage extends HookConsumerWidget {
     final channelName = ref.watch(channelNameProvider);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Tooltip(
           message: "チャンネル名",
           child: Text(channelName),
         ),
         actions: [
+          RtcVideoPageWidgets.switchCameraIconWidget(),
           RtcVideoPageWidgets.channelLeaveIconWidget(),
         ],
       ),
@@ -62,6 +64,18 @@ class RtcVideoPage extends HookConsumerWidget {
 // ---------------------------------------------------
 
 class RtcVideoPageWidgets {
+  // switchCameraIconWidget
+  static Widget switchCameraIconWidget() {
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      return AppbarAcitonIconWidget(
+        appbarActionIconStateNotifierProvider: ref.watch(
+            RtcVideoPageState.switchCameraSubmitIconStateNotifierProvider),
+      );
+    }));
+
+    return widget;
+  }
+
   // channelLeaveIconWidget
   static Widget channelLeaveIconWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {

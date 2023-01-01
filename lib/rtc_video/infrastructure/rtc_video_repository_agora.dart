@@ -104,6 +104,23 @@ class RtcVideoRepositoryAgora implements RtcVideoRepository {
 
   // --------------------------------------------------
   //
+  //  switchCamera
+  //
+  // --------------------------------------------------
+
+  @override
+  Future<void> switchCamera() async {
+    // チャンネル離脱
+    try {
+      await rtcEngine.switchCamera();
+    } on Exception catch (e) {
+      logger.d("$e");
+      rethrow;
+    }
+  }
+
+  // --------------------------------------------------
+  //
   //  createRtcIdToken
   //  Firebase Functions OnCall用
   //
