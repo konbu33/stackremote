@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
-import '../../../menu/menu.dart';
 import '../../domain/user.dart';
 import 'user_page_state.dart';
 
@@ -19,15 +18,7 @@ class UserPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: UserPageWidgets.pageTitleWidget(),
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            ref
-                .read(menuRoutingCurrentPathProvider.notifier)
-                .update((state) => MenuRoutingPath.rtcVideoChannelJoin);
-          },
-        ),
+        automaticallyImplyLeading: true,
       ),
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: [nickNameFieldState.focusNode],

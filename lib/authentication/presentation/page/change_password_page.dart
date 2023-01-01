@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../../../menu/menu.dart';
 import '../widget/password_field_widget.dart';
 
 import 'change_password_page_state.dart';
@@ -26,15 +25,7 @@ class ChangePasswordPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(ChangePasswordPageState.pageTitle),
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            ref
-                .read(menuRoutingCurrentPathProvider.notifier)
-                .update((state) => MenuRoutingPath.rtcVideoChannelJoin);
-          },
-        ),
+        automaticallyImplyLeading: true,
       ),
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: [

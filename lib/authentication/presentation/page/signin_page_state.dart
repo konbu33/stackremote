@@ -125,15 +125,6 @@ class SignInPageState {
 
     AppbarActionIconOnSubmitFunction buildGoToSignUpIconOnSubmit() {
       return ({required BuildContext context}) => () {
-            // ref
-            //     .read(authenticationRoutingCurrentPathProvider.notifier)
-            //     .update((state) => AuthenticationRoutingPath.signInSignUp);
-
-            // improve:
-            // 状態変化させてredirectで画面遷移する場合、TextFormFieldにFocusがあたった状態で画面遷移すると、
-            // 下記エラーが発生するため、回避するために、一時的にcontext.goを利用する。
-            // RenderBox was not laid out: RenderTransform#97b19 NEEDS-LAYOUT NEEDS-PAINT
-
             context.go(AuthenticationRoutingPath.signInSignUp.path);
           };
     }
