@@ -19,6 +19,8 @@ abstract class RtcVideoRepository {
 
   Future<void> channelLeave();
 
+  Future<void> switchCamera();
+
   Future<String> createRtcIdToken({
     required String channelName,
     required int localUid,
