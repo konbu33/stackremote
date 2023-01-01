@@ -29,6 +29,7 @@ class RtcVideoPage extends HookConsumerWidget {
     final channelName = ref.watch(channelNameProvider);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Tooltip(
           message: "チャンネル名",
