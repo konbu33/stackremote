@@ -71,3 +71,6 @@ test/goldens_test/goldens
 
 # mockito 
 test/**/*.mocks.dart
+
+# flutter build ipa
+ExportOptions.plist
