@@ -38,3 +38,5 @@ export './validation/validator.dart';
 
 export './widget/progress_widget.dart';
 export './widget/progress_state.dart';
+
+export './widget/package_info_widget.dart';
