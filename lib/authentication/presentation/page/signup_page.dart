@@ -25,7 +25,6 @@ class SignUpPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(SignUpPageState.pageTitle),
-        automaticallyImplyLeading: true,
       ),
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: [

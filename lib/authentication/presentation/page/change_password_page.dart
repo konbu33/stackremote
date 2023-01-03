@@ -25,7 +25,6 @@ class ChangePasswordPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(ChangePasswordPageState.pageTitle),
-        automaticallyImplyLeading: true,
       ),
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: [
