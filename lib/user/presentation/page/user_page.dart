@@ -26,13 +26,13 @@ class UserPage extends HookConsumerWidget {
             key: GlobalKey<FormState>(),
             child: Column(
               children: [
-                // UserPageWidgets.currentNickNameWidget(),
-                // const SizedBox(height: 40),
-                // UserPageWidgets.attentionMessageWidget(),
-                // const SizedBox(height: 40),
-                // UserPageWidgets.userNameFieldWidget(),
-                // const SizedBox(height: 40),
-                // UserPageWidgets.userUpdateButtonWidget(),
+                UserPageWidgets.currentNickNameWidget(),
+                const SizedBox(height: 40),
+                UserPageWidgets.attentionMessageWidget(),
+                const SizedBox(height: 40),
+                UserPageWidgets.userNameFieldWidget(),
+                const SizedBox(height: 40),
+                UserPageWidgets.userUpdateButtonWidget(),
               ],
             ),
           ),
@@ -50,58 +50,59 @@ class UserPageWidgets {
     return widget;
   }
 
-  // // currentNickNameWidget
-  // static Widget currentNickNameWidget() {
-  //   //
-  //   final Widget widget = Consumer(
-  //     builder: (context, ref, child) {
-  //       final userState = ref.watch(userStateNotifierProvider);
-  //       return Text("現在のニックネーム：${userState.nickName}");
-  //     },
-  //   );
+  // currentNickNameWidget
+  static Widget currentNickNameWidget() {
+    //
+    final Widget widget = Consumer(
+      builder: (context, ref, child) {
+        final nickName = ref
+            .watch(userStateNotifierProvider.select((value) => value.nickName));
+        return Text("現在のニックネーム：$nickName");
+      },
+    );
 
-  //   return widget;
-  // }
+    return widget;
+  }
 
-  // // attentionMessageWidget
-  // static Widget attentionMessageWidget() {
-  //   const textStyle = TextStyle(color: Colors.red);
-  //   final Widget widget = DescriptionMessageWidget(
-  //     descriptionMessageStateProvider:
-  //         UserPageState.attentionMessageStateProvider,
-  //     textStyle: textStyle,
-  //   );
+  // attentionMessageWidget
+  static Widget attentionMessageWidget() {
+    const textStyle = TextStyle(color: Colors.red);
+    final Widget widget = DescriptionMessageWidget(
+      descriptionMessageStateProvider:
+          UserPageState.attentionMessageStateProvider,
+      textStyle: textStyle,
+    );
 
-  //   return widget;
-  // }
+    return widget;
+  }
 
-  // // userNameField
-  // static Widget userNameFieldWidget() {
-  //   //
-  //   final Widget widget = Consumer(builder: (context, ref, child) {
-  //     final nickNameFieldStateNotifierProvider =
-  //         ref.watch(UserPageState.nickNameFieldStateNotifierProviderOfProvider);
+  // userNameField
+  static Widget userNameFieldWidget() {
+    //
+    final Widget widget = Consumer(builder: (context, ref, child) {
+      final nickNameFieldStateNotifierProvider =
+          ref.watch(UserPageState.nickNameFieldStateNotifierProviderOfProvider);
 
-  //     return NameFieldWidget(
-  //       nameFieldStateNotifierProvider: nickNameFieldStateNotifierProvider,
-  //     );
-  //   });
+      return NameFieldWidget(
+        nameFieldStateNotifierProvider: nickNameFieldStateNotifierProvider,
+      );
+    });
 
-  //   return widget;
-  // }
+    return widget;
+  }
 
-  // // userUpdateButton
-  // static Widget userUpdateButtonWidget() {
-  //   //
-  //   final Widget widget = Consumer(
-  //     builder: (context, ref, child) {
-  //       return OnSubmitButtonWidget(
-  //         onSubmitButtonStateNotifierProvider: ref.watch(
-  //             UserPageState.userUpdateOnSubmitButtonStateNotifierProvider),
-  //       );
-  //     },
-  //   );
+  // userUpdateButton
+  static Widget userUpdateButtonWidget() {
+    //
+    final Widget widget = Consumer(
+      builder: (context, ref, child) {
+        return OnSubmitButtonWidget(
+          onSubmitButtonStateNotifierProvider: ref.watch(
+              UserPageState.userUpdateOnSubmitButtonStateNotifierProvider),
+        );
+      },
+    );
 
-  //   return widget;
-  // }
+    return widget;
+  }
 }
