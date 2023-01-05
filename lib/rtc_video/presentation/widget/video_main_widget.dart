@@ -7,6 +7,8 @@ import 'rtc_video_local_preview_widget.dart';
 import 'rtc_video_remote_preview_widget.dart';
 import 'video_sub_state.dart';
 
+final displaySizeVideoMainProvider = StateProvider((ref) => const Size(0, 0));
+
 class VideoMainWidget extends StatelessWidget {
   const VideoMainWidget({Key? key}) : super(key: key);
 
