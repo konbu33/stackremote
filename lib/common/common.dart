@@ -40,3 +40,5 @@ export './widget/progress_widget.dart';
 export './widget/progress_state.dart';
 
 export './widget/package_info_widget.dart';
+
+export './builded_callback_provider.dart';
