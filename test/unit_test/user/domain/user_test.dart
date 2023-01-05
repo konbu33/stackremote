@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stackremote/user/domain/user.dart';
 
@@ -14,6 +15,7 @@ void main() {
     const String nickName = "xxx";
     const Offset pointerPosition = Offset(10, 10);
     const Offset displayPointerPosition = Offset(20, 20);
+    const Size displaySizeVideoMain = Size(20, 20);
 
     final user = User.reconstruct(
       comment: comment,
@@ -25,6 +27,7 @@ void main() {
       nickName: nickName,
       pointerPosition: pointerPosition,
       displayPointerPosition: displayPointerPosition,
+      displaySizeVideoMain: displaySizeVideoMain,
     );
 
     test(
@@ -40,6 +43,7 @@ void main() {
       const String nickName = "";
       const Offset pointerPosition = Offset(0, 0);
       const Offset displayPointerPosition = Offset(0, 0);
+      const Size displaySizeVideoMain = Size(0, 0);
 
       // when
       final user = User.create(
@@ -56,6 +60,7 @@ void main() {
       expect(user.nickName, nickName);
       expect(user.pointerPosition, pointerPosition);
       expect(user.displayPointerPosition, displayPointerPosition);
+      expect(user.displaySizeVideoMain, displaySizeVideoMain);
     });
 
     test("reconstructファクトリメソッドでインスタンス生成した場合、各属性の値が引数の値と同じであること", () {
@@ -73,6 +78,7 @@ void main() {
       expect(user.nickName, nickName);
       expect(user.pointerPosition, pointerPosition);
       expect(user.displayPointerPosition, displayPointerPosition);
+      expect(user.displaySizeVideoMain, displaySizeVideoMain);
     });
 
     test("userの生成的コンストラクタ,プライベートコンストラクタを利用したインスタンス生成が不可なこと", () {
@@ -109,6 +115,9 @@ void main() {
       expect(userToJson["displayPointerPosition"],
           '{"dx":${user.displayPointerPosition.dx},"dy":${user.displayPointerPosition.dy}}');
 
+      expect(userToJson["displaySizeVideoMain"],
+          '{"width":${user.displaySizeVideoMain.width},"height":${user.displaySizeVideoMain.height}}');
+
       // Object <- Json
       final User userFromJson = User.fromJson(userToJson);
       expect(userFromJson.comment, user.comment);
@@ -120,6 +129,7 @@ void main() {
       expect(userFromJson.nickName, user.nickName);
       expect(userFromJson.pointerPosition, user.pointerPosition);
       expect(userFromJson.displayPointerPosition, user.displayPointerPosition);
+      expect(userFromJson.displaySizeVideoMain, user.displaySizeVideoMain);
     });
   });
 }

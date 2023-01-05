@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/rtc_video/presentation/widget/video_main_widget.dart';
 
 import '../../authentication/authentication.dart';
 import '../../channel/channel.dart';
@@ -34,6 +35,7 @@ class User with _$User {
     @Default(Offset(0, 0)) @OffsetConverter() Offset pointerPosition,
     @Default(Offset(0, 0)) @OffsetConverter() Offset displayPointerPosition,
     required int rtcVideoUid,
+    @Default(Size(0, 0)) @SizeConverter() Size displaySizeVideoMain,
   }) = _User;
 
   factory User.create({
@@ -58,6 +60,7 @@ class User with _$User {
     Offset? pointerPosition,
     Offset? displayPointerPosition,
     int? rtcVideoUid,
+    Size? displaySizeVideoMain,
   }) =>
       User._(
         comment: comment ?? "",
@@ -70,6 +73,7 @@ class User with _$User {
         pointerPosition: pointerPosition ?? const Offset(0, 0),
         displayPointerPosition: displayPointerPosition ?? const Offset(0, 0),
         rtcVideoUid: rtcVideoUid ?? 0,
+        displaySizeVideoMain: displaySizeVideoMain ?? const Size(0, 0),
       );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -107,6 +111,8 @@ class UserStateNotifier extends AutoDisposeNotifier<User> {
 
     final rtcVideoUid = RtcVideoState.localUid;
 
+    final displaySizeVideoMain = ref.watch(displaySizeVideoMainProvider);
+
     final user = User.reconstruct(
       comment: comment,
       email: email,
@@ -116,6 +122,7 @@ class UserStateNotifier extends AutoDisposeNotifier<User> {
       pointerPosition: pointerPosition,
       displayPointerPosition: displayPointerPosition,
       rtcVideoUid: rtcVideoUid,
+      displaySizeVideoMain: displaySizeVideoMain,
     );
 
     logger.d("userState: $user");

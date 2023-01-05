@@ -126,3 +126,32 @@ class FocusNodeConverter extends JsonConverter<FocusNode, String> {
     return FocusNode();
   }
 }
+
+// --------------------------------------------------
+//
+//  SizeConverter
+//
+// --------------------------------------------------
+class SizeConverter extends JsonConverter<Size, String> {
+  const SizeConverter();
+
+  @override
+  String toJson(Size object) {
+    final double width = object.width;
+    final double height = object.height;
+    final Map<String, double> jsonMap = {
+      "width": width,
+      "height": height,
+    };
+    return jsonEncode(jsonMap);
+  }
+
+  @override
+  Size fromJson(String json) {
+    final Map<String, dynamic> jsonMap = jsonDecode(json);
+    final double width = jsonMap["width"];
+    final double height = jsonMap["height"];
+
+    return Size(width, height);
+  }
+}
