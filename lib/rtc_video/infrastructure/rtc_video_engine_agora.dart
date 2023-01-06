@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-// import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
@@ -68,8 +67,6 @@ final rtcVideoEngineAgoraCreatorProvider = Provider((ref) {
     );
 
     // RTC client instance作成
-    // final engine = await RtcEngine.createWithContext(context);
-
     await engine.initialize(context);
 
     // イベントハンドラ定義
@@ -130,7 +127,6 @@ final rtcVideoEngineAgoraCreatorProvider = Provider((ref) {
     );
 
     // イベントハンドラ指定
-    // engine.setEventHandler(handler);
     engine.registerEventHandler(handler);
 
     // ビデオ有効化
@@ -180,10 +176,3 @@ class RtcVideoEngineAgoraNotifier extends Notifier<RtcEngine?> {
 final rtcVideoEngineAgoraNotifierProvider =
     NotifierProvider<RtcVideoEngineAgoraNotifier, RtcEngine?>(
         () => RtcVideoEngineAgoraNotifier());
-
-// final rtcVideoEngineAgoraStateProvider = StateProvider((ref) {
-//   final rtcVideoEngineAgoraCreator =
-//       ref.watch(rtcVideoEngineAgoraCreatorProvider);
-
-//   return rtcVideoEngineAgoraCreator();
-// });
