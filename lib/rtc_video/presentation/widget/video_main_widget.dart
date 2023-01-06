@@ -53,11 +53,11 @@ class VideoMainWidget extends StatelessWidget {
                     : RtcVideoRemotePreviewWidget(
                         remoteUid: currentUidOfVideoMain),
               ),
-              SizedBox(
-                height: 30,
-                child: Text(
-                    "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
-              ),
+              // SizedBox(
+              //   height: 30,
+              //   child: Text(
+              //       "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
+              // ),
             ],
           ),
         );
