@@ -28,7 +28,6 @@ void main() {
       //
       channelNameProvider
           .overrideWith((ref) => ref.watch(fakeChannelNameProvider)),
-      // .overrideWith((ref) => FakeRtcChannelStateNotifier()),
     ]);
 
     //
