@@ -2,7 +2,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../common/common.dart';
-import '../../domain/nick_name.dart';
+
+import '../../user.dart';
 
 class UserPageState {
   static const pageTitle = "ユーザ情報";

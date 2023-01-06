@@ -4,9 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../channel/channel.dart';
 import '../../common/common.dart';
 
-import '../domain/user.dart';
-import '../domain/user_repository.dart';
-import '../domain/users.dart';
+import '../user.dart';
 
 final firebaseFirestoreInstanceProvider = Provider((ref) {
   return FirebaseFirestore.instance;

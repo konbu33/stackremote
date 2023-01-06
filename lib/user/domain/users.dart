@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/common.dart';
-import '../usecace/user_fetch_all_usecase.dart';
-import 'user.dart';
+
+import '../user.dart';
 
 part 'users.freezed.dart';
 

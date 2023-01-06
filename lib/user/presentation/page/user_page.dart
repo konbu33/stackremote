@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
-import '../../domain/user.dart';
-import 'user_page_state.dart';
+
+import '../../user.dart';
 
 class UserPage extends HookConsumerWidget {
   const UserPage({Key? key}) : super(key: key);

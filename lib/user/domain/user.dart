@@ -8,11 +8,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../authentication/authentication.dart';
 import '../../channel/channel.dart';
 import '../../common/common.dart';
-import '../../pointer/domain/pointer_state.dart';
-import '../../rtc_video/domain/display_size_video_state.dart';
+import '../../pointer/pointer.dart';
 import '../../rtc_video/rtc_video.dart';
+
 import '../user.dart';
-import 'nick_name.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
