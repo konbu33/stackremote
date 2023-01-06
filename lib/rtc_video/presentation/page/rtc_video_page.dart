@@ -46,7 +46,7 @@ class RtcVideoPage extends HookConsumerWidget {
           children: [
             RtcVideoPageWidgets.videoMainWidget(),
             RtcVideoPageWidgets.videoSubWidget(),
-            RtcVideoPageWidgets.getUserStateWidget(),
+            RtcVideoPageWidgets.updateUsersStateWidget(),
             RtcVideoPageWidgets.attentionMessageWidget(),
             RtcVideoPageWidgets.channelLeaveProgressWidget(),
           ],
@@ -104,24 +104,17 @@ class RtcVideoPageWidgets {
   }
 
   // getUserStateWidget
-  static Widget getUserStateWidget() {
+  static Widget updateUsersStateWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      // final channelState = ref.watch(channelStateNotifierProvider);
-      // logger.d("videochannel: $channelState");
-
-      // final userState = ref.watch(userStateNotifierProvider);
-      // logger.d("videouser: $userState");
-
       // users情報取得に失敗した場合、通知する。
       final usersState = ref.watch(usersStateNotifierProvider);
-      // logger.d("videousers: $usersState");
 
       if (usersState.isGetDataError) {
         const snackBar = SnackBar(content: Text("ユーザ情報の取得に失敗しました。"));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
 
-      // localのpointerState更新時に、リモートDB上へも反映するhooks
+      // localのuserState更新時に、リモートDB上へも反映するためのプロバイダ
       ref.watch(updateUserCommentProvider);
       ref.watch(updateUserIsOnLongPressingProvider);
       ref.watch(updateUserPointerPositionProvider);
