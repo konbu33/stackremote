@@ -13,12 +13,9 @@ class SignInPageState {
   //
   //  loginIdFieldStateProvider
   //  passwordFieldStateProvider
-  //  isSignUpPagePushProvider
   //  attentionMessageProvider
   //
   // --------------------------------------------------
-  // static final loginIdFieldStateProvider =
-  //     loginIdFieldStateNotifierProviderCreator();
 
   static final loginIdFieldStateNotifierProviderOfProvider =
       StateProvider.autoDispose((ref) {
@@ -45,8 +42,6 @@ class SignInPageState {
 
   static final passwordFieldStateProviderOfProvider = StateProvider.autoDispose(
       (ref) => passwordFieldStateNotifierProviderCreator());
-
-  // static final isSignUpPagePushProvider = StateProvider((ref) => false);
 
   static final attentionMessageStateProvider =
       StateProvider.autoDispose((ref) => "");
