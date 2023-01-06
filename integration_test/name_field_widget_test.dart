@@ -46,13 +46,6 @@ void main() {
       nameFieldStateNotifierProvider: loginIdFieldStateNotifierProvider,
     );
 
-    // final LoginIdFieldStateProvider loginIdFieldStateProvider =
-    //     loginIdFieldStateNotifierProviderCreator();
-
-    // final widget = LoginIdFieldWidget(
-    //   loginIdFieldStateProvider: loginIdFieldStateProvider,
-    // );
-
     await tester.pumpWidget(
         ProviderScope(child: MaterialApp(home: Scaffold(body: widget))));
 
