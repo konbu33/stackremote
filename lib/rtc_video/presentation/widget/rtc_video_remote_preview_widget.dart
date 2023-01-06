@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../channel/channel.dart';
-import '../../../common/common.dart';
 import '../../infrastructure/rtc_video_engine_agora.dart';
 import 'rtc_video_local_preview_widget.dart';
 
@@ -33,52 +32,7 @@ class RtcVideoRemotePreviewWidget extends HookConsumerWidget {
         useAndroidSurfaceView: ref.watch(isUseAndroidSurfaceViewProvider),
       );
 
-      logger
-          .d("preview remote : data rtcVideoEngineAgora: $rtcVideoEngineAgora");
-
-      logger.d(
-          "preview remote : data useFlutterTexture: ${videoViewControllerRemote.useFlutterTexture}");
-      logger.d(
-          "preview remote : data useAndroidSurfaceView: ${videoViewControllerRemote.useAndroidSurfaceView}");
-      logger.d(
-          "preview remote : data channelId: ${videoViewControllerRemote.connection.channelId}");
-      logger.d(
-          "preview remote : data localUid: ${videoViewControllerRemote.connection.localUid}");
-
       return AgoraVideoView(controller: videoViewControllerRemote);
-
-      // return rtcVideoEngineAgora.when(data: (rtcEngine) {
-      //   //
-      //   final videoViewControllerRemote = VideoViewController.remote(
-      //     rtcEngine: rtcEngine,
-      //     canvas: VideoCanvas(uid: remoteUid),
-      //     connection: RtcConnection(channelId: channelName),
-      //     useFlutterTexture: ref.watch(isUseFlutterTextureProvider),
-      //     useAndroidSurfaceView: ref.watch(isUseAndroidSurfaceViewProvider),
-      //   );
-
-      //   logger.d(
-      //       "preview remote : data useFlutterTexture: ${videoViewControllerRemote.useFlutterTexture}");
-      //   logger.d(
-      //       "preview remote : data useAndroidSurfaceView: ${videoViewControllerRemote.useAndroidSurfaceView}");
-      //   logger.d(
-      //       "preview remote : data channelId: ${videoViewControllerRemote.connection.channelId}");
-      //   logger.d(
-      //       "preview remote : data localUid: ${videoViewControllerRemote.connection.localUid}");
-
-      //   logger.d(
-      //       "preview remote : data rtcEngine: ${videoViewControllerRemote.rtcEngine}");
-
-      //   return AgoraVideoView(controller: videoViewControllerRemote);
-      // }, error: (error, stackTrace) {
-      //   logger.d("preview remote : error ");
-
-      //   return Text("error: $error, stackTrace: $stackTrace");
-      // }, loading: () {
-      //   logger.d("preview remote : loading");
-
-      //   return const CircularProgressIndicator();
-      // });
     });
   }
 }

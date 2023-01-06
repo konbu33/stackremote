@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../common/common.dart';
 import '../../infrastructure/rtc_video_engine_agora.dart';
 
 class RtcVideoLocalPreviewWidget extends StatelessWidget {
@@ -17,24 +16,12 @@ class RtcVideoLocalPreviewWidget extends StatelessWidget {
       final rtcVideoEngineAgora =
           ref.watch(rtcVideoEngineAgoraNotifierProvider);
 
-      logger
-          .d("preview local : data rtcVideoEngineAgora: $rtcVideoEngineAgora");
-
       final videoViewControllerLocal = VideoViewController(
         rtcEngine: rtcVideoEngineAgora!,
         canvas: const VideoCanvas(uid: 0),
         useFlutterTexture: ref.watch(isUseFlutterTextureProvider),
         useAndroidSurfaceView: ref.watch(isUseAndroidSurfaceViewProvider),
       );
-
-      logger.d(
-          "preview local : data useFlutterTexture: ${videoViewControllerLocal.useFlutterTexture}");
-      logger.d(
-          "preview local : data useAndroidSurfaceView: ${videoViewControllerLocal.useAndroidSurfaceView}");
-      logger.d(
-          "preview local : data channelId: ${videoViewControllerLocal.connection.channelId}");
-      logger.d(
-          "preview local : data localUid: ${videoViewControllerLocal.connection.localUid}");
 
       return AgoraVideoView(controller: videoViewControllerLocal);
     });
