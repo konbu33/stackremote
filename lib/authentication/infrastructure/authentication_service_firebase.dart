@@ -1,4 +1,3 @@
-// import 'package:firebase_analytics/firebase_analytics.dart';
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
@@ -38,7 +37,6 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   @override
   Stream<FirebaseAuthUser> authStateChanges() {
     final stream = firebaseAuthInstance.authStateChanges();
-    // return stream;
 
     final streamTransformer =
         StreamTransformer<firebase_auth.User?, FirebaseAuthUser>.fromHandlers(
@@ -89,7 +87,6 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       throw StackremoteException(
         plugin: e.plugin,
         code: e.code,
-        // message: firebaseAuthExceptionEnum.messageToJapanese(e),
         message: FirebaseAuthExceptionEnum.messageToJapanese(e),
         stackTrace: e.stackTrace,
       );
@@ -238,14 +235,6 @@ class AuthenticationServiceFirebase implements AuthenticationService {
     try {
       final res = await firebaseAuthInstance.signInWithEmailAndPassword(
           email: email, password: password);
-
-      // improve: FirebaseAnalyticsのコードは分離した方がテストしやすいと感じている。
-      // await FirebaseAnalytics.instance.logEvent(
-      //   name: 'login',
-      //   parameters: {
-      //     'method': 'signIn',
-      //   },
-      // );
 
       return res;
     } on firebase_auth.FirebaseAuthException catch (e) {
