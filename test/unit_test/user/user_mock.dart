@@ -116,39 +116,8 @@ class FakeFirebaseAuthUserStateNotifier extends Notifier<FirebaseAuthUser>
   void updateIsSignIn(bool value) {}
 }
 
-// --------------------------------------------------
-//
-// FakeRtcChannelState
-//
-// --------------------------------------------------
-// メソッドを利用する場合は、Mockで済みそう。メンバ変数を利用する場合は、Fakeが必要そう。
-// class FakeRtcChannelState extends Fake implements RtcChannelState {
-//   FakeRtcChannelState();
-
-//   @override
-//   final String channelName = "fake_cnannel_name";
-// }
-
 final fakeChannelNameProvider =
     StateProvider<String>((ref) => "fake_channel_name");
-
-// class FakeRtcChannelStateNotifier extends StateNotifier<RtcChannelState>
-//     implements RtcChannelStateNotifier {
-//   FakeRtcChannelStateNotifier() : super(FakeRtcChannelState());
-
-//   @override
-//   void changeJoined(bool value) {}
-//   @override
-//   void setRemoteUid(int value) {}
-//   @override
-//   void setTempLogConfig() {}
-//   @override
-//   void initial() {}
-//   @override
-//   void updateChannelName(String value) {}
-//   @override
-//   void updateToken(String value) {}
-// }
 
 // --------------------------------------------------
 //
