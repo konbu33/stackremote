@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -52,7 +54,8 @@ final progressStateChannelLeaveProvider = Provider((ref) {
     try {
       final channelLeaveClearUserInDBUsecase =
           ref.read(channelLeaveClearUserInDBUsecaseProvider);
-      await channelLeaveClearUserInDBUsecase();
+
+      unawaited(channelLeaveClearUserInDBUsecase());
 
       //
     } on Exception catch (e, s) {
