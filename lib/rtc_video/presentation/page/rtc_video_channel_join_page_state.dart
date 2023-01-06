@@ -22,10 +22,6 @@ class RtcVideoChannelJoinPageState {
   //  channelJoinSubmitStateNotifierProvider
   //
   // --------------------------------------------------
-
-  // static final channelNameFieldStateNotifierProvider =
-  //     channelNameFieldStateNotifierProviderCreator();
-
   static final channelNameFieldStateNotifierProviderOfProvider =
       StateProvider((ref) {
     NameFieldStateNotifierProvider
@@ -47,9 +43,6 @@ class RtcVideoChannelJoinPageState {
 
     return channelNameFieldStateNotifierProviderCreator();
   });
-
-  // static final channelJoinSubmitStateNotifierProvider =
-  //     channelJoinSubmitStateNotifierProviderCreator();
 
   // --------------------------------------------------
   //
