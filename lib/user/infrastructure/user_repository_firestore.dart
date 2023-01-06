@@ -6,10 +6,6 @@ import '../../common/common.dart';
 
 import '../user.dart';
 
-final firebaseFirestoreInstanceProvider = Provider((ref) {
-  return FirebaseFirestore.instance;
-});
-
 final userRepositoryFirebaseProvider = Provider<UserRepository>((ref) {
   final firebaseFirestoreInstance =
       ref.watch(firebaseFirestoreInstanceProvider);

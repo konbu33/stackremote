@@ -2,11 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import 'package:stackremote/channel/channel.dart';
-import 'package:stackremote/user/domain/user.dart';
-import 'package:stackremote/user/domain/user_repository.dart';
-import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
-import 'package:stackremote/user/domain/users.dart';
+import 'package:stackremote/common/common.dart';
+import 'package:stackremote/user/user.dart';
 
 import '../../../common/dotenvtest.dart';
 import '../user_mock.dart';

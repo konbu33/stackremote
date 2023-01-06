@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../common/common.dart';
 import '../user.dart';
-
-typedef JsonMap = Map<String, dynamic>;
 
 abstract class UserRepository {
   UserRepository({

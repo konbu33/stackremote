@@ -1,8 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../domain/channel.dart';
-import '../domain/channel_repository.dart';
-import '../infrastructure/channel_repository_firestore.dart';
+import '../channel.dart';
 
 final channelGetUsecaseProvider = Provider((ref) {
   final ChannelRepository channelRepository =

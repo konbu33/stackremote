@@ -2,12 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/common.dart';
-import '../domain/channel.dart';
-import '../domain/channel_repository.dart';
 
-final firebaseFirestoreInstanceProvider = Provider((ref) {
-  return FirebaseFirestore.instance;
-});
+import '../channel.dart';
 
 final channelRepositoryFirestoreProvider = Provider<ChannelRepository>((ref) {
   final firebaseFirestoreInstance =

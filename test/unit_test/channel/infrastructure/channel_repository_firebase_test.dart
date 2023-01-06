@@ -4,9 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:stackremote/channel/channel.dart';
-import 'package:stackremote/common/stackremote_exception.dart';
-import 'package:stackremote/channel/domain/channel_repository.dart';
-import 'package:stackremote/channel/infrastructure/channel_repository_firestore.dart';
+import 'package:stackremote/common/common.dart';
 
 void main() {
   late FakeFirebaseFirestore fakeFirebaseFirestore;
