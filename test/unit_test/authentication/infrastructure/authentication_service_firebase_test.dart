@@ -7,9 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/authentication/authentication.dart';
 import 'package:stackremote/common/common.dart';
 
-// class MockAuthenticationService extends Mock implements AuthenticationService {}
-// final AuthenticationService authenticationService = MockAuthenticationService();
-
 void main() {
   const String email = "xxx@test.com";
   const String password = "xxx";
@@ -231,8 +228,6 @@ void main() {
       'SignIn -> Error: user-not-found, too-many-requests',
       () async {
         // given
-        // const String code = "user-not-found";
-        // const String code = "too-many-requests";
         const List<String> codeList = [
           "user-not-found",
           "too-many-requests",
