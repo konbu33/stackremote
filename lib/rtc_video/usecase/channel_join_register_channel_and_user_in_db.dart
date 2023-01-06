@@ -17,22 +17,6 @@ final channelJoinRegisterChannelAndUserInDBUsecaseProvider =
       // チャンネルのデータ取得
       final channelGetUsecase = ref.watch(channelGetUsecaseProvider);
       await channelGetUsecase();
-      // final channel = await channelGetUsecase();
-
-      // // チャンネル情報をアプリ内の状態として保持
-      // final channelStateNotifier =
-      //     ref.watch(channelStateNotifierProvider.notifier);
-      // channelStateNotifier.setChannelState(channel);
-
-      // // チャンネルのホストユーザか否か確認、ホストユーザ以外の場合
-      // final channelState = ref.watch(channelStateNotifierProvider);
-      // final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);
-
-      // if (channelState.hostUserEmail != firebaseAuthUser.email) {
-      //   final userStateNotifier = ref.watch(userStateNotifierProvider.notifier);
-      //   userStateNotifier.updateIsHost(false);
-      // }
-
       //
     } on StackremoteException catch (e) {
       logger.d("$e");
@@ -55,16 +39,6 @@ final channelJoinRegisterChannelAndUserInDBUsecaseProvider =
       // チャンネル登録
       final channelSetUsecase = ref.watch(channelSetUsecaseProvider);
       await channelSetUsecase();
-
-      // // チャンネルのデータ取得
-      // final channelGetUsecase = ref.watch(channelGetUsecaseProvider);
-      // final channel = await channelGetUsecase();
-
-      // // チャンネルが存在する場合
-      // // チャンネル情報をアプリ内の状態として保持
-      // final channelStateNotifier =
-      //     ref.watch(channelStateNotifierProvider.notifier);
-      // channelStateNotifier.setChannelState(channel);
     }
 
     // channel情報取得し、アプリ内で保持
