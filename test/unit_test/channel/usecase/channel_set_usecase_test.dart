@@ -7,7 +7,6 @@ import 'package:stackremote/channel/channel.dart';
 import 'package:stackremote/channel/domain/channel_repository.dart';
 import 'package:stackremote/channel/infrastructure/channel_repository_firestore.dart';
 import 'package:stackremote/common/logger.dart';
-// import 'package:stackremote/rtc_video/rtc_video.dart';
 
 import '../../user/user_mock.dart';
 
@@ -32,9 +31,6 @@ void main() {
       //
       channelNameProvider
           .overrideWith((ref) => ref.watch(fakeChannelNameProvider)),
-
-      // rtcChannelStateNotifierProvider
-      //     .overrideWith((ref) => FakeRtcChannelStateNotifier()),
 
       //
       firebaseAuthUserStateNotifierProvider
