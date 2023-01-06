@@ -4,12 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/presentation/widget/video_main_widget.dart';
 
 import '../../authentication/authentication.dart';
 import '../../channel/channel.dart';
 import '../../common/common.dart';
 import '../../pointer/domain/pointer_state.dart';
+import '../../rtc_video/domain/display_size_video_state.dart';
 import '../../rtc_video/rtc_video.dart';
 import '../user.dart';
 import 'nick_name.dart';
@@ -111,7 +111,8 @@ class UserStateNotifier extends AutoDisposeNotifier<User> {
 
     final rtcVideoUid = RtcVideoState.localUid;
 
-    final displaySizeVideoMain = ref.watch(displaySizeVideoMainProvider);
+    final displaySizeVideoMain =
+        ref.watch(DisplaySizeVideoState.displaySizeVideoMainProvider);
 
     final user = User.reconstruct(
       comment: comment,
@@ -188,5 +189,22 @@ final updateUserPointerPositionProvider = Provider.autoDispose((ref) async {
   await userUpdateUsecase(
     pointerPosition: pointerPosition,
     displayPointerPosition: displayPointerPosition,
+  );
+});
+
+// --------------------------------------------------
+//
+// updateUserDisplaySizeVideoMainProvider
+//
+// --------------------------------------------------
+final updateUserDisplaySizeVideoMainProvider =
+    Provider.autoDispose((ref) async {
+  final displaySizeVideoMain = ref.watch(
+      userStateNotifierProvider.select((value) => value.displaySizeVideoMain));
+
+  final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
+
+  await userUpdateUsecase(
+    displaySizeVideoMain: displaySizeVideoMain,
   );
 });

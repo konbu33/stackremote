@@ -42,6 +42,7 @@ class RtcVideoPage extends HookConsumerWidget {
       ),
       body: PointerOverlayWidget(
         child: Stack(
+          alignment: Alignment.topCenter,
           children: [
             RtcVideoPageWidgets.videoMainWidget(),
             RtcVideoPageWidgets.videoSubWidget(),
@@ -124,6 +125,7 @@ class RtcVideoPageWidgets {
       ref.watch(updateUserCommentProvider);
       ref.watch(updateUserIsOnLongPressingProvider);
       ref.watch(updateUserPointerPositionProvider);
+      ref.watch(updateUserDisplaySizeVideoMainProvider);
 
       return const SizedBox();
     }));

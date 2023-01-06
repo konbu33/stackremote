@@ -1,49 +1,13 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../common/common.dart';
 import '../../../user/user.dart';
 
 import 'rtc_video_local_preview_widget.dart';
 import 'rtc_video_remote_preview_widget.dart';
+import '../../domain/display_size_video_state.dart';
 import 'video_sub_state.dart';
-
-final displaySizeVideoMainProvider = StateProvider((ref) => const Size(0, 0));
-
-class DisplaySizeVideoMainMin extends Notifier<Size> {
-  @override
-  Size build() {
-    return ref.watch(displaySizeVideoMainProvider);
-  }
-
-  //
-  void setDisplaySizeVideoMainMin() {
-    Size getMinSize() {
-      final usersState = ref.watch(usersStateNotifierProvider);
-
-      final widthList = usersState.users.map((user) {
-        return user.displaySizeVideoMain.width;
-      }).toList();
-
-      final minWidth = widthList.reduce(min);
-
-      final heightList = usersState.users.map((user) {
-        return user.displaySizeVideoMain.height;
-      }).toList();
-
-      final minHeight = heightList.reduce(min);
-
-      return Size(minWidth, minHeight);
-    }
-
-    state = getMinSize();
-  }
-}
-
-final displaySizeVideoMainMinProvider =
-    NotifierProvider<DisplaySizeVideoMainMin, Size>(
-        () => DisplaySizeVideoMainMin());
 
 class VideoMainWidget extends StatelessWidget {
   const VideoMainWidget({Key? key}) : super(key: key);
@@ -54,27 +18,50 @@ class VideoMainWidget extends StatelessWidget {
       final currentUidOfVideoMain = ref.watch(videoSubStateNotifierProvider
           .select((value) => value.currentUidOfVideoMain));
 
-      // final videoSubLayerAlignment = ref.watch(videoSubStateNotifierProvider
-      //     .select((value) => value.videoSubLayerAlignment));
-
-      // final isOnTapIgnore = ref.watch(
-      //     videoSubStateNotifierProvider.select((value) => value.isOnTapIgnore));
-
       final localUid = ref.watch(
           userStateNotifierProvider.select((value) => value.rtcVideoUid));
 
-      return Column(
-        children: [
-          Expanded(
-            child: currentUidOfVideoMain == localUid
-                ? const RtcVideoLocalPreviewWidget()
-                : RtcVideoRemotePreviewWidget(remoteUid: currentUidOfVideoMain),
+      return LayoutBuilder(builder: (context, constraints) {
+        final size = Size(
+          constraints.maxWidth.floorToDouble(),
+          constraints.maxHeight.floorToDouble(),
+        );
+
+        void setDisplaySizeVideoMain(Size? size) {
+          if (size == null) return;
+
+          ref
+              .read(DisplaySizeVideoState.displaySizeVideoMainProvider.notifier)
+              .update((state) => size);
+        }
+
+        final buildedCallback = ref.watch(buildedCallbackProvider);
+
+        buildedCallback<Size>(callback: setDisplaySizeVideoMain, data: size);
+
+        final displaySizeVideoMainMin =
+            ref.watch(DisplaySizeVideoState.displaySizeVideoMainMinProvider);
+
+        return SizedBox(
+          height: displaySizeVideoMainMin.height,
+          width: displaySizeVideoMainMin.width,
+          child: Column(
+            children: [
+              Expanded(
+                child: currentUidOfVideoMain == localUid
+                    ? const RtcVideoLocalPreviewWidget()
+                    : RtcVideoRemotePreviewWidget(
+                        remoteUid: currentUidOfVideoMain),
+              ),
+              SizedBox(
+                height: 30,
+                child: Text(
+                    "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
+              ),
+            ],
           ),
-          // Text("currentUidOfVideoMain: $currentUidOfVideoMain"),
-          // Text("videoSubLayerAlignment: $videoSubLayerAlignment"),
-          // Text("isOnTapIgnore: $isOnTapIgnore"),
-        ],
-      );
+        );
+      });
     });
   }
 }
