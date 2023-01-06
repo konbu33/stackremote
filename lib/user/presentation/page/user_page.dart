@@ -18,7 +18,6 @@ class UserPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: UserPageWidgets.pageTitleWidget(),
-        automaticallyImplyLeading: true,
       ),
       body: ScaffoldBodyBaseLayoutWidget(
         focusNodeList: [nickNameFieldState.focusNode],
@@ -56,8 +55,9 @@ class UserPageWidgets {
     //
     final Widget widget = Consumer(
       builder: (context, ref, child) {
-        final userState = ref.watch(userStateNotifierProvider);
-        return Text("現在のニックネーム：${userState.nickName}");
+        final nickName = ref
+            .watch(userStateNotifierProvider.select((value) => value.nickName));
+        return Text("現在のニックネーム：$nickName");
       },
     );
 

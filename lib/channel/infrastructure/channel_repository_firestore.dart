@@ -40,12 +40,14 @@ class ChannelRepositoryFirestore implements ChannelRepository {
   Future<Channel> get({
     required String channelName,
   }) async {
+    // channelNameが空文字だった場合
+    if (channelName.isEmpty) return Channel.create();
+
     try {
       final snapshot = await ref.doc(channelName).get();
 
       // チャンネルが存在しない場合
       if (!snapshot.exists) {
-        // throw Exception();
         throw FirebaseException(
           plugin: "repository",
           code: "not_exists",

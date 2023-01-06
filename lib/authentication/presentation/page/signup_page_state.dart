@@ -8,13 +8,11 @@ import '../widget/progress_state_signup.dart';
 class SignUpPageState {
   // --------------------------------------------------
   //
-  //   loginIdFieldStateProvider
-  //   passwordFieldStateProvider
+  //   loginIdFieldStateNotifierProviderOfProvider
+  //   passwordFieldStateProviderOfProvider
   //   attentionMessageProvider
   //
   // --------------------------------------------------
-  // static final loginIdFieldStateProvider =
-  //     loginIdFieldStateNotifierProviderCreator();
 
   static final loginIdFieldStateNotifierProviderOfProvider =
       StateProvider.autoDispose((ref) {

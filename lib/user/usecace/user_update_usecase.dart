@@ -25,6 +25,7 @@ final userUpdateUsecaseProvider = Provider((ref) {
     Offset? pointerPosition,
     Offset? displayPointerPosition,
     int? rtcVideoUid,
+    Size? displaySizeVideoMain,
   }) async {
     final Map<String, dynamic> data = {};
 
@@ -60,6 +61,16 @@ final userUpdateUsecaseProvider = Provider((ref) {
     }
 
     if (rtcVideoUid != null) data.addAll({...data, "rtcVideoUid": rtcVideoUid});
+
+    if (displaySizeVideoMain != null) {
+      data.addAll(
+        {
+          ...data,
+          "displaySizeVideoMain":
+              const SizeConverter().toJson(displaySizeVideoMain),
+        },
+      );
+    }
 
     await userRepository.update(
       email: firebaseAuthUser.email,

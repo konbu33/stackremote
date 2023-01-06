@@ -68,16 +68,13 @@ class UserPageState {
                 .update((state) => "$dateTimeNow: $message");
           }
 
-          // const message = "ユーザ情報更新中";
-          // setMessage(message);
-
           // --------------------------------------------------
           //
           // ユーザ情報更新
           //
           // --------------------------------------------------
           try {
-            final nickNameFieldStateNotifierProvider = ref.watch(
+            final nickNameFieldStateNotifierProvider = ref.read(
                 UserPageState.nickNameFieldStateNotifierProviderOfProvider);
 
             final nickName = ref
@@ -88,7 +85,7 @@ class UserPageState {
             // ユーザ情報更新
             ref.read(NickName.nickNameProvider.notifier).update((state) {
               final nickNameCreator =
-                  ref.watch(NickName.nickNameCreatorProvider);
+                  ref.read(NickName.nickNameCreatorProvider);
 
               return nickNameCreator(nickName);
             });

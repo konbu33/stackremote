@@ -79,14 +79,11 @@ class UserRepositoryFireBase implements UserRepository {
     // Firestore Data Stream Listen
     try {
       final Stream<QuerySnapshot<JsonMap>> snapshotStream = ref.snapshots();
-      // final Stream<QuerySnapshot<JsonMap>> snapshotStream = ref.snapshots();
 
       Stream<Users> transferStream(
           Stream<QuerySnapshot<JsonMap>> snapshotStream) async* {
         // Out snapshot from Stream
         await for (final snapshot in snapshotStream) {
-          // for (final change in snapshot.docChanges) {
-          //   if (change.type != DocumentChangeType.modified) {
           // from Firestore Snapshot to User Type Object Collection.
           final docDatas = snapshot.docs.map(((doc) {
             final docData = doc.data();
@@ -96,8 +93,6 @@ class UserRepositoryFireBase implements UserRepository {
           final Users users = Users.reconstruct(users: docDatas);
           yield users;
         }
-        //   }
-        // }
       }
 
       return transferStream(snapshotStream);

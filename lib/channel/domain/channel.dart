@@ -57,13 +57,6 @@ class ChannelStateNotifier extends Notifier<Channel> {
     logger.d("channelState: $channel");
     return channel;
   }
-
-  // void setChannelState(Channel channel) {
-  //   state = state.copyWith(
-  //     createAt: channel.createAt,
-  //     hostUserEmail: channel.hostUserEmail,
-  //   );
-  // }
 }
 
 // --------------------------------------------------

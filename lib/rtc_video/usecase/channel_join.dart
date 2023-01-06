@@ -20,7 +20,6 @@ final channelJoinUsecaseProvider = Provider((ref) {
     await rtcVideoRepository.channelJoin(
       token: rtcIdToken,
       channelName: channelName,
-      // channelMediaOptions: null,
       optionalUid: RtcVideoState.localUid,
     );
   }

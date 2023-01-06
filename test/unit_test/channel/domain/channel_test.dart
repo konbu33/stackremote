@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
-// import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stackremote/channel/domain/channel.dart';
 
 void main() {
@@ -97,40 +96,4 @@ void main() {
 
     //
   });
-
-/*
-  group('ChannelStateNotifier', () {
-    //
-    test('setChannelStateメソッドの引数で指定された値になること', () {
-      // given
-
-      final container = ProviderContainer();
-      late Channel channelState;
-
-      channelState = container.read(channelStateNotifierProvider);
-      expect(channelState.hostUserEmail, equals(""));
-      expect(channelState.createAt, equals(null));
-
-      const String hostUserEmail = "xxx@test.com";
-      Timestamp? createAt = Timestamp.now();
-      final channel = Channel.create(
-        hostUserEmail: hostUserEmail,
-        createAt: createAt,
-      );
-
-      // when
-      final channelStateNotifier =
-          container.read(channelStateNotifierProvider.notifier);
-      channelStateNotifier.setChannelState(channel);
-
-      // then
-      channelState = container.read(channelStateNotifierProvider);
-      expect(channelState.hostUserEmail, equals(hostUserEmail));
-      expect(channelState.createAt, equals(createAt));
-    });
-
-    //
-  });
-
-*/
 }

@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nested/nested.dart';
 
 import 'authentication/authentication.dart';
-// import 'common/common.dart';
 import 'menu/menu.dart';
 
 // improve:　このlayerはauthentication側に凝集した方が良い可能性あり。

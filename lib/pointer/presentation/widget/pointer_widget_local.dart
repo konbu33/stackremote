@@ -41,7 +41,6 @@ class PointerWidgetLocal extends HookConsumerWidget {
               ),
             ),
           ),
-          // const Icon(CupertinoIcons.arrow_up_left),
           SizedBox(
             width: 100,
             child: TextFormField(
@@ -53,7 +52,6 @@ class PointerWidgetLocal extends HookConsumerWidget {
 
               decoration: InputDecoration(
                 // ユーザ名
-                // labelText: state.name,
                 labelText: nickName ?? "no name",
               ),
 

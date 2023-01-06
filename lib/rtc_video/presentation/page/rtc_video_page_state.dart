@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/usecase/switch_camera.dart';
 
 import '../../../common/common.dart';
+import '../../usecase/switch_camera.dart';
 import '../widget/progress_state_channel_leave.dart';
 
 class RtcVideoPageState {

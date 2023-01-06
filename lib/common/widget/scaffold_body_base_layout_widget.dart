@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../common.dart';
+
 class ScaffoldBodyBaseLayoutWidget extends StatelessWidget {
   const ScaffoldBodyBaseLayoutWidget({
     Key? key,
@@ -18,15 +20,37 @@ class ScaffoldBodyBaseLayoutWidget extends StatelessWidget {
           focusNode.unfocus();
         }
       },
-      child: Container(
-        color: Colors.transparent,
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: children,
-        ),
+      child: Column(
+        children: [
+          Expanded(
+            child: ScaffoldBodyBaseLayoutWidgetParts.mainWidget(children),
+          ),
+          ScaffoldBodyBaseLayoutWidgetParts.packageInfoWidget(),
+        ],
       ),
     );
+  }
+}
+
+class ScaffoldBodyBaseLayoutWidgetParts {
+  // packageInfoWidget
+  static Widget mainWidget(List<Widget> children) {
+    Widget widget = Container(
+      color: Colors.transparent,
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 40),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: children,
+      ),
+    );
+
+    return widget;
+  }
+
+  // packageInfoWidget
+  static Widget packageInfoWidget() {
+    Widget widget = const PackageInfoWidget();
+    return widget;
   }
 }

@@ -19,8 +19,6 @@ export './widget/scaffold_body_base_layout_widget.dart';
 
 export './json_converter.dart';
 
-export './widget/snackbar_widget.dart';
-
 export './widget/appbar_action_icon_state.dart';
 export './widget/appbar_action_icon_widget.dart';
 
@@ -38,3 +36,7 @@ export './validation/validator.dart';
 
 export './widget/progress_widget.dart';
 export './widget/progress_state.dart';
+
+export './widget/package_info_widget.dart';
+
+export './builded_callback_provider.dart';

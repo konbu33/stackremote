@@ -82,8 +82,5 @@ final usersStreamProvider = StreamProvider<Users>((ref) {
   final userFetchAllUsecase = ref.watch(userFetchAllUsecaseProvider);
   final usersStream = userFetchAllUsecase();
 
-  // throw const StackremoteException(
-  //     plugin: "get_user_list", message: "ユーザ情報の取得に失敗しました。");
-
   return usersStream;
 });
