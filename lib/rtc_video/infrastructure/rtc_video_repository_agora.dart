@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-// import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -52,7 +51,6 @@ class RtcVideoRepositoryAgora implements RtcVideoRepository {
   Future<void> channelJoin({
     required String token,
     required String channelName,
-    // required ChannelMediaOptions channelMediaOptions,
     required int optionalUid,
   }) async {
     try {
