@@ -68,9 +68,6 @@ class UserPageState {
                 .update((state) => "$dateTimeNow: $message");
           }
 
-          // const message = "ユーザ情報更新中";
-          // setMessage(message);
-
           // --------------------------------------------------
           //
           // ユーザ情報更新
