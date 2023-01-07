@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../common/validation.dart';
+import '../../../common/common.dart';
 
 part 'password_field_state.freezed.dart';
 
