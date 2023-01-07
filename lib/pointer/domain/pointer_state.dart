@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../authentication/authentication.dart';
 import '../../common/common.dart';
-import '../../user/domain/nick_name.dart';
+import '../../user/user.dart';
 
 part 'pointer_state.freezed.dart';
 part 'pointer_state.g.dart';
