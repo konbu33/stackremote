@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../../authentication.dart';
+import '../../authentication_routing_layer.dart';
 import '../widget/password_field_state.dart';
 import '../widget/progress_state_signin.dart';
 

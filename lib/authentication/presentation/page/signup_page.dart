@@ -3,8 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../../authentication.dart';
-
+import '../widget/password_field_widget.dart';
 import 'signup_page_state.dart';
 
 class SignUpPage extends HookConsumerWidget {

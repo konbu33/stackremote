@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
-import '../authentication.dart';
+import '../domain/firebase_auth_user.dart';
 
 abstract class AuthenticationService {
   AuthenticationService({

@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 
 import '../widget/password_field_widget.dart';
-
 import 'signin_page_state.dart';
 
 class SignInPage extends HookConsumerWidget {

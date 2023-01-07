@@ -2,6 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../common/common.dart';
+
 import '../../usecase/current_user_send_verify_email.dart';
 import '../page/wait_email_verified_page_state.dart';
 

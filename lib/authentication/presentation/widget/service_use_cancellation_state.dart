@@ -1,6 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
+
 import 'progress_state_service_use_cancellation.dart';
 
 class ServiceUseCancellationState {
