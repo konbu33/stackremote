@@ -98,7 +98,11 @@ class ChannelRepositoryFirestore implements ChannelRepository {
   }) async {
     try {
       final jsonData = channel.toJson();
-      await ref.doc(channelName).set(jsonData);
+
+      await ref.doc(channelName).set({
+        ...jsonData,
+        'createAt': FieldValue.serverTimestamp(),
+      });
 
       //
     } on FirebaseException catch (e) {

@@ -189,9 +189,23 @@ class UserRepositoryFireBase implements UserRepository {
   Future<void> update({
     required String email,
     required Map<String, dynamic> data,
+    required bool isJoinedAt,
+    required bool isLeavedAt,
   }) async {
     try {
-      await ref.doc(email).update(data);
+      final Map<String, dynamic> registerData = data;
+
+      if (isJoinedAt) {
+        registerData.addAll(
+            {...registerData, "joinedAt": FieldValue.serverTimestamp()});
+      }
+
+      if (isLeavedAt) {
+        registerData.addAll(
+            {...registerData, "leavedAt": FieldValue.serverTimestamp()});
+      }
+
+      await ref.doc(email).update(registerData);
 
       //
     } on FirebaseException catch (e) {

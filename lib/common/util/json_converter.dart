@@ -53,60 +53,60 @@ class TextEditingControllerConverter
   }
 }
 
-// --------------------------------------------------
-//
-//  FirestoreTimestampConverter
-//
-// --------------------------------------------------
-class FirestoreTimestampConverter extends JsonConverter<Timestamp?, dynamic> {
-  const FirestoreTimestampConverter();
+// // --------------------------------------------------
+// //
+// //  FirestoreTimestampConverter
+// //
+// // --------------------------------------------------
+// class FirestoreTimestampConverter extends JsonConverter<Timestamp?, dynamic> {
+//   const FirestoreTimestampConverter();
 
-  @override
-  String? toJson(Timestamp? object) {
-    if (object == null) return null;
-    // return object.toString();
+//   @override
+//   String? toJson(Timestamp? object) {
+//     if (object == null) return null;
+//     // return object.toString();
 
-    // Timestampのままだと、String <-> Timestampの変換がうまくできないため、
-    // TimestampをDateTimeのStringとして保持する。
-    return object.toDate().toString();
-  }
+//     // Timestampのままだと、String <-> Timestampの変換がうまくできないため、
+//     // TimestampをDateTimeのStringとして保持する。
+//     return object.toDate().toString();
+//   }
 
-  @override
-  Timestamp? fromJson(dynamic json) {
-    if (json is Timestamp) return json;
+//   @override
+//   Timestamp? fromJson(dynamic json) {
+//     if (json is Timestamp) return json;
 
-    // Timestampのままだと、String <-> Timestampの変換がうまくできないため、
-    // TimestampをDateTimeのStringとして保持する。
-    if (json is String) {
-      final datetime = DateTime.parse(json);
-      final timestamp = Timestamp.fromDate(datetime);
-      return timestamp;
-    }
+//     // Timestampのままだと、String <-> Timestampの変換がうまくできないため、
+//     // TimestampをDateTimeのStringとして保持する。
+//     if (json is String) {
+//       final datetime = DateTime.parse(json);
+//       final timestamp = Timestamp.fromDate(datetime);
+//       return timestamp;
+//     }
 
-    return null;
-  }
-}
+//     return null;
+//   }
+// }
 
-// --------------------------------------------------
-//
-//  CreatedAtTimestampConverter
-//
-// --------------------------------------------------
-class CreatedAtTimestampConverter extends JsonConverter<Timestamp?, dynamic> {
-  const CreatedAtTimestampConverter();
+// // --------------------------------------------------
+// //
+// //  CreatedAtTimestampConverter
+// //
+// // --------------------------------------------------
+// class CreatedAtTimestampConverter extends JsonConverter<Timestamp?, dynamic> {
+//   const CreatedAtTimestampConverter();
 
-  @override
-  dynamic toJson(Timestamp? object) {
-    if (object == null) return FieldValue.serverTimestamp();
-    return object;
-  }
+//   @override
+//   dynamic toJson(Timestamp? object) {
+//     if (object == null) return FieldValue.serverTimestamp();
+//     return object;
+//   }
 
-  @override
-  Timestamp? fromJson(dynamic json) {
-    if (json is Timestamp) return json;
-    return null;
-  }
-}
+//   @override
+//   Timestamp? fromJson(dynamic json) {
+//     if (json is Timestamp) return json;
+//     return null;
+//   }
+// }
 
 // --------------------------------------------------
 //
@@ -153,5 +153,36 @@ class SizeConverter extends JsonConverter<Size, String> {
     final double height = jsonMap["height"];
 
     return Size(width, height);
+  }
+}
+
+// --------------------------------------------------
+//
+//  DateTimeConverter
+//
+// --------------------------------------------------
+class DateTimeConverter extends JsonConverter<DateTime?, dynamic> {
+  const DateTimeConverter();
+
+  @override
+  String? toJson(DateTime? object) {
+    if (object == null) return null;
+
+    return object.toString();
+  }
+
+  @override
+  DateTime? fromJson(dynamic json) {
+    if (json is Timestamp) {
+      final dateTime = json.toDate();
+      return dateTime;
+    }
+
+    if (json is String) {
+      final datetime = DateTime.parse(json);
+      return datetime;
+    }
+
+    return null;
   }
 }

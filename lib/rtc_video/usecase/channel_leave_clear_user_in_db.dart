@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -9,9 +8,9 @@ final channelLeaveClearUserInDBUsecaseProvider = Provider((ref) {
 
   Future<void> execute() async {
     final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
-    await userUpdateUsecase<FieldValue>(
+    await userUpdateUsecase(
       comment: "",
-      leavedAt: FieldValue.serverTimestamp(),
+      isLeavedAt: true,
       isOnLongPressing: false,
       pointerPosition: const Offset(0, 0),
       displayPointerPosition: const Offset(0, 0),

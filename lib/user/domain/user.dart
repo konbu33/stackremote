@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +28,8 @@ class User with _$User {
     required String email,
     @Default(true) bool isHost,
     @Default(false) bool isOnLongPressing,
-    @Default(null) @FirestoreTimestampConverter() Timestamp? joinedAt,
-    @Default(null) @FirestoreTimestampConverter() Timestamp? leavedAt,
+    @Default(null) @DateTimeConverter() DateTime? joinedAt,
+    @Default(null) @DateTimeConverter() DateTime? leavedAt,
     @Default("") String nickName,
     @Default(Offset(0, 0)) @OffsetConverter() Offset pointerPosition,
     @Default(Offset(0, 0)) @OffsetConverter() Offset displayPointerPosition,
@@ -54,8 +53,8 @@ class User with _$User {
     String? email,
     bool? isHost,
     bool? isOnLongPressing,
-    Timestamp? joinedAt,
-    Timestamp? leavedAt,
+    DateTime? joinedAt,
+    DateTime? leavedAt,
     String? nickName,
     Offset? pointerPosition,
     Offset? displayPointerPosition,

@@ -13,14 +13,13 @@ final userUpdateUsecaseProvider = Provider((ref) {
   final UserRepository userRepository =
       ref.watch(userRepositoryFirebaseProvider);
 
-  Future<void> execute<T>({
+  Future<void> execute({
     String? comment,
     String? email,
     bool? isHost,
     bool? isOnLongPressing,
-    // T は Timestamp or Timestamp を想定
-    T? joinedAt,
-    T? leavedAt,
+    bool? isJoinedAt,
+    bool? isLeavedAt,
     String? nickName,
     Offset? pointerPosition,
     Offset? displayPointerPosition,
@@ -36,9 +35,6 @@ final userUpdateUsecaseProvider = Provider((ref) {
     if (isOnLongPressing != null) {
       data.addAll({...data, "isOnLongPressing": isOnLongPressing});
     }
-
-    if (joinedAt != null) data.addAll({...data, "joinedAt": joinedAt});
-    if (leavedAt != null) data.addAll({...data, "leavedAt": leavedAt});
 
     if (nickName != null) data.addAll({...data, "nickName": nickName});
     if (pointerPosition != null) {
@@ -75,6 +71,8 @@ final userUpdateUsecaseProvider = Provider((ref) {
     await userRepository.update(
       email: firebaseAuthUser.email,
       data: data,
+      isJoinedAt: isJoinedAt ?? false,
+      isLeavedAt: isLeavedAt ?? false,
     );
   }
 

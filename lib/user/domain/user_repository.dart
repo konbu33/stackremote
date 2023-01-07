@@ -35,5 +35,7 @@ abstract class UserRepository {
   Future<void> update({
     required String email,
     required Map<String, dynamic> data,
+    required bool isJoinedAt,
+    required bool isLeavedAt,
   });
 }
