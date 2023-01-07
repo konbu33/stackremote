@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
+import '../../../pointer/pointer.dart';
 import '../../../user/user.dart';
 
 import 'rtc_video_local_preview_widget.dart';
@@ -15,12 +16,6 @@ class VideoMainWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
-      final currentUidOfVideoMain = ref.watch(videoSubStateNotifierProvider
-          .select((value) => value.currentUidOfVideoMain));
-
-      final localUid = ref.watch(
-          userStateNotifierProvider.select((value) => value.rtcVideoUid));
-
       return LayoutBuilder(builder: (context, constraints) {
         final size = Size(
           constraints.maxWidth.floorToDouble(),
@@ -36,15 +31,31 @@ class VideoMainWidget extends StatelessWidget {
         }
 
         final buildedCallback = ref.watch(buildedCallbackProvider);
-
         buildedCallback<Size>(callback: setDisplaySizeVideoMain, data: size);
 
-        final displaySizeVideoMainMin =
-            ref.watch(DisplaySizeVideoState.displaySizeVideoMainMinProvider);
+        return VideoMainWidgetParts.videoMainWidget();
+      });
+    });
+  }
+}
 
-        return SizedBox(
-          height: displaySizeVideoMainMin.height,
-          width: displaySizeVideoMainMin.width,
+class VideoMainWidgetParts {
+  // videoMainWidget
+  static videoMainWidget() {
+    final widget = Consumer(builder: (context, ref, child) {
+      final currentUidOfVideoMain = ref.watch(videoSubStateNotifierProvider
+          .select((value) => value.currentUidOfVideoMain));
+
+      final localUid = ref.watch(
+          userStateNotifierProvider.select((value) => value.rtcVideoUid));
+
+      final displaySizeVideoMainMin =
+          ref.watch(DisplaySizeVideoState.displaySizeVideoMainMinProvider);
+
+      return SizedBox(
+        height: displaySizeVideoMainMin.height,
+        width: displaySizeVideoMainMin.width,
+        child: PointerOverlayWidget(
           child: Column(
             children: [
               Expanded(
@@ -60,8 +71,10 @@ class VideoMainWidget extends StatelessWidget {
               // ),
             ],
           ),
-        );
-      });
+        ),
+      );
     });
+
+    return widget;
   }
 }
