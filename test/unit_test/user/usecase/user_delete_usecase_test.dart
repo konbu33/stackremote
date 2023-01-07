@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
-import 'package:stackremote/user/usecace/user_delete_usecase.dart';
+
+import 'package:stackremote/user/user.dart';
 
 import '../user_mock.dart';
 

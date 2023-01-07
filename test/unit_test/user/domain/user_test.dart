@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stackremote/user/domain/user.dart';
+
+import 'package:stackremote/user/user.dart';
 
 void main() {
   group("userインスタンス生成テスト", () {
