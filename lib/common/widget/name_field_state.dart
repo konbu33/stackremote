@@ -3,7 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../common.dart';
+import '../validation/validation.dart';
+import '../validation/validator.dart';
 
 part 'name_field_state.freezed.dart';
 

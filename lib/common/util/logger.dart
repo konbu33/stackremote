@@ -1,6 +1,6 @@
 import 'package:logger/logger.dart';
 
-import 'common.dart';
+import 'release_env.dart';
 
 // --------------------------------------------------
 //

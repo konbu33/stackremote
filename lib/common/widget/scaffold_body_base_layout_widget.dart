@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common.dart';
+import 'package_info_widget.dart';
 
 class ScaffoldBodyBaseLayoutWidget extends StatelessWidget {
   const ScaffoldBodyBaseLayoutWidget({
