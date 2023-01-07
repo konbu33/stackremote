@@ -19,17 +19,17 @@ class DisplaySizeVideoState {
     Size getMinSize() {
       final usersState = ref.watch(usersStateNotifierProvider);
 
-      if (usersState.users.isEmpty) {
+      final joinedUserList = usersState.users.where((user) {
+        // join中のユーザリスト作成
+        return user.leavedAt == null;
+      }).toList();
+
+      if (joinedUserList.isEmpty) {
         final displaySizeVideoMain =
             ref.watch(DisplaySizeVideoState.displaySizeVideoMainProvider);
 
         return displaySizeVideoMain;
       }
-
-      final joinedUserList = usersState.users.where((user) {
-        // join中のユーザリスト作成
-        return user.leavedAt == null;
-      }).toList();
 
       final widthList = joinedUserList.map((user) {
         return user.displaySizeVideoMain.width;
