@@ -4,7 +4,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../channel/channel.dart';
 import '../../common/common.dart';
 
-import '../user.dart';
+import '../domain/user.dart';
+import '../domain/user_repository.dart';
+import '../domain/users.dart';
 
 final userRepositoryFirebaseProvider = Provider<UserRepository>((ref) {
   final firebaseFirestoreInstance =

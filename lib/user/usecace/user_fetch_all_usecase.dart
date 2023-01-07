@@ -1,6 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../user.dart';
+import '../domain/user_repository.dart';
+import '../domain/users.dart';
+import '../infrastructure/user_repository_firestore.dart';
 
 final userFetchAllUsecaseProvider = Provider((ref) {
   final UserRepository userRepository =

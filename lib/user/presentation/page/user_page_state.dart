@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../../../common/common.dart';
 
-import '../../user.dart';
+import '../../domain/nick_name.dart';
 
 class UserPageState {
   static const pageTitle = "ユーザ情報";

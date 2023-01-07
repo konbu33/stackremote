@@ -3,8 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../authentication/authentication.dart';
 import '../../common/common.dart';
-
-import '../user.dart';
+import '../domain/user_repository.dart';
+import '../infrastructure/user_repository_firestore.dart';
 
 final userUpdateUsecaseProvider = Provider((ref) {
   final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);

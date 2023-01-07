@@ -11,7 +11,8 @@ import '../../common/common.dart';
 import '../../pointer/pointer.dart';
 import '../../rtc_video/rtc_video.dart';
 
-import '../user.dart';
+import '../usecace/user_update_usecase.dart';
+import 'nick_name.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';

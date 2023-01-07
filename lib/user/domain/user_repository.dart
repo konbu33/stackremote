@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../common/common.dart';
-import '../user.dart';
+
+import 'user.dart';
+import 'users.dart';
 
 abstract class UserRepository {
   UserRepository({
