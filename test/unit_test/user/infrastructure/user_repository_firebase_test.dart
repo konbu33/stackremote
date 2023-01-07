@@ -64,7 +64,7 @@ void main() {
               expect(resUser.isOnLongPressing, user.isOnLongPressing);
 
               // expect(resUser.joinedAt, user.joinedAt);
-              expect(resUser.joinedAt, isA<Timestamp?>());
+              expect(resUser.joinedAt, isA<DateTime?>());
               expect(resUser.joinedAt, isNot(equals(user.joinedAt)));
 
               expect(resUser.leavedAt, user.leavedAt);
@@ -86,7 +86,7 @@ void main() {
         expect(resUser.isHost, user.isHost);
         expect(resUser.isOnLongPressing, user.isOnLongPressing);
 
-        expect(resUser.joinedAt, isA<Timestamp?>());
+        expect(resUser.joinedAt, isA<DateTime?>());
         expect(resUser.joinedAt, isNot(equals(user.joinedAt)));
 
         expect(resUser.leavedAt, user.leavedAt);
@@ -180,7 +180,7 @@ void main() {
         expect(resUser.isHost, srcUser.isHost);
         expect(resUser.isOnLongPressing, srcUser.isOnLongPressing);
 
-        expect(resUser.joinedAt, isA<Timestamp?>());
+        expect(resUser.joinedAt, isA<DateTime?>());
         expect(resUser.joinedAt, isNot(equals(srcUser.joinedAt)));
 
         expect(resUser.leavedAt, srcUser.leavedAt);
@@ -214,7 +214,7 @@ void main() {
         expect(resAddUser.isHost, addUser.isHost);
         expect(resAddUser.isOnLongPressing, addUser.isOnLongPressing);
 
-        expect(resAddUser.joinedAt, isA<Timestamp?>());
+        expect(resAddUser.joinedAt, isA<DateTime?>());
         expect(resAddUser.joinedAt, isNot(equals(addUser.joinedAt)));
 
         expect(resAddUser.leavedAt, addUser.leavedAt);
@@ -232,6 +232,8 @@ void main() {
     userRepository.update(
       email: updateUser.email,
       data: {"nickName": updateUser.nickName},
+      isJoinedAt: false,
+      isLeavedAt: false,
     );
 
     final resUpdateUserStream = userRepository.fetchById(
@@ -246,7 +248,7 @@ void main() {
         expect(resUpdateUser.isHost, addUser.isHost);
         expect(resUpdateUser.isOnLongPressing, addUser.isOnLongPressing);
 
-        expect(resUpdateUser.joinedAt, isA<Timestamp?>());
+        expect(resUpdateUser.joinedAt, isA<DateTime?>());
         expect(resUpdateUser.joinedAt, isNot(equals(addUser.joinedAt)));
 
         expect(resUpdateUser.leavedAt, addUser.leavedAt);
@@ -280,7 +282,7 @@ void main() {
       expect(resAddUser.isHost, addUser.isHost);
       expect(resAddUser.isOnLongPressing, addUser.isOnLongPressing);
 
-      expect(resAddUser.joinedAt, isA<Timestamp?>());
+      expect(resAddUser.joinedAt, isA<DateTime?>());
       expect(resAddUser.joinedAt, isNot(equals(addUser.joinedAt)));
 
       expect(resAddUser.leavedAt, addUser.leavedAt);

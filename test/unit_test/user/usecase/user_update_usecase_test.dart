@@ -33,7 +33,12 @@ void main() {
     when(() => userRepository.update(
           email: any(named: "email"),
           data: any(named: "data"),
+          isJoinedAt: false,
+          isLeavedAt: false,
         )).thenAnswer((invocation) => mockResponse);
+
+    const isJoinedAt = false;
+    const isLeavedAt = false;
 
     // when
     // ユースケース実行
@@ -42,8 +47,8 @@ void main() {
       email: user.email,
       isHost: user.isHost,
       isOnLongPressing: user.isOnLongPressing,
-      joinedAt: user.joinedAt,
-      leavedAt: user.leavedAt,
+      isJoinedAt: isJoinedAt,
+      isLeavedAt: isLeavedAt,
       nickName: user.nickName,
       pointerPosition: user.pointerPosition,
     );
@@ -59,6 +64,14 @@ void main() {
           data: captureAny(
             named: "data",
             that: isA<Map<String, dynamic>>(),
+          ),
+          isJoinedAt: captureAny(
+            named: "isJoinedAt",
+            that: isA<bool>(),
+          ),
+          isLeavedAt: captureAny(
+            named: "isLeavedAt",
+            that: isA<bool>(),
           ),
         )).captured;
 

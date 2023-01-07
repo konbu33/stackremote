@@ -11,8 +11,8 @@ void main() {
     const String email = "xxx@test.com";
     const bool isHost = false;
     const bool isOnLongPressing = true;
-    Timestamp? joinedAt = Timestamp.now();
-    Timestamp? leavedAt = Timestamp.now();
+    DateTime? joinedAt = DateTime.now();
+    DateTime? leavedAt = DateTime.now();
     const String nickName = "xxx";
     const Offset pointerPosition = Offset(10, 10);
     const Offset displayPointerPosition = Offset(20, 20);
@@ -104,10 +104,8 @@ void main() {
       expect(userToJson["isHost"], user.isHost);
       expect(userToJson["isOnLongPressing"], user.isOnLongPressing);
 
-      expect(userToJson["joinedAt"].toString(),
-          user.joinedAt!.toDate().toString());
-      expect(userToJson["leavedAt"].toString(),
-          user.leavedAt!.toDate().toString());
+      expect(userToJson["joinedAt"].toString(), user.joinedAt!.toString());
+      expect(userToJson["leavedAt"].toString(), user.leavedAt!.toString());
 
       expect(userToJson["nickName"], user.nickName);
       expect(userToJson["pointerPosition"],
@@ -125,8 +123,8 @@ void main() {
       expect(userFromJson.email, user.email);
       expect(userFromJson.isHost, user.isHost);
       expect(userFromJson.isOnLongPressing, user.isOnLongPressing);
-      expect(userFromJson.joinedAt!.toDate(), user.joinedAt!.toDate());
-      expect(userFromJson.leavedAt!.toDate(), user.leavedAt!.toDate());
+      expect(userFromJson.joinedAt, user.joinedAt);
+      expect(userFromJson.leavedAt, user.leavedAt);
       expect(userFromJson.nickName, user.nickName);
       expect(userFromJson.pointerPosition, user.pointerPosition);
       expect(userFromJson.displayPointerPosition, user.displayPointerPosition);

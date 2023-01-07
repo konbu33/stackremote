@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:stackremote/channel/channel.dart';
@@ -24,7 +23,7 @@ void main() {
 
       // when
       const String hostUserEmail = "xxx@test.com";
-      Timestamp? createAt = Timestamp.now();
+      final createAt = DateTime.now();
       final channel = Channel.create(
         hostUserEmail: hostUserEmail,
         createAt: createAt,
@@ -48,7 +47,7 @@ void main() {
     test('toJsonとfromJsonで相互変換可能なこと', () {
       // given
       const String hostUserEmail = "xxx@test.com";
-      Timestamp? createAt = Timestamp.now();
+      final createAt = DateTime.now();
       final channel = Channel.create(
         hostUserEmail: hostUserEmail,
         createAt: createAt,
@@ -61,7 +60,7 @@ void main() {
       final channelToJson = channel.toJson();
       expect(channelToJson["hostUserEmail"], equals(hostUserEmail));
       // expect(channelToJson["createAt"], isA<FieldValue>());
-      expect(channelToJson["createAt"], equals(createAt));
+      expect(channelToJson["createAt"], equals(createAt.toString()));
 
       // then
       final channelFromJson = Channel.fromJson(channelToJson);
@@ -73,7 +72,7 @@ void main() {
     test('toJsonとfromJsonで相互変換可能なこと。createAtがNullのパターン', () {
       // given
       const String hostUserEmail = "xxx@test.com";
-      const Timestamp? createAt = null;
+      const DateTime? createAt = null;
       final channel = Channel.create(
         hostUserEmail: hostUserEmail,
         createAt: createAt,
@@ -85,7 +84,7 @@ void main() {
       // when
       final channelToJson = channel.toJson();
       expect(channelToJson["hostUserEmail"], equals(hostUserEmail));
-      expect(channelToJson["createAt"], isA<FieldValue>());
+      expect(channelToJson["createAt"], isA<DateTime?>());
       // expect(channelToJson["createAt"], equals(createAt));
 
       // then
