@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/common.dart';
 
-import '../channel.dart';
+import '../usecace/channel_get_usecase.dart';
 
 part 'channel.freezed.dart';
 part 'channel.g.dart';

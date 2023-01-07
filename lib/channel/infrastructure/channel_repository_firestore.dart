@@ -3,7 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/common.dart';
 
-import '../channel.dart';
+import '../domain/channel.dart';
+import '../domain/channel_repository.dart';
 
 final channelRepositoryFirestoreProvider = Provider<ChannelRepository>((ref) {
   final firebaseFirestoreInstance =

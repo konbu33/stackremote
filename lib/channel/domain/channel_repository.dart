@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../common/common.dart';
-import '../channel.dart';
+
+import 'channel.dart';
 
 abstract class ChannelRepository {
   ChannelRepository({
