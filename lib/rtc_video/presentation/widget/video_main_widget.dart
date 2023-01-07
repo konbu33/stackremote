@@ -5,9 +5,9 @@ import '../../../common/common.dart';
 import '../../../pointer/pointer.dart';
 import '../../../user/user.dart';
 
+import '../../domain/display_size_video_state.dart';
 import 'rtc_video_local_preview_widget.dart';
 import 'rtc_video_remote_preview_widget.dart';
-import '../../domain/display_size_video_state.dart';
 import 'video_sub_state.dart';
 
 class VideoMainWidget extends StatelessWidget {

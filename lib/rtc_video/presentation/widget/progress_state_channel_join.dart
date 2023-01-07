@@ -4,15 +4,18 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../../channel/domain/channel.dart';
+import '../../../channel/channel.dart';
 import '../../../common/common.dart';
-import '../../usecase/channel_leave.dart';
-import '../../usecase/channel_leave_clear_user_in_db.dart';
-import '../page/rtc_video_channel_join_page_state.dart';
-import '../../usecase/channel_join.dart';
-import '../../usecase/create_rtc_id_token.dart';
-import '../../usecase/channel_join_register_channel_and_user_in_db.dart';
+
 import '../../domain/rtc_video_state.dart';
+
+import '../../usecase/channel_join_register_channel_and_user_in_db.dart';
+import '../../usecase/channel_join.dart';
+import '../../usecase/channel_leave_clear_user_in_db.dart';
+import '../../usecase/channel_leave.dart';
+import '../../usecase/create_rtc_id_token.dart';
+
+import '../page/rtc_video_channel_join_page_state.dart';
 
 // --------------------------------------------------
 //

@@ -7,7 +7,6 @@ import '../../../user/user.dart';
 import 'clipped_video_widget.dart';
 import 'drag_target_widget.dart';
 import 'draggable_widget.dart';
-
 import 'rtc_video_local_preview_widget.dart';
 import 'rtc_video_remote_preview_widget.dart';
 import 'video_sub_state.dart';

@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // improve: pointerのモジュールをimportしている点、疎結合に改善可能か検討の余地あり。
 import '../../../channel/channel.dart';
 import '../../../common/common.dart';
-
 import '../../../user/user.dart';
 
 import '../widget/video_main_widget.dart';

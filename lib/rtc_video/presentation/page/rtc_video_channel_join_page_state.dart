@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
+
 import '../widget/progress_state_channel_join.dart';
 import '../widget/progress_state_signout.dart';
 
