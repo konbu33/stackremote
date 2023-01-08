@@ -62,7 +62,7 @@ class FirebaseAuthUserStateNotifier extends Notifier<FirebaseAuthUser> {
       return FirebaseAuthUser.create(email: "");
     });
 
-    logger.d(firebaseAuthUser);
+    logger.d("firebaseAuthUser: $firebaseAuthUser");
 
     return firebaseAuthUser;
   }

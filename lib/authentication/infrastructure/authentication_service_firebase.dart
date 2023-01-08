@@ -49,6 +49,8 @@ class AuthenticationServiceFirebase implements AuthenticationService {
         if (fbuser == null) {
           user = FirebaseAuthUser.reconstruct(isSignIn: false);
         } else {
+          currentUserRefreshToken();
+
           user = FirebaseAuthUser.reconstruct(
             email: fbuser.email ?? "",
             emailVerified: fbuser.emailVerified,
@@ -136,6 +138,31 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       final firebase_auth.User user = await currentUserReload();
 
       return user.emailVerified;
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      logger.d("$e");
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        code: e.code,
+        message: FirebaseAuthExceptionEnum.messageToJapanese(e),
+        stackTrace: e.stackTrace,
+      );
+    }
+  }
+
+  // --------------------------------------------------
+  //
+  //   currentUserRefreshToken
+  //
+  // --------------------------------------------------
+  @override
+  Future<String> currentUserRefreshToken() async {
+    try {
+      final firebase_auth.User user = currentUserGet();
+
+      // final newToken = user.getIdToken();
+      final newToken = user.refreshToken;
+      return newToken ?? "";
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
 
