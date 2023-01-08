@@ -127,12 +127,11 @@ flutter:
   assets:
     - .env
     - assets/images/
-    - assets/images/background_image.png
-    - assets/images/background_image_figma.png
-    - assets/images/image_figma.png
-    - assets/images/image_figma.png
-    - assets/images/background_image_cloud_white.png
     - assets/images/background_image_cloud_pink.png
+    - assets/images/background_image_cloud_white.png
+    - assets/images/background_image_figma.png
+    - assets/images/background_image.png
+    - assets/images/image_figma.png
 
 flutter_gen:
   output: lib/common/ # Optional (default: lib/gen/)
