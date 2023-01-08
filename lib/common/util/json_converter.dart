@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -156,12 +155,43 @@ class SizeConverter extends JsonConverter<Size, String> {
   }
 }
 
+// // --------------------------------------------------
+// //
+// //  DateTimeConverter
+// //
+// // --------------------------------------------------
+// class DateTimeConverter extends JsonConverter<DateTime?, dynamic> {
+//   const DateTimeConverter();
+
+//   @override
+//   String? toJson(DateTime? object) {
+//     if (object == null) return null;
+
+//     return object.toString();
+//   }
+
+//   @override
+//   DateTime? fromJson(dynamic json) {
+//     if (json is Timestamp) {
+//       final dateTime = json.toDate();
+//       return dateTime;
+//     }
+
+//     if (json is String) {
+//       final datetime = DateTime.parse(json);
+//       return datetime;
+//     }
+
+//     return null;
+//   }
+// }
+
 // --------------------------------------------------
 //
 //  DateTimeConverter
 //
 // --------------------------------------------------
-class DateTimeConverter extends JsonConverter<DateTime?, dynamic> {
+class DateTimeConverter extends JsonConverter<DateTime?, String?> {
   const DateTimeConverter();
 
   @override
@@ -172,17 +202,9 @@ class DateTimeConverter extends JsonConverter<DateTime?, dynamic> {
   }
 
   @override
-  DateTime? fromJson(dynamic json) {
-    if (json is Timestamp) {
-      final dateTime = json.toDate();
-      return dateTime;
-    }
+  DateTime? fromJson(String? json) {
+    if (json == null) return null;
 
-    if (json is String) {
-      final datetime = DateTime.parse(json);
-      return datetime;
-    }
-
-    return null;
+    return DateTime.parse(json);
   }
 }

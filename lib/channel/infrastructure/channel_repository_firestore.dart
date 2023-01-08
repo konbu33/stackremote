@@ -30,6 +30,30 @@ class ChannelRepositoryFirestore implements ChannelRepository {
 
   // --------------------------------------------------
   //
+  // docDataToChannel
+  //
+  // --------------------------------------------------
+  Channel docDataToChannel(JsonMap docData) {
+    //
+    String? timestampToDateTimeString(Timestamp? timestamp) {
+      if (timestamp == null) return null;
+      return timestamp.toDate().toString();
+    }
+
+    final createAt =
+        timestampToDateTimeString(docData["createAt"] as Timestamp?);
+
+    final jsonData = {
+      ...docData,
+      "createAt": createAt,
+    };
+
+    final channel = Channel.fromJson(jsonData);
+    return channel;
+  }
+
+  // --------------------------------------------------
+  //
   // get
   //
   // --------------------------------------------------
@@ -53,10 +77,9 @@ class ChannelRepositoryFirestore implements ChannelRepository {
 
         // チャンネルが存在する場合
       } else {
-        // チャンネルのホストユーザのemailを取得
-        final data = snapshot.data();
+        final docData = snapshot.data();
 
-        if (data == null) {
+        if (docData == null) {
           throw FirebaseException(
             plugin: "repository",
             code: "no_data",
@@ -64,7 +87,8 @@ class ChannelRepositoryFirestore implements ChannelRepository {
           );
         }
 
-        final channel = Channel.fromJson(data);
+        final channel = docDataToChannel(docData);
+
         return channel;
       }
 
