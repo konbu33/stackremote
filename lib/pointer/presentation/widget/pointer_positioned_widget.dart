@@ -5,7 +5,7 @@ import '../../domain/pointer_state.dart';
 import 'pointer_widget_local.dart';
 import 'pointer_widget_remote.dart';
 
-class PointerPositionedWidget extends HookConsumerWidget {
+class PointerPositionedWidget extends ConsumerWidget {
   const PointerPositionedWidget({
     super.key,
     this.comment,

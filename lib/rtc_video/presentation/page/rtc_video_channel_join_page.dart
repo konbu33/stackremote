@@ -7,7 +7,7 @@ import '../../../menu/menu.dart';
 import '../../infrastructure/rtc_video_engine_agora.dart';
 import 'rtc_video_channel_join_page_state.dart';
 
-class RtcVideoChannelJoinPage extends HookConsumerWidget {
+class RtcVideoChannelJoinPage extends ConsumerWidget {
   const RtcVideoChannelJoinPage({super.key});
 
   @override

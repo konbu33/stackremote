@@ -6,7 +6,7 @@ import '../../../common/common.dart';
 import '../widget/password_field_widget.dart';
 import 'signin_page_state.dart';
 
-class SignInPage extends HookConsumerWidget {
+class SignInPage extends ConsumerWidget {
   const SignInPage({super.key});
 
   @override

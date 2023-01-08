@@ -9,7 +9,7 @@ import 'presentation/page/signin_page.dart';
 import 'presentation/page/signup_page.dart';
 import 'presentation/page/wait_email_verified_page.dart';
 
-class AuthenticationRoutingLayer extends HookConsumerWidget {
+class AuthenticationRoutingLayer extends ConsumerWidget {
   const AuthenticationRoutingLayer({super.key});
 
   @override

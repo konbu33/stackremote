@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../domain/pointer_state.dart';
 import 'pointer_overlay_state.dart';
 
-class PointerWidgetLocal extends HookConsumerWidget {
+class PointerWidgetLocal extends ConsumerWidget {
   const PointerWidgetLocal({
     super.key,
     this.nickName,

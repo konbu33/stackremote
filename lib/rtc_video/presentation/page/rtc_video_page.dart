@@ -10,7 +10,7 @@ import '../widget/video_main_widget.dart';
 import '../widget/video_sub_widget.dart';
 import 'rtc_video_page_state.dart';
 
-class RtcVideoPage extends HookConsumerWidget {
+class RtcVideoPage extends ConsumerWidget {
   const RtcVideoPage({super.key});
 
 // ---------------------------------------------------

@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'appbar_action_icon_state.dart';
 
-class AppbarAcitonIconWidget extends HookConsumerWidget {
+class AppbarAcitonIconWidget extends ConsumerWidget {
   const AppbarAcitonIconWidget({
     super.key,
     required this.appbarActionIconStateNotifierProvider,
