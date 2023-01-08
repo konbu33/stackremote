@@ -6,9 +6,9 @@ import 'pointer_widget_list.dart';
 
 class PointerOverlayWidget extends HookConsumerWidget {
   const PointerOverlayWidget({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

@@ -5,9 +5,9 @@ import 'appbar_action_icon_state.dart';
 
 class AppbarAcitonIconWidget extends HookConsumerWidget {
   const AppbarAcitonIconWidget({
-    Key? key,
+    super.key,
     required this.appbarActionIconStateNotifierProvider,
-  }) : super(key: key);
+  });
 
   final AppbarActionIconStateNotifierProvider
       appbarActionIconStateNotifierProvider;

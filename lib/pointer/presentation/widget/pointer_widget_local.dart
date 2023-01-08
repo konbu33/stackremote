@@ -6,9 +6,9 @@ import 'pointer_overlay_state.dart';
 
 class PointerWidgetLocal extends HookConsumerWidget {
   const PointerWidgetLocal({
-    Key? key,
+    super.key,
     this.nickName,
-  }) : super(key: key);
+  });
 
   final String? nickName;
 

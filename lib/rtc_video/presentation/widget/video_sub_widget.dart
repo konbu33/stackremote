@@ -12,7 +12,7 @@ import 'rtc_video_remote_preview_widget.dart';
 import 'video_sub_state.dart';
 
 class VideoSubWidget extends StatelessWidget {
-  const VideoSubWidget({Key? key}) : super(key: key);
+  const VideoSubWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -8,7 +8,7 @@ import '../rtc_video/rtc_video.dart';
 import '../user/user.dart';
 
 class MenuRoutingLayer extends HookConsumerWidget {
-  const MenuRoutingLayer({Key? key}) : super(key: key);
+  const MenuRoutingLayer({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

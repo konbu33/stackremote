@@ -5,10 +5,9 @@ import '../assets.gen.dart';
 
 class DesignBackgroundImageLayer extends SingleChildStatelessWidget {
   const DesignBackgroundImageLayer({
-    Key? key,
+    super.key,
     Widget? child,
   }) : super(
-          key: key,
           child: child,
         );
 

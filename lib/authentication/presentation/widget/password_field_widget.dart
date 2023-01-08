@@ -5,9 +5,9 @@ import 'password_field_state.dart';
 
 class PasswordFieldWidget extends HookConsumerWidget {
   const PasswordFieldWidget({
-    Key? key,
+    super.key,
     required this.passwordFieldStateProvider,
-  }) : super(key: key);
+  });
 
   final PasswordFieldStateProvider passwordFieldStateProvider;
 

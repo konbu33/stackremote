@@ -7,7 +7,7 @@ import '../../domain/user.dart';
 import 'user_page_state.dart';
 
 class UserPage extends HookConsumerWidget {
-  const UserPage({Key? key}) : super(key: key);
+  const UserPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

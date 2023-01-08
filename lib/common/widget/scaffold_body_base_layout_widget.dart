@@ -4,10 +4,10 @@ import 'package_info_widget.dart';
 
 class ScaffoldBodyBaseLayoutWidget extends StatelessWidget {
   const ScaffoldBodyBaseLayoutWidget({
-    Key? key,
+    super.key,
     required this.children,
     required this.focusNodeList,
-  }) : super(key: key);
+  });
 
   final List<Widget> children;
   final List<FocusNode> focusNodeList;

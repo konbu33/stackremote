@@ -11,7 +11,7 @@ import '../widget/video_sub_widget.dart';
 import 'rtc_video_page_state.dart';
 
 class RtcVideoPage extends HookConsumerWidget {
-  const RtcVideoPage({Key? key}) : super(key: key);
+  const RtcVideoPage({super.key});
 
 // ---------------------------------------------------
 //

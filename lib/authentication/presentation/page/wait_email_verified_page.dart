@@ -7,7 +7,7 @@ import '../../usecase/check_email_verified.dart';
 import 'wait_email_verified_page_state.dart';
 
 class WaitEmailVerifiedPage extends HookConsumerWidget {
-  const WaitEmailVerifiedPage({Key? key}) : super(key: key);
+  const WaitEmailVerifiedPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

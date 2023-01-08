@@ -10,7 +10,7 @@ import 'presentation/page/signup_page.dart';
 import 'presentation/page/wait_email_verified_page.dart';
 
 class AuthenticationRoutingLayer extends HookConsumerWidget {
-  const AuthenticationRoutingLayer({Key? key}) : super(key: key);
+  const AuthenticationRoutingLayer({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

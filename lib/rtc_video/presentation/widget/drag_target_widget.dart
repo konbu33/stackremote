@@ -6,9 +6,9 @@ typedef VideoSubLayerAlignmentProvider
 
 class DragTargetWidget extends StatelessWidget {
   const DragTargetWidget({
-    Key? key,
+    super.key,
     required this.updateVideoSubLayerAlignment,
-  }) : super(key: key);
+  });
 
   final void Function(AlignmentDirectional) updateVideoSubLayerAlignment;
 

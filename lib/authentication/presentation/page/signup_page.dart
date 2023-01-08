@@ -7,7 +7,7 @@ import '../widget/password_field_widget.dart';
 import 'signup_page_state.dart';
 
 class SignUpPage extends HookConsumerWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

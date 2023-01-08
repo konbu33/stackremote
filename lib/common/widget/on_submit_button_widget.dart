@@ -5,9 +5,9 @@ import 'on_submit_button_state.dart';
 
 class OnSubmitButtonWidget extends HookConsumerWidget {
   const OnSubmitButtonWidget({
-    Key? key,
+    super.key,
     required this.onSubmitButtonStateNotifierProvider,
-  }) : super(key: key);
+  });
 
   final OnSubmitButtonStateNotifierProvider onSubmitButtonStateNotifierProvider;
 

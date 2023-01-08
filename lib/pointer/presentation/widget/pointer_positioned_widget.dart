@@ -7,13 +7,13 @@ import 'pointer_widget_remote.dart';
 
 class PointerPositionedWidget extends HookConsumerWidget {
   const PointerPositionedWidget({
-    Key? key,
+    super.key,
     this.comment,
     this.email,
     this.dx,
     this.dy,
     this.nickName,
-  }) : super(key: key);
+  });
 
   final String? comment;
   final String? email;
