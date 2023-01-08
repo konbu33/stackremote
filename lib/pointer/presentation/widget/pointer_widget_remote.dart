@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class PointerWidgetRemote extends HookConsumerWidget {
+class PointerWidgetRemote extends StatelessWidget {
   const PointerWidgetRemote({
     super.key,
     this.comment,
@@ -12,7 +11,7 @@ class PointerWidgetRemote extends HookConsumerWidget {
   final String? nickName;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return GestureDetector(
       child: Row(
         // Pointerを左上に固定

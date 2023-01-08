@@ -6,11 +6,11 @@ import '../../../common/common.dart';
 import '../../usecase/check_email_verified.dart';
 import 'wait_email_verified_page_state.dart';
 
-class WaitEmailVerifiedPage extends HookConsumerWidget {
+class WaitEmailVerifiedPage extends StatelessWidget {
   const WaitEmailVerifiedPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(WaitEmailVerifiedPageState.pageTitle),

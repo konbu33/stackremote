@@ -7,7 +7,7 @@ import '../../../channel/channel.dart';
 import '../../infrastructure/rtc_video_engine_agora.dart';
 import 'rtc_video_local_preview_widget.dart';
 
-class RtcVideoRemotePreviewWidget extends HookConsumerWidget {
+class RtcVideoRemotePreviewWidget extends StatelessWidget {
   const RtcVideoRemotePreviewWidget({
     super.key,
     required this.remoteUid,
@@ -16,7 +16,7 @@ class RtcVideoRemotePreviewWidget extends HookConsumerWidget {
   final int remoteUid;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
       //
 

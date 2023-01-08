@@ -5,11 +5,11 @@ import '../../../common/common.dart';
 
 import 'service_use_cancellation_state.dart';
 
-class ServiceUseCancellationWidget extends HookConsumerWidget {
+class ServiceUseCancellationWidget extends StatelessWidget {
   const ServiceUseCancellationWidget({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return AlertDialog(
       title: ServiceUseCancellationWidgetParts.titleWidget(),
       content: Column(
