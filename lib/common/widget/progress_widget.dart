@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'progress_state.dart';
 
-class ProgressWidget extends HookConsumerWidget {
+class ProgressWidget extends ConsumerWidget {
   const ProgressWidget({
     super.key,
     required this.progressStateNotifierProvider,

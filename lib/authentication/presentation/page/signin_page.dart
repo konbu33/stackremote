@@ -4,11 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 
 import '../widget/password_field_widget.dart';
-
 import 'signin_page_state.dart';
 
-class SignInPage extends HookConsumerWidget {
-  const SignInPage({Key? key}) : super(key: key);
+class SignInPage extends ConsumerWidget {
+  const SignInPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -35,7 +35,6 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   hooks_riverpod: ^2.1.1
-  flutter_hooks: ^0.18.5+1
   go_router: ^6.0.0
   agora_rtc_engine: ^6.1.0
 
@@ -127,12 +126,11 @@ flutter:
   assets:
     - .env
     - assets/images/
-    - assets/images/background_image.png
-    - assets/images/background_image_figma.png
-    - assets/images/image_figma.png
-    - assets/images/image_figma.png
-    - assets/images/background_image_cloud_white.png
     - assets/images/background_image_cloud_pink.png
+    - assets/images/background_image_cloud_white.png
+    - assets/images/background_image_figma.png
+    - assets/images/background_image.png
+    - assets/images/image_figma.png
 
 flutter_gen:
   output: lib/common/ # Optional (default: lib/gen/)

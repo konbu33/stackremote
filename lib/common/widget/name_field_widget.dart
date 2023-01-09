@@ -3,11 +3,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'name_field_state.dart';
 
-class NameFieldWidget extends HookConsumerWidget {
+class NameFieldWidget extends ConsumerWidget {
   const NameFieldWidget({
-    Key? key,
+    super.key,
     required this.nameFieldStateNotifierProvider,
-  }) : super(key: key);
+  });
 
   final NameFieldStateNotifierProvider nameFieldStateNotifierProvider;
 

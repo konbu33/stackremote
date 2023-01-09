@@ -3,10 +3,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class DescriptionMessageWidget extends StatelessWidget {
   const DescriptionMessageWidget({
-    Key? key,
+    super.key,
     required this.descriptionMessageStateProvider,
     this.textStyle,
-  }) : super(key: key);
+  });
 
   final AutoDisposeStateProvider<String> descriptionMessageStateProvider;
   final TextStyle? textStyle;

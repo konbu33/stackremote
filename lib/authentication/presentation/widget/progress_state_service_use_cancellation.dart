@@ -2,7 +2,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../common/common.dart';
-import '../../authentication.dart';
+
+import '../../domain/firebase_auth_user.dart';
 import '../../usecase/service_use_cancellation.dart';
 import 'service_use_cancellation_state.dart';
 

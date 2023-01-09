@@ -1,7 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../authentication/authentication.dart';
-import '../channel.dart';
+
+import '../domain/channel.dart';
 import '../domain/channel_repository.dart';
 import '../infrastructure/channel_repository_firestore.dart';
 

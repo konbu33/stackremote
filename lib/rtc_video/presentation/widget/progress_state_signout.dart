@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
+
 import '../page/rtc_video_channel_join_page_state.dart';
 
 // --------------------------------------------------

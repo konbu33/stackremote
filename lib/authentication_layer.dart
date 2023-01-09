@@ -8,10 +8,9 @@ import 'menu/menu.dart';
 // improve:　このlayerはauthentication側に凝集した方が良い可能性あり。
 class AuthenticationLayer extends SingleChildStatelessWidget {
   const AuthenticationLayer({
-    Key? key,
+    super.key,
     Widget? child,
   }) : super(
-          key: key,
           child: child,
         );
 

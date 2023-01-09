@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/common.dart';
-import '../channel.dart';
+
+import '../usecace/channel_get_usecase.dart';
 
 part 'channel.freezed.dart';
 part 'channel.g.dart';
@@ -19,12 +19,12 @@ final channelNameProvider = StateProvider((ref) => "");
 class Channel with _$Channel {
   const factory Channel._({
     // ignore: unused_element
-    @CreatedAtTimestampConverter() required Timestamp? createAt,
+    @DateTimeConverter() required DateTime? createAt,
     required String hostUserEmail,
   }) = _Channel;
 
   factory Channel.create({
-    Timestamp? createAt,
+    DateTime? createAt,
     String? hostUserEmail,
   }) =>
       Channel._(

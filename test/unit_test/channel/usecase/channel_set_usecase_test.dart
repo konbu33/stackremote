@@ -1,12 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stackremote/authentication/domain/firebase_auth_user.dart';
-import 'package:stackremote/channel/channel.dart';
 
-import 'package:stackremote/channel/domain/channel_repository.dart';
-import 'package:stackremote/channel/infrastructure/channel_repository_firestore.dart';
-import 'package:stackremote/common/logger.dart';
+import 'package:stackremote/authentication/authentication.dart';
+import 'package:stackremote/channel/channel.dart';
+import 'package:stackremote/common/common.dart';
 
 import '../../user/user_mock.dart';
 

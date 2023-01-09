@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/common.dart';
+
 import '../common/firebase_auth_exception_enum.dart';
 import '../domain/firebase_auth_user.dart';
 import 'authentication_service.dart';
@@ -48,6 +49,8 @@ class AuthenticationServiceFirebase implements AuthenticationService {
         if (fbuser == null) {
           user = FirebaseAuthUser.reconstruct(isSignIn: false);
         } else {
+          currentUserRefreshToken();
+
           user = FirebaseAuthUser.reconstruct(
             email: fbuser.email ?? "",
             emailVerified: fbuser.emailVerified,
@@ -135,6 +138,31 @@ class AuthenticationServiceFirebase implements AuthenticationService {
       final firebase_auth.User user = await currentUserReload();
 
       return user.emailVerified;
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      logger.d("$e");
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        code: e.code,
+        message: FirebaseAuthExceptionEnum.messageToJapanese(e),
+        stackTrace: e.stackTrace,
+      );
+    }
+  }
+
+  // --------------------------------------------------
+  //
+  //   currentUserRefreshToken
+  //
+  // --------------------------------------------------
+  @override
+  Future<String> currentUserRefreshToken() async {
+    try {
+      final firebase_auth.User user = currentUserGet();
+
+      // final newToken = user.getIdToken();
+      final newToken = user.refreshToken;
+      return newToken ?? "";
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.d("$e");
 

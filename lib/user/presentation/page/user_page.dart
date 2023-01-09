@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
+
 import '../../domain/user.dart';
 import 'user_page_state.dart';
 
-class UserPage extends HookConsumerWidget {
-  const UserPage({Key? key}) : super(key: key);
+class UserPage extends ConsumerWidget {
+  const UserPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

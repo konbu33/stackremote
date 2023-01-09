@@ -4,10 +4,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
-import '../../menu.dart';
+
+import '../../menu_routing_layer.dart';
 
 class MenuWidget extends StatelessWidget {
-  const MenuWidget({Key? key}) : super(key: key);
+  const MenuWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

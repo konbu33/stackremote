@@ -3,11 +3,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'on_submit_button_state.dart';
 
-class OnSubmitButtonWidget extends HookConsumerWidget {
+class OnSubmitButtonWidget extends ConsumerWidget {
   const OnSubmitButtonWidget({
-    Key? key,
+    super.key,
     required this.onSubmitButtonStateNotifierProvider,
-  }) : super(key: key);
+  });
 
   final OnSubmitButtonStateNotifierProvider onSubmitButtonStateNotifierProvider;
 

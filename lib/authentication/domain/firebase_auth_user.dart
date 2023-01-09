@@ -3,7 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/common.dart';
-import '../authentication.dart';
+
+import '../usecase/check_auth_state_changes.dart';
 
 part 'firebase_auth_user.freezed.dart';
 
@@ -61,7 +62,7 @@ class FirebaseAuthUserStateNotifier extends Notifier<FirebaseAuthUser> {
       return FirebaseAuthUser.create(email: "");
     });
 
-    logger.d(firebaseAuthUser);
+    logger.d("firebaseAuthUser: $firebaseAuthUser");
 
     return firebaseAuthUser;
   }

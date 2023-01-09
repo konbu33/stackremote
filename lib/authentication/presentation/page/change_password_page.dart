@@ -4,11 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 
 import '../widget/password_field_widget.dart';
-
 import 'change_password_page_state.dart';
 
-class ChangePasswordPage extends HookConsumerWidget {
-  const ChangePasswordPage({Key? key}) : super(key: key);
+class ChangePasswordPage extends ConsumerWidget {
+  const ChangePasswordPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

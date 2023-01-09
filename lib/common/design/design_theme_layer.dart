@@ -4,10 +4,9 @@ import 'package:nested/nested.dart';
 
 class DesignThemeLayer extends SingleChildStatelessWidget {
   const DesignThemeLayer({
-    Key? key,
+    super.key,
     Widget? child,
   }) : super(
-          key: key,
           child: child,
         );
 

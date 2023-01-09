@@ -4,16 +4,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // improve: pointerのモジュールをimportしている点、疎結合に改善可能か検討の余地あり。
 import '../../../channel/channel.dart';
 import '../../../common/common.dart';
-import '../../../pointer/pointer.dart';
-
 import '../../../user/user.dart';
 
 import '../widget/video_main_widget.dart';
 import '../widget/video_sub_widget.dart';
 import 'rtc_video_page_state.dart';
 
-class RtcVideoPage extends HookConsumerWidget {
-  const RtcVideoPage({Key? key}) : super(key: key);
+class RtcVideoPage extends ConsumerWidget {
+  const RtcVideoPage({super.key});
 
 // ---------------------------------------------------
 //
@@ -40,17 +38,15 @@ class RtcVideoPage extends HookConsumerWidget {
           RtcVideoPageWidgets.channelLeaveIconWidget(),
         ],
       ),
-      body: PointerOverlayWidget(
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            RtcVideoPageWidgets.videoMainWidget(),
-            RtcVideoPageWidgets.videoSubWidget(),
-            RtcVideoPageWidgets.updateUsersStateWidget(),
-            RtcVideoPageWidgets.attentionMessageWidget(),
-            RtcVideoPageWidgets.channelLeaveProgressWidget(),
-          ],
-        ),
+      body: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          RtcVideoPageWidgets.videoMainWidget(),
+          RtcVideoPageWidgets.videoSubWidget(),
+          RtcVideoPageWidgets.updateUsersStateWidget(),
+          RtcVideoPageWidgets.attentionMessageWidget(),
+          RtcVideoPageWidgets.channelLeaveProgressWidget(),
+        ],
       ),
     );
   }

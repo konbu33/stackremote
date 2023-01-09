@@ -2,12 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/common.dart';
+
 import '../domain/channel.dart';
 import '../domain/channel_repository.dart';
-
-final firebaseFirestoreInstanceProvider = Provider((ref) {
-  return FirebaseFirestore.instance;
-});
 
 final channelRepositoryFirestoreProvider = Provider<ChannelRepository>((ref) {
   final firebaseFirestoreInstance =
@@ -30,6 +27,30 @@ class ChannelRepositoryFirestore implements ChannelRepository {
 
   @override
   late CollectionReference<JsonMap> ref;
+
+  // --------------------------------------------------
+  //
+  // docDataToChannel
+  //
+  // --------------------------------------------------
+  Channel docDataToChannel(JsonMap docData) {
+    //
+    String? timestampToDateTimeString(Timestamp? timestamp) {
+      if (timestamp == null) return null;
+      return timestamp.toDate().toString();
+    }
+
+    final createAt =
+        timestampToDateTimeString(docData["createAt"] as Timestamp?);
+
+    final jsonData = {
+      ...docData,
+      "createAt": createAt,
+    };
+
+    final channel = Channel.fromJson(jsonData);
+    return channel;
+  }
 
   // --------------------------------------------------
   //
@@ -56,10 +77,9 @@ class ChannelRepositoryFirestore implements ChannelRepository {
 
         // チャンネルが存在する場合
       } else {
-        // チャンネルのホストユーザのemailを取得
-        final data = snapshot.data();
+        final docData = snapshot.data();
 
-        if (data == null) {
+        if (docData == null) {
           throw FirebaseException(
             plugin: "repository",
             code: "no_data",
@@ -67,7 +87,8 @@ class ChannelRepositoryFirestore implements ChannelRepository {
           );
         }
 
-        final channel = Channel.fromJson(data);
+        final channel = docDataToChannel(docData);
+
         return channel;
       }
 
@@ -101,7 +122,11 @@ class ChannelRepositoryFirestore implements ChannelRepository {
   }) async {
     try {
       final jsonData = channel.toJson();
-      await ref.doc(channelName).set(jsonData);
+
+      await ref.doc(channelName).set({
+        ...jsonData,
+        'createAt': FieldValue.serverTimestamp(),
+      });
 
       //
     } on FirebaseException catch (e) {

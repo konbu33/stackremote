@@ -1,12 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:stackremote/channel/channel.dart';
-import 'package:stackremote/common/stackremote_exception.dart';
-import 'package:stackremote/channel/domain/channel_repository.dart';
-import 'package:stackremote/channel/infrastructure/channel_repository_firestore.dart';
+import 'package:stackremote/common/common.dart';
 
 void main() {
   late FakeFirebaseFirestore fakeFirebaseFirestore;
@@ -44,7 +41,7 @@ void main() {
       // then
       expect(resChannel.hostUserEmail, equals(hostUserEmail));
       expect(resChannel.createAt, isNot(equals(null)));
-      expect(resChannel.createAt, isA<Timestamp>());
+      expect(resChannel.createAt, isA<DateTime?>());
     });
 
     test('データ取得時、コレクションが存在しない場合、エラー発生すること', () async {
@@ -94,7 +91,7 @@ void main() {
       // then
       expect(resChannel.hostUserEmail, equals(hostUserEmail));
       expect(resChannel.createAt, isNot(equals(null)));
-      expect(resChannel.createAt, isA<Timestamp>());
+      expect(resChannel.createAt, isA<DateTime?>());
 
       // ドキュメント削除
       fakeFirebaseFirestore.collection('channels').doc(channelName).delete();

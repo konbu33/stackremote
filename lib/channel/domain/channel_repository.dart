@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'channel.dart';
+import '../../common/common.dart';
 
-typedef JsonMap = Map<String, dynamic>;
+import 'channel.dart';
 
 abstract class ChannelRepository {
   ChannelRepository({

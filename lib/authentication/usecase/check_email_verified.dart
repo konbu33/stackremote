@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/common.dart';
+
 import '../domain/firebase_auth_user.dart';
 import '../infrastructure/authentication_service.dart';
 import '../infrastructure/authentication_service_firebase.dart';

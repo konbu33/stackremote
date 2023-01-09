@@ -5,7 +5,7 @@ import '../../domain/pointer_state_list.dart';
 import 'pointer_positioned_widget.dart';
 
 class PointerWidgetList extends StatelessWidget {
-  const PointerWidgetList({Key? key}) : super(key: key);
+  const PointerWidgetList({super.key});
 
   @override
   Widget build(BuildContext context) {

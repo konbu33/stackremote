@@ -3,11 +3,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'password_field_state.dart';
 
-class PasswordFieldWidget extends HookConsumerWidget {
+class PasswordFieldWidget extends ConsumerWidget {
   const PasswordFieldWidget({
-    Key? key,
+    super.key,
     required this.passwordFieldStateProvider,
-  }) : super(key: key);
+  });
 
   final PasswordFieldStateProvider passwordFieldStateProvider;
 

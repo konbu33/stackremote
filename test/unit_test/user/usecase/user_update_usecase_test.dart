@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stackremote/authentication/domain/firebase_auth_user.dart';
-import 'package:stackremote/common/json_converter.dart';
-import 'package:stackremote/user/infrastructure/user_repository_firestore.dart';
-import 'package:stackremote/user/usecace/user_update_usecase.dart';
+
+import 'package:stackremote/authentication/authentication.dart';
+import 'package:stackremote/common/common.dart';
+import 'package:stackremote/user/user.dart';
 
 import '../user_mock.dart';
 
@@ -33,7 +33,12 @@ void main() {
     when(() => userRepository.update(
           email: any(named: "email"),
           data: any(named: "data"),
+          isJoinedAt: false,
+          isLeavedAt: false,
         )).thenAnswer((invocation) => mockResponse);
+
+    const isJoinedAt = false;
+    const isLeavedAt = false;
 
     // when
     // ユースケース実行
@@ -42,8 +47,8 @@ void main() {
       email: user.email,
       isHost: user.isHost,
       isOnLongPressing: user.isOnLongPressing,
-      joinedAt: user.joinedAt,
-      leavedAt: user.leavedAt,
+      isJoinedAt: isJoinedAt,
+      isLeavedAt: isLeavedAt,
       nickName: user.nickName,
       pointerPosition: user.pointerPosition,
     );
@@ -59,6 +64,14 @@ void main() {
           data: captureAny(
             named: "data",
             that: isA<Map<String, dynamic>>(),
+          ),
+          isJoinedAt: captureAny(
+            named: "isJoinedAt",
+            that: isA<bool>(),
+          ),
+          isLeavedAt: captureAny(
+            named: "isLeavedAt",
+            that: isA<bool>(),
           ),
         )).captured;
 

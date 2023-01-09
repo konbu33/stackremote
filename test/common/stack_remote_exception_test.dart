@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stackremote/common/stackremote_exception.dart';
+
+import 'package:stackremote/common/common.dart';
 
 void main() {
   group('ChannelException', () {

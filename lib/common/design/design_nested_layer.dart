@@ -6,9 +6,9 @@ import 'design_theme_layer.dart';
 
 class DesignNestedLayer extends StatelessWidget {
   const DesignNestedLayer({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

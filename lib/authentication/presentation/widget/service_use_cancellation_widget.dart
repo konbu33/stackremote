@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
+
 import 'service_use_cancellation_state.dart';
 
-class ServiceUseCancellationWidget extends HookConsumerWidget {
-  const ServiceUseCancellationWidget({Key? key}) : super(key: key);
+class ServiceUseCancellationWidget extends StatelessWidget {
+  const ServiceUseCancellationWidget({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return AlertDialog(
       title: ServiceUseCancellationWidgetParts.titleWidget(),
       content: Column(

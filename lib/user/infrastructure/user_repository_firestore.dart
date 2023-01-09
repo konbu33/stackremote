@@ -8,10 +8,6 @@ import '../domain/user.dart';
 import '../domain/user_repository.dart';
 import '../domain/users.dart';
 
-final firebaseFirestoreInstanceProvider = Provider((ref) {
-  return FirebaseFirestore.instance;
-});
-
 final userRepositoryFirebaseProvider = Provider<UserRepository>((ref) {
   final firebaseFirestoreInstance =
       ref.watch(firebaseFirestoreInstanceProvider);
@@ -71,6 +67,36 @@ class UserRepositoryFireBase implements UserRepository {
 
   // --------------------------------------------------
   //
+  //  docDataToUser
+  //
+  // --------------------------------------------------
+
+  User docDataToUser(JsonMap docData) {
+    //
+    String? timestampToDateTimeString(Timestamp? timestamp) {
+      if (timestamp == null) return null;
+      return timestamp.toDate().toString();
+    }
+
+    final joinedAt =
+        timestampToDateTimeString(docData["joinedAt"] as Timestamp?);
+
+    final leavedAt =
+        timestampToDateTimeString(docData["leavedAt"] as Timestamp?);
+
+    final jsonData = {
+      ...docData,
+      "joinedAt": joinedAt,
+      "leavedAt": leavedAt,
+    };
+
+    final user = User.fromJson(jsonData);
+
+    return user;
+  }
+
+  // --------------------------------------------------
+  //
   //   fetchAll
   //
   // --------------------------------------------------
@@ -87,7 +113,11 @@ class UserRepositoryFireBase implements UserRepository {
           // from Firestore Snapshot to User Type Object Collection.
           final docDatas = snapshot.docs.map(((doc) {
             final docData = doc.data();
-            return User.fromJson(docData);
+
+            final user = docDataToUser(docData);
+            return user;
+
+            //
           })).toList();
 
           final Users users = Users.reconstruct(users: docDatas);
@@ -130,7 +160,10 @@ class UserRepositoryFireBase implements UserRepository {
           if (snapshot.data() != null) {
             final docData = snapshot.data() as JsonMap;
 
-            yield User.fromJson(docData);
+            final user = docDataToUser(docData);
+            yield user;
+
+            //
           } else {
             throw FirebaseException(
               plugin: "userRepository",
@@ -193,9 +226,23 @@ class UserRepositoryFireBase implements UserRepository {
   Future<void> update({
     required String email,
     required Map<String, dynamic> data,
+    required bool isJoinedAt,
+    required bool isLeavedAt,
   }) async {
     try {
-      await ref.doc(email).update(data);
+      final Map<String, dynamic> registerData = data;
+
+      if (isJoinedAt) {
+        registerData.addAll(
+            {...registerData, "joinedAt": FieldValue.serverTimestamp()});
+      }
+
+      if (isLeavedAt) {
+        registerData.addAll(
+            {...registerData, "leavedAt": FieldValue.serverTimestamp()});
+      }
+
+      await ref.doc(email).update(registerData);
 
       //
     } on FirebaseException catch (e) {

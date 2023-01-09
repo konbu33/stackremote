@@ -5,15 +5,15 @@ import '../../domain/pointer_state.dart';
 import 'pointer_widget_local.dart';
 import 'pointer_widget_remote.dart';
 
-class PointerPositionedWidget extends HookConsumerWidget {
+class PointerPositionedWidget extends ConsumerWidget {
   const PointerPositionedWidget({
-    Key? key,
+    super.key,
     this.comment,
     this.email,
     this.dx,
     this.dy,
     this.nickName,
-  }) : super(key: key);
+  });
 
   final String? comment;
   final String? email;
