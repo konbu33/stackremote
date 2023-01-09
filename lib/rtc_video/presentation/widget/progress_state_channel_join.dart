@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../authentication/authentication.dart';
 import '../../../channel/channel.dart';
 import '../../../common/common.dart';
 
@@ -52,6 +53,27 @@ final progressStateChannelJoinProvider = Provider.autoDispose((ref) {
         .select((value) => value.textEditingController.text));
 
     ref.watch(channelNameProvider.notifier).update((state) => channelName);
+
+    // --------------------------------------------------
+    //
+    // currentUserのgetIdToken取得
+    //
+    // --------------------------------------------------
+
+    try {
+      final currentUserGetIdTokenUsecase =
+          ref.watch(currentUserGetIdTokenUsecaseProvider);
+
+      final authIdToken = await currentUserGetIdTokenUsecase();
+
+      logger.d("authIdToken: $authIdToken");
+      //
+    } on StackremoteException catch (error) {
+      final message = "AUTH_ID_TOKENの取得に失敗しました。: ${error.message}";
+      setMessage(message);
+
+      return;
+    }
 
     // --------------------------------------------------
     //
