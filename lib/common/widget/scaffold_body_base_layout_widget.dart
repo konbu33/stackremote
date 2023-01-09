@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package_info_widget.dart';
-
 class ScaffoldBodyBaseLayoutWidget extends StatelessWidget {
   const ScaffoldBodyBaseLayoutWidget({
     super.key,
