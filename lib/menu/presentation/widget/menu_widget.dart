@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../authentication/authentication.dart';
 import '../../../common/common.dart';
 
+import '../../../common/widget/package_info_widget.dart';
 import '../../menu_routing_layer.dart';
 
 class MenuWidget extends StatelessWidget {
@@ -39,6 +40,7 @@ class MenuWidget extends StatelessWidget {
                 ),
                 MenuWidgetParts.goToServiceUseCancellationWidget(),
                 const SizedBox(height: 10),
+                MenuWidgetParts.packageInfoWidget(),
               ],
             ),
           ),
@@ -108,6 +110,12 @@ class MenuWidgetParts {
       },
     );
 
+    return widget;
+  }
+
+  // packageInfoWidget
+  static Widget packageInfoWidget() {
+    Widget widget = const PackageInfoWidget();
     return widget;
   }
 }

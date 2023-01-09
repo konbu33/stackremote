@@ -49,7 +49,11 @@ class AuthenticationServiceFirebase implements AuthenticationService {
         if (fbuser == null) {
           user = FirebaseAuthUser.reconstruct(isSignIn: false);
         } else {
-          currentUserRefreshToken();
+          // fbuser.refreshToken;
+          fbuser.getIdToken();
+
+          // currentUserRefreshToken();
+          // currentUserGetIdToken();
 
           user = FirebaseAuthUser.reconstruct(
             email: fbuser.email ?? "",
@@ -150,30 +154,57 @@ class AuthenticationServiceFirebase implements AuthenticationService {
     }
   }
 
-  // --------------------------------------------------
-  //
-  //   currentUserRefreshToken
-  //
-  // --------------------------------------------------
-  @override
-  Future<String> currentUserRefreshToken() async {
-    try {
-      final firebase_auth.User user = currentUserGet();
+  // // --------------------------------------------------
+  // //
+  // //   currentUserGetIdToken
+  // //
+  // // --------------------------------------------------
+  // @override
+  // Future<String> currentUserGetIdToken() async {
+  //   try {
+  //     final firebase_auth.User user = currentUserGet();
 
-      // final newToken = user.getIdToken();
-      final newToken = user.refreshToken;
-      return newToken ?? "";
-    } on firebase_auth.FirebaseAuthException catch (e) {
-      logger.d("$e");
+  //     // final newToken = user.refreshToken;
+  //     // return newToken ?? "";
 
-      throw StackremoteException(
-        plugin: e.plugin,
-        code: e.code,
-        message: FirebaseAuthExceptionEnum.messageToJapanese(e),
-        stackTrace: e.stackTrace,
-      );
-    }
-  }
+  //     final newToken = await user.getIdToken();
+  //     return newToken;
+  //   } on firebase_auth.FirebaseAuthException catch (e) {
+  //     logger.d("$e");
+
+  //     throw StackremoteException(
+  //       plugin: e.plugin,
+  //       code: e.code,
+  //       message: FirebaseAuthExceptionEnum.messageToJapanese(e),
+  //       stackTrace: e.stackTrace,
+  //     );
+  //   }
+  // }
+
+  // // --------------------------------------------------
+  // //
+  // //   currentUserRefreshToken
+  // //
+  // // --------------------------------------------------
+  // @override
+  // Future<String> currentUserRefreshToken() async {
+  //   try {
+  //     final firebase_auth.User user = currentUserGet();
+
+  //     // final newToken = user.getIdToken();
+  //     final newToken = user.refreshToken;
+  //     return newToken ?? "";
+  //   } on firebase_auth.FirebaseAuthException catch (e) {
+  //     logger.d("$e");
+
+  //     throw StackremoteException(
+  //       plugin: e.plugin,
+  //       code: e.code,
+  //       message: FirebaseAuthExceptionEnum.messageToJapanese(e),
+  //       stackTrace: e.stackTrace,
+  //     );
+  //   }
+  // }
 
   // --------------------------------------------------
   //
