@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../authentication/authentication.dart';
 import '../../common/common.dart';
 
+import '../domain/user.dart';
 import '../domain/user_repository.dart';
 import '../infrastructure/user_repository_firestore.dart';
 
-final userUpdateUsecaseProvider = Provider((ref) {
-  final firebaseAuthUser = ref.watch(firebaseAuthUserStateNotifierProvider);
+final userUpdateUsecaseProvider = Provider.autoDispose((ref) {
+  final userStateEmail =
+      ref.watch(userStateNotifierProvider.select((value) => value.email));
 
   final UserRepository userRepository =
       ref.watch(userRepositoryFirebaseProvider);
@@ -69,7 +70,7 @@ final userUpdateUsecaseProvider = Provider((ref) {
     }
 
     await userRepository.update(
-      email: firebaseAuthUser.email,
+      email: userStateEmail,
       data: data,
       isJoinedAt: isJoinedAt ?? false,
       isLeavedAt: isLeavedAt ?? false,
