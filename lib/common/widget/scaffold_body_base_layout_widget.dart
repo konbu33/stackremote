@@ -25,7 +25,6 @@ class ScaffoldBodyBaseLayoutWidget extends StatelessWidget {
           Expanded(
             child: ScaffoldBodyBaseLayoutWidgetParts.mainWidget(children),
           ),
-          ScaffoldBodyBaseLayoutWidgetParts.packageInfoWidget(),
         ],
       ),
     );
@@ -45,12 +44,6 @@ class ScaffoldBodyBaseLayoutWidgetParts {
       ),
     );
 
-    return widget;
-  }
-
-  // packageInfoWidget
-  static Widget packageInfoWidget() {
-    Widget widget = const PackageInfoWidget();
     return widget;
   }
 }
