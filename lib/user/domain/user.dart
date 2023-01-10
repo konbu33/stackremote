@@ -35,6 +35,7 @@ class User with _$User {
     @Default(Offset(0, 0)) @OffsetConverter() Offset displayPointerPosition,
     required int rtcVideoUid,
     @Default(Size(0, 0)) @SizeConverter() Size displaySizeVideoMain,
+    @Default(UserColor.red) @UserColorConverter() UserColor userColor,
   }) = _User;
 
   factory User.create({
@@ -60,6 +61,7 @@ class User with _$User {
     Offset? displayPointerPosition,
     int? rtcVideoUid,
     Size? displaySizeVideoMain,
+    UserColor? userColor,
   }) =>
       User._(
         comment: comment ?? "",
@@ -73,6 +75,7 @@ class User with _$User {
         displayPointerPosition: displayPointerPosition ?? const Offset(0, 0),
         rtcVideoUid: rtcVideoUid ?? 0,
         displaySizeVideoMain: displaySizeVideoMain ?? const Size(0, 0),
+        userColor: userColor ?? UserColor.red,
       );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -113,6 +116,9 @@ class UserStateNotifier extends AutoDisposeNotifier<User> {
     final displaySizeVideoMain =
         ref.watch(DisplaySizeVideoState.displaySizeVideoMainProvider);
 
+    final userColor = ref
+        .watch(pointerStateNotifierProvider.select((value) => value.userColor));
+
     final user = User.reconstruct(
       comment: comment,
       email: email,
@@ -123,6 +129,7 @@ class UserStateNotifier extends AutoDisposeNotifier<User> {
       displayPointerPosition: displayPointerPosition,
       rtcVideoUid: rtcVideoUid,
       displaySizeVideoMain: displaySizeVideoMain,
+      userColor: userColor,
     );
 
     logger.d("userState: $user");
@@ -138,6 +145,49 @@ class UserStateNotifier extends AutoDisposeNotifier<User> {
 final userStateNotifierProvider =
     AutoDisposeNotifierProvider<UserStateNotifier, User>(
         () => UserStateNotifier());
+
+// --------------------------------------------------
+//
+//  UserColor
+//
+// --------------------------------------------------
+enum UserColor {
+  red(color: Colors.red),
+  blue(color: Colors.blue),
+  green(color: Colors.green),
+  orange(color: Colors.orange),
+  yellow(color: Colors.yellow),
+  pink(color: Colors.pink),
+  ;
+
+  final Color color;
+  const UserColor({required this.color});
+
+  static UserColor fromJson(String json) {
+    switch (json) {
+      case 'UserColor.red':
+        return UserColor.red;
+
+      case 'UserColor.blue':
+        return UserColor.blue;
+
+      case 'UserColor.green':
+        return UserColor.green;
+
+      case 'UserColor.orange':
+        return UserColor.orange;
+
+      case 'UserColor.yellow':
+        return UserColor.yellow;
+
+      case 'UserColor.pink':
+        return UserColor.pink;
+
+      default:
+        return UserColor.red;
+    }
+  }
+}
 
 // --------------------------------------------------
 //
@@ -205,5 +255,21 @@ final updateUserDisplaySizeVideoMainProvider =
 
   await userUpdateUsecase(
     displaySizeVideoMain: displaySizeVideoMain,
+  );
+});
+
+// --------------------------------------------------
+//
+// updateUserColorProvider
+//
+// --------------------------------------------------
+final updateUserColorProvider = Provider.autoDispose((ref) async {
+  final userColor =
+      ref.watch(userStateNotifierProvider.select((value) => value.userColor));
+
+  final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
+
+  await userUpdateUsecase(
+    userColor: userColor,
   );
 });

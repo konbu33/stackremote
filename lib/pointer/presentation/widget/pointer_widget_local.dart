@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../user/user.dart';
 import '../../domain/pointer_state.dart';
 import 'pointer_overlay_state.dart';
 
@@ -8,9 +9,11 @@ class PointerWidgetLocal extends ConsumerWidget {
   const PointerWidgetLocal({
     super.key,
     this.nickName,
+    required this.userColor,
   });
 
   final String? nickName;
+  final UserColor userColor;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,7 +40,8 @@ class PointerWidgetLocal extends ConsumerWidget {
               angle: -0.9,
               child: Icon(
                 Icons.navigation,
-                color: Theme.of(context).primaryColor,
+                // color: Theme.of(context).primaryColor,
+                color: userColor.color,
               ),
             ),
           ),

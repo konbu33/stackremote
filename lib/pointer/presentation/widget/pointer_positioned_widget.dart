@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../user/user.dart';
+
 import '../../domain/pointer_state.dart';
 import 'pointer_widget_local.dart';
 import 'pointer_widget_remote.dart';
@@ -13,6 +15,7 @@ class PointerPositionedWidget extends ConsumerWidget {
     this.dx,
     this.dy,
     this.nickName,
+    required this.userColor,
   });
 
   final String? comment;
@@ -20,6 +23,7 @@ class PointerPositionedWidget extends ConsumerWidget {
   final double? dx;
   final double? dy;
   final String? nickName;
+  final UserColor userColor;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,12 +39,14 @@ class PointerPositionedWidget extends ConsumerWidget {
           if (email == pointerState.email) {
             return PointerWidgetLocal(
               nickName: nickName,
+              userColor: userColor,
             );
           }
 
           return PointerWidgetRemote(
             comment: comment,
             nickName: nickName,
+            userColor: userColor,
           );
         },
       ),

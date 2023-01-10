@@ -24,6 +24,7 @@ class PointerState with _$PointerState {
     @Default("") String nickName,
     @Default(Offset(0, 0)) @OffsetConverter() Offset pointerPosition,
     @Default(Offset(0, 0)) @OffsetConverter() Offset displayPointerPosition,
+    @Default(UserColor.red) @UserColorConverter() UserColor userColor,
   }) = _PointerState;
 
   factory PointerState.create({
@@ -42,6 +43,7 @@ class PointerState with _$PointerState {
     String? nickName,
     Offset? pointerPosition,
     Offset? displayPointerPosition,
+    UserColor? userColor,
   }) =>
       PointerState._(
         comment: comment ?? "",
@@ -50,6 +52,7 @@ class PointerState with _$PointerState {
         nickName: nickName ?? "",
         pointerPosition: pointerPosition ?? const Offset(0, 0),
         displayPointerPosition: displayPointerPosition ?? const Offset(0, 0),
+        userColor: userColor ?? UserColor.red,
       );
 
   factory PointerState.fromJson(Map<String, dynamic> json) =>
@@ -114,6 +117,11 @@ class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
     );
 
     return lowerLimitPointerPosition;
+  }
+
+  void updateUserColor(UserColor userColor) {
+    logger.d("pointerState userColor: $userColor");
+    state = state.copyWith(userColor: userColor);
   }
 }
 

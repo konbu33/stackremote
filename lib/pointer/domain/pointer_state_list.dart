@@ -59,6 +59,7 @@ class PointerStateListStateNotifier extends Notifier<PointerStateList> {
         nickName: user.nickName,
         pointerPosition: user.pointerPosition,
         displayPointerPosition: user.displayPointerPosition,
+        userColor: user.userColor,
       );
 
       return pointerState;

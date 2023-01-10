@@ -29,6 +29,7 @@ class PointerWidgetList extends StatelessWidget {
             dy: pointerState.displayPointerPosition.dy,
             email: pointerState.email,
             nickName: pointerState.nickName,
+            userColor: pointerState.userColor,
           );
 
           return pointerPositionedWidget;

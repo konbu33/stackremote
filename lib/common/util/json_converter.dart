@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../user/user.dart';
+
 // --------------------------------------------------
 //
 //  OffsetConverter
@@ -206,5 +208,24 @@ class DateTimeConverter extends JsonConverter<DateTime?, String?> {
     if (json == null) return null;
 
     return DateTime.parse(json);
+  }
+}
+
+// --------------------------------------------------
+//
+//  UserColorConverter
+//
+// --------------------------------------------------
+class UserColorConverter extends JsonConverter<UserColor, String> {
+  const UserColorConverter();
+
+  @override
+  String toJson(UserColor object) {
+    return object.toString();
+  }
+
+  @override
+  UserColor fromJson(String json) {
+    return UserColor.fromJson(json);
   }
 }

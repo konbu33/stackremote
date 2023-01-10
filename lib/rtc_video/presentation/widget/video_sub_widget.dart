@@ -148,7 +148,10 @@ class VideoSubWidgetParts {
           ),
         );
 
-        return ClippedVideoWidget(child: child);
+        return ClippedVideoWidget(
+          userColor: user.userColor,
+          child: child,
+        );
 
         //
       }).toList();

@@ -6,6 +6,7 @@ import '../../../channel/channel.dart';
 import '../../../common/common.dart';
 import '../../../user/user.dart';
 
+import '../widget/rtc_video_control_widget.dart';
 import '../widget/video_main_widget.dart';
 import '../widget/video_sub_widget.dart';
 import 'rtc_video_page_state.dart';
@@ -28,6 +29,7 @@ class RtcVideoPage extends ConsumerWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      drawer: RtcVideoPageWidgets.rtcVideoControlWidget(),
       appBar: AppBar(
         title: Tooltip(
           message: "チャンネル名",
@@ -61,6 +63,15 @@ class RtcVideoPage extends ConsumerWidget {
 // ---------------------------------------------------
 
 class RtcVideoPageWidgets {
+  // rtcVideoControlWidget
+  static Widget rtcVideoControlWidget() {
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      return const RtcVideoControlWidget();
+    }));
+
+    return widget;
+  }
+
   // switchCameraIconWidget
   static Widget switchCameraIconWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
@@ -115,6 +126,7 @@ class RtcVideoPageWidgets {
       ref.watch(updateUserIsOnLongPressingProvider);
       ref.watch(updateUserPointerPositionProvider);
       ref.watch(updateUserDisplaySizeVideoMainProvider);
+      ref.watch(updateUserColorProvider);
 
       return const SizedBox();
     }));

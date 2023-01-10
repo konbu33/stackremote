@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../../../user/user.dart';
+
 class PointerWidgetRemote extends StatelessWidget {
   const PointerWidgetRemote({
     super.key,
     this.comment,
     this.nickName,
+    required this.userColor,
   });
 
   final String? comment;
   final String? nickName;
+  final UserColor userColor;
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +25,10 @@ class PointerWidgetRemote extends StatelessWidget {
             offset: const Offset(11, -8),
             child: Transform.rotate(
               angle: -0.9,
-              child: const Icon(
+              child: Icon(
                 Icons.navigation,
-                color: Colors.black,
+                // color: Colors.black,
+                color: userColor.color,
               ),
             ),
           ),

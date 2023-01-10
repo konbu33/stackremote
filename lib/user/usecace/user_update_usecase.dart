@@ -26,6 +26,7 @@ final userUpdateUsecaseProvider = Provider.autoDispose((ref) {
     Offset? displayPointerPosition,
     int? rtcVideoUid,
     Size? displaySizeVideoMain,
+    UserColor? userColor,
   }) async {
     final Map<String, dynamic> data = {};
 
@@ -68,6 +69,12 @@ final userUpdateUsecaseProvider = Provider.autoDispose((ref) {
         },
       );
     }
+
+    if (userColor != null) {
+      data.addAll({...data, "userColor": userColor.toString()});
+    }
+
+    logger.d("userUpdateUsecase: $data");
 
     await userRepository.update(
       email: userStateEmail,
