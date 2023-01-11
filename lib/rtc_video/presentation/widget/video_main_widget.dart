@@ -52,9 +52,15 @@ class VideoMainWidgetParts {
       final displaySizeVideoMainMin =
           ref.watch(DisplaySizeVideoState.displaySizeVideoMainMinProvider);
 
-      return SizedBox(
+      return Container(
         height: displaySizeVideoMainMin.height,
         width: displaySizeVideoMainMin.width,
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 2.0,
+            color: ref.watch(userStateNotifierProvider).userColor.color,
+          ),
+        ),
         child: PointerOverlayWidget(
           child: Column(
             children: [

@@ -29,7 +29,7 @@ class ClippedVideoWidget extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(20)),
               border: Border.all(
-                // color: Colors.white24,
+                width: 2.0,
                 color: userColor.color,
               ),
             ),
