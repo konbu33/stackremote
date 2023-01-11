@@ -153,11 +153,17 @@ final userStateNotifierProvider =
 // --------------------------------------------------
 enum UserColor {
   red(color: Colors.red),
-  blue(color: Colors.blue),
+  cyan(color: Colors.cyan),
+
   green(color: Colors.green),
-  orange(color: Colors.orange),
   yellow(color: Colors.yellow),
+
+  orange(color: Colors.orange),
   pink(color: Colors.pink),
+
+  grey(color: Colors.grey),
+  white(color: Colors.white),
+  black(color: Colors.black),
   ;
 
   final Color color;
@@ -168,23 +174,32 @@ enum UserColor {
       case 'UserColor.red':
         return UserColor.red;
 
-      case 'UserColor.blue':
-        return UserColor.blue;
+      case 'UserColor.cyan':
+        return UserColor.cyan;
 
       case 'UserColor.green':
         return UserColor.green;
 
-      case 'UserColor.orange':
-        return UserColor.orange;
-
       case 'UserColor.yellow':
         return UserColor.yellow;
+
+      case 'UserColor.orange':
+        return UserColor.orange;
 
       case 'UserColor.pink':
         return UserColor.pink;
 
+      case 'UserColor.grey':
+        return UserColor.grey;
+
+      case 'UserColor.white':
+        return UserColor.white;
+
+      case 'UserColor.black':
+        return UserColor.black;
+
       default:
-        return UserColor.red;
+        return UserColor.cyan;
     }
   }
 }
