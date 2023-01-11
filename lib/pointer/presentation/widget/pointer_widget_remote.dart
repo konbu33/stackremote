@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../user/user.dart';
+import 'pointer_overlay_state.dart';
 
-class PointerWidgetRemote extends StatelessWidget {
+class PointerWidgetRemote extends ConsumerWidget {
   const PointerWidgetRemote({
     super.key,
     this.comment,
@@ -15,7 +17,12 @@ class PointerWidgetRemote extends StatelessWidget {
   final UserColor userColor;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pointerTextFormFieldWidth =
+        ref.watch(PointerOverlayState.pointerTextFormFieldWidthProvider);
+
+    final textStyle = TextStyle(color: userColor.color);
+
     return GestureDetector(
       child: Row(
         // Pointerを左上に固定
@@ -32,23 +39,30 @@ class PointerWidgetRemote extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
-            width: 100,
-            child: TextFormField(
-              controller: TextEditingController(text: comment),
-              enabled: false,
-              readOnly: true,
-
-              // 複数行入力
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-
-              decoration: InputDecoration(
-                // ユーザ名
-                labelText: nickName ?? "no name",
+          IntrinsicWidth(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: pointerTextFormFieldWidth.min,
+                maxWidth: pointerTextFormFieldWidth.max,
               ),
+              child: TextFormField(
+                controller: TextEditingController(text: comment),
+                enabled: false,
+                readOnly: true,
 
-              // 画面タップすることで、TextFormFieldからフォーカスを外せるようにする。
+                // 複数行入力
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+
+                decoration: InputDecoration(
+                  // ユーザ名
+                  labelText: nickName ?? "no name",
+                ),
+
+                style: textStyle,
+
+                // 画面タップすることで、TextFormFieldからフォーカスを外せるようにする。
+              ),
             ),
           ),
         ],

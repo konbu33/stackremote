@@ -25,6 +25,11 @@ class PointerWidgetLocal extends ConsumerWidget {
 
     final onTap = ref.watch(pointerWidgetLocalState.onTapProvider);
 
+    final pointerTextFormFieldWidth =
+        ref.watch(PointerOverlayState.pointerTextFormFieldWidthProvider);
+
+    final textStyle = TextStyle(color: userColor.color);
+
     return GestureDetector(
       // ポインタ非表示、ポインタ位置リセット
       onTap: onTap(),
@@ -45,30 +50,37 @@ class PointerWidgetLocal extends ConsumerWidget {
               ),
             ),
           ),
-          SizedBox(
-            width: 100,
-            child: TextFormField(
-              controller: commentTextEidtingController,
-
-              // 複数行入力
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-
-              decoration: InputDecoration(
-                // ユーザ名
-                labelText: nickName ?? "no name",
+          IntrinsicWidth(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: pointerTextFormFieldWidth.min,
+                maxWidth: pointerTextFormFieldWidth.max,
               ),
+              child: TextFormField(
+                controller: commentTextEidtingController,
 
-              onChanged: (value) {
-                final pointerStateNotifier =
-                    ref.read(pointerStateNotifierProvider.notifier);
+                // 複数行入力
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
 
-                pointerStateNotifier
-                    .updateComment(commentTextEidtingController.text);
-              },
+                decoration: InputDecoration(
+                  // ユーザ名
+                  labelText: nickName ?? "no name",
+                ),
 
-              // 画面タップすることで、TextFormFieldからフォーカスを外せるようにする。
-              focusNode: pointerWidgetLocalState.focusNode,
+                onChanged: (value) {
+                  final pointerStateNotifier =
+                      ref.read(pointerStateNotifierProvider.notifier);
+
+                  pointerStateNotifier
+                      .updateComment(commentTextEidtingController.text);
+                },
+
+                // 画面タップすることで、TextFormFieldからフォーカスを外せるようにする。
+                focusNode: pointerWidgetLocalState.focusNode,
+
+                style: textStyle,
+              ),
             ),
           ),
         ],

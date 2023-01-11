@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../common/common.dart';
 import '../../domain/pointer_state.dart';
 import 'pointer_widget_local_state.dart';
 
 class PointerOverlayState {
   // --------------------------------------------------
   //
+  // pointerTextFormFieldWidthProvider
   // pointerWidgetLocalStateProvider
   //
   // --------------------------------------------------
+  static final pointerTextFormFieldWidthProvider =
+      StateProvider((ref) => MinMax<double>.create(min: 100, max: 150));
+
   static final pointerWidgetLocalStateProvider =
       pointerWidgetLocalStateProviderCreattor();
 
