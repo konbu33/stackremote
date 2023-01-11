@@ -21,5 +21,6 @@ export 'util/firebase_firestore_instance.dart';
 export 'util/firebase_initialize.dart';
 export 'util/json_converter.dart';
 export 'util/logger.dart';
+export 'util/min_max.dart';
 export 'util/release_env.dart';
 export 'util/stackremote_exception.dart';

@@ -13,7 +13,7 @@ class UserPageState {
     NameFieldStateNotifierProvider nickNameFieldStateNotifierProviderCreator() {
       const name = "ニックネーム";
 
-      const minMax = MinMax(min: 0, max: 20);
+      final minMax = MinMax<int>.create(min: 0, max: 20);
       final minMaxLenghtValidator =
           ref.watch(minMaxLenghtValidatorProvider(minMax));
 

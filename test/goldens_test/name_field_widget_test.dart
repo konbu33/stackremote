@@ -25,7 +25,7 @@ void main() {
             loginIdFieldStateNotifierProviderCreator() {
           const name = "メールアドレス";
 
-          const minMax = MinMax(min: 8, max: 20);
+          final minMax = MinMax<int>.create(min: 8, max: 20);
           final minMaxLenghtValidator =
               ref.watch(minMaxLenghtValidatorProvider(minMax));
 
