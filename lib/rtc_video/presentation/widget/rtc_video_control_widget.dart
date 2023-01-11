@@ -64,7 +64,7 @@ class RtcVideoControlWidgetParts {
       }).toList();
 
       final userColorWidget = Builder(builder: (context) {
-        const double gridViewHeight = 200;
+        const double gridViewHeight = 250;
         const double spacing = 20;
 
         return Column(
@@ -84,24 +84,45 @@ class RtcVideoControlWidgetParts {
         );
       });
 
-      Widget gradientWidget(Widget child) {
-        return Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.grey.withOpacity(0),
-                Colors.grey.withOpacity(0.1),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-          child: child,
-        );
-      }
+      // Widget gradientWidget(Widget child) {
+      //   return Container(
+      //     decoration: BoxDecoration(
+      //       gradient: LinearGradient(
+      //         colors: [
+      //           Colors.grey.withOpacity(0),
+      //           Colors.grey.withOpacity(0.1),
+      //         ],
+      //         begin: Alignment.topCenter,
+      //         end: Alignment.bottomCenter,
+      //       ),
+      //     ),
+      //     child: child,
+      //   );
+      // }
 
       return gradientWidget(userColorWidget);
     });
+
+    return widget;
+  }
+
+  // gradientWidget
+  static Widget gradientWidget(Widget child) {
+    Widget widget = Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.grey.withOpacity(0),
+            Colors.grey.withOpacity(0.1),
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: child,
+    );
+
+    //
 
     return widget;
   }
