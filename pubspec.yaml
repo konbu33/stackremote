@@ -58,6 +58,7 @@ dependencies:
   intl: ^0.17.0
   nested: ^1.0.0
   package_info_plus: ^3.0.2
+  onboarding: ^3.1.0
 
 dev_dependencies:
   integration_test:

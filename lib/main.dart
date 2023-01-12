@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'authentication_layer.dart';
 import 'common/common.dart';
+
+import 'onboarding_layer.dart';
 
 void main() async {
   // リリース環境設定
@@ -30,6 +31,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AuthenticationLayer();
+    return const OnBoardingLayer();
   }
 }
