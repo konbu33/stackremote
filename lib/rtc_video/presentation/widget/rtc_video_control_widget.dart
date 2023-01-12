@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/pointer/pointer.dart';
 
 import '../../../common/common.dart';
+import '../../../pointer/pointer.dart';
 import '../../../user/user.dart';
 
 class RtcVideoControlWidget extends StatelessWidget {

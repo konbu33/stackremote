@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/authentication_layer.dart';
 
+import 'authentication_layer.dart';
 import 'onboarding/onboarding.dart';
 
 final isOnBoardingFinishProvier = StateProvider((ref) => false);
