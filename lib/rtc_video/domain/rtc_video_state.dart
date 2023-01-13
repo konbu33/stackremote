@@ -19,4 +19,6 @@ class RtcVideoState {
   static const role = "publisher";
 
   static const rtcIdTokenType = "uid";
+
+  static final isMuteAudioLocalProvider = StateProvider((ref) => false);
 }
