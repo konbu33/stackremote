@@ -16,7 +16,8 @@ class DescriptionWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
-        Padding(
+        Container(
+          color: Colors.transparent,
           padding: const EdgeInsets.symmetric(
             horizontal: 45.0,
             vertical: 90.0,
@@ -26,24 +27,26 @@ class DescriptionWidget extends ConsumerWidget {
             color: pageImageColor,
           ),
         ),
-        Padding(
+        Container(
+          color: Colors.transparent,
           padding: const EdgeInsets.symmetric(horizontal: 45.0),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              descriptionWidgetState.title,
-              style: const TextStyle(fontSize: 23),
-              textAlign: TextAlign.left,
-            ),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            descriptionWidgetState.title,
+            style: const TextStyle(fontSize: 23, letterSpacing: 1.0),
+            textAlign: TextAlign.left,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 45.0, vertical: 10.0),
-          child: Align(
-            alignment: Alignment.centerLeft,
+        Expanded(
+          child: Container(
+            color: Colors.transparent,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 45.0, vertical: 10.0),
+            alignment: Alignment.topLeft,
             child: Text(
               descriptionWidgetState.description,
               textAlign: TextAlign.left,
+              style: const TextStyle(letterSpacing: 1.0),
             ),
           ),
         ),

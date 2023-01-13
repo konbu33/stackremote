@@ -23,8 +23,8 @@ class SkipButtonWidget extends ConsumerWidget {
           if (setIndex != null) {
             ref
                 .watch(OnboardingPageState.indexProvider.notifier)
-                .update((state) => 2);
-            setIndex!(2);
+                .update((state) => 3);
+            setIndex!(3);
           }
         },
         child: const Padding(
