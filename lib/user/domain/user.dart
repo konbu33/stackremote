@@ -36,6 +36,7 @@ class User with _$User {
     required int rtcVideoUid,
     @Default(Size(0, 0)) @SizeConverter() Size displaySizeVideoMain,
     @Default(UserColor.red) @UserColorConverter() UserColor userColor,
+    @Default(false) bool isMuteVideo,
   }) = _User;
 
   factory User.create({
@@ -62,6 +63,7 @@ class User with _$User {
     int? rtcVideoUid,
     Size? displaySizeVideoMain,
     UserColor? userColor,
+    bool? isMuteVideo,
   }) =>
       User._(
         comment: comment ?? "",
@@ -76,6 +78,7 @@ class User with _$User {
         rtcVideoUid: rtcVideoUid ?? 0,
         displaySizeVideoMain: displaySizeVideoMain ?? const Size(0, 0),
         userColor: userColor ?? UserColor.red,
+        isMuteVideo: isMuteVideo ?? false,
       );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -119,6 +122,8 @@ class UserStateNotifier extends AutoDisposeNotifier<User> {
     final userColor = ref
         .watch(pointerStateNotifierProvider.select((value) => value.userColor));
 
+    final isMuteVideo = ref.watch(RtcVideoState.isMuteVideoLocalProvider);
+
     final user = User.reconstruct(
       comment: comment,
       email: email,
@@ -130,6 +135,7 @@ class UserStateNotifier extends AutoDisposeNotifier<User> {
       rtcVideoUid: rtcVideoUid,
       displaySizeVideoMain: displaySizeVideoMain,
       userColor: userColor,
+      isMuteVideo: isMuteVideo,
     );
 
     logger.d("userState: $user");
@@ -286,5 +292,21 @@ final updateUserColorProvider = Provider.autoDispose((ref) async {
 
   await userUpdateUsecase(
     userColor: userColor,
+  );
+});
+
+// --------------------------------------------------
+//
+// updateUserIsMuteVideoProvider
+//
+// --------------------------------------------------
+final updateUserIsMuteVideoProvider = Provider.autoDispose((ref) async {
+  final isMuteVideo =
+      ref.watch(userStateNotifierProvider.select((value) => value.isMuteVideo));
+
+  final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
+
+  await userUpdateUsecase(
+    isMuteVideo: isMuteVideo,
   );
 });
