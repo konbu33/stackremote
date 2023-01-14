@@ -112,6 +112,27 @@ final rtcVideoEngineAgoraCreatorProvider = Provider((ref) {
             .update((state) => false);
       }),
 
+      onUserEnableVideo: (connection, remoteUid, enabled) async {
+        logger.d(
+            "agora onUserEnableVideo: connection: ${connection.toString()}, remoteUid: $remoteUid, enabled: $enabled");
+
+        //
+      },
+
+      onUserMuteVideo: (connection, remoteUid, muted) async {
+        logger.d(
+            "agora onUserMuteVideo: connection: ${connection.toString()}, remoteUid: $remoteUid, muted: $muted");
+
+        //
+      },
+
+      onUserMuteAudio: (connection, remoteUid, muted) {
+        logger.d(
+            "agora onUserMuteAudio: connection: ${connection.toString()}, remoteUid: $remoteUid, muted: $muted");
+
+        //
+      },
+
       onRejoinChannelSuccess: (connection, elapsed) {
         logger.d(
             "agora onRejoinChannelSuccess:  connection: ${connection.toString()}, elapsed: $elapsed");
@@ -133,6 +154,12 @@ final rtcVideoEngineAgoraCreatorProvider = Provider((ref) {
     // ビデオ有効化
     // チャンネルに参加する前にこのメソッドを呼び出した場合、ビデオモードで通話が開始されます。
     await engine.enableVideo();
+
+    // 初期状態で、ビデオは有効化しているが、まだ自分のカメラでビデオ映像の配信はしない(ミュートした状態)
+    await engine.muteLocalVideoStream(true);
+
+    // 例えば、スマホの場合、画面側のカメラから背面側のカメラに切り替え
+    await engine.switchCamera();
 
     // ビデオのエンコーディング設定
     const videoEncoderConfiguration = VideoEncoderConfiguration(
