@@ -27,6 +27,7 @@ final userUpdateUsecaseProvider = Provider.autoDispose((ref) {
     int? rtcVideoUid,
     Size? displaySizeVideoMain,
     UserColor? userColor,
+    bool? isMuteVideo,
   }) async {
     final Map<String, dynamic> data = {};
 
@@ -72,6 +73,10 @@ final userUpdateUsecaseProvider = Provider.autoDispose((ref) {
 
     if (userColor != null) {
       data.addAll({...data, "userColor": userColor.toString()});
+    }
+
+    if (isMuteVideo != null) {
+      data.addAll({...data, "isMuteVideo": isMuteVideo});
     }
 
     logger.d("userUpdateUsecase: $data");

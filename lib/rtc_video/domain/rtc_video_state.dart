@@ -21,4 +21,5 @@ class RtcVideoState {
   static const rtcIdTokenType = "uid";
 
   static final isMuteAudioLocalProvider = StateProvider((ref) => false);
+  static final isMuteVideoLocalProvider = StateProvider((ref) => true);
 }

@@ -127,6 +127,7 @@ class RtcVideoPageWidgets {
       ref.watch(updateUserPointerPositionProvider);
       ref.watch(updateUserDisplaySizeVideoMainProvider);
       ref.watch(updateUserColorProvider);
+      ref.watch(updateUserIsMuteVideoProvider);
 
       return const SizedBox();
     }));
