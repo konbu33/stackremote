@@ -119,6 +119,41 @@ class RtcVideoRepositoryAgora implements RtcVideoRepository {
 
   // --------------------------------------------------
   //
+  //  muteLocalVideo
+  //
+  // --------------------------------------------------
+  @override
+  Future<void> muteLocalVideo(bool isMute) async {
+    // localのauditoをmute
+    try {
+      await rtcEngine.muteLocalVideoStream(isMute);
+    } on Exception catch (e) {
+      logger.d("$e");
+      rethrow;
+    }
+  }
+
+  // --------------------------------------------------
+  //
+  //  muteRemoteVideo
+  //
+  // --------------------------------------------------
+  @override
+  Future<void> muteRemoteVideo({
+    required int remoteUid,
+    required bool isMute,
+  }) async {
+    // localのauditoをmute
+    try {
+      await rtcEngine.muteRemoteVideoStream(uid: remoteUid, mute: isMute);
+    } on Exception catch (e) {
+      logger.d("$e");
+      rethrow;
+    }
+  }
+
+  // --------------------------------------------------
+  //
   //  switchCamera
   //
   // --------------------------------------------------
