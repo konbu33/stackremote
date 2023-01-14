@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/rtc_video.dart';
 
 import '../../../common/common.dart';
 import '../../../pointer/pointer.dart';
 import '../../../user/user.dart';
+
 import '../../usecase/mute_local_audio.dart';
+import '../../usecase/mute_local_video.dart';
+import 'control_icon_widget.dart';
+import 'rtc_video_control_widget_state.dart';
 
 class RtcVideoControlWidget extends StatelessWidget {
   const RtcVideoControlWidget({super.key});
@@ -114,43 +117,24 @@ class RtcVideoControlWidgetParts {
   // audioVideoWidget
   static Widget audioVideoWidget() {
     Widget widget = Consumer(builder: (context, ref, child) {
+      // 状態変化した場合、リモートDBへ反映
+      ref.watch(muteLocalAudioStreamUsecaseProvider)();
+      ref.watch(muteLocalVideoStreamUsecaseProvider)();
+
       //
+      final muteLocalAudioIconWidget = ControlIconWidget(
+        controlIconWidgetState: ref.watch(
+            RtcVideoControlWidgetState.muteLocalAudioIconWidgetStateProvider),
+      );
+
+      final muteLocalVideoIconWidget = ControlIconWidget(
+        controlIconWidgetState: ref.watch(
+            RtcVideoControlWidgetState.muteLocalVideoIconWidgetStateProvider),
+      );
 
       final audioVideoWidgetList = [
-        Builder(builder: (context) {
-          final isMuteAudioLocal =
-              ref.watch(RtcVideoState.isMuteAudioLocalProvider);
-
-          final colorStyle =
-              isMuteAudioLocal ? Colors.grey : Theme.of(context).primaryColor;
-
-          final label = isMuteAudioLocal ? "消音中" : "消音　";
-
-          final icon =
-              isMuteAudioLocal ? Icons.volume_off_sharp : Icons.volume_up_sharp;
-
-          void Function()? onTap() => () {
-                ref
-                    .read(RtcVideoState.isMuteAudioLocalProvider.notifier)
-                    .update((state) => !state);
-
-                ref.read(muteLocalAudioStreamUsecaseProvider)();
-              };
-
-          return GestureDetector(
-            onTap: onTap(),
-            child: Chip(
-              avatar: Icon(
-                icon,
-                color: colorStyle,
-              ),
-              label: Text(
-                label,
-                style: TextStyle(color: colorStyle),
-              ),
-            ),
-          );
-        }),
+        muteLocalAudioIconWidget,
+        muteLocalVideoIconWidget,
       ];
 
       final audioVideoWidget = Builder(builder: (context) {
@@ -166,7 +150,7 @@ class RtcVideoControlWidgetParts {
                 mainAxisSpacing: spacing,
                 crossAxisSpacing: spacing,
                 padding: const EdgeInsets.all(spacing),
-                crossAxisCount: 2,
+                crossAxisCount: 3,
                 children: audioVideoWidgetList,
               ),
             ),
