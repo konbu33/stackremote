@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/rtc_video.dart';
 
+import '../domain/rtc_video_state.dart';
 import '../infrastructure/rtc_video_repository.dart';
 import '../infrastructure/rtc_video_repository_agora.dart';
 
