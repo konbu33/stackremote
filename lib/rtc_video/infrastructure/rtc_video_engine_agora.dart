@@ -158,9 +158,6 @@ final rtcVideoEngineAgoraCreatorProvider = Provider((ref) {
     // 初期状態で、ビデオは有効化しているが、まだ自分のカメラでビデオ映像の配信はしない(ミュートした状態)
     await engine.muteLocalVideoStream(true);
 
-    // 例えば、スマホの場合、画面側のカメラから背面側のカメラに切り替え
-    await engine.switchCamera();
-
     // ビデオのエンコーディング設定
     const videoEncoderConfiguration = VideoEncoderConfiguration(
       dimensions: VideoDimensions(width: 640, height: 360),
