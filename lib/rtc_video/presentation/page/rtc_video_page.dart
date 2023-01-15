@@ -6,6 +6,7 @@ import '../../../channel/channel.dart';
 import '../../../common/common.dart';
 import '../../../user/user.dart';
 
+import '../../domain/rtc_video_state.dart';
 import '../widget/rtc_video_control_widget.dart';
 import '../widget/video_main_widget.dart';
 import '../widget/video_sub_widget.dart';
@@ -128,6 +129,8 @@ class RtcVideoPageWidgets {
       ref.watch(updateUserDisplaySizeVideoMainProvider);
       ref.watch(updateUserColorProvider);
       ref.watch(updateUserIsMuteVideoProvider);
+
+      ref.watch(reflectRtcVideoStateIsUserOutSideCameraProvider);
 
       return const SizedBox();
     }));

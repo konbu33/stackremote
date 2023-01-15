@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/rtc_video/rtc_video.dart';
 
 import '../../../common/common.dart';
 
-import '../../usecase/switch_camera.dart';
 import '../widget/progress_state_channel_leave.dart';
 
 class RtcVideoPageState {
@@ -40,8 +40,9 @@ class RtcVideoPageState {
     (ref) {
       AppbarActionIconOnSubmitFunction buidSwitchCameraOnSubmit() {
         return ({required BuildContext context}) => () async {
-              final switchCameraUsecase = ref.read(switchCameraUsecaseProvider);
-              await switchCameraUsecase();
+              ref
+                  .read(RtcVideoState.isUseOutSideCameraProvider.notifier)
+                  .update((state) => !state);
             };
       }
 
