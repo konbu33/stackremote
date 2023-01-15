@@ -5,6 +5,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:stackremote/rtc_video/presentation/widget/video_main_state.dart';
 
 import '../../common/common.dart';
 
@@ -123,6 +124,14 @@ final rtcVideoEngineAgoraCreatorProvider = Provider((ref) {
         logger.d(
             "agora onUserMuteVideo: connection: ${connection.toString()}, remoteUid: $remoteUid, muted: $muted");
 
+        final currentUid = ref.read(
+            videoMainStateNotifierProvider.select((value) => value.currentUid));
+
+        if (currentUid == remoteUid) {
+          ref
+              .read(videoMainStateNotifierProvider.notifier)
+              .updateIsMuteVideo(muted);
+        }
         //
       },
 

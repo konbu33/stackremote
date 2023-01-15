@@ -8,7 +8,8 @@ import '../../../user/user.dart';
 import '../../domain/display_size_video_state.dart';
 import 'rtc_video_local_preview_widget.dart';
 import 'rtc_video_remote_preview_widget.dart';
-import 'video_sub_state.dart';
+import 'video_main_state.dart';
+import 'video_mute_widget.dart';
 
 class VideoMainWidget extends StatelessWidget {
   const VideoMainWidget({super.key});
@@ -43,8 +44,14 @@ class VideoMainWidgetParts {
   // videoMainWidget
   static videoMainWidget() {
     final widget = Consumer(builder: (context, ref, child) {
-      final currentUidOfVideoMain = ref.watch(videoSubStateNotifierProvider
-          .select((value) => value.currentUidOfVideoMain));
+      final isMuteVideo = ref.watch(
+          videoMainStateNotifierProvider.select((value) => value.isMuteVideo));
+
+      final currentUid = ref.watch(
+          videoMainStateNotifierProvider.select((value) => value.currentUid));
+
+      final nickName = ref.watch(
+          videoMainStateNotifierProvider.select((value) => value.nickName));
 
       final localUid = ref.watch(
           userStateNotifierProvider.select((value) => value.rtcVideoUid));
@@ -62,21 +69,27 @@ class VideoMainWidgetParts {
           ),
         ),
         child: PointerOverlayWidget(
-          child: Column(
-            children: [
-              Expanded(
-                child: currentUidOfVideoMain == localUid
-                    ? const RtcVideoLocalPreviewWidget()
-                    : RtcVideoRemotePreviewWidget(
-                        remoteUid: currentUidOfVideoMain),
-              ),
-              // SizedBox(
-              //   height: 30,
-              //   child: Text(
-              //       "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
-              // ),
-            ],
-          ),
+          child: Builder(builder: (context) {
+            //
+            if (isMuteVideo) {
+              return VideoMuteWidget(nickName: nickName);
+            }
+
+            return Column(
+              children: [
+                Expanded(
+                  child: currentUid == localUid
+                      ? const RtcVideoLocalPreviewWidget()
+                      : RtcVideoRemotePreviewWidget(remoteUid: currentUid),
+                ),
+                // SizedBox(
+                //   height: 30,
+                //   child: Text(
+                //       "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
+                // ),
+              ],
+            );
+          }),
         ),
       );
     });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/rtc_video/presentation/widget/video_mute_widget.dart';
 
 import '../../../common/common.dart';
 import '../../../user/user.dart';
@@ -9,6 +10,7 @@ import 'drag_target_widget.dart';
 import 'draggable_widget.dart';
 import 'rtc_video_local_preview_widget.dart';
 import 'rtc_video_remote_preview_widget.dart';
+import 'video_main_state.dart';
 import 'video_sub_state.dart';
 
 class VideoSubWidget extends StatelessWidget {
@@ -80,11 +82,14 @@ class VideoSubWidgetParts {
       final localUid = ref.watch(
           userStateNotifierProvider.select((value) => value.rtcVideoUid));
 
-      final currentUidOfVideoMain = ref.watch(videoSubStateNotifierProvider
-          .select((value) => value.currentUidOfVideoMain));
+      final currentUid = ref.watch(
+          videoMainStateNotifierProvider.select((value) => value.currentUid));
 
       final isOnTapIgnore = ref.watch(
           videoSubStateNotifierProvider.select((value) => value.isOnTapIgnore));
+
+      final videoMainStateNotifier =
+          ref.watch(videoMainStateNotifierProvider.notifier);
 
       final videoSubStateNotifier =
           ref.watch(videoSubStateNotifierProvider.notifier);
@@ -93,58 +98,68 @@ class VideoSubWidgetParts {
 
       final videoSubWidgetListNullable = usersState.users.map((user) {
         logger.d(
-            "currentUidOfVideoMain : $currentUidOfVideoMain, remoteUid : ${user.rtcVideoUid}, leaveAt : ${user.leavedAt}");
+            "currentUid: $currentUid, remoteUid : ${user.rtcVideoUid}, leaveAt : ${user.leavedAt}");
 
         // チャンネル離脱後のユーザは非表示
         if (user.leavedAt != null) return null;
 
         // メインVideoに表示中のcurrentユーザは非表示
-        if (user.rtcVideoUid == currentUidOfVideoMain) return null;
+        if (user.rtcVideoUid == currentUid) return null;
 
         final child = AbsorbPointer(
           absorbing: isOnTapIgnore,
           child: GestureDetector(
             onTap: () {
-              videoSubStateNotifier
-                  .updateCurrentUidOfVideoMain(user.rtcVideoUid);
+              videoMainStateNotifier.updateCurrentUid(user.rtcVideoUid);
+
+              videoMainStateNotifier.updateIsMuteVideo(user.isMuteVideo);
+              videoMainStateNotifier.updateNickName(user.nickName);
 
               videoSubStateNotifier.updateIsOnTapIgnore();
             },
-            child: Column(
-              children: [
-                Expanded(
-                  // --------------------------------------------------
-                  // subのvideoViewを表示する際、
-                  // local用のvideoPreviewで表示するか、あるいは，
-                  // remote用のvideoPreviewで表示するか
-                  // --------------------------------------------------
+            child: Builder(builder: (context) {
+              // ビデオ無効なユーザは非表示
+              if (user.isMuteVideo) {
+                return VideoMuteWidget(nickName: user.nickName);
+              }
 
-                  // --------------------------------------------------
-                  // mainのvideoViewにlocalのvideoが表示されている場合、
-                  // --------------------------------------------------
-                  child: currentUidOfVideoMain == localUid
+              return Column(
+                children: [
+                  Expanded(
+                    // --------------------------------------------------
+                    // subのvideoViewを表示する際、
+                    // local用のvideoPreviewで表示するか、あるいは，
+                    // remote用のvideoPreviewで表示するか
+                    // --------------------------------------------------
 
-                      // subのvideoViewに表示するのは、remoteのvideoのみになるはずなので、
-                      // すべてremote用videoPreviewで表示する。
-                      ? RtcVideoRemotePreviewWidget(remoteUid: user.rtcVideoUid)
+                    // --------------------------------------------------
+                    // mainのvideoViewにlocalのvideoが表示されている場合、
+                    // --------------------------------------------------
+                    child: currentUid == localUid
 
-                      // --------------------------------------------------
-                      // mainのvideoViewにlocalのvideoが表示されていない場合、
-                      // --------------------------------------------------
-                      : user.rtcVideoUid == localUid
+                        // subのvideoViewに表示するのは、remoteのvideoのみになるはずなので、
+                        // すべてremote用videoPreviewで表示する。
+                        ? RtcVideoRemotePreviewWidget(
+                            remoteUid: user.rtcVideoUid)
 
-                          // localのUidだったら、local用videoPreviewで表示する。
-                          ? const RtcVideoLocalPreviewWidget()
+                        // --------------------------------------------------
+                        // mainのvideoViewにlocalのvideoが表示されていない場合、
+                        // --------------------------------------------------
+                        : user.rtcVideoUid == localUid
 
-                          // それ以外は、remote用videoPreviewで表示する。
-                          : RtcVideoRemotePreviewWidget(
-                              remoteUid: user.rtcVideoUid),
+                            // localのUidだったら、local用videoPreviewで表示する。
+                            ? const RtcVideoLocalPreviewWidget()
 
-                  //
-                ),
-                // Text("${user.rtcVideoUid}"),
-              ],
-            ),
+                            // それ以外は、remote用videoPreviewで表示する。
+                            : RtcVideoRemotePreviewWidget(
+                                remoteUid: user.rtcVideoUid),
+
+                    //
+                  ),
+                  // Text("${user.rtcVideoUid}"),
+                ],
+              );
+            }),
           ),
         );
 
