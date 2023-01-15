@@ -123,12 +123,12 @@ class RtcVideoPageWidgets {
       }
 
       // localのuserState更新時に、リモートDB上へも反映するためのプロバイダ
-      ref.watch(updateUserCommentProvider);
-      ref.watch(updateUserIsOnLongPressingProvider);
-      ref.watch(updateUserPointerPositionProvider);
-      ref.watch(updateUserDisplaySizeVideoMainProvider);
-      ref.watch(updateUserColorProvider);
-      ref.watch(updateUserIsMuteVideoProvider);
+      ref.watch(reflectUserCommentProvider);
+      ref.watch(reflectUserIsOnLongPressingProvider);
+      ref.watch(reflectUserPointerPositionProvider);
+      ref.watch(reflectUserDisplaySizeVideoMainProvider);
+      ref.watch(reflectUserColorProvider);
+      ref.watch(reflectUserIsMuteVideoProvider);
 
       ref.watch(reflectRtcVideoStateIsUserOutSideCameraProvider);
 

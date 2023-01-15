@@ -212,10 +212,10 @@ enum UserColor {
 
 // --------------------------------------------------
 //
-// updateUserCommentProvider
+// reflectUserCommentProvider
 //
 // --------------------------------------------------
-final updateUserCommentProvider = Provider.autoDispose((ref) async {
+final reflectUserCommentProvider = Provider.autoDispose((ref) async {
   final comment =
       ref.watch(userStateNotifierProvider.select((value) => value.comment));
 
@@ -228,10 +228,10 @@ final updateUserCommentProvider = Provider.autoDispose((ref) async {
 
 // --------------------------------------------------
 //
-// updateUserIsOnLongPressingProvider
+// reflectUserIsOnLongPressingProvider
 //
 // --------------------------------------------------
-final updateUserIsOnLongPressingProvider = Provider.autoDispose((ref) async {
+final reflectUserIsOnLongPressingProvider = Provider.autoDispose((ref) async {
   final isOnLongPressing = ref.watch(
       userStateNotifierProvider.select((value) => value.isOnLongPressing));
 
@@ -244,10 +244,10 @@ final updateUserIsOnLongPressingProvider = Provider.autoDispose((ref) async {
 
 // --------------------------------------------------
 //
-// updateUserPointerPositionProvider
+// reflectUserPointerPositionProvider
 //
 // --------------------------------------------------
-final updateUserPointerPositionProvider = Provider.autoDispose((ref) async {
+final reflectUserPointerPositionProvider = Provider.autoDispose((ref) async {
   final pointerPosition = ref.watch(
       userStateNotifierProvider.select((value) => value.pointerPosition));
 
@@ -264,10 +264,10 @@ final updateUserPointerPositionProvider = Provider.autoDispose((ref) async {
 
 // --------------------------------------------------
 //
-// updateUserDisplaySizeVideoMainProvider
+// reflectUserDisplaySizeVideoMainProvider
 //
 // --------------------------------------------------
-final updateUserDisplaySizeVideoMainProvider =
+final reflectUserDisplaySizeVideoMainProvider =
     Provider.autoDispose((ref) async {
   final displaySizeVideoMain = ref.watch(
       userStateNotifierProvider.select((value) => value.displaySizeVideoMain));
@@ -281,10 +281,10 @@ final updateUserDisplaySizeVideoMainProvider =
 
 // --------------------------------------------------
 //
-// updateUserColorProvider
+// reflectUserColorProvider
 //
 // --------------------------------------------------
-final updateUserColorProvider = Provider.autoDispose((ref) async {
+final reflectUserColorProvider = Provider.autoDispose((ref) async {
   final userColor =
       ref.watch(userStateNotifierProvider.select((value) => value.userColor));
 
@@ -297,10 +297,10 @@ final updateUserColorProvider = Provider.autoDispose((ref) async {
 
 // --------------------------------------------------
 //
-// updateUserIsMuteVideoProvider
+// reflectUserIsMuteVideoProvider
 //
 // --------------------------------------------------
-final updateUserIsMuteVideoProvider = Provider.autoDispose((ref) async {
+final reflectUserIsMuteVideoProvider = Provider.autoDispose((ref) async {
   final isMuteVideo =
       ref.watch(userStateNotifierProvider.select((value) => value.isMuteVideo));
 

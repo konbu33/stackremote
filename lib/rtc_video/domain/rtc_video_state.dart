@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/rtc_video/usecase/mute_local_audio.dart';
+import 'package:stackremote/rtc_video/usecase/mute_local_video.dart';
 import 'package:stackremote/rtc_video/usecase/switch_camera.dart';
 import 'package:ulid/ulid.dart';
 
@@ -30,6 +32,46 @@ class RtcVideoState {
 
 // --------------------------------------------------
 //
+// reflectRtcVideoStateIsMuteAudioLocalProvider
+//
+// --------------------------------------------------
+final reflectRtcVideoStateIsMuteAudioLocalProvider = Provider(
+  (ref) async {
+    //
+
+    final isMuteAudioLocal = ref.watch(RtcVideoState.isMuteAudioLocalProvider);
+
+    logger.d("reflect: $isMuteAudioLocal");
+
+    final muteLocalAudioStreamUsecase =
+        ref.watch(muteLocalAudioStreamUsecaseProvider);
+
+    await muteLocalAudioStreamUsecase();
+  },
+);
+
+// --------------------------------------------------
+//
+// reflectRtcVideoStateIsMuteVideoLocalProvider
+//
+// --------------------------------------------------
+final reflectRtcVideoStateIsMuteVideoLocalProvider = Provider(
+  (ref) async {
+    //
+
+    final isMuteVideoLocal = ref.watch(RtcVideoState.isMuteVideoLocalProvider);
+
+    logger.d("reflect: $isMuteVideoLocal");
+
+    final muteLocalVideoStreamUsecase =
+        ref.watch(muteLocalVideoStreamUsecaseProvider);
+
+    await muteLocalVideoStreamUsecase();
+  },
+);
+
+// --------------------------------------------------
+//
 // reflectRtcVideoStateIsUserOutSideCameraProvider
 //
 // --------------------------------------------------
@@ -43,7 +85,7 @@ final reflectRtcVideoStateIsUserOutSideCameraProvider = Provider(
 
     logger.d("reflect: $isUseOutSideCamera");
 
-    final switchCameraUsecase = ref.read(switchCameraUsecaseProvider);
+    final switchCameraUsecase = ref.watch(switchCameraUsecaseProvider);
 
     await switchCameraUsecase();
   },

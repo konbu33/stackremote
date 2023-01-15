@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/rtc_video/rtc_video.dart';
 
 import '../../../common/common.dart';
 import '../../../pointer/pointer.dart';
@@ -117,9 +118,9 @@ class RtcVideoControlWidgetParts {
   // audioVideoWidget
   static Widget audioVideoWidget() {
     Widget widget = Consumer(builder: (context, ref, child) {
-      // 状態変化した場合、リモートDBへ反映
-      ref.watch(muteLocalAudioStreamUsecaseProvider)();
-      ref.watch(muteLocalVideoStreamUsecaseProvider)();
+      // 状態変化した場合、リモートサービスへ反映
+      ref.watch(reflectRtcVideoStateIsMuteAudioLocalProvider);
+      ref.watch(reflectRtcVideoStateIsMuteVideoLocalProvider);
 
       //
       final muteLocalAudioIconWidget = ControlIconWidget(
