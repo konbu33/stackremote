@@ -3,6 +3,8 @@ export './assets.gen.dart';
 export './design/design_background_image_layer.dart';
 export './design/design_nested_layer.dart';
 
+export './local_storage/shared_preferences_instance.dart';
+
 export './validation/validation.dart';
 export './validation/validator.dart';
 

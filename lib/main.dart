@@ -20,8 +20,13 @@ void main() async {
 
   // riverpod範囲指定
   runApp(
-    const ProviderScope(
-      child: MyApp(),
+    ProviderScope(
+      overrides: [
+        // sharedPreferencesインスタンス生成
+        sharedPreferencesInstanceProvider
+            .overrideWithValue(await createSharedPreferencesInstance()),
+      ],
+      child: const MyApp(),
     ),
   );
 }

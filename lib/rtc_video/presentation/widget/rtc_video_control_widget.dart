@@ -6,8 +6,6 @@ import '../../../common/common.dart';
 import '../../../pointer/pointer.dart';
 import '../../../user/user.dart';
 
-import '../../usecase/mute_local_audio.dart';
-import '../../usecase/mute_local_video.dart';
 import 'control_icon_widget.dart';
 import 'rtc_video_control_widget_state.dart';
 
