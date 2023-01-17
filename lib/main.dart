@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'common/common.dart';
 
 import 'onboarding_layer.dart';
+import 'rtc_video/infrastructure/rtc_video_engine_agora.dart';
 
 void main() async {
   // リリース環境設定
@@ -25,6 +26,8 @@ void main() async {
         // sharedPreferencesインスタンス生成
         sharedPreferencesInstanceProvider
             .overrideWithValue(await createSharedPreferencesInstance()),
+        rtcVideoEngineAgoraInstanceProvider
+            .overrideWithValue(await createRtcVideoEngineAgoraInstance()),
       ],
       child: const MyApp(),
     ),

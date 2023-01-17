@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/common.dart';
 import '../../../menu/menu.dart';
 
-import '../../infrastructure/rtc_video_engine_agora.dart';
 import 'rtc_video_channel_join_page_state.dart';
 
 class RtcVideoChannelJoinPage extends ConsumerWidget {
@@ -18,8 +17,6 @@ class RtcVideoChannelJoinPage extends ConsumerWidget {
 
     final channelNameFieldState =
         ref.watch(channelNameFieldStateNotifierProvider);
-
-    ref.watch(rtcVideoEngineAgoraNotifierProvider);
 
     return Scaffold(
       drawer: RtcVideoChannelJoinPageWidgets.menuWidget(),

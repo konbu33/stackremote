@@ -14,9 +14,10 @@ import 'rtc_video_repository.dart';
 
 final rtcVideoRepositoryAgoraCreatorProvider = Provider((ref) {
   Future<RtcVideoRepositoryAgora> rtcVideoRepositoryAgoraCreator() async {
-    final rtcVideoEngineAgora = ref.watch(rtcVideoEngineAgoraNotifierProvider);
+    // final rtcVideoEngineAgora = ref.watch(rtcVideoEngineAgoraNotifierProvider);
+    final rtcVideoEngineAgora = ref.watch(rtcVideoEngineAgoraProvider);
 
-    return RtcVideoRepositoryAgora(rtcEngine: rtcVideoEngineAgora!);
+    return RtcVideoRepositoryAgora(rtcEngine: rtcVideoEngineAgora);
   }
 
   return rtcVideoRepositoryAgoraCreator;
