@@ -6,7 +6,7 @@ import 'shared_preferences_instance.dart';
 
 part 'local_storage_repository_shared_preferences.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 LocalStorageRepositorySharedPreferences localStorageRepositorySharedPreferences(
     LocalStorageRepositorySharedPreferencesRef ref) {
   //
@@ -46,5 +46,24 @@ class LocalStorageRepositorySharedPreferences
     final bool = sharedPreferencesInstance.getBool(key);
 
     return bool;
+  }
+
+  @override
+  Future<bool> setString({
+    required String key,
+    required String value,
+  }) async {
+    final bool = await sharedPreferencesInstance.setString(key, value);
+
+    return bool;
+  }
+
+  @override
+  String? getString({
+    required String key,
+  }) {
+    final string = sharedPreferencesInstance.getString(key);
+
+    return string;
   }
 }

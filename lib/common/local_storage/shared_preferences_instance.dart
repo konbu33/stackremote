@@ -6,7 +6,7 @@ import '../util/logger.dart';
 
 part 'shared_preferences_instance.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 SharedPreferences sharedPreferencesInstance(SharedPreferencesInstanceRef ref) {
   throw UnimplementedError();
 

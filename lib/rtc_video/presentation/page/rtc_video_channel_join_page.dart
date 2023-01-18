@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user/user.dart';
 
 import '../../../common/common.dart';
 import '../../../menu/menu.dart';
@@ -44,6 +45,7 @@ class RtcVideoChannelJoinPage extends ConsumerWidget {
                 RtcVideoChannelJoinPageWidgets.channelNameFieldWidget(),
                 const SizedBox(height: 40),
                 RtcVideoChannelJoinPageWidgets.channelJoinOnSubmitWidget(),
+                RtcVideoChannelJoinPageWidgets.updateUserStateWidget(),
               ],
             ),
           ),
@@ -148,6 +150,18 @@ class RtcVideoChannelJoinPageWidgets {
         progressStateNotifierProvider: signOutProgressStateNotifierProvider,
       );
     });
+
+    return widget;
+  }
+
+  // updateUserStateWidget
+  static Widget updateUserStateWidget() {
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      // localのuserState更新時に、リモートDB上へも反映するためのプロバイダ
+      ref.watch(reflectUserNickNameProvider);
+
+      return const SizedBox();
+    }));
 
     return widget;
   }

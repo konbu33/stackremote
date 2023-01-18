@@ -15,4 +15,13 @@ abstract class LocalStorageRepository {
   bool? getBool({
     required String key,
   });
+
+  Future<bool> setString({
+    required String key,
+    required String value,
+  });
+
+  String? getString({
+    required String key,
+  });
 }

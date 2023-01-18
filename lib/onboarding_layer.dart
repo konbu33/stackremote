@@ -3,8 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'authentication_layer.dart';
 import 'common/common.dart';
-import 'common/local_storage/get_bool_usecase.dart';
-import 'common/local_storage/set_bool_usecase.dart';
 import 'onboarding/onboarding.dart';
 
 final isOnBoardingFinishProvier = StateProvider.autoDispose((ref) {

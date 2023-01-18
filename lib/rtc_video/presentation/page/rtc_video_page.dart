@@ -98,7 +98,7 @@ class RtcVideoPageWidgets {
     return widget;
   }
 
-  // getUserStateWidget
+  // updateUsersStateWidget
   static Widget updateUsersStateWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       // users情報取得に失敗した場合、通知する。

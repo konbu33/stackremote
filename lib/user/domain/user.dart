@@ -310,3 +310,20 @@ final reflectUserIsMuteVideoProvider = Provider.autoDispose((ref) async {
     isMuteVideo: isMuteVideo,
   );
 });
+
+// --------------------------------------------------
+//
+// reflectUserNickNameProvider
+//
+// --------------------------------------------------
+final reflectUserNickNameProvider = Provider.autoDispose((ref) async {
+  final nickName =
+      ref.watch(userStateNotifierProvider.select((value) => value.nickName));
+
+  final setStringUsecase = ref.read(setStringUsecaseProvider);
+
+  await setStringUsecase(
+    key: "nickName",
+    value: nickName,
+  );
+});
