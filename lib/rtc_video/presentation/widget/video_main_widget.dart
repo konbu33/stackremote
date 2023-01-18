@@ -63,9 +63,11 @@ class VideoMainWidgetParts {
         height: displaySizeVideoMainMin.height,
         width: displaySizeVideoMainMin.width,
         decoration: BoxDecoration(
-          border: Border.all(
-            width: 2.0,
-            color: ref.watch(userStateNotifierProvider).userColor.color,
+          border: Border(
+            bottom: BorderSide(
+              width: 3.0,
+              color: ref.watch(userStateNotifierProvider).userColor.color,
+            ),
           ),
         ),
         child: PointerOverlayWidget(
