@@ -66,7 +66,7 @@ class VideoMainWidgetParts {
           border: Border(
             bottom: BorderSide(
               width: 3.0,
-              color: ref.watch(userStateNotifierProvider).userColor.color,
+              color: ref.watch(videoMainStateNotifierProvider).userColor.color,
             ),
           ),
         ),
@@ -84,11 +84,11 @@ class VideoMainWidgetParts {
                       ? const RtcVideoLocalPreviewWidget()
                       : RtcVideoRemotePreviewWidget(remoteUid: currentUid),
                 ),
-                // SizedBox(
-                //   height: 30,
-                //   child: Text(
-                //       "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
-                // ),
+                SizedBox(
+                  height: 30,
+                  child: Text(
+                      "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
+                ),
               ],
             );
           }),

@@ -114,6 +114,7 @@ class VideoSubWidgetParts {
 
               videoMainStateNotifier.updateIsMuteVideo(user.isMuteVideo);
               videoMainStateNotifier.updateNickName(user.nickName);
+              videoMainStateNotifier.updateUserColor(user.userColor);
 
               videoSubStateNotifier.updateIsOnTapIgnore();
             },

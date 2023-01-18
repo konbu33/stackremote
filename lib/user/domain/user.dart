@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +37,7 @@ class User with _$User {
     @Default(Offset(0, 0)) @OffsetConverter() Offset displayPointerPosition,
     required int rtcVideoUid,
     @Default(Size(0, 0)) @SizeConverter() Size displaySizeVideoMain,
-    @Default(UserColor.red) @UserColorConverter() UserColor userColor,
+    @UserColorConverter() required UserColor userColor,
     @Default(false) bool isMuteVideo,
   }) = _User;
 
@@ -43,11 +45,13 @@ class User with _$User {
     required String email,
     String? nickName,
     int? rtcVideoUid,
+    UserColor? userColor,
   }) =>
       User._(
         email: email,
         nickName: nickName ?? "",
         rtcVideoUid: rtcVideoUid ?? 0,
+        userColor: userColor ?? UserColor.getColorRandom(),
       );
 
   factory User.reconstruct({
@@ -77,7 +81,7 @@ class User with _$User {
         displayPointerPosition: displayPointerPosition ?? const Offset(0, 0),
         rtcVideoUid: rtcVideoUid ?? 0,
         displaySizeVideoMain: displaySizeVideoMain ?? const Size(0, 0),
-        userColor: userColor ?? UserColor.red,
+        userColor: userColor ?? UserColor.getColorRandom(),
         isMuteVideo: isMuteVideo ?? false,
       );
 
@@ -174,6 +178,12 @@ enum UserColor {
 
   final Color color;
   const UserColor({required this.color});
+
+  static UserColor getColorRandom() {
+    final index = Random().nextInt(UserColor.values.length);
+    final randomUserColor = UserColor.values[index];
+    return randomUserColor;
+  }
 
   static UserColor fromJson(String json) {
     switch (json) {

@@ -24,7 +24,7 @@ class PointerState with _$PointerState {
     @Default("") String nickName,
     @Default(Offset(0, 0)) @OffsetConverter() Offset pointerPosition,
     @Default(Offset(0, 0)) @OffsetConverter() Offset displayPointerPosition,
-    @Default(UserColor.red) @UserColorConverter() UserColor userColor,
+    @UserColorConverter() required UserColor userColor,
   }) = _PointerState;
 
   factory PointerState.create({
@@ -35,7 +35,7 @@ class PointerState with _$PointerState {
       PointerState._(
         email: email ?? "",
         nickName: nickName ?? "",
-        userColor: userColor ?? UserColor.red,
+        userColor: userColor ?? UserColor.getColorRandom(),
       );
 
   factory PointerState.reconstruct({
@@ -54,7 +54,7 @@ class PointerState with _$PointerState {
         nickName: nickName ?? "",
         pointerPosition: pointerPosition ?? const Offset(0, 0),
         displayPointerPosition: displayPointerPosition ?? const Offset(0, 0),
-        userColor: userColor ?? UserColor.red,
+        userColor: userColor ?? UserColor.getColorRandom(),
       );
 
   factory PointerState.fromJson(Map<String, dynamic> json) =>

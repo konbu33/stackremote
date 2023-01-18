@@ -17,17 +17,20 @@ class VideoMainState with _$VideoMainState {
     required int currentUid,
     required bool isMuteVideo,
     required String nickName,
+    required UserColor userColor,
   }) = _VideoMainState;
 
   factory VideoMainState.create({
     required int currentUid,
     required bool isMuteVideo,
     required String nickName,
+    required UserColor userColor,
   }) =>
       VideoMainState._(
         currentUid: currentUid,
         isMuteVideo: isMuteVideo,
         nickName: nickName,
+        userColor: userColor,
       );
 }
 
@@ -48,10 +51,14 @@ class VideoMainStateNotifier extends AutoDisposeNotifier<VideoMainState> {
     final nickName =
         ref.watch(userStateNotifierProvider.select((value) => value.nickName));
 
+    final userColor =
+        ref.watch(userStateNotifierProvider.select((value) => value.userColor));
+
     return VideoMainState.create(
       currentUid: currentUid,
       isMuteVideo: isMuteVideo,
       nickName: nickName,
+      userColor: userColor,
     );
   }
 
@@ -65,6 +72,10 @@ class VideoMainStateNotifier extends AutoDisposeNotifier<VideoMainState> {
 
   void updateNickName(String nickName) {
     state = state.copyWith(nickName: nickName);
+  }
+
+  void updateUserColor(UserColor userColor) {
+    state = state.copyWith(userColor: userColor);
   }
 }
 
