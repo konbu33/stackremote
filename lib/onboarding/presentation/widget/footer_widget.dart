@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:onboarding/onboarding.dart';
 
 import '../page/onboarding_page_state.dart';
-import 'signup_button_widget.dart';
+import 'signin_button_widget.dart';
 import 'skip_button_widget.dart';
 
 typedef FooterBuilder = dynamic Function(
@@ -42,7 +42,7 @@ final footerBuilderProvider = Provider((ref) {
               ),
             ),
             index == pagesLength - 1
-                ? const SignUpButtonWidget()
+                ? const SignInButtonWidget()
                 : SkipButtonWidget(setIndex: setIndex)
           ],
         ),

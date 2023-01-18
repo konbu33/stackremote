@@ -4,8 +4,8 @@ import 'package:onboarding/onboarding.dart';
 
 import '../../../onboarding_layer.dart';
 
-class SignUpButtonWidget extends ConsumerWidget {
-  const SignUpButtonWidget({super.key});
+class SignInButtonWidget extends ConsumerWidget {
+  const SignInButtonWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,7 +20,7 @@ class SignUpButtonWidget extends ConsumerWidget {
         child: const Padding(
           padding: defaultProceedButtonPadding,
           child: Text(
-            'Sign up',
+            'サインイン',
             style: defaultProceedButtonTextStyle,
           ),
         ),

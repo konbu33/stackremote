@@ -30,7 +30,7 @@ class SkipButtonWidget extends ConsumerWidget {
         child: const Padding(
           padding: defaultSkipButtonPadding,
           child: Text(
-            'Skip',
+            'スキップ',
             style: defaultSkipButtonTextStyle,
           ),
         ),
