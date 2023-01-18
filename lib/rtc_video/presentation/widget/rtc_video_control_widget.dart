@@ -131,9 +131,15 @@ class RtcVideoControlWidgetParts {
             RtcVideoControlWidgetState.muteLocalVideoIconWidgetStateProvider),
       );
 
+      final useOutSideCameraIconWidget = ControlIconWidget(
+        controlIconWidgetState: ref.watch(
+            RtcVideoControlWidgetState.useOutSideCameraIconWidgetStateProvider),
+      );
+
       final audioVideoWidgetList = [
         muteLocalAudioIconWidget,
         muteLocalVideoIconWidget,
+        useOutSideCameraIconWidget,
       ];
 
       final audioVideoWidget = Builder(builder: (context) {

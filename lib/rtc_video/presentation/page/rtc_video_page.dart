@@ -37,7 +37,6 @@ class RtcVideoPage extends ConsumerWidget {
           child: Text(channelName),
         ),
         actions: [
-          RtcVideoPageWidgets.switchCameraIconWidget(),
           RtcVideoPageWidgets.channelLeaveIconWidget(),
         ],
       ),
@@ -68,18 +67,6 @@ class RtcVideoPageWidgets {
   static Widget rtcVideoControlWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       return const RtcVideoControlWidget();
-    }));
-
-    return widget;
-  }
-
-  // switchCameraIconWidget
-  static Widget switchCameraIconWidget() {
-    final Widget widget = Consumer(builder: ((context, ref, child) {
-      return AppbarAcitonIconWidget(
-        appbarActionIconStateNotifierProvider: ref.watch(
-            RtcVideoPageState.switchCameraSubmitIconStateNotifierProvider),
-      );
     }));
 
     return widget;

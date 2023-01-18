@@ -8,10 +8,11 @@ class RtcVideoControlWidgetState {
   //
   static final muteLocalAudioIconWidgetStateProvider = Provider((ref) {
     return ControlIconWidgetState.create(
-      isMute: ref.watch(RtcVideoState.isMuteAudioLocalProvider),
+      isX: ref.watch(RtcVideoState.isMuteAudioLocalProvider),
       enableIcon: Icons.mic_sharp,
       disableIcon: Icons.mic_off_sharp,
       disableColor: Colors.grey,
+      tooltip: "音声ミュート",
       onPressed: () {
         ref
             .read(RtcVideoState.isMuteAudioLocalProvider.notifier)
@@ -22,13 +23,29 @@ class RtcVideoControlWidgetState {
 
   static final muteLocalVideoIconWidgetStateProvider = Provider((ref) {
     return ControlIconWidgetState.create(
-      isMute: ref.watch(RtcVideoState.isMuteVideoLocalProvider),
+      isX: ref.watch(RtcVideoState.isMuteVideoLocalProvider),
       enableIcon: Icons.videocam_sharp,
       disableIcon: Icons.videocam_off_sharp,
       disableColor: Colors.grey,
+      tooltip: "ビデオミュート",
       onPressed: () {
         ref
             .read(RtcVideoState.isMuteVideoLocalProvider.notifier)
+            .update((state) => !state);
+      },
+    );
+  });
+
+  static final useOutSideCameraIconWidgetStateProvider = Provider((ref) {
+    return ControlIconWidgetState.create(
+      isX: ref.watch(RtcVideoState.isUseOutSideCameraProvider),
+      enableIcon: Icons.cameraswitch_outlined,
+      disableIcon: Icons.cameraswitch_outlined,
+      disableColor: Colors.grey,
+      tooltip: "カメラ切替",
+      onPressed: () {
+        ref
+            .read(RtcVideoState.isUseOutSideCameraProvider.notifier)
             .update((state) => !state);
       },
     );

@@ -8,25 +8,28 @@ part 'control_icon_widget_state.freezed.dart';
 class ControlIconWidgetState with _$ControlIconWidgetState {
   //
   const factory ControlIconWidgetState._({
-    required bool isMute,
+    required bool isX,
     required IconData? enableIcon,
     required IconData? disableIcon,
     required Color? disableColor,
+    required String tooltip,
     void Function()? onPressed,
   }) = _ControlIconWidgetState;
 
   factory ControlIconWidgetState.create({
-    bool? isMute,
+    bool? isX,
     IconData? enableIcon,
     IconData? disableIcon,
     Color? disableColor,
+    String? tooltip,
     void Function()? onPressed,
   }) =>
       ControlIconWidgetState._(
-        isMute: isMute ?? true,
+        isX: isX ?? true,
         enableIcon: enableIcon,
         disableIcon: disableIcon,
         disableColor: disableColor,
+        tooltip: tooltip ?? "",
         onPressed: onPressed,
       );
 }

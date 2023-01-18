@@ -33,36 +33,6 @@ class RtcVideoPageState {
 
   // --------------------------------------------------
   //
-  //  switchCameraSubmitIconStateNotifierProvider
-  //
-  // --------------------------------------------------
-  static final switchCameraSubmitIconStateNotifierProvider = Provider(
-    (ref) {
-      AppbarActionIconOnSubmitFunction buidSwitchCameraOnSubmit() {
-        return ({required BuildContext context}) => () async {
-              ref
-                  .read(RtcVideoState.isUseOutSideCameraProvider.notifier)
-                  .update((state) => !state);
-            };
-      }
-
-      final appbarActionIconState = AppbarActionIconState.create(
-        onSubmitWidgetName: "カメラ切替",
-        icon: const Icon(Icons.cameraswitch),
-        onSubmit: buidSwitchCameraOnSubmit(),
-      );
-
-      final appbarActionIconStateNotifierProvider =
-          appbarActionIconStateNotifierProviderCreator(
-        appbarActionIconState: appbarActionIconState,
-      );
-
-      return appbarActionIconStateNotifierProvider;
-    },
-  );
-
-  // --------------------------------------------------
-  //
   //  channelLeaveSubmitIconStateProvider
   //
   // --------------------------------------------------

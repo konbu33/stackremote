@@ -17,11 +17,12 @@ class ControlIconWidget extends ConsumerWidget {
       //
       return IconButton(
         onPressed: controlIconWidgetState.onPressed,
+        tooltip: controlIconWidgetState.tooltip,
         icon: Icon(
-          controlIconWidgetState.isMute
+          controlIconWidgetState.isX
               ? controlIconWidgetState.disableIcon
               : controlIconWidgetState.enableIcon,
-          color: controlIconWidgetState.isMute
+          color: controlIconWidgetState.isX
               ? controlIconWidgetState.disableColor
               : Theme.of(context).primaryColor,
         ),
