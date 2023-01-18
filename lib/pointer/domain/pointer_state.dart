@@ -30,10 +30,12 @@ class PointerState with _$PointerState {
   factory PointerState.create({
     String? email,
     String? nickName,
+    UserColor? userColor,
   }) =>
       PointerState._(
         email: email ?? "",
         nickName: nickName ?? "",
+        userColor: userColor ?? UserColor.red,
       );
 
   factory PointerState.reconstruct({
@@ -72,9 +74,16 @@ class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
 
     final nickName = ref.watch(NickName.nickNameProvider);
 
+    final getStringUsecase = ref.watch(getStringUsecaseProvider);
+    final userColorString = getStringUsecase(key: "userColor");
+
+    final UserColor? userColor =
+        userColorString == null ? null : UserColor.fromJson(userColorString);
+
     final pointerState = PointerState.create(
       email: email,
       nickName: nickName,
+      userColor: userColor,
     );
 
     logger.d("pointerState: $pointerState");

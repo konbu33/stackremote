@@ -45,7 +45,7 @@ class RtcVideoPage extends ConsumerWidget {
         children: [
           RtcVideoPageWidgets.videoMainWidget(),
           RtcVideoPageWidgets.videoSubWidget(),
-          RtcVideoPageWidgets.updateUsersStateWidget(),
+          RtcVideoPageWidgets.reflectStateWidget(),
           RtcVideoPageWidgets.attentionMessageWidget(),
           RtcVideoPageWidgets.channelLeaveProgressWidget(),
         ],
@@ -99,7 +99,7 @@ class RtcVideoPageWidgets {
   }
 
   // updateUsersStateWidget
-  static Widget updateUsersStateWidget() {
+  static Widget reflectStateWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       // users情報取得に失敗した場合、通知する。
       final usersState = ref.watch(usersStateNotifierProvider);
@@ -116,6 +116,7 @@ class RtcVideoPageWidgets {
       ref.watch(reflectUserDisplaySizeVideoMainProvider);
       ref.watch(reflectUserColorProvider);
       ref.watch(reflectUserIsMuteVideoProvider);
+      ref.watch(reflectUserUserColorProvider);
 
       ref.watch(reflectRtcVideoStateIsUserOutSideCameraProvider);
 

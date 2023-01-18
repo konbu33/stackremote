@@ -45,7 +45,7 @@ class RtcVideoChannelJoinPage extends ConsumerWidget {
                 RtcVideoChannelJoinPageWidgets.channelNameFieldWidget(),
                 const SizedBox(height: 40),
                 RtcVideoChannelJoinPageWidgets.channelJoinOnSubmitWidget(),
-                RtcVideoChannelJoinPageWidgets.updateUserStateWidget(),
+                RtcVideoChannelJoinPageWidgets.reflectStateWidget(),
               ],
             ),
           ),
@@ -155,7 +155,7 @@ class RtcVideoChannelJoinPageWidgets {
   }
 
   // updateUserStateWidget
-  static Widget updateUserStateWidget() {
+  static Widget reflectStateWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       // localのuserState更新時に、リモートDB上へも反映するためのプロバイダ
       ref.watch(reflectUserNickNameProvider);

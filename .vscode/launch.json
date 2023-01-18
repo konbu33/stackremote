@@ -41,6 +41,13 @@
             "type": "dart",
             "deviceId": "emulator-5556"
         },
+        {
+            "name": "kckk_iPhoneSE_Gen3",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "5C96DB31-DA63-4C0B-ABD9-7C55F290FE67"
+        },
+
     ],
     "compounds": [
         {
@@ -48,6 +55,7 @@
             "configurations": [
                 "konb_Pixel_5_API_32", 
                 "taip_Pixel_5_API_32",
+                "kckk_iPhoneSE_Gen3",
             ],
         },
     ],

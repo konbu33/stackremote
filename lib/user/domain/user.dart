@@ -327,3 +327,20 @@ final reflectUserNickNameProvider = Provider.autoDispose((ref) async {
     value: nickName,
   );
 });
+
+// --------------------------------------------------
+//
+// reflectUserUserColorProvider
+//
+// --------------------------------------------------
+final reflectUserUserColorProvider = Provider.autoDispose((ref) async {
+  final userColor =
+      ref.watch(userStateNotifierProvider.select((value) => value.userColor));
+
+  final setStringUsecase = ref.read(setStringUsecaseProvider);
+
+  await setStringUsecase(
+    key: "userColor",
+    value: userColor.toString(),
+  );
+});
