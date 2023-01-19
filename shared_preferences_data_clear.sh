@@ -5,7 +5,7 @@ echo "
 # --------------------------------------------------
 #
 # shared preferences data clear 
-# Android Emurator
+# Android Emulator
 #
 # --------------------------------------------------
 "
@@ -27,10 +27,10 @@ echo "
 # --------------------------------------------------
 "
 
-# データ削除対象デバイスのリスト作成
+# データ消去対象デバイスのリスト作成
 # xcrun simctl list | grep Booted | sed -e 's/.*generation) (//g' | sed -e 's/).*//g'
 deviceList=$(flutter devices | grep ios | awk -F'•' '{print $2}' | sed -e 's/ //g')
-echo "delete target device list"
+echo "clear target device list"
 echo "$deviceList"
 
 # もしデバイスのリストが0件の場合、終了
@@ -41,13 +41,13 @@ echo "$deviceList" | while read targetDevice; do
     echo "      --------------------------------------------------"
     echo "      targetDevice: $targetDevice" 
 
-    echo "      delete app before"
+    echo "      uninstall app before"
     xcrun simctl listapps $targetDevice | grep $bundleId
 
-    echo "      delete app"
+    echo "      uninstall app"
     xcrun simctl uninstall $targetDevice $bundleId 
 
-    echo "      delete app after"
+    echo "      uninstall app after"
     xcrun simctl listapps $targetDevice | grep $bundleId
 done
 
