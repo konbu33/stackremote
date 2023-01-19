@@ -14,31 +14,31 @@ class DescriptionWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [
-        Container(
-          color: Colors.transparent,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 45.0,
-            vertical: 90.0,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            color: Colors.transparent,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 45.0,
+              vertical: 90.0,
+            ),
+            child: Image.asset(
+              descriptionWidgetState.imagePath,
+              color: pageImageColor,
+            ),
           ),
-          child: Image.asset(
-            descriptionWidgetState.imagePath,
-            color: pageImageColor,
+          Container(
+            color: Colors.transparent,
+            padding: const EdgeInsets.symmetric(horizontal: 45.0),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              descriptionWidgetState.title,
+              style: const TextStyle(fontSize: 23, letterSpacing: 1.0),
+              textAlign: TextAlign.left,
+            ),
           ),
-        ),
-        Container(
-          color: Colors.transparent,
-          padding: const EdgeInsets.symmetric(horizontal: 45.0),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            descriptionWidgetState.title,
-            style: const TextStyle(fontSize: 23, letterSpacing: 1.0),
-            textAlign: TextAlign.left,
-          ),
-        ),
-        Expanded(
-          child: Container(
+          Container(
             color: Colors.transparent,
             padding:
                 const EdgeInsets.symmetric(horizontal: 45.0, vertical: 10.0),
@@ -49,8 +49,8 @@ class DescriptionWidget extends ConsumerWidget {
               style: const TextStyle(letterSpacing: 1.0),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:onboarding/onboarding.dart';
+import 'package:stackremote/onboarding/presentation/widget/indicator_widget.dart';
 
 import '../page/onboarding_page_state.dart';
-import 'signin_button_widget.dart';
-import 'skip_button_widget.dart';
+import 'done_button_widget.dart';
+import 'next_button_widget.dart';
 
 typedef FooterBuilder = dynamic Function(
   BuildContext,
@@ -25,25 +25,24 @@ final footerBuilderProvider = Provider((ref) {
     ) {
       return Padding(
         padding: const EdgeInsets.all(45.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomIndicator(
-              netDragPercent: dragDistance,
-              pagesLength: pagesLength,
-              indicator: Indicator(
-                indicatorDesign: IndicatorDesign.polygon(
-                  polygonDesign: PolygonDesign(
-                    polygon: DesignType.polygon_circle,
-                  ),
-                ),
-                closedIndicator:
-                    ClosedIndicator(color: Theme.of(context).primaryColor),
+            PageIndicatorWidget(
+              count: OnboardingPageState.onBoardDataList.length,
+              activePage: ref.watch(OnboardingPageState.indexProvider),
+              pageIndicatorStyle: PageIndicatorStyle(
+                width: 150,
+                activeColor: Theme.of(context).primaryColor,
+                inactiveColor: Colors.grey,
+                activeSize: const Size(12, 12),
+                inactiveSize: const Size(8, 8),
               ),
             ),
+            const SizedBox(height: 30),
             index == pagesLength - 1
-                ? const SignInButtonWidget()
-                : SkipButtonWidget(setIndex: setIndex)
+                ? const DoneButtonWidget(buttonTitle: "サインイン")
+                : NextButtonWidget(setIndex: setIndex)
           ],
         ),
       );

@@ -2,36 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:onboarding/onboarding.dart';
 
-import '../page/onboarding_page_state.dart';
+import '../../../onboarding_layer.dart';
 
 class SkipButtonWidget extends ConsumerWidget {
   const SkipButtonWidget({
     super.key,
-    required this.setIndex,
+    required this.buttonTitle,
   });
 
-  final void Function(int)? setIndex;
+  final String buttonTitle;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Material(
-      borderRadius: defaultSkipButtonBorderRadius,
-      color: Theme.of(context).primaryColor,
       child: InkWell(
-        borderRadius: defaultSkipButtonBorderRadius,
+        borderRadius: BorderRadius.circular(20),
         onTap: () {
-          if (setIndex != null) {
-            ref
-                .watch(OnboardingPageState.indexProvider.notifier)
-                .update((state) => 3);
-            setIndex!(3);
-          }
+          ref.read(isOnBoardingFinishProvier.notifier).update((state) => true);
         },
-        child: const Padding(
-          padding: defaultSkipButtonPadding,
+        child: Container(
+          padding: defaultProceedButtonPadding,
+          alignment: Alignment.center,
           child: Text(
-            'スキップ',
-            style: defaultSkipButtonTextStyle,
+            buttonTitle,
+            style: const TextStyle(
+              color: Colors.black45,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.0,
+            ),
           ),
         ),
       ),

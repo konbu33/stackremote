@@ -4,8 +4,13 @@ import 'package:onboarding/onboarding.dart';
 
 import '../../../onboarding_layer.dart';
 
-class SignInButtonWidget extends ConsumerWidget {
-  const SignInButtonWidget({super.key});
+class DoneButtonWidget extends ConsumerWidget {
+  const DoneButtonWidget({
+    super.key,
+    required this.buttonTitle,
+  });
+
+  final String buttonTitle;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,10 +22,16 @@ class SignInButtonWidget extends ConsumerWidget {
         onTap: () {
           ref.read(isOnBoardingFinishProvier.notifier).update((state) => true);
         },
-        child: const Padding(
+        child: Container(
           padding: defaultProceedButtonPadding,
+          alignment: Alignment.center,
+          constraints: const BoxConstraints(
+            minWidth: 150,
+            minHeight: 50,
+            maxWidth: 300,
+          ),
           child: Text(
-            'サインイン',
+            buttonTitle,
             style: defaultProceedButtonTextStyle,
           ),
         ),
