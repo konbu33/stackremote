@@ -61,6 +61,7 @@ dependencies:
   onboarding: ^3.1.0
   shared_preferences: ^2.0.16
   riverpod_annotation: ^1.1.1
+  flutter_svg: ^1.1.6
 
 dev_dependencies:
   integration_test:
@@ -135,6 +136,10 @@ flutter:
     - assets/images/background_image_figma.png
     - assets/images/background_image.png
     - assets/images/image_figma.png
+    - assets/images/onboarding_channel_join.svg
+    - assets/images/onboarding_pointer.svg
+    - assets/images/onboarding_use_service.svg
+    - assets/images/onboarding_user_color.svg
 
 flutter_gen:
   output: lib/common/ # Optional (default: lib/gen/)

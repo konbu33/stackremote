@@ -7,27 +7,26 @@ class OnboardingPageState {
 
   static final onBoardDataList = [
     {
-      "imagePath": Assets.images.backgroundImageCloudPink.path,
+      "imagePath": Assets.images.onboardingUseService.path,
       "title": "サービスの利用開始",
+      "description": "自分のメールアドレスを登録することで、利用開始できます。",
+    },
+    {
+      "imagePath": Assets.images.onboardingChannelJoin.path,
+      "title": "音声・ビデオ通話の開始",
       "description":
-          "自分のメールアドレスを登録します。\n登録したメールアドレスにメールが届きます。メール本文のリンクをクリックして、あなたが「登録したメールアドレスの持ち主」であることを証明することで、利用開始できます。",
+          "同じチャンネル名に参加することで、参加者同士で音声・ビデオ通話できます。\n\n※チャンネル参加初期は、音声通話は可能ですが、ビデオはミュート状態になっています。ビデオ通話を開始するには「コントローラ」メニューからミュート解除します。",
     },
     {
-      "imagePath": Assets.images.backgroundImageCloudPink.path,
-      "title": "ビデオ通話の開始",
-      "description": "同じチャンネル名に参加することで、参加者同士でビデオ通話できます。",
-    },
-    {
-      "imagePath": Assets.images.backgroundImageCloudPink.path,
+      "imagePath": Assets.images.onboardingPointer.path,
       "title": "注目をポインタで指し示す",
       "description":
-          "ポインタを表示・移動したい場合、画面をロングタップしたまま、ドラッグ・アンド・ドロップします。\nポインタを非表示にしたい場合，ポインタのアイコンをタップすることで非表示にできます。",
+          "ポインタを表示・移動するには、画面を長押ししたまま、指を動かします。\nポインタを非表示にするには、ポインタのアイコンをタップします。",
     },
     {
-      "imagePath": Assets.images.backgroundImageCloudPink.path,
-      "title": "色を変更し、参加者を識別",
-      "description":
-          "ポインタや、ビデオの枠の色を変更することで、参加者を識別しやすくなります。\n例えば、「赤色のカメラ映像に切り替えて」と参加者に促すことで、参加者が同じカメラ映像を見るように促す、といった利用イメージです。",
+      "imagePath": Assets.images.onboardingUserColor.path,
+      "title": "色で参加者を識別",
+      "description": "ポインタ等の色を変更することで、参加者を識別しやすくなります。「コントローラ」メニューから変更可能です。",
     },
   ];
 }
