@@ -34,6 +34,7 @@ class RtcVideoChannelJoinPageState {
       final nameFieldStateNotifierProvider =
           nameFieldStateNotifierProviderCreator(
         name: name,
+        icon: const Icon(Icons.room_sharp),
         validator: validator,
         minLength: minMax.min,
         maxLength: minMax.max,

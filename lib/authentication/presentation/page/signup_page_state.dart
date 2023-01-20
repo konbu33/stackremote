@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
@@ -26,6 +27,7 @@ class SignUpPageState {
       final nameFieldStateNotifierProvider =
           nameFieldStateNotifierProviderCreator(
         name: name,
+        icon: const Icon(Icons.email_sharp),
         validator: minMaxLenghtValidator,
         minLength: minMax.min,
         maxLength: minMax.max,

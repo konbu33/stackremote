@@ -29,6 +29,7 @@ class SignInPageState {
       final nameFieldStateNotifierProvider =
           nameFieldStateNotifierProviderCreator(
         name: name,
+        icon: const Icon(Icons.email_sharp),
         validator: minMaxLenghtValidator,
         minLength: minMax.min,
         maxLength: minMax.max,

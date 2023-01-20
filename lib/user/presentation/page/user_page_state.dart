@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -20,6 +21,7 @@ class UserPageState {
       final nameFieldStateNotifierProvider =
           nameFieldStateNotifierProviderCreator(
         name: name,
+        icon: const Icon(Icons.person_pin_sharp),
         validator: minMaxLenghtValidator,
         minLength: minMax.min,
         maxLength: minMax.max,
