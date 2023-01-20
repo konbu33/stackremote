@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
 
-import '../../usecase/switch_camera.dart';
 import '../widget/progress_state_channel_leave.dart';
 
 class RtcVideoPageState {
@@ -30,35 +29,6 @@ class RtcVideoPageState {
 
     return progressStateNotifierProviderCreator(function: function);
   });
-
-  // --------------------------------------------------
-  //
-  //  switchCameraSubmitIconStateNotifierProvider
-  //
-  // --------------------------------------------------
-  static final switchCameraSubmitIconStateNotifierProvider = Provider(
-    (ref) {
-      AppbarActionIconOnSubmitFunction buidSwitchCameraOnSubmit() {
-        return ({required BuildContext context}) => () async {
-              final switchCameraUsecase = ref.read(switchCameraUsecaseProvider);
-              await switchCameraUsecase();
-            };
-      }
-
-      final appbarActionIconState = AppbarActionIconState.create(
-        onSubmitWidgetName: "カメラ切替",
-        icon: const Icon(Icons.cameraswitch),
-        onSubmit: buidSwitchCameraOnSubmit(),
-      );
-
-      final appbarActionIconStateNotifierProvider =
-          appbarActionIconStateNotifierProviderCreator(
-        appbarActionIconState: appbarActionIconState,
-      );
-
-      return appbarActionIconStateNotifierProvider;
-    },
-  );
 
   // --------------------------------------------------
   //

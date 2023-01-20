@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -35,17 +37,21 @@ class User with _$User {
     @Default(Offset(0, 0)) @OffsetConverter() Offset displayPointerPosition,
     required int rtcVideoUid,
     @Default(Size(0, 0)) @SizeConverter() Size displaySizeVideoMain,
+    @UserColorConverter() required UserColor userColor,
+    @Default(false) bool isMuteVideo,
   }) = _User;
 
   factory User.create({
     required String email,
     String? nickName,
     int? rtcVideoUid,
+    UserColor? userColor,
   }) =>
       User._(
         email: email,
         nickName: nickName ?? "",
         rtcVideoUid: rtcVideoUid ?? 0,
+        userColor: userColor ?? UserColor.getColorRandom(),
       );
 
   factory User.reconstruct({
@@ -60,6 +66,8 @@ class User with _$User {
     Offset? displayPointerPosition,
     int? rtcVideoUid,
     Size? displaySizeVideoMain,
+    UserColor? userColor,
+    bool? isMuteVideo,
   }) =>
       User._(
         comment: comment ?? "",
@@ -73,6 +81,8 @@ class User with _$User {
         displayPointerPosition: displayPointerPosition ?? const Offset(0, 0),
         rtcVideoUid: rtcVideoUid ?? 0,
         displaySizeVideoMain: displaySizeVideoMain ?? const Size(0, 0),
+        userColor: userColor ?? UserColor.getColorRandom(),
+        isMuteVideo: isMuteVideo ?? false,
       );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -113,6 +123,11 @@ class UserStateNotifier extends AutoDisposeNotifier<User> {
     final displaySizeVideoMain =
         ref.watch(DisplaySizeVideoState.displaySizeVideoMainProvider);
 
+    final userColor = ref
+        .watch(pointerStateNotifierProvider.select((value) => value.userColor));
+
+    final isMuteVideo = ref.watch(RtcVideoState.isMuteVideoLocalProvider);
+
     final user = User.reconstruct(
       comment: comment,
       email: email,
@@ -123,6 +138,8 @@ class UserStateNotifier extends AutoDisposeNotifier<User> {
       displayPointerPosition: displayPointerPosition,
       rtcVideoUid: rtcVideoUid,
       displaySizeVideoMain: displaySizeVideoMain,
+      userColor: userColor,
+      isMuteVideo: isMuteVideo,
     );
 
     logger.d("userState: $user");
@@ -141,10 +158,74 @@ final userStateNotifierProvider =
 
 // --------------------------------------------------
 //
-// updateUserCommentProvider
+//  UserColor
 //
 // --------------------------------------------------
-final updateUserCommentProvider = Provider.autoDispose((ref) async {
+enum UserColor {
+  red(color: Colors.red),
+  cyan(color: Colors.cyan),
+
+  green(color: Colors.green),
+  yellow(color: Colors.yellow),
+
+  orange(color: Colors.orange),
+  pink(color: Colors.pink),
+
+  grey(color: Colors.grey),
+  white(color: Colors.white),
+  black(color: Colors.black),
+  ;
+
+  final Color color;
+  const UserColor({required this.color});
+
+  static UserColor getColorRandom() {
+    final index = Random().nextInt(UserColor.values.length);
+    final randomUserColor = UserColor.values[index];
+    return randomUserColor;
+  }
+
+  static UserColor fromJson(String json) {
+    switch (json) {
+      case 'UserColor.red':
+        return UserColor.red;
+
+      case 'UserColor.cyan':
+        return UserColor.cyan;
+
+      case 'UserColor.green':
+        return UserColor.green;
+
+      case 'UserColor.yellow':
+        return UserColor.yellow;
+
+      case 'UserColor.orange':
+        return UserColor.orange;
+
+      case 'UserColor.pink':
+        return UserColor.pink;
+
+      case 'UserColor.grey':
+        return UserColor.grey;
+
+      case 'UserColor.white':
+        return UserColor.white;
+
+      case 'UserColor.black':
+        return UserColor.black;
+
+      default:
+        return UserColor.cyan;
+    }
+  }
+}
+
+// --------------------------------------------------
+//
+// reflectUserCommentProvider
+//
+// --------------------------------------------------
+final reflectUserCommentProvider = Provider.autoDispose((ref) async {
   final comment =
       ref.watch(userStateNotifierProvider.select((value) => value.comment));
 
@@ -157,10 +238,10 @@ final updateUserCommentProvider = Provider.autoDispose((ref) async {
 
 // --------------------------------------------------
 //
-// updateUserIsOnLongPressingProvider
+// reflectUserIsOnLongPressingProvider
 //
 // --------------------------------------------------
-final updateUserIsOnLongPressingProvider = Provider.autoDispose((ref) async {
+final reflectUserIsOnLongPressingProvider = Provider.autoDispose((ref) async {
   final isOnLongPressing = ref.watch(
       userStateNotifierProvider.select((value) => value.isOnLongPressing));
 
@@ -173,10 +254,10 @@ final updateUserIsOnLongPressingProvider = Provider.autoDispose((ref) async {
 
 // --------------------------------------------------
 //
-// updateUserPointerPositionProvider
+// reflectUserPointerPositionProvider
 //
 // --------------------------------------------------
-final updateUserPointerPositionProvider = Provider.autoDispose((ref) async {
+final reflectUserPointerPositionProvider = Provider.autoDispose((ref) async {
   final pointerPosition = ref.watch(
       userStateNotifierProvider.select((value) => value.pointerPosition));
 
@@ -193,10 +274,10 @@ final updateUserPointerPositionProvider = Provider.autoDispose((ref) async {
 
 // --------------------------------------------------
 //
-// updateUserDisplaySizeVideoMainProvider
+// reflectUserDisplaySizeVideoMainProvider
 //
 // --------------------------------------------------
-final updateUserDisplaySizeVideoMainProvider =
+final reflectUserDisplaySizeVideoMainProvider =
     Provider.autoDispose((ref) async {
   final displaySizeVideoMain = ref.watch(
       userStateNotifierProvider.select((value) => value.displaySizeVideoMain));
@@ -205,5 +286,71 @@ final updateUserDisplaySizeVideoMainProvider =
 
   await userUpdateUsecase(
     displaySizeVideoMain: displaySizeVideoMain,
+  );
+});
+
+// --------------------------------------------------
+//
+// reflectUserColorProvider
+//
+// --------------------------------------------------
+final reflectUserColorProvider = Provider.autoDispose((ref) async {
+  final userColor =
+      ref.watch(userStateNotifierProvider.select((value) => value.userColor));
+
+  final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
+
+  await userUpdateUsecase(
+    userColor: userColor,
+  );
+});
+
+// --------------------------------------------------
+//
+// reflectUserIsMuteVideoProvider
+//
+// --------------------------------------------------
+final reflectUserIsMuteVideoProvider = Provider.autoDispose((ref) async {
+  final isMuteVideo =
+      ref.watch(userStateNotifierProvider.select((value) => value.isMuteVideo));
+
+  final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
+
+  await userUpdateUsecase(
+    isMuteVideo: isMuteVideo,
+  );
+});
+
+// --------------------------------------------------
+//
+// reflectUserNickNameProvider
+//
+// --------------------------------------------------
+final reflectUserNickNameProvider = Provider.autoDispose((ref) async {
+  final nickName =
+      ref.watch(userStateNotifierProvider.select((value) => value.nickName));
+
+  final setStringUsecase = ref.read(setStringUsecaseProvider);
+
+  await setStringUsecase(
+    key: "nickName",
+    value: nickName,
+  );
+});
+
+// --------------------------------------------------
+//
+// reflectUserUserColorProvider
+//
+// --------------------------------------------------
+final reflectUserUserColorProvider = Provider.autoDispose((ref) async {
+  final userColor =
+      ref.watch(userStateNotifierProvider.select((value) => value.userColor));
+
+  final setStringUsecase = ref.read(setStringUsecaseProvider);
+
+  await setStringUsecase(
+    key: "userColor",
+    value: userColor.toString(),
   );
 });

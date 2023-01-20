@@ -14,9 +14,10 @@ import 'rtc_video_repository.dart';
 
 final rtcVideoRepositoryAgoraCreatorProvider = Provider((ref) {
   Future<RtcVideoRepositoryAgora> rtcVideoRepositoryAgoraCreator() async {
-    final rtcVideoEngineAgora = ref.watch(rtcVideoEngineAgoraNotifierProvider);
+    // final rtcVideoEngineAgora = ref.watch(rtcVideoEngineAgoraNotifierProvider);
+    final rtcVideoEngineAgora = ref.watch(rtcVideoEngineAgoraProvider);
 
-    return RtcVideoRepositoryAgora(rtcEngine: rtcVideoEngineAgora!);
+    return RtcVideoRepositoryAgora(rtcEngine: rtcVideoEngineAgora);
   }
 
   return rtcVideoRepositoryAgoraCreator;
@@ -103,13 +104,63 @@ class RtcVideoRepositoryAgora implements RtcVideoRepository {
 
   // --------------------------------------------------
   //
+  //  muteLocalAudioStream
+  //
+  // --------------------------------------------------
+  @override
+  Future<void> muteLocalAudio(bool isMute) async {
+    // localのauditoをmute
+    try {
+      await rtcEngine.muteLocalAudioStream(isMute);
+    } on Exception catch (e) {
+      logger.d("$e");
+      rethrow;
+    }
+  }
+
+  // --------------------------------------------------
+  //
+  //  muteLocalVideo
+  //
+  // --------------------------------------------------
+  @override
+  Future<void> muteLocalVideo(bool isMute) async {
+    // localのauditoをmute
+    try {
+      await rtcEngine.muteLocalVideoStream(isMute);
+    } on Exception catch (e) {
+      logger.d("$e");
+      rethrow;
+    }
+  }
+
+  // --------------------------------------------------
+  //
+  //  muteRemoteVideo
+  //
+  // --------------------------------------------------
+  @override
+  Future<void> muteRemoteVideo({
+    required int remoteUid,
+    required bool isMute,
+  }) async {
+    // localのauditoをmute
+    try {
+      await rtcEngine.muteRemoteVideoStream(uid: remoteUid, mute: isMute);
+    } on Exception catch (e) {
+      logger.d("$e");
+      rethrow;
+    }
+  }
+
+  // --------------------------------------------------
+  //
   //  switchCamera
   //
   // --------------------------------------------------
-
   @override
   Future<void> switchCamera() async {
-    // チャンネル離脱
+    // カメラ切り替え
     try {
       await rtcEngine.switchCamera();
     } on Exception catch (e) {

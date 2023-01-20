@@ -154,32 +154,31 @@ class AuthenticationServiceFirebase implements AuthenticationService {
     }
   }
 
-  // // --------------------------------------------------
-  // //
-  // //   currentUserGetIdToken
-  // //
-  // // --------------------------------------------------
-  // @override
-  // Future<String> currentUserGetIdToken() async {
-  //   try {
-  //     final firebase_auth.User user = currentUserGet();
+  // --------------------------------------------------
+  //
+  //   currentUserGetIdToken
+  //
+  // --------------------------------------------------
+  @override
+  Future<String> currentUserGetIdToken() async {
+    try {
+      final firebase_auth.User user = currentUserGet();
 
-  //     // final newToken = user.refreshToken;
-  //     // return newToken ?? "";
+      final newToken = await user.getIdToken();
+      return newToken;
 
-  //     final newToken = await user.getIdToken();
-  //     return newToken;
-  //   } on firebase_auth.FirebaseAuthException catch (e) {
-  //     logger.d("$e");
+      //
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      logger.d("$e");
 
-  //     throw StackremoteException(
-  //       plugin: e.plugin,
-  //       code: e.code,
-  //       message: FirebaseAuthExceptionEnum.messageToJapanese(e),
-  //       stackTrace: e.stackTrace,
-  //     );
-  //   }
-  // }
+      throw StackremoteException(
+        plugin: e.plugin,
+        code: e.code,
+        message: FirebaseAuthExceptionEnum.messageToJapanese(e),
+        stackTrace: e.stackTrace,
+      );
+    }
+  }
 
   // // --------------------------------------------------
   // //
@@ -191,9 +190,10 @@ class AuthenticationServiceFirebase implements AuthenticationService {
   //   try {
   //     final firebase_auth.User user = currentUserGet();
 
-  //     // final newToken = user.getIdToken();
   //     final newToken = user.refreshToken;
   //     return newToken ?? "";
+
+  //
   //   } on firebase_auth.FirebaseAuthException catch (e) {
   //     logger.d("$e");
 

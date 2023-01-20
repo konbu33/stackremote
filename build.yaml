@@ -1,0 +1,24 @@
+targets:
+  $default:
+    sources:
+      include:
+        - $package$ # flutter_gen
+        - pubspec.yaml # flutter_gen
+        - lib/**
+        - test/riverpod_generator/**
+
+    builders:
+      # freezed:
+      #   options:
+      #     provider_name_suffix: "Pod" # (default)
+      #     build_extensions:
+      #       "^lib/{{}}.dart": "lib/generated/{{}}.freezed.dart" # コロンより右側が生成先を指定している。
+
+      riverpod_generator:
+        options:
+          # Could be changed to "Pod", such that riverpod_generator
+          # would generate "countPod" instead of "countProvider"
+          provider_name_suffix: "Provider" # (default)
+          # provider_name_suffix: "Pod" # (default)
+          build_extensions:
+            "^test/sample/{{}}.dart": "test/sample/{{}}.g.dart" # コロンより右側が生成先を指定している。

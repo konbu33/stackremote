@@ -13,11 +13,13 @@ class RtcVideoLocalPreviewWidget extends StatelessWidget {
     return Consumer(builder: (context, ref, child) {
       //
 
-      final rtcVideoEngineAgora =
-          ref.watch(rtcVideoEngineAgoraNotifierProvider);
+      // final rtcVideoEngineAgora =
+      //     ref.watch(rtcVideoEngineAgoraNotifierProvider);
+
+      final rtcVideoEngineAgora = ref.watch(rtcVideoEngineAgoraProvider);
 
       final videoViewControllerLocal = VideoViewController(
-        rtcEngine: rtcVideoEngineAgora!,
+        rtcEngine: rtcVideoEngineAgora,
         canvas: const VideoCanvas(uid: 0),
         useFlutterTexture: ref.watch(isUseFlutterTextureProvider),
         useAndroidSurfaceView: ref.watch(isUseAndroidSurfaceViewProvider),

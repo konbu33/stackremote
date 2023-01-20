@@ -28,12 +28,13 @@ class RtcVideoChannelJoinPageState {
     NameFieldStateNotifierProvider
         channelNameFieldStateNotifierProviderCreator() {
       const name = "チャンネル名";
-      const minMax = MinMax(min: 0, max: 20);
+      final minMax = MinMax<int>.create(min: 0, max: 20);
       final validator = ref.watch(minMaxLenghtValidatorProvider(minMax));
 
       final nameFieldStateNotifierProvider =
           nameFieldStateNotifierProviderCreator(
         name: name,
+        icon: const Icon(Icons.room_sharp),
         validator: validator,
         minLength: minMax.min,
         maxLength: minMax.max,

@@ -1,23 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../util/min_max.dart';
 import 'validation.dart';
-
-@immutable
-class MinMax {
-  const MinMax({
-    required this.min,
-    required this.max,
-  });
-
-  final int min;
-  final int max;
-}
 
 typedef MinMaxLenghtValidator = Validation Function(String?);
 
 final minMaxLenghtValidatorProvider =
-    Provider.family<MinMaxLenghtValidator, MinMax>((ref, minMax) {
+    Provider.family<MinMaxLenghtValidator, MinMax<int>>((ref, minMax) {
   Validation minMaxLenghtValidator(String? value) {
     final int minLength = minMax.min;
     final int maxLength = minMax.max;

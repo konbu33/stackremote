@@ -24,15 +24,18 @@ class PointerState with _$PointerState {
     @Default("") String nickName,
     @Default(Offset(0, 0)) @OffsetConverter() Offset pointerPosition,
     @Default(Offset(0, 0)) @OffsetConverter() Offset displayPointerPosition,
+    @UserColorConverter() required UserColor userColor,
   }) = _PointerState;
 
   factory PointerState.create({
     String? email,
     String? nickName,
+    UserColor? userColor,
   }) =>
       PointerState._(
         email: email ?? "",
         nickName: nickName ?? "",
+        userColor: userColor ?? UserColor.getColorRandom(),
       );
 
   factory PointerState.reconstruct({
@@ -42,6 +45,7 @@ class PointerState with _$PointerState {
     String? nickName,
     Offset? pointerPosition,
     Offset? displayPointerPosition,
+    UserColor? userColor,
   }) =>
       PointerState._(
         comment: comment ?? "",
@@ -50,6 +54,7 @@ class PointerState with _$PointerState {
         nickName: nickName ?? "",
         pointerPosition: pointerPosition ?? const Offset(0, 0),
         displayPointerPosition: displayPointerPosition ?? const Offset(0, 0),
+        userColor: userColor ?? UserColor.getColorRandom(),
       );
 
   factory PointerState.fromJson(Map<String, dynamic> json) =>
@@ -69,9 +74,16 @@ class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
 
     final nickName = ref.watch(NickName.nickNameProvider);
 
+    final getStringUsecase = ref.watch(getStringUsecaseProvider);
+    final userColorString = getStringUsecase(key: "userColor");
+
+    final UserColor? userColor =
+        userColorString == null ? null : UserColor.fromJson(userColorString);
+
     final pointerState = PointerState.create(
       email: email,
       nickName: nickName,
+      userColor: userColor,
     );
 
     logger.d("pointerState: $pointerState");
@@ -114,6 +126,11 @@ class PointerStateNotifier extends AutoDisposeNotifier<PointerState> {
     );
 
     return lowerLimitPointerPosition;
+  }
+
+  void updateUserColor(UserColor userColor) {
+    logger.d("pointerState userColor: $userColor");
+    state = state.copyWith(userColor: userColor);
   }
 }
 

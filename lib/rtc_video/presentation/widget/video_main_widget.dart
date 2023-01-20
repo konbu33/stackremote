@@ -1,14 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../common/common.dart';
 import '../../../pointer/pointer.dart';
 import '../../../user/user.dart';
 
 import '../../domain/display_size_video_state.dart';
 import 'rtc_video_local_preview_widget.dart';
 import 'rtc_video_remote_preview_widget.dart';
-import 'video_sub_state.dart';
+import 'video_main_state.dart';
+import 'video_mute_widget.dart';
 
 class VideoMainWidget extends StatelessWidget {
   const VideoMainWidget({super.key});
@@ -22,16 +24,11 @@ class VideoMainWidget extends StatelessWidget {
           constraints.maxHeight.floorToDouble(),
         );
 
-        void setDisplaySizeVideoMain(Size? size) {
-          if (size == null) return;
-
+        unawaited(Future(() {
           ref
               .read(DisplaySizeVideoState.displaySizeVideoMainProvider.notifier)
               .update((state) => size);
-        }
-
-        final buildedCallback = ref.watch(buildedCallbackProvider);
-        buildedCallback<Size>(callback: setDisplaySizeVideoMain, data: size);
+        }));
 
         return VideoMainWidgetParts.videoMainWidget();
       });
@@ -43,8 +40,14 @@ class VideoMainWidgetParts {
   // videoMainWidget
   static videoMainWidget() {
     final widget = Consumer(builder: (context, ref, child) {
-      final currentUidOfVideoMain = ref.watch(videoSubStateNotifierProvider
-          .select((value) => value.currentUidOfVideoMain));
+      final isMuteVideo = ref.watch(
+          videoMainStateNotifierProvider.select((value) => value.isMuteVideo));
+
+      final currentUid = ref.watch(
+          videoMainStateNotifierProvider.select((value) => value.currentUid));
+
+      final nickName = ref.watch(
+          videoMainStateNotifierProvider.select((value) => value.nickName));
 
       final localUid = ref.watch(
           userStateNotifierProvider.select((value) => value.rtcVideoUid));
@@ -52,25 +55,39 @@ class VideoMainWidgetParts {
       final displaySizeVideoMainMin =
           ref.watch(DisplaySizeVideoState.displaySizeVideoMainMinProvider);
 
-      return SizedBox(
+      return Container(
         height: displaySizeVideoMainMin.height,
         width: displaySizeVideoMainMin.width,
-        child: PointerOverlayWidget(
-          child: Column(
-            children: [
-              Expanded(
-                child: currentUidOfVideoMain == localUid
-                    ? const RtcVideoLocalPreviewWidget()
-                    : RtcVideoRemotePreviewWidget(
-                        remoteUid: currentUidOfVideoMain),
-              ),
-              // SizedBox(
-              //   height: 30,
-              //   child: Text(
-              //       "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
-              // ),
-            ],
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              width: 3.0,
+              color: ref.watch(videoMainStateNotifierProvider).userColor.color,
+            ),
           ),
+        ),
+        child: PointerOverlayWidget(
+          child: Builder(builder: (context) {
+            //
+            if (isMuteVideo) {
+              return VideoMuteWidget(nickName: nickName);
+            }
+
+            return Column(
+              children: [
+                Expanded(
+                  child: currentUid == localUid
+                      ? const RtcVideoLocalPreviewWidget()
+                      : RtcVideoRemotePreviewWidget(remoteUid: currentUid),
+                ),
+                // SizedBox(
+                //   height: 30,
+                //   child: Text(
+                //       "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
+                // ),
+              ],
+            );
+          }),
         ),
       );
     });

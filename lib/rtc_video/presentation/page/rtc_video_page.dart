@@ -6,6 +6,8 @@ import '../../../channel/channel.dart';
 import '../../../common/common.dart';
 import '../../../user/user.dart';
 
+import '../../domain/rtc_video_state.dart';
+import '../widget/rtc_video_control_widget.dart';
 import '../widget/video_main_widget.dart';
 import '../widget/video_sub_widget.dart';
 import 'rtc_video_page_state.dart';
@@ -28,13 +30,13 @@ class RtcVideoPage extends ConsumerWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      drawer: RtcVideoPageWidgets.rtcVideoControlWidget(),
       appBar: AppBar(
         title: Tooltip(
           message: "チャンネル名",
           child: Text(channelName),
         ),
         actions: [
-          RtcVideoPageWidgets.switchCameraIconWidget(),
           RtcVideoPageWidgets.channelLeaveIconWidget(),
         ],
       ),
@@ -43,7 +45,7 @@ class RtcVideoPage extends ConsumerWidget {
         children: [
           RtcVideoPageWidgets.videoMainWidget(),
           RtcVideoPageWidgets.videoSubWidget(),
-          RtcVideoPageWidgets.updateUsersStateWidget(),
+          RtcVideoPageWidgets.reflectStateWidget(),
           RtcVideoPageWidgets.attentionMessageWidget(),
           RtcVideoPageWidgets.channelLeaveProgressWidget(),
         ],
@@ -61,13 +63,10 @@ class RtcVideoPage extends ConsumerWidget {
 // ---------------------------------------------------
 
 class RtcVideoPageWidgets {
-  // switchCameraIconWidget
-  static Widget switchCameraIconWidget() {
+  // rtcVideoControlWidget
+  static Widget rtcVideoControlWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      return AppbarAcitonIconWidget(
-        appbarActionIconStateNotifierProvider: ref.watch(
-            RtcVideoPageState.switchCameraSubmitIconStateNotifierProvider),
-      );
+      return const RtcVideoControlWidget();
     }));
 
     return widget;
@@ -99,8 +98,8 @@ class RtcVideoPageWidgets {
     return widget;
   }
 
-  // getUserStateWidget
-  static Widget updateUsersStateWidget() {
+  // updateUsersStateWidget
+  static Widget reflectStateWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       // users情報取得に失敗した場合、通知する。
       final usersState = ref.watch(usersStateNotifierProvider);
@@ -111,10 +110,15 @@ class RtcVideoPageWidgets {
       }
 
       // localのuserState更新時に、リモートDB上へも反映するためのプロバイダ
-      ref.watch(updateUserCommentProvider);
-      ref.watch(updateUserIsOnLongPressingProvider);
-      ref.watch(updateUserPointerPositionProvider);
-      ref.watch(updateUserDisplaySizeVideoMainProvider);
+      ref.watch(reflectUserCommentProvider);
+      ref.watch(reflectUserIsOnLongPressingProvider);
+      ref.watch(reflectUserPointerPositionProvider);
+      ref.watch(reflectUserDisplaySizeVideoMainProvider);
+      ref.watch(reflectUserColorProvider);
+      ref.watch(reflectUserIsMuteVideoProvider);
+      ref.watch(reflectUserUserColorProvider);
+
+      ref.watch(reflectRtcVideoStateIsUserOutSideCameraProvider);
 
       return const SizedBox();
     }));

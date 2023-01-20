@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'authentication_layer.dart';
 import 'common/common.dart';
+
+import 'onboarding_layer.dart';
+import 'rtc_video/infrastructure/rtc_video_engine_agora.dart';
 
 void main() async {
   // リリース環境設定
@@ -19,8 +21,15 @@ void main() async {
 
   // riverpod範囲指定
   runApp(
-    const ProviderScope(
-      child: MyApp(),
+    ProviderScope(
+      overrides: [
+        // sharedPreferencesインスタンス生成
+        sharedPreferencesInstanceProvider
+            .overrideWithValue(await createSharedPreferencesInstance()),
+        rtcVideoEngineAgoraInstanceProvider
+            .overrideWithValue(await createRtcVideoEngineAgoraInstance()),
+      ],
+      child: const MyApp(),
     ),
   );
 }
@@ -30,6 +39,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AuthenticationLayer();
+    return const OnBoardingLayer();
   }
 }

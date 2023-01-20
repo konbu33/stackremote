@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../user/user.dart';
+
 class ClippedVideoWidget extends StatelessWidget {
   const ClippedVideoWidget({
     super.key,
     required this.child,
+    required this.userColor,
   });
 
   final Widget child;
+  final UserColor userColor;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,8 @@ class ClippedVideoWidget extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(20)),
               border: Border.all(
-                color: Colors.white24,
+                width: 2.0,
+                color: userColor.color,
               ),
             ),
             child: ClipRRect(

@@ -29,6 +29,7 @@ class NameFieldState with _$NameFieldState {
 
   factory NameFieldState.create({
     required String name,
+    required Icon icon,
     required Validator validator,
     required int minLength,
     required int maxLength,
@@ -38,7 +39,7 @@ class NameFieldState with _$NameFieldState {
       formFieldKey: GlobalKey<FormFieldState>(),
       focusNode: FocusNode(),
       textEditingController: TextEditingController(),
-      icon: const Icon(Icons.mail),
+      icon: icon,
       isValidate: Validation.create(),
       validator: validator,
       minLength: minLength,
@@ -55,12 +56,14 @@ class NameFieldState with _$NameFieldState {
 class NameFieldStateNotifier extends Notifier<NameFieldState> {
   NameFieldStateNotifier({
     required this.name,
+    required this.icon,
     required this.validator,
     required this.minLength,
     required this.maxLength,
   });
 
   final String name;
+  final Icon icon;
   final Validator validator;
   final int minLength;
   final int maxLength;
@@ -69,6 +72,7 @@ class NameFieldStateNotifier extends Notifier<NameFieldState> {
   NameFieldState build() {
     final nameFieldState = NameFieldState.create(
       name: name,
+      icon: icon,
       validator: validator,
       minLength: minLength,
       maxLength: maxLength,
@@ -101,6 +105,7 @@ typedef Validator = MinMaxLenghtValidator;
 
 NameFieldStateNotifierProvider nameFieldStateNotifierProviderCreator({
   required String name,
+  required Icon icon,
   required Validator validator,
   required int minLength,
   required int maxLength,
@@ -108,6 +113,7 @@ NameFieldStateNotifierProvider nameFieldStateNotifierProviderCreator({
   return NotifierProvider<NameFieldStateNotifier, NameFieldState>(
       () => NameFieldStateNotifier(
             name: name,
+            icon: icon,
             validator: validator,
             minLength: minLength,
             maxLength: maxLength,

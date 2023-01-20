@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/common.dart';
@@ -19,13 +20,14 @@ class SignUpPageState {
     NameFieldStateNotifierProvider loginIdFieldStateNotifierProviderCreator() {
       const name = "メールアドレス";
 
-      const minMax = MinMax(min: 8, max: 20);
+      final minMax = MinMax<int>.create(min: 8, max: 20);
       final minMaxLenghtValidator =
           ref.watch(minMaxLenghtValidatorProvider(minMax));
 
       final nameFieldStateNotifierProvider =
           nameFieldStateNotifierProviderCreator(
         name: name,
+        icon: const Icon(Icons.email_sharp),
         validator: minMaxLenghtValidator,
         minLength: minMax.min,
         maxLength: minMax.max,

@@ -4,8 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../user/user.dart';
-
 part 'video_sub_state.freezed.dart';
 
 // --------------------------------------------------
@@ -16,16 +14,11 @@ part 'video_sub_state.freezed.dart';
 @freezed
 class VideoSubState with _$VideoSubState {
   const factory VideoSubState._({
-    required int currentUidOfVideoMain,
     required AlignmentDirectional videoSubLayerAlignment,
     required bool isOnTapIgnore,
   }) = _VideoSubState;
 
-  factory VideoSubState.create({
-    required int currentUidOfVideoMain,
-  }) =>
-      VideoSubState._(
-        currentUidOfVideoMain: currentUidOfVideoMain,
+  factory VideoSubState.create() => const VideoSubState._(
         videoSubLayerAlignment: AlignmentDirectional.topStart,
         isOnTapIgnore: false,
       );
@@ -39,16 +32,7 @@ class VideoSubState with _$VideoSubState {
 class VideoSubStateNotifier extends AutoDisposeNotifier<VideoSubState> {
   @override
   VideoSubState build() {
-    final currentUidOfVideoMain = ref
-        .watch(userStateNotifierProvider.select((value) => value.rtcVideoUid));
-
-    return VideoSubState.create(
-      currentUidOfVideoMain: currentUidOfVideoMain,
-    );
-  }
-
-  void updateCurrentUidOfVideoMain(int currentUidOfVideoMain) {
-    state = state.copyWith(currentUidOfVideoMain: currentUidOfVideoMain);
+    return VideoSubState.create();
   }
 
   void updateVideoSubLayerAlignment(

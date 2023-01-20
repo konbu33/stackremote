@@ -17,6 +17,13 @@ abstract class RtcVideoRepository {
 
   Future<void> channelLeave();
 
+  Future<void> muteLocalAudio(bool isMute);
+  Future<void> muteLocalVideo(bool isMute);
+  Future<void> muteRemoteVideo({
+    required int remoteUid,
+    required bool isMute,
+  });
+
   Future<void> switchCamera();
 
   Future<String> createRtcIdToken({

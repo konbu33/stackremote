@@ -29,17 +29,41 @@
                 "--dart-define=FLAVOR=prd"
             ]
         },
-        // {
-        //     "name": "stackremote (profile mode)",
-        //     "request": "launch",
-        //     "type": "dart",
-        //     "flutterMode": "profile"
-        // },
-        // {
-        //     "name": "stackremote (release mode)",
-        //     "request": "launch",
-        //     "type": "dart",
-        //     "flutterMode": "release"
-        // }
-    ]
+        {
+            "name": "konb_Pixel_5_API_32",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "emulator-5554"
+        },
+        {
+            "name": "taip_Pixel_5_API_32",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "emulator-5556"
+        },
+        {
+            "name": "taip_iPad_11",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "138F1B5D-CF8C-4DA6-A3E7-5A18B252F1FE"
+        },
+        {
+            "name": "kckk_iPhoneSE_Gen3",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "5C96DB31-DA63-4C0B-ABD9-7C55F290FE67"
+        },
+
+    ],
+    "compounds": [
+        {
+            "name": "All Devices",
+            "configurations": [
+                "konb_Pixel_5_API_32", 
+                // "taip_Pixel_5_API_32",
+                "taip_iPad_11",
+                "kckk_iPhoneSE_Gen3",
+            ],
+        },
+    ],
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stackremote/user/user.dart';
 
 import '../../../common/common.dart';
 import '../../../menu/menu.dart';
 
-import '../../infrastructure/rtc_video_engine_agora.dart';
 import 'rtc_video_channel_join_page_state.dart';
 
 class RtcVideoChannelJoinPage extends ConsumerWidget {
@@ -18,8 +18,6 @@ class RtcVideoChannelJoinPage extends ConsumerWidget {
 
     final channelNameFieldState =
         ref.watch(channelNameFieldStateNotifierProvider);
-
-    ref.watch(rtcVideoEngineAgoraNotifierProvider);
 
     return Scaffold(
       drawer: RtcVideoChannelJoinPageWidgets.menuWidget(),
@@ -47,6 +45,7 @@ class RtcVideoChannelJoinPage extends ConsumerWidget {
                 RtcVideoChannelJoinPageWidgets.channelNameFieldWidget(),
                 const SizedBox(height: 40),
                 RtcVideoChannelJoinPageWidgets.channelJoinOnSubmitWidget(),
+                RtcVideoChannelJoinPageWidgets.reflectStateWidget(),
               ],
             ),
           ),
@@ -151,6 +150,18 @@ class RtcVideoChannelJoinPageWidgets {
         progressStateNotifierProvider: signOutProgressStateNotifierProvider,
       );
     });
+
+    return widget;
+  }
+
+  // updateUserStateWidget
+  static Widget reflectStateWidget() {
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      // localのuserState更新時に、リモートDB上へも反映するためのプロバイダ
+      ref.watch(reflectUserNickNameProvider);
+
+      return const SizedBox();
+    }));
 
     return widget;
   }
