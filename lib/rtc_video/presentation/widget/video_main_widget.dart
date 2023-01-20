@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -23,16 +25,11 @@ class VideoMainWidget extends StatelessWidget {
           constraints.maxHeight.floorToDouble(),
         );
 
-        void setDisplaySizeVideoMain(Size? size) {
-          if (size == null) return;
-
+        unawaited(Future(() {
           ref
               .read(DisplaySizeVideoState.displaySizeVideoMainProvider.notifier)
               .update((state) => size);
-        }
-
-        final buildedCallback = ref.watch(buildedCallbackProvider);
-        buildedCallback<Size>(callback: setDisplaySizeVideoMain, data: size);
+        }));
 
         return VideoMainWidgetParts.videoMainWidget();
       });
@@ -84,11 +81,11 @@ class VideoMainWidgetParts {
                       ? const RtcVideoLocalPreviewWidget()
                       : RtcVideoRemotePreviewWidget(remoteUid: currentUid),
                 ),
-                SizedBox(
-                  height: 30,
-                  child: Text(
-                      "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
-                ),
+                // SizedBox(
+                //   height: 30,
+                //   child: Text(
+                //       "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
+                // ),
               ],
             );
           }),
