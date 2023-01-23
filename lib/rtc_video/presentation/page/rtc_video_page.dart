@@ -46,6 +46,7 @@ class RtcVideoPage extends ConsumerWidget {
           RtcVideoPageWidgets.videoMainWidget(),
           RtcVideoPageWidgets.videoSubWidget(),
           RtcVideoPageWidgets.reflectStateWidget(),
+          RtcVideoPageWidgets.updateUsersStateWidget(),
           RtcVideoPageWidgets.attentionMessageWidget(),
           RtcVideoPageWidgets.channelLeaveProgressWidget(),
         ],
@@ -98,17 +99,9 @@ class RtcVideoPageWidgets {
     return widget;
   }
 
-  // updateUsersStateWidget
+  // reflectStateWidget
   static Widget reflectStateWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      // users情報取得に失敗した場合、通知する。
-      final usersState = ref.watch(usersStateNotifierProvider);
-
-      if (usersState.isGetDataError) {
-        const snackBar = SnackBar(content: Text("ユーザ情報の取得に失敗しました。"));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-
       // localのuserState更新時に、リモートDB上へも反映するためのプロバイダ
       ref.watch(reflectUserCommentProvider);
       ref.watch(reflectUserIsOnLongPressingProvider);
@@ -119,6 +112,23 @@ class RtcVideoPageWidgets {
       ref.watch(reflectUserUserColorProvider);
 
       ref.watch(reflectRtcVideoStateIsUserOutSideCameraProvider);
+
+      return const SizedBox();
+    }));
+
+    return widget;
+  }
+
+  // updateUsersStateWidget
+  static Widget updateUsersStateWidget() {
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      // users情報取得に失敗した場合、通知する。
+      final usersState = ref.watch(usersStateNotifierProvider);
+
+      if (usersState.isGetDataError) {
+        const snackBar = SnackBar(content: Text("ユーザ情報の取得に失敗しました。"));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
 
       return const SizedBox();
     }));
