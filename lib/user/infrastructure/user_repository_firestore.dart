@@ -191,6 +191,42 @@ class UserRepositoryFireBase implements UserRepository {
 
   // --------------------------------------------------
   //
+  //  getAll
+  //
+  // --------------------------------------------------
+  @override
+  Future<Users> getAll() async {
+    try {
+      final res = await ref.get();
+
+      final docDataList = res.docs.map((doc) {
+        return doc.data();
+      }).toList();
+
+      final userList = docDataList.map((docData) {
+        final user = User.fromJson(docData);
+        return user;
+      }).toList();
+
+      final users = Users.create(users: userList);
+
+      return users;
+
+      //
+    } on FirebaseException catch (e) {
+      logger.d("$e");
+
+      throw StackremoteException(
+        plugin: e.plugin,
+        message: e.message ?? "",
+        code: e.code,
+        stackTrace: e.stackTrace,
+      );
+    }
+  }
+
+  // --------------------------------------------------
+  //
   //  set
   //
   // --------------------------------------------------

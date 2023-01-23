@@ -27,6 +27,8 @@ abstract class UserRepository {
     required String email,
   });
 
+  Future<Users> getAll();
+
   Future<void> set({
     required String email,
     required User user,
