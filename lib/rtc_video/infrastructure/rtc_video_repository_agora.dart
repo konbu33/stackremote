@@ -155,6 +155,31 @@ class RtcVideoRepositoryAgora implements RtcVideoRepository {
 
   // --------------------------------------------------
   //
+  //  setVideoEncoderConfiguration
+  //
+  // --------------------------------------------------
+  @override
+  Future<void> setVideoEncoderConfiguration(Size videoDimensions) async {
+    final dimensions = VideoDimensions(
+      height: videoDimensions.height.toInt(),
+      width: videoDimensions.width.toInt(),
+    );
+
+    final videoEncoderConfiguration = VideoEncoderConfiguration(
+      dimensions: dimensions,
+    );
+
+    // カメラ切り替え
+    try {
+      await rtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration);
+    } on Exception catch (e) {
+      logger.d("$e");
+      rethrow;
+    }
+  }
+
+  // --------------------------------------------------
+  //
   //  switchCamera
   //
   // --------------------------------------------------

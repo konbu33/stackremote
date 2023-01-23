@@ -282,11 +282,18 @@ final reflectUserDisplaySizeVideoMainProvider =
   final displaySizeVideoMain = ref.watch(
       userStateNotifierProvider.select((value) => value.displaySizeVideoMain));
 
+  // リモートDB へ反映
   final userUpdateUsecase = ref.read(userUpdateUsecaseProvider);
 
   await userUpdateUsecase(
     displaySizeVideoMain: displaySizeVideoMain,
   );
+
+  // Video Call Service へ反映
+  final setVideoEncoderConfigurationUsecase =
+      ref.watch(setVideoEncoderConfigurationUsecaseProvider);
+
+  await setVideoEncoderConfigurationUsecase(displaySizeVideoMain);
 });
 
 // --------------------------------------------------
