@@ -37,8 +37,9 @@ final footerBuilderProvider = Provider((ref) {
           ref.read(setIndexProvider.notifier).update((state) => setIndex);
         }));
 
-        return Padding(
+        return Container(
           padding: const EdgeInsets.all(45.0),
+          constraints: const BoxConstraints(maxWidth: 450),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
