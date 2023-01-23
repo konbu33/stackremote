@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../common/common.dart';
 import '../../../pointer/pointer.dart';
 import '../../../user/user.dart';
 
@@ -30,7 +31,10 @@ class VideoMainWidget extends StatelessWidget {
               .update((state) => size);
         }));
 
-        return VideoMainWidgetParts.videoMainWidget();
+        return Column(children: [
+          VideoMainWidgetParts.videoMainWidget(),
+          VideoMainWidgetParts.updateVideoMainWidget(),
+        ]);
       });
     });
   }
@@ -90,6 +94,39 @@ class VideoMainWidgetParts {
           }),
         ),
       );
+    });
+
+    return widget;
+  }
+
+  // xxxxx
+  static updateVideoMainWidget() {
+    final widget = Consumer(builder: (context, ref, child) {
+      final userStateList =
+          ref.watch(usersStateNotifierProvider.select((value) => value.users));
+
+      if (userStateList.isEmpty) return const SizedBox();
+
+      final currentUserOfVideoMainState = userStateList.where((user) {
+        return user.rtcVideoUid ==
+            ref.watch(videoMainStateNotifierProvider).currentUid;
+      }).first;
+
+      logger.d(
+          "currentUserOfVideoMainState : ${currentUserOfVideoMainState.userColor}");
+
+      if (currentUserOfVideoMainState.userColor !=
+          ref.watch(videoMainStateNotifierProvider).userColor) {
+        //
+        unawaited(Future(() {
+          ref
+              .read(videoMainStateNotifierProvider.notifier)
+              .updateUserColor(currentUserOfVideoMainState.userColor);
+        }));
+        //
+      }
+
+      return const SizedBox();
     });
 
     return widget;
