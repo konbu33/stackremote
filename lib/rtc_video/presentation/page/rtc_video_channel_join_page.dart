@@ -154,7 +154,7 @@ class RtcVideoChannelJoinPageWidgets {
     return widget;
   }
 
-  // updateUserStateWidget
+  // reflectStateWidget
   static Widget reflectStateWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       // localのuserState更新時に、リモートDB上へも反映するためのプロバイダ
