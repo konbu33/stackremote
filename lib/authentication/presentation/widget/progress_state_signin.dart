@@ -22,8 +22,8 @@ final progressStateSignInProvider = Provider.autoDispose((ref) {
           .update((state) => "$dateTimeNow: $message");
     }
 
-    const message = "サインイン中";
-    setMessage(message);
+    // const message = "サインイン中";
+    // setMessage(message);
 
     // --------------------------------------------------
     //

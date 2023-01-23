@@ -23,8 +23,8 @@ final progressStateSignOutProvider = Provider((ref) {
           .update((state) => "$dateTimeNow: $message");
     }
 
-    const message = "サインアウト中";
-    setMessage(message);
+    // const message = "サインアウト中";
+    // setMessage(message);
 
     // --------------------------------------------------
     //

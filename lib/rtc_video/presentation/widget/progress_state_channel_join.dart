@@ -36,9 +36,8 @@ final progressStateChannelJoinProvider = Provider.autoDispose((ref) {
           .update((state) => "$dateTimeNow: $message");
     }
 
-    const message = "チャンネル参加待機中";
-
-    setMessage(message);
+    // const message = "チャンネル参加待機中";
+    // setMessage(message);
 
     // --------------------------------------------------
     //
