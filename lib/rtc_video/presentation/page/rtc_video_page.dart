@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -7,6 +9,7 @@ import '../../../common/common.dart';
 import '../../../user/user.dart';
 
 import '../../domain/rtc_video_state.dart';
+import '../../usecase/continuous_participation_time.dart';
 import '../widget/rtc_video_control_widget.dart';
 import '../widget/video_main_widget.dart';
 import '../widget/video_sub_widget.dart';
@@ -49,6 +52,7 @@ class RtcVideoPage extends ConsumerWidget {
           RtcVideoPageWidgets.updateUsersStateWidget(),
           RtcVideoPageWidgets.attentionMessageWidget(),
           RtcVideoPageWidgets.channelLeaveProgressWidget(),
+          RtcVideoPageWidgets.continuousParticipationTimeLimitTimerWidget(),
         ],
       ),
     );
@@ -80,6 +84,42 @@ class RtcVideoPageWidgets {
         appbarActionIconStateNotifierProvider: ref.watch(
             RtcVideoPageState.channelLeaveSubmitIconStateNotifierProvider),
       );
+    }));
+
+    return widget;
+  }
+
+  // continuousParticipationTimeLimitTimerWidget
+  static Widget continuousParticipationTimeLimitTimerWidget() {
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      // Timer実行
+      final continuousParticipationTimeLimitTimerCreator =
+          ref.watch(continuousParticipationTimeLimitTimerCreatorProvider);
+
+      final timer = continuousParticipationTimeLimitTimerCreator();
+
+      // 上限をwatch
+      final isOverContinuousParticipationTimeLimit = ref
+          .watch(RtcVideoState.isOverContinuousParticipationTimeLimitProvider);
+
+      // 上限を超えた場合、ChannelLeave
+      if (isOverContinuousParticipationTimeLimit) {
+        final channelLeaveSubmitIconStateNotifierProvider = ref.watch(
+            RtcVideoPageState.channelLeaveSubmitIconStateNotifierProvider);
+
+        final channelLeaveSubmitIconStateNotifier =
+            ref.watch(channelLeaveSubmitIconStateNotifierProvider);
+
+        unawaited(Future(() {
+          // nullになる可能性が無いため、non-nullable指定(!指定)で実行する。
+          channelLeaveSubmitIconStateNotifier.onSubmit(context: context)!();
+        }));
+
+        // Timer実行キャンセル
+        timer.cancel();
+      }
+
+      return const SizedBox();
     }));
 
     return widget;

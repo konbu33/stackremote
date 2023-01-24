@@ -8,6 +8,7 @@ import '../../../pointer/pointer.dart';
 import '../../../user/user.dart';
 
 import '../../domain/display_size_video_state.dart';
+import '../../domain/rtc_video_state.dart';
 import 'rtc_video_local_preview_widget.dart';
 import 'rtc_video_remote_preview_widget.dart';
 import 'video_main_state.dart';
@@ -59,6 +60,15 @@ class VideoMainWidgetParts {
       final displaySizeVideoMainMin =
           ref.watch(DisplaySizeVideoState.displaySizeVideoMainMinProvider);
 
+      final continuousParticipationTimeRemaining =
+          ref.watch(RtcVideoState.continuousParticipationTimeRemainingProvider);
+
+      final displayTimeRemaining = continuousParticipationTimeRemaining
+          .toString()
+          .split('.')
+          .first
+          .padLeft(8, "0");
+
       return Container(
         height: displaySizeVideoMainMin.height,
         width: displaySizeVideoMainMin.width,
@@ -74,7 +84,15 @@ class VideoMainWidgetParts {
           child: Builder(builder: (context) {
             //
             if (isMuteVideo) {
-              return VideoMuteWidget(nickName: nickName);
+              return Column(
+                children: [
+                  Expanded(child: VideoMuteWidget(nickName: nickName)),
+                  SizedBox(
+                    height: 30,
+                    child: Text("残り時間: $displayTimeRemaining"),
+                  ),
+                ],
+              );
             }
 
             return Column(
@@ -83,6 +101,10 @@ class VideoMainWidgetParts {
                   child: currentUid == localUid
                       ? const RtcVideoLocalPreviewWidget()
                       : RtcVideoRemotePreviewWidget(remoteUid: currentUid),
+                ),
+                SizedBox(
+                  height: 30,
+                  child: Text("残り時間: $displayTimeRemaining"),
                 ),
                 // SizedBox(
                 //   height: 30,
@@ -99,7 +121,7 @@ class VideoMainWidgetParts {
     return widget;
   }
 
-  // xxxxx
+  // updateVideoMainWidget
   static updateVideoMainWidget() {
     final widget = Consumer(builder: (context, ref, child) {
       final userStateList =

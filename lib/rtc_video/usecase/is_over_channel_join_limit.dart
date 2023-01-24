@@ -1,8 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/rtc_video.dart';
-import 'package:stackremote/user/usecace/user_get_all_usecase.dart';
 
 import '../../common/common.dart';
+import '../../user/user.dart';
+import '../domain/rtc_video_state.dart';
 
 final isOverChannelJoinLimitUsecaseProvider = Provider.autoDispose((ref) {
   //

@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/usecase/mute_local_audio.dart';
-import 'package:stackremote/rtc_video/usecase/mute_local_video.dart';
-import 'package:stackremote/rtc_video/usecase/switch_camera.dart';
 import 'package:ulid/ulid.dart';
 
 import '../../common/common.dart';
+import '../usecase/mute_local_audio.dart';
+import '../usecase/mute_local_video.dart';
+import '../usecase/switch_camera.dart';
 
 class RtcVideoState {
   static final rtcIdTokenProvider = StateProvider((ref) => "");
@@ -30,6 +30,15 @@ class RtcVideoState {
   static final isUseOutSideCameraProvider = StateProvider((ref) => true);
 
   static const channelJoinLimit = 3;
+
+  static const continuousParticipationTimeLimitSec = 60 * 30;
+
+  static final isOverContinuousParticipationTimeLimitProvider =
+      StateProvider.autoDispose((ref) => false);
+
+  static final continuousParticipationTimeRemainingProvider =
+      StateProvider.autoDispose((ref) =>
+          const Duration(seconds: continuousParticipationTimeLimitSec));
 }
 
 // --------------------------------------------------

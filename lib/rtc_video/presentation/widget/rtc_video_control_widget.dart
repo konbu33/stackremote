@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/rtc_video.dart';
 
 import '../../../common/common.dart';
 import '../../../pointer/pointer.dart';
 import '../../../user/user.dart';
 
+import '../../domain/rtc_video_state.dart';
 import 'control_icon_widget.dart';
 import 'rtc_video_control_widget_state.dart';
 

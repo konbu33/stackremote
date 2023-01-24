@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/presentation/widget/video_mute_widget.dart';
 
 import '../../../common/common.dart';
 import '../../../user/user.dart';
@@ -11,6 +10,7 @@ import 'draggable_widget.dart';
 import 'rtc_video_local_preview_widget.dart';
 import 'rtc_video_remote_preview_widget.dart';
 import 'video_main_state.dart';
+import 'video_mute_widget.dart';
 import 'video_sub_state.dart';
 
 class VideoSubWidget extends StatelessWidget {

@@ -1,8 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stackremote/common/util/stackremote_exception.dart';
 
-import '../util/logger.dart';
+import '../common.dart';
 
 part 'shared_preferences_instance.g.dart';
 
