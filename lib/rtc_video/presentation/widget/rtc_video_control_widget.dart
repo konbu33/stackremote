@@ -116,9 +116,9 @@ class RtcVideoControlWidgetParts {
   // audioVideoWidget
   static Widget audioVideoWidget() {
     Widget widget = Consumer(builder: (context, ref, child) {
-      // 状態変化した場合、リモートサービスへ反映
-      ref.watch(reflectRtcVideoStateIsMuteAudioLocalProvider);
-      ref.watch(reflectRtcVideoStateIsMuteVideoLocalProvider);
+      // // 状態変化した場合、リモートサービスへ反映
+      // ref.watch(reflectRtcVideoStateIsMuteAudioLocalProvider);
+      // ref.watch(reflectRtcVideoStateIsMuteVideoLocalProvider);
 
       //
       final muteLocalAudioIconWidget = ControlIconWidget(

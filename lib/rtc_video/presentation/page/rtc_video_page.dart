@@ -153,6 +153,10 @@ class RtcVideoPageWidgets {
 
       ref.watch(reflectRtcVideoStateIsUserOutSideCameraProvider);
 
+      // 状態変化した場合、リモートサービスへ反映
+      ref.watch(reflectRtcVideoStateIsMuteAudioLocalProvider);
+      ref.watch(reflectRtcVideoStateIsMuteVideoLocalProvider);
+
       return const SizedBox();
     }));
 

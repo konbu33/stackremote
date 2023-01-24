@@ -25,7 +25,9 @@ class RtcVideoState {
 
   static const rtcIdTokenType = "uid";
 
-  static final isMuteAudioLocalProvider = StateProvider((ref) => false);
+  static final isMuteAudioLocalProvider =
+      StateProvider.autoDispose((ref) => false);
+
   static final isMuteVideoLocalProvider = StateProvider((ref) => true);
   static final isUseOutSideCameraProvider = StateProvider((ref) => true);
 
@@ -46,13 +48,13 @@ class RtcVideoState {
 // reflectRtcVideoStateIsMuteAudioLocalProvider
 //
 // --------------------------------------------------
-final reflectRtcVideoStateIsMuteAudioLocalProvider = Provider(
+final reflectRtcVideoStateIsMuteAudioLocalProvider = Provider.autoDispose(
   (ref) async {
     //
 
     final isMuteAudioLocal = ref.watch(RtcVideoState.isMuteAudioLocalProvider);
 
-    logger.d("reflect: $isMuteAudioLocal");
+    logger.d("isMuteAudioLocal: reflect: $isMuteAudioLocal");
 
     final muteLocalAudioStreamUsecase =
         ref.watch(muteLocalAudioStreamUsecaseProvider);

@@ -6,7 +6,8 @@ import 'control_icon_widget_state.dart';
 
 class RtcVideoControlWidgetState {
   //
-  static final muteLocalAudioIconWidgetStateProvider = Provider((ref) {
+  static final muteLocalAudioIconWidgetStateProvider =
+      Provider.autoDispose((ref) {
     return ControlIconWidgetState.create(
       isX: ref.watch(RtcVideoState.isMuteAudioLocalProvider),
       enableIcon: Icons.mic_sharp,

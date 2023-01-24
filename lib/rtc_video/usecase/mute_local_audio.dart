@@ -4,7 +4,7 @@ import '../domain/rtc_video_state.dart';
 import '../infrastructure/rtc_video_repository.dart';
 import '../infrastructure/rtc_video_repository_agora.dart';
 
-final muteLocalAudioStreamUsecaseProvider = Provider((ref) {
+final muteLocalAudioStreamUsecaseProvider = Provider.autoDispose((ref) {
   Future<void> execute() async {
     final rtcVideoRepositoryAgoraCreator =
         ref.watch(rtcVideoRepositoryAgoraCreatorProvider);
