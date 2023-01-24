@@ -28,6 +28,8 @@ class RtcVideoState {
   static final isMuteAudioLocalProvider = StateProvider((ref) => false);
   static final isMuteVideoLocalProvider = StateProvider((ref) => true);
   static final isUseOutSideCameraProvider = StateProvider((ref) => true);
+
+  static const channelJoinLimit = 3;
 }
 
 // --------------------------------------------------

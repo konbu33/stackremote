@@ -204,7 +204,7 @@ class UserRepositoryFireBase implements UserRepository {
       }).toList();
 
       final userList = docDataList.map((docData) {
-        final user = User.fromJson(docData);
+        final user = docDataToUser(docData);
         return user;
       }).toList();
 
