@@ -14,6 +14,24 @@ import 'rtc_video_remote_preview_widget.dart';
 import 'video_main_state.dart';
 import 'video_mute_widget.dart';
 
+class VideoMainClipper extends CustomClipper<Rect> {
+  @override
+  Rect getClip(Size size) {
+    final rect = Rect.fromCenter(
+      center: const Offset(0, 0),
+      width: size.width / 2,
+      height: size.height / 2,
+    );
+
+    return rect;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper oldClipper) {
+    return false;
+  }
+}
+
 class VideoMainWidget extends StatelessWidget {
   const VideoMainWidget({super.key});
 
@@ -84,33 +102,48 @@ class VideoMainWidgetParts {
           child: Builder(builder: (context) {
             //
             if (isMuteVideo) {
-              return Column(
+              return Stack(
+                alignment: Alignment.center,
                 children: [
-                  Expanded(child: VideoMuteWidget(nickName: nickName)),
-                  SizedBox(
-                    height: 30,
-                    child: Text("残り時間: $displayTimeRemaining"),
+                  VideoMuteWidget(nickName: nickName),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        height: 30,
+                        child: Text("残り時間: $displayTimeRemaining"),
+                      ),
+                      SizedBox(
+                        height: 30,
+                        child: Text(
+                            "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
+                      ),
+                    ],
                   ),
                 ],
               );
             }
 
-            return Column(
+            return Stack(
+              alignment: Alignment.center,
               children: [
-                Expanded(
-                  child: currentUid == localUid
-                      ? const RtcVideoLocalPreviewWidget()
-                      : RtcVideoRemotePreviewWidget(remoteUid: currentUid),
+                currentUid == localUid
+                    ? const RtcVideoLocalPreviewWidget()
+                    : RtcVideoRemotePreviewWidget(remoteUid: currentUid),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      height: 30,
+                      child: Text("残り時間: $displayTimeRemaining"),
+                    ),
+                    SizedBox(
+                      height: 30,
+                      child: Text(
+                          "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: 30,
-                  child: Text("残り時間: $displayTimeRemaining"),
-                ),
-                // SizedBox(
-                //   height: 30,
-                //   child: Text(
-                //       "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
-                // ),
               ],
             );
           }),
