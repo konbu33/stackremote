@@ -31,4 +31,5 @@ export './util/json_converter.dart';
 export './util/logger.dart';
 export './util/min_max.dart';
 export './util/release_env.dart';
+export './util/set_preferred_orientations_portrait_up.dart';
 export './util/stackremote_exception.dart';

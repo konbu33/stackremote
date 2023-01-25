@@ -38,37 +38,39 @@ class VideoMainWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
-      // final displaySizeVideoMainMin =
-      //     ref.watch(DisplaySizeVideoState.displaySizeVideoMainMinProvider);
+      return
+          // OrientationBuilder(builder: (context, orientation) {
+          //   if (orientation == Orientation.landscape) {
+          //     //
+          //     logger.d("OrientationBuilder1: $orientation");
+          //   } else {
+          //     //
+          //     logger.d("OrientationBuilder2: $orientation");
+          //   }
 
-      return SizedBox(
-        // height: 591, // h: 16 * 36 = 576
-        // width: 375, //  w:  9 * 36 = 324
-        height: 576, // h: 16 * 36 = 576
-        width: 324, //  w:  9 * 36 = 324
-        // height: displaySizeVideoMainMin.height,
-        // width: displaySizeVideoMainMin.width,
+          //   return
+          LayoutBuilder(builder: (context, constraints) {
+        final size = Size(
+          constraints.maxWidth.floorToDouble(),
+          constraints.maxHeight.floorToDouble(),
+        );
 
-        child: LayoutBuilder(builder: (context, constraints) {
-          final size = Size(
-            constraints.maxWidth.floorToDouble(),
-            constraints.maxHeight.floorToDouble(),
-          );
+        // logger.d("OrientationBuilder: $orientation, size: $size");
+        logger.d("OrientationBuilder:  size: $size");
 
-          unawaited(Future(() {
-            ref
-                .read(
-                    DisplaySizeVideoState.displaySizeVideoMainProvider.notifier)
-                .update((state) => size);
-          }));
+        unawaited(Future(() {
+          ref
+              .read(DisplaySizeVideoState.displaySizeVideoMainProvider.notifier)
+              .update((state) => size);
+        }));
 
-          return Column(children: [
-            VideoMainWidgetParts.videoMainWidget(),
-            VideoMainWidgetParts.updateVideoMainWidget(),
-          ]);
-        }),
-      );
+        return Column(children: [
+          VideoMainWidgetParts.videoMainWidget(),
+          VideoMainWidgetParts.updateVideoMainWidget(),
+        ]);
+      });
     });
+    // });
   }
 }
 

@@ -19,6 +19,9 @@ void main() async {
   // flutter_dotenvで変数読み込み
   await loadDotEnv();
 
+  // 画面の向きを縦に固定
+  await setPreferredOrientationsPortraitUp();
+
   // riverpod範囲指定
   runApp(
     ProviderScope(
