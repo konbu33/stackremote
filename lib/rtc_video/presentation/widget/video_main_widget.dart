@@ -38,23 +38,36 @@ class VideoMainWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
-      return LayoutBuilder(builder: (context, constraints) {
-        final size = Size(
-          constraints.maxWidth.floorToDouble(),
-          constraints.maxHeight.floorToDouble(),
-        );
+      // final displaySizeVideoMainMin =
+      //     ref.watch(DisplaySizeVideoState.displaySizeVideoMainMinProvider);
 
-        unawaited(Future(() {
-          ref
-              .read(DisplaySizeVideoState.displaySizeVideoMainProvider.notifier)
-              .update((state) => size);
-        }));
+      return SizedBox(
+        // height: 591, // h: 16 * 36 = 576
+        // width: 375, //  w:  9 * 36 = 324
+        height: 576, // h: 16 * 36 = 576
+        width: 324, //  w:  9 * 36 = 324
+        // height: displaySizeVideoMainMin.height,
+        // width: displaySizeVideoMainMin.width,
 
-        return Column(children: [
-          VideoMainWidgetParts.videoMainWidget(),
-          VideoMainWidgetParts.updateVideoMainWidget(),
-        ]);
-      });
+        child: LayoutBuilder(builder: (context, constraints) {
+          final size = Size(
+            constraints.maxWidth.floorToDouble(),
+            constraints.maxHeight.floorToDouble(),
+          );
+
+          unawaited(Future(() {
+            ref
+                .read(
+                    DisplaySizeVideoState.displaySizeVideoMainProvider.notifier)
+                .update((state) => size);
+          }));
+
+          return Column(children: [
+            VideoMainWidgetParts.videoMainWidget(),
+            VideoMainWidgetParts.updateVideoMainWidget(),
+          ]);
+        }),
+      );
     });
   }
 }

@@ -65,7 +65,9 @@ Future<RtcEngine> createRtcVideoEngineAgoraInstance() async {
 
   // ビデオのエンコーディング設定
   const videoEncoderConfiguration = VideoEncoderConfiguration(
-    dimensions: VideoDimensions(width: 640, height: 360),
+    // dimensions: VideoDimensions(width: 640, height: 360), // 16 : 9
+    // dimensions: VideoDimensions(width: 720, height: 1280), // 9 : 16
+    dimensions: VideoDimensions(width: 360, height: 640), // 9 : 16
     frameRate: 15,
     bitrate: 0,
   );
