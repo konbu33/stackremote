@@ -114,11 +114,11 @@ class VideoMainWidgetParts {
                         height: 30,
                         child: Text("残り時間: $displayTimeRemaining"),
                       ),
-                      SizedBox(
-                        height: 30,
-                        child: Text(
-                            "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
-                      ),
+                      // SizedBox(
+                      //   height: 30,
+                      //   child: Text(
+                      //       "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
+                      // ),
                     ],
                   ),
                 ],
@@ -138,11 +138,11 @@ class VideoMainWidgetParts {
                       height: 30,
                       child: Text("残り時間: $displayTimeRemaining"),
                     ),
-                    SizedBox(
-                      height: 30,
-                      child: Text(
-                          "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
-                    ),
+                    // SizedBox(
+                    //   height: 30,
+                    //   child: Text(
+                    //       "displaySizeVideoMainMin: h: ${displaySizeVideoMainMin.height}, w: ${displaySizeVideoMainMin.width}"),
+                    // ),
                   ],
                 ),
               ],
