@@ -38,25 +38,11 @@ class VideoMainWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
-      return
-          // OrientationBuilder(builder: (context, orientation) {
-          //   if (orientation == Orientation.landscape) {
-          //     //
-          //     logger.d("OrientationBuilder1: $orientation");
-          //   } else {
-          //     //
-          //     logger.d("OrientationBuilder2: $orientation");
-          //   }
-
-          //   return
-          LayoutBuilder(builder: (context, constraints) {
+      return LayoutBuilder(builder: (context, constraints) {
         final size = Size(
           constraints.maxWidth.floorToDouble(),
           constraints.maxHeight.floorToDouble(),
         );
-
-        // logger.d("OrientationBuilder: $orientation, size: $size");
-        logger.d("OrientationBuilder:  size: $size");
 
         unawaited(Future(() {
           ref
