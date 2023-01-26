@@ -33,7 +33,7 @@ class RtcVideoState {
 
   static const channelJoinLimit = 3;
 
-  static const continuousParticipationTimeLimitSec = 60 * 30;
+  static const continuousParticipationTimeLimitSec = 60 * 10;
 
   static final isOverContinuousParticipationTimeLimitProvider =
       StateProvider.autoDispose((ref) => false);
