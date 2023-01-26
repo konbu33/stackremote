@@ -5,7 +5,6 @@ import '../../../common/common.dart';
 import '../../../pointer/pointer.dart';
 import '../../../user/user.dart';
 
-import '../../domain/rtc_video_state.dart';
 import 'control_icon_widget.dart';
 import 'rtc_video_control_widget_state.dart';
 
