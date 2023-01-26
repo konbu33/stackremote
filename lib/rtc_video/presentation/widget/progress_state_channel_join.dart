@@ -85,13 +85,6 @@ final progressStateChannelJoinProvider = Provider.autoDispose((ref) {
       logger.d("isOverChannelJoinLimit: StackremoteException: $message");
 
       return;
-      // } catch (error) {
-      //   final message = "チャンネル参加に失敗しました。: $error";
-      //   setMessage(message);
-
-      //   logger.d("isOverChannelJoinLimit: Exception: $message");
-
-      //   return;
     }
 
     // --------------------------------------------------
