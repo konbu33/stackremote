@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -7,6 +9,7 @@ import '../../../common/common.dart';
 import '../../../user/user.dart';
 
 import '../../domain/rtc_video_state.dart';
+import '../../usecase/continuous_participation_time.dart';
 import '../widget/rtc_video_control_widget.dart';
 import '../widget/video_main_widget.dart';
 import '../widget/video_sub_widget.dart';
@@ -46,8 +49,10 @@ class RtcVideoPage extends ConsumerWidget {
           RtcVideoPageWidgets.videoMainWidget(),
           RtcVideoPageWidgets.videoSubWidget(),
           RtcVideoPageWidgets.reflectStateWidget(),
+          RtcVideoPageWidgets.updateUsersStateWidget(),
           RtcVideoPageWidgets.attentionMessageWidget(),
           RtcVideoPageWidgets.channelLeaveProgressWidget(),
+          RtcVideoPageWidgets.continuousParticipationTimeLimitTimerWidget(),
         ],
       ),
     );
@@ -84,6 +89,42 @@ class RtcVideoPageWidgets {
     return widget;
   }
 
+  // continuousParticipationTimeLimitTimerWidget
+  static Widget continuousParticipationTimeLimitTimerWidget() {
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      // Timer実行
+      final continuousParticipationTimeLimitTimerCreator =
+          ref.watch(continuousParticipationTimeLimitTimerCreatorProvider);
+
+      final timer = continuousParticipationTimeLimitTimerCreator();
+
+      // 上限をwatch
+      final isOverContinuousParticipationTimeLimit = ref
+          .watch(RtcVideoState.isOverContinuousParticipationTimeLimitProvider);
+
+      // 上限を超えた場合、ChannelLeave
+      if (isOverContinuousParticipationTimeLimit) {
+        final channelLeaveSubmitIconStateNotifierProvider = ref.watch(
+            RtcVideoPageState.channelLeaveSubmitIconStateNotifierProvider);
+
+        final channelLeaveSubmitIconStateNotifier =
+            ref.watch(channelLeaveSubmitIconStateNotifierProvider);
+
+        unawaited(Future(() {
+          // nullになる可能性が無いため、non-nullable指定(!指定)で実行する。
+          channelLeaveSubmitIconStateNotifier.onSubmit(context: context)!();
+        }));
+
+        // Timer実行キャンセル
+        timer.cancel();
+      }
+
+      return const SizedBox();
+    }));
+
+    return widget;
+  }
+
   // videoMainWidget
   static Widget videoMainWidget() {
     const Widget widget = VideoMainWidget();
@@ -98,17 +139,9 @@ class RtcVideoPageWidgets {
     return widget;
   }
 
-  // updateUsersStateWidget
+  // reflectStateWidget
   static Widget reflectStateWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
-      // users情報取得に失敗した場合、通知する。
-      final usersState = ref.watch(usersStateNotifierProvider);
-
-      if (usersState.isGetDataError) {
-        const snackBar = SnackBar(content: Text("ユーザ情報の取得に失敗しました。"));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-
       // localのuserState更新時に、リモートDB上へも反映するためのプロバイダ
       ref.watch(reflectUserCommentProvider);
       ref.watch(reflectUserIsOnLongPressingProvider);
@@ -119,6 +152,27 @@ class RtcVideoPageWidgets {
       ref.watch(reflectUserUserColorProvider);
 
       ref.watch(reflectRtcVideoStateIsUserOutSideCameraProvider);
+
+      // 状態変化した場合、リモートサービスへ反映
+      ref.watch(reflectRtcVideoStateIsMuteAudioLocalProvider);
+      ref.watch(reflectRtcVideoStateIsMuteVideoLocalProvider);
+
+      return const SizedBox();
+    }));
+
+    return widget;
+  }
+
+  // updateUsersStateWidget
+  static Widget updateUsersStateWidget() {
+    final Widget widget = Consumer(builder: ((context, ref, child) {
+      // users情報取得に失敗した場合、通知する。
+      final usersState = ref.watch(usersStateNotifierProvider);
+
+      if (usersState.isGetDataError) {
+        const snackBar = SnackBar(content: Text("ユーザ情報の取得に失敗しました。"));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
 
       return const SizedBox();
     }));

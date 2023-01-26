@@ -16,6 +16,7 @@ import '../../usecase/channel_leave_clear_user_in_db.dart';
 import '../../usecase/channel_leave.dart';
 import '../../usecase/create_rtc_id_token.dart';
 
+import '../../usecase/is_over_channel_join_limit.dart';
 import '../page/rtc_video_channel_join_page_state.dart';
 
 // --------------------------------------------------
@@ -36,9 +37,8 @@ final progressStateChannelJoinProvider = Provider.autoDispose((ref) {
           .update((state) => "$dateTimeNow: $message");
     }
 
-    const message = "チャンネル参加待機中";
-
-    setMessage(message);
+    // const message = "チャンネル参加待機中";
+    // setMessage(message);
 
     // --------------------------------------------------
     //
@@ -53,6 +53,39 @@ final progressStateChannelJoinProvider = Provider.autoDispose((ref) {
         .select((value) => value.textEditingController.text));
 
     ref.watch(channelNameProvider.notifier).update((state) => channelName);
+
+    // --------------------------------------------------
+    //
+    // チャンネル参加上限人数の確認
+    //
+    // --------------------------------------------------
+
+    try {
+      bool isOverChannelJoinLimit = false;
+
+      // チャンネル参加者上限数を確認
+      final isOverChannelJoinLimitUsecase =
+          ref.watch(isOverChannelJoinLimitUsecaseProvider);
+
+      isOverChannelJoinLimit = await isOverChannelJoinLimitUsecase();
+
+      // チャンネル参加者上限数を超えている場合
+      if (isOverChannelJoinLimit) {
+        const message =
+            "チャンネル参加可能な人数(${RtcVideoState.channelJoinLimit}人)を超えているため参加に失敗しました。";
+        setMessage(message);
+
+        logger.d("isOverChannelJoinLimit: $message");
+        return;
+      }
+    } on StackremoteException catch (error) {
+      final message = "チャンネル参加に失敗しました。: ${error.message}";
+      setMessage(message);
+
+      logger.d("isOverChannelJoinLimit: StackremoteException: $message");
+
+      return;
+    }
 
     // --------------------------------------------------
     //

@@ -5,11 +5,11 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:stackremote/rtc_video/presentation/widget/video_main_state.dart';
 
 import '../../common/common.dart';
 
 import '../domain/rtc_video_state.dart';
+import '../presentation/widget/video_main_state.dart';
 
 String appIdCreator() {
   return dotenv.get("APP_ID");
@@ -65,7 +65,9 @@ Future<RtcEngine> createRtcVideoEngineAgoraInstance() async {
 
   // ビデオのエンコーディング設定
   const videoEncoderConfiguration = VideoEncoderConfiguration(
-    dimensions: VideoDimensions(width: 640, height: 360),
+    // dimensions: VideoDimensions(width: 640, height: 360), // 16 : 9
+    // dimensions: VideoDimensions(width: 720, height: 1280), // 9 : 16
+    dimensions: VideoDimensions(width: 360, height: 640), // 9 : 16
     frameRate: 15,
     bitrate: 0,
   );

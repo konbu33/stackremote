@@ -26,8 +26,8 @@ final progressStateChannelLeaveProvider = Provider((ref) {
           .update((state) => "$dateTimeNow: $message");
     }
 
-    const message = "チャンネル離脱待機中";
-    setMessage(message);
+    // const message = "チャンネル離脱待機中";
+    // setMessage(message);
 
     // --------------------------------------------------
     //

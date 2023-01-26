@@ -14,7 +14,6 @@ import 'rtc_video_repository.dart';
 
 final rtcVideoRepositoryAgoraCreatorProvider = Provider((ref) {
   Future<RtcVideoRepositoryAgora> rtcVideoRepositoryAgoraCreator() async {
-    // final rtcVideoEngineAgora = ref.watch(rtcVideoEngineAgoraNotifierProvider);
     final rtcVideoEngineAgora = ref.watch(rtcVideoEngineAgoraProvider);
 
     return RtcVideoRepositoryAgora(rtcEngine: rtcVideoEngineAgora);
@@ -147,6 +146,31 @@ class RtcVideoRepositoryAgora implements RtcVideoRepository {
     // localのauditoをmute
     try {
       await rtcEngine.muteRemoteVideoStream(uid: remoteUid, mute: isMute);
+    } on Exception catch (e) {
+      logger.d("$e");
+      rethrow;
+    }
+  }
+
+  // --------------------------------------------------
+  //
+  //  setVideoEncoderConfiguration
+  //
+  // --------------------------------------------------
+  @override
+  Future<void> setVideoEncoderConfiguration(Size videoDimensions) async {
+    final dimensions = VideoDimensions(
+      height: videoDimensions.height.toInt(),
+      width: videoDimensions.width.toInt(),
+    );
+
+    final videoEncoderConfiguration = VideoEncoderConfiguration(
+      dimensions: dimensions,
+    );
+
+    // カメラ切り替え
+    try {
+      await rtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration);
     } on Exception catch (e) {
       logger.d("$e");
       rethrow;

@@ -22,8 +22,8 @@ final progressStateChangePasswordProvider = Provider((ref) {
           .update((state) => "$dateTimeNow : $message");
     }
 
-    const message = "パスワード変更中";
-    setMessage(message);
+    // const message = "パスワード変更中";
+    // setMessage(message);
 
     // --------------------------------------------------
     //

@@ -9,11 +9,15 @@ import 'logger.dart';
 // Firebase初期化
 //
 // --------------------------------------------------
-Future<void> firebaseInitialize() async {
+Future<FirebaseApp> firebaseInitialize() async {
   logger.d("start: Firebase Initialize");
+
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
+  final app = await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   logger.d("end: Firebase Initialize");
+
+  return app;
 }

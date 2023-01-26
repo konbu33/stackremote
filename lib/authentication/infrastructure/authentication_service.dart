@@ -15,7 +15,6 @@ abstract class AuthenticationService {
   firebase_auth.User currentUserGet();
   Future<bool> currentUserGetEmailVerified();
   Future<String> currentUserGetIdToken();
-  // Future<String> currentUserRefreshToken();
   Future<firebase_auth.User> currentUserReload();
   Future<void> currentUserSendEmailVerification();
   Future<void> currentUserUpdatePassword(String password);

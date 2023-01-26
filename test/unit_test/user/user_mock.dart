@@ -10,6 +10,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 // ignore: depend_on_referenced_packages
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:stackremote/authentication/authentication.dart';
 import 'package:stackremote/user/domain/user.dart';
@@ -87,6 +88,10 @@ class MocktailUserRepository extends Mock implements UserRepository {}
 // UserRepositoryのMockインスタンス生成
 final MocktailUserRepository userRepository = MocktailUserRepository();
 
+class MocktailSharedPreferences extends Mock implements SharedPreferences {}
+
+final MocktailSharedPreferences sharedPreferences = MocktailSharedPreferences();
+
 // --------------------------------------------------
 //
 // FakeFirebaseAuthUser
@@ -147,6 +152,10 @@ class FakeUserState extends Fake implements User {
   final Offset displayPointerPosition = user.displayPointerPosition;
   @override
   final Size displaySizeVideoMain = user.displaySizeVideoMain;
+  @override
+  final UserColor userColor = UserColor.red;
+  @override
+  final bool isMuteVideo = true;
 }
 
 class FakeUserStateNotifier extends AutoDisposeNotifier<User>

@@ -1,4 +1,5 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter/material.dart';
 
 abstract class RtcVideoRepository {
   const RtcVideoRepository({
@@ -23,6 +24,8 @@ abstract class RtcVideoRepository {
     required int remoteUid,
     required bool isMute,
   });
+
+  Future<void> setVideoEncoderConfiguration(Size videoDimensions);
 
   Future<void> switchCamera();
 

@@ -33,6 +33,9 @@ void main() {
       //
       firebaseAuthUserStateNotifierProvider
           .overrideWith(() => FakeFirebaseAuthUserStateNotifier()),
+
+      sharedPreferencesInstanceProvider.overrideWithValue(sharedPreferences),
+      //
     ]);
 
     //

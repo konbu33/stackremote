@@ -24,12 +24,6 @@ final reflectIsOnBoardingFinishProvier = Provider.autoDispose((ref) async {
 
   final setBoolUsecase = ref.watch(setBoolUsecaseProvider);
   await setBoolUsecase(key: 'isOnBoardingFinish', value: isOnBoardingFinish);
-
-  // final getBoolUsecase = ref.watch(getBoolUsecaseProvider);
-  // final isOnBoardingFinishRes = getBoolUsecase(key: 'isOnBoardingFinish');
-
-  // logger.d(
-  //     "isOnBoardingFinishProvier: isOnBoardingFinishRes: $isOnBoardingFinishRes");
 });
 
 class OnBoardingLayer extends StatelessWidget {

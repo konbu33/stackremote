@@ -24,8 +24,8 @@ final progressStateServiceUseCancellationProvider = Provider((ref) {
           .update((state) => "$dateTimeNow: $message");
     }
 
-    const message = "サービス利用登録解除中";
-    setMessage(message);
+    // const message = "サービス利用登録解除中";
+    // setMessage(message);
 
     // --------------------------------------------------
     //

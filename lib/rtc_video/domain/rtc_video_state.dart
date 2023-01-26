@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/rtc_video/usecase/mute_local_audio.dart';
-import 'package:stackremote/rtc_video/usecase/mute_local_video.dart';
-import 'package:stackremote/rtc_video/usecase/switch_camera.dart';
 import 'package:ulid/ulid.dart';
 
 import '../../common/common.dart';
+import '../usecase/mute_local_audio.dart';
+import '../usecase/mute_local_video.dart';
+import '../usecase/switch_camera.dart';
 
 class RtcVideoState {
   static final rtcIdTokenProvider = StateProvider((ref) => "");
@@ -25,9 +25,22 @@ class RtcVideoState {
 
   static const rtcIdTokenType = "uid";
 
-  static final isMuteAudioLocalProvider = StateProvider((ref) => false);
+  static final isMuteAudioLocalProvider =
+      StateProvider.autoDispose((ref) => false);
+
   static final isMuteVideoLocalProvider = StateProvider((ref) => true);
   static final isUseOutSideCameraProvider = StateProvider((ref) => true);
+
+  static const channelJoinLimit = 3;
+
+  static const continuousParticipationTimeLimitSec = 60 * 10;
+
+  static final isOverContinuousParticipationTimeLimitProvider =
+      StateProvider.autoDispose((ref) => false);
+
+  static final continuousParticipationTimeRemainingProvider =
+      StateProvider.autoDispose((ref) =>
+          const Duration(seconds: continuousParticipationTimeLimitSec));
 }
 
 // --------------------------------------------------
@@ -35,13 +48,13 @@ class RtcVideoState {
 // reflectRtcVideoStateIsMuteAudioLocalProvider
 //
 // --------------------------------------------------
-final reflectRtcVideoStateIsMuteAudioLocalProvider = Provider(
+final reflectRtcVideoStateIsMuteAudioLocalProvider = Provider.autoDispose(
   (ref) async {
     //
 
     final isMuteAudioLocal = ref.watch(RtcVideoState.isMuteAudioLocalProvider);
 
-    logger.d("reflect: $isMuteAudioLocal");
+    logger.d("isMuteAudioLocal: reflect: $isMuteAudioLocal");
 
     final muteLocalAudioStreamUsecase =
         ref.watch(muteLocalAudioStreamUsecaseProvider);

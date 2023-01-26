@@ -180,32 +180,6 @@ class AuthenticationServiceFirebase implements AuthenticationService {
     }
   }
 
-  // // --------------------------------------------------
-  // //
-  // //   currentUserRefreshToken
-  // //
-  // // --------------------------------------------------
-  // @override
-  // Future<String> currentUserRefreshToken() async {
-  //   try {
-  //     final firebase_auth.User user = currentUserGet();
-
-  //     final newToken = user.refreshToken;
-  //     return newToken ?? "";
-
-  //
-  //   } on firebase_auth.FirebaseAuthException catch (e) {
-  //     logger.d("$e");
-
-  //     throw StackremoteException(
-  //       plugin: e.plugin,
-  //       code: e.code,
-  //       message: FirebaseAuthExceptionEnum.messageToJapanese(e),
-  //       stackTrace: e.stackTrace,
-  //     );
-  //   }
-  // }
-
   // --------------------------------------------------
   //
   //   currentUserReload

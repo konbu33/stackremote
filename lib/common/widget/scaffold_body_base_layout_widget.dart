@@ -12,18 +12,25 @@ class ScaffoldBodyBaseLayoutWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        for (final focusNode in focusNodeList) {
-          focusNode.unfocus();
-        }
-      },
-      child: Column(
-        children: [
-          Expanded(
-            child: ScaffoldBodyBaseLayoutWidgetParts.mainWidget(children),
+    return Center(
+      child: Container(
+        constraints: const BoxConstraints(
+          maxWidth: 700,
+        ),
+        child: GestureDetector(
+          onTap: () {
+            for (final focusNode in focusNodeList) {
+              focusNode.unfocus();
+            }
+          },
+          child: Column(
+            children: [
+              Expanded(
+                child: ScaffoldBodyBaseLayoutWidgetParts.mainWidget(children),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

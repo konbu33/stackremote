@@ -19,10 +19,6 @@ class RtcVideoRemotePreviewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
       //
-
-      // final rtcVideoEngineAgora =
-      //     ref.watch(rtcVideoEngineAgoraNotifierProvider);
-
       final rtcVideoEngineAgora = ref.watch(rtcVideoEngineAgoraProvider);
 
       final channelName = ref.watch(channelNameProvider);

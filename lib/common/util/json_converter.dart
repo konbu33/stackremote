@@ -54,61 +54,6 @@ class TextEditingControllerConverter
   }
 }
 
-// // --------------------------------------------------
-// //
-// //  FirestoreTimestampConverter
-// //
-// // --------------------------------------------------
-// class FirestoreTimestampConverter extends JsonConverter<Timestamp?, dynamic> {
-//   const FirestoreTimestampConverter();
-
-//   @override
-//   String? toJson(Timestamp? object) {
-//     if (object == null) return null;
-//     // return object.toString();
-
-//     // Timestampのままだと、String <-> Timestampの変換がうまくできないため、
-//     // TimestampをDateTimeのStringとして保持する。
-//     return object.toDate().toString();
-//   }
-
-//   @override
-//   Timestamp? fromJson(dynamic json) {
-//     if (json is Timestamp) return json;
-
-//     // Timestampのままだと、String <-> Timestampの変換がうまくできないため、
-//     // TimestampをDateTimeのStringとして保持する。
-//     if (json is String) {
-//       final datetime = DateTime.parse(json);
-//       final timestamp = Timestamp.fromDate(datetime);
-//       return timestamp;
-//     }
-
-//     return null;
-//   }
-// }
-
-// // --------------------------------------------------
-// //
-// //  CreatedAtTimestampConverter
-// //
-// // --------------------------------------------------
-// class CreatedAtTimestampConverter extends JsonConverter<Timestamp?, dynamic> {
-//   const CreatedAtTimestampConverter();
-
-//   @override
-//   dynamic toJson(Timestamp? object) {
-//     if (object == null) return FieldValue.serverTimestamp();
-//     return object;
-//   }
-
-//   @override
-//   Timestamp? fromJson(dynamic json) {
-//     if (json is Timestamp) return json;
-//     return null;
-//   }
-// }
-
 // --------------------------------------------------
 //
 //  FocusNodeConverter
@@ -156,37 +101,6 @@ class SizeConverter extends JsonConverter<Size, String> {
     return Size(width, height);
   }
 }
-
-// // --------------------------------------------------
-// //
-// //  DateTimeConverter
-// //
-// // --------------------------------------------------
-// class DateTimeConverter extends JsonConverter<DateTime?, dynamic> {
-//   const DateTimeConverter();
-
-//   @override
-//   String? toJson(DateTime? object) {
-//     if (object == null) return null;
-
-//     return object.toString();
-//   }
-
-//   @override
-//   DateTime? fromJson(dynamic json) {
-//     if (json is Timestamp) {
-//       final dateTime = json.toDate();
-//       return dateTime;
-//     }
-
-//     if (json is String) {
-//       final datetime = DateTime.parse(json);
-//       return datetime;
-//     }
-
-//     return null;
-//   }
-// }
 
 // --------------------------------------------------
 //

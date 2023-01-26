@@ -25,8 +25,8 @@ final progressStateSignUpProvider = Provider.autoDispose((ref) {
           .update((state) => "$dateTimeNow: $message");
     }
 
-    const message = "サービス利用登録中";
-    setMessage(message);
+    // const message = "サービス利用登録中";
+    // setMessage(message);
 
     // --------------------------------------------------
     //

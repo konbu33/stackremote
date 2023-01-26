@@ -16,8 +16,14 @@ void main() async {
   // Firebase初期化
   await firebaseInitialize();
 
+  // FirebaseCrashlytics初期化
+  await firebaseCrashlyticsInitialize();
+
   // flutter_dotenvで変数読み込み
   await loadDotEnv();
+
+  // 画面の向きを縦に固定
+  await setPreferredOrientationsPortraitUp();
 
   // riverpod範囲指定
   runApp(

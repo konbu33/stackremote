@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stackremote/user/user.dart';
 
 import '../../../common/common.dart';
 import '../../../menu/menu.dart';
 
+import '../../../user/user.dart';
 import 'rtc_video_channel_join_page_state.dart';
 
 class RtcVideoChannelJoinPage extends ConsumerWidget {
@@ -154,7 +154,7 @@ class RtcVideoChannelJoinPageWidgets {
     return widget;
   }
 
-  // updateUserStateWidget
+  // reflectStateWidget
   static Widget reflectStateWidget() {
     final Widget widget = Consumer(builder: ((context, ref, child) {
       // localのuserState更新時に、リモートDB上へも反映するためのプロバイダ

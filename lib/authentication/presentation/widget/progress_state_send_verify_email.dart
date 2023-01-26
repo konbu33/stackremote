@@ -23,8 +23,8 @@ final progressStateSendVerifyEmailProvider = Provider((ref) {
           .update((state) => "$dateTimeNow: $message");
     }
 
-    const message = "メール再送信中";
-    setMessage(message);
+    // const message = "メール再送信中";
+    // setMessage(message);
 
     // --------------------------------------------------
     //
