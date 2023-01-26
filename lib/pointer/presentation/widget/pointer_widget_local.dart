@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../user/user.dart';
 import '../../domain/pointer_state.dart';
+import 'pointer_icon.dart';
 import 'pointer_overlay_state.dart';
 
 class PointerWidgetLocal extends ConsumerWidget {
@@ -39,17 +40,9 @@ class PointerWidgetLocal extends ConsumerWidget {
         // Pointerを左上に固定
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Transform.translate(
-            offset: const Offset(11, -8),
-            child: Transform.rotate(
-              angle: -0.9,
-              child: Icon(
-                Icons.navigation,
-                // color: Theme.of(context).primaryColor,
-                color: userColor.color,
-              ),
-            ),
-          ),
+          PointerIconCircle(userColor: userColor),
+          // PointerIconCircleOutLine(userColor: userColor),
+          // PointerIconNavigation(userColor: userColor),
           IntrinsicWidth(
             child: ConstrainedBox(
               constraints: BoxConstraints(
