@@ -25,6 +25,7 @@ export './widget/scaffold_body_base_layout_widget.dart';
 
 export './util/builded_callback_provider.dart';
 export './util/dotenv.dart';
+export './util/firebase_crashlytics_initialize.dart';
 export './util/firebase_firestore_instance.dart';
 export './util/firebase_initialize.dart';
 export './util/json_converter.dart';
