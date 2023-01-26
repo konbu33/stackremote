@@ -8,9 +8,11 @@ import 'package:stackremote/user/user.dart';
 
 import '../user_mock.dart';
 
-void main() {
+void main() async {
   test("ユースケースに渡した引数と同値が、リポジトリのメソッドの引数として利用されていること", () async {
     // given
+    // SharedPreferences.setMockInitialValues({"userColor": "UserColor.red"});
+    // SharedPreferences.setMockInitialValues({"nickName": "nickName"});
 
     // ユースケース内で利用している、該当ProviderをMock,Fakeで上書き
     // override対象のプロバイダーが、Providerの場合は、overrideWithValue メソッドで済みそう。
@@ -19,9 +21,14 @@ void main() {
       //
       firebaseAuthUserStateNotifierProvider
           .overrideWith(() => FakeFirebaseAuthUserStateNotifier()),
+
+      sharedPreferencesInstanceProvider.overrideWithValue(sharedPreferences),
       //
       userRepositoryFirebaseProvider.overrideWithValue(userRepository),
     ]);
+
+    // sharedPreferences.setString("userColor", "UserColor.red");
+    // sharedPreferences.setString("nickName", "nickName");
 
     // ユースケースのインスタンス生成
     final userUpdateUsecase = container.read(userUpdateUsecaseProvider);
@@ -51,6 +58,11 @@ void main() {
       isLeavedAt: isLeavedAt,
       nickName: user.nickName,
       pointerPosition: user.pointerPosition,
+      displayPointerPosition: user.displayPointerPosition,
+      rtcVideoUid: user.rtcVideoUid,
+      displaySizeVideoMain: user.displaySizeVideoMain,
+      userColor: user.userColor,
+      isMuteVideo: user.isMuteVideo,
     );
 
     // then
@@ -92,5 +104,13 @@ void main() {
     expect(capturedData["nickName"], user.nickName);
     expect(capturedData["pointerPosition"],
         const OffsetConverter().toJson(user.pointerPosition));
+
+    expect(capturedData["displayPointerPosition"],
+        const OffsetConverter().toJson(user.displayPointerPosition));
+    expect(capturedData["rtcVideoUid"], user.rtcVideoUid);
+    expect(capturedData["displaySizeVideoMain"],
+        const SizeConverter().toJson(user.displaySizeVideoMain));
+    expect(capturedData["userColor"], user.userColor.toString());
+    expect(capturedData["isMuteVideo"], user.isMuteVideo);
   });
 }
