@@ -29,8 +29,8 @@ class PointerWidgetRemote extends ConsumerWidget {
         // Pointerを左上に固定
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PointerIconCircle(userColor: userColor),
-          // PointerIconCircleOutLine(userColor: userColor),
+          // PointerIconCircle(userColor: userColor),
+          PointerIconCircleOutLine(userColor: userColor),
           // PointerIconNavigation(userColor: userColor),
           IntrinsicWidth(
             child: ConstrainedBox(
