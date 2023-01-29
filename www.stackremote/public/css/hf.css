@@ -1,0 +1,21 @@
+/* CSS Document */
+/*-------------------------------*/
+#wrapHead{
+	position: fixed;
+	z-index: 1;
+	background: rgb(245, 245, 245);
+	/* background:#ffffff; */
+	/* background:#5db5bd; */
+	/* padding-top: 50px; */
+	/* height:130px; */
+	font-size: 130%;
+	/* vertical-align: middle; */
+	margin:auto;
+	padding: 25px;
+	padding-left: 100px;
+	letter-spacing: 3px;
+	/* padding: 40px; */
+	/* font-weight: bold; */
+}
+/*-------------------------------*/
+/*end*/
