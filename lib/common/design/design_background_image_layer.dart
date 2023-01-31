@@ -17,7 +17,7 @@ class DesignBackgroundImageLayer extends SingleChildStatelessWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           repeat: ImageRepeat.repeat,
-          image: AssetImage(Assets.images.backgroundImageFigma.path),
+          image: AssetImage(Assets.images.backgroundImage.path),
         ),
       ),
       child: child,

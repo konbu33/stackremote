@@ -133,11 +133,7 @@ flutter:
   assets:
     - .env
     - assets/images/
-    - assets/images/background_image_cloud_pink.png
-    - assets/images/background_image_cloud_white.png
-    - assets/images/background_image_figma.png
     - assets/images/background_image.png
-    - assets/images/image_figma.png
     - assets/images/onboarding_channel_join.svg
     - assets/images/onboarding_pointer.svg
     - assets/images/onboarding_use_service.svg
