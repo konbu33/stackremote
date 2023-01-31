@@ -6,6 +6,8 @@ This application is designed to support remote communication via video calls.
 
 ## Usage image
 
+### After joining a channel
+
 <!-- <img height=480, width=221 src="https://firebasestorage.googleapis.com/v0/b/stackremote.appspot.com/o/video%2FRPReplay_Final1674793702_%2504d_anim.gif?alt=media&token=843a1c54-6892-4f87-8f4d-68732de95935" /> -->
 
 <video controls height=480 width=221 autoplay muted loop>
@@ -17,6 +19,26 @@ This application is designed to support remote communication via video calls.
 - Voice and video calls are available
 - The pointer can be used to point to the area of interest.
 - Comment can be made in text.
+
+## App Operation
+
+### Before joining the channel
+
+- Tap the menu icon in the upper left corner to display the menu screen. On the menu screen, the following operations are available.
+  - Change Password
+  - Change Nickname
+  - Unsubscribe from Service
+
+### After joining a channel
+
+- Tap the menu icon in the upper left corner to display the controller screen. The following operations are available on the controller screen.
+
+  - Mute audio
+  - Mute video
+  - Switch between cameras
+  - Change color for user identification
+
+- Hold down and drag and drop to display and move the pointer. Tap the pointer to hide it.
 
 ## Limitations
 
