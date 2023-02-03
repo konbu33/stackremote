@@ -19,3 +19,18 @@
 }
 /*-------------------------------*/
 /*end*/
+
+.h1Style {
+	padding: 80px 0 0 0;
+}
+.h2Indent{
+	padding: 0 0 0 20px;
+}
+.h2Indent ol {
+	padding: 0 0 20px 0;
+}
+footer {
+	background-color: white;
+	text-align: center;
+	padding: 20px;
+}

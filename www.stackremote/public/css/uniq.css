@@ -63,7 +63,7 @@ div.wrapHINAGATA ul li ul li ol li{
 	text-indent:-0.2em;
 }
 div.wrapHINAGATA ol{
-	margin:20px 0 0 40px;
+	margin:20px 0 0px 40px;
 }
 div.wrapHINAGATA ol li{
 	list-style:outside decimal;
@@ -72,10 +72,10 @@ div.wrapHINAGATA ol li{
 	margin:10px 0 0 0;
 }
 div.wrapHINAGATA ol li ol{
-margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 div.wrapHINAGATA ol li ol li{
-font-size: 100%;
+	font-size: 100%;
 }
 /*-------------------------------*/
 div.wrapKOPIPE pre{

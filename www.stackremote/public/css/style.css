@@ -62,7 +62,7 @@ background-color: white;
 clear: both;
 width: 100%;
 margin: 0 auto;
-padding-bottom: 100%;
+/* padding-bottom: 100%; */
 text-align: center;
 letter-spacing: 0.7px;
 }
