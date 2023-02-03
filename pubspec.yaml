@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 0.0.1+1
 
 environment:
   sdk: ">=2.17.1 <3.0.0"
@@ -50,6 +50,7 @@ dependencies:
   freezed_annotation: ^2.0.3
   json_annotation: ^4.7.0
   json_serializable: ^6.5.4
+  riverpod_annotation: ^1.1.1
 
   permission_handler: ^10.0.0
   flutter_dotenv: ^5.0.2
@@ -62,7 +63,6 @@ dependencies:
   package_info_plus: ^3.0.2
   onboarding: ^3.1.0
   shared_preferences: ^2.0.16
-  riverpod_annotation: ^1.1.1
   flutter_svg: ^1.1.6
 
 dev_dependencies:
@@ -133,11 +133,7 @@ flutter:
   assets:
     - .env
     - assets/images/
-    - assets/images/background_image_cloud_pink.png
-    - assets/images/background_image_cloud_white.png
-    - assets/images/background_image_figma.png
     - assets/images/background_image.png
-    - assets/images/image_figma.png
     - assets/images/onboarding_channel_join.svg
     - assets/images/onboarding_pointer.svg
     - assets/images/onboarding_use_service.svg

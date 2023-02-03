@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // サインインの認証
+    function isAuthenticated() {
+        return request.auth != null;
+    }
+
+    // 本人の認証
+    function isUserAuthenticated(email) {
+        return isAuthenticated() && request.auth.token.email == email;
+    }
+
+    // Match any document in the 'channels' collection
+    match /channels/{channel} {
+      // read
+      allow get:    if isAuthenticated(); 
+      // deny: list
+
+      // write
+      allow create: if isAuthenticated();
+      // deny: update, delete 
+
+        // Explicitly define rules for the 'users' subcollection
+        match /users/{email} {
+          // read
+          allow get:    if isUserAuthenticated(email);
+          allow list:   if isAuthenticated();
+
+          // write
+          allow create: if isUserAuthenticated(email); 
+          allow update: if isUserAuthenticated(email);
+          // deny: delete 
+
+        }
+    }
+
+  }
+}

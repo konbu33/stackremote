@@ -5,7 +5,7 @@ targets:
         - $package$ # flutter_gen
         - pubspec.yaml # flutter_gen
         - lib/**
-        - test/riverpod_generator/**
+        # - test/riverpod_generator/**
 
     builders:
       # freezed:
@@ -20,5 +20,5 @@ targets:
           # would generate "countPod" instead of "countProvider"
           provider_name_suffix: "Provider" # (default)
           # provider_name_suffix: "Pod" # (default)
-          build_extensions:
-            "^test/sample/{{}}.dart": "test/sample/{{}}.g.dart" # コロンより右側が生成先を指定している。
+          # build_extensions:
+          # "^test/sample/{{}}.dart": "test/sample/{{}}.g.dart" # コロンより右側が生成先を指定している。

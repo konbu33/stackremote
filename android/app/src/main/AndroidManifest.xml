@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.shintaisousa.stackremote">
    <application
-        android:label="stackremote"
+        android:label="StackRemote"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
