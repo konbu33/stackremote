@@ -1,0 +1,80 @@
+body {
+    background-image: url('/images/background_image_figma.png');
+    font-family: "M PLUS 1p", YuGothic, Meiryo, "Hiragino Kaku Gothic ProN", Arial, Helvetica, sans-serif;
+}
+
+.wf-notosansjapanese { font-family: "Noto Sans JP"; }
+.wf-mplus1p { font-family: "M PLUS 1p"; }
+.wf-sawarabigothic { font-family: "Sawarabi Gothic"; }
+
+
+.wrapper {
+    /* opacity: 0.7; */
+    opacity: 0.8;
+    background-color: white;
+
+    /* background-color: rgb(213, 214, 217); */
+    /* background-color: rgb(251, 239, 225); */
+    /* background-color: rgb(251, 211, 197); */
+    /* background-color: rgb(212, 182, 164); */
+
+
+}
+
+header {
+    background-color: white;
+    opacity: 0.9;
+    /* outline: auto; */
+    position: fixed;
+    /* top:0; */
+    /* left:0; */
+    text-align: center;
+    font-size: 28px;
+    width: 100vw;
+}
+
+.base-container {
+    /* color */
+    /* background-color:aqua; */
+
+    /* layout */
+
+    /* outline: auto; */
+
+    margin: auto;  
+    display: flex;
+    flex-flow: column;
+    width: 960px;
+}
+
+main {
+
+    font-weight: bold;
+
+    /* color */
+    /* background-color: antiquewhite; */
+    border: 1px solid black;
+    border-radius: 20px;
+    /* box-shadow: 0 0 5px 0 rgb(210, 210, 210); */
+
+    /* background-color: rgb(213, 214, 217); */
+    /* background-color: rgb(251, 239, 225); */
+    /* background-color: rgb(251, 211, 197); */
+    /* background-color: rgb(212, 182, 164); */
+
+
+    /* layout */
+    /* margin-top: 200px; */
+    margin: 0;
+    margin-top: 150px;
+
+    border-radius: 20px;
+    padding: 20px;
+    /* height: 100vh; */
+}
+
+footer {
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
