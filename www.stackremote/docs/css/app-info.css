@@ -1,0 +1,77 @@
+/* -------------------------------------------------- 
+  
+    app-info
+  
+-------------------------------------------------- */
+.app-info {
+    /* outline: auto; */
+    letter-spacing: 2px;
+    line-height: 1.5rem;
+    margin-right: 60px;
+}
+
+.app-info section {
+    /* outline: auto; */
+    margin-bottom: 50px;
+}
+
+.app-info .row-container {
+    /* outline: auto; */
+    display: flex;
+    gap: 20px
+}
+
+.app-info h2 {
+    /* outline: auto; */
+    margin-left: 40px;
+}
+
+.app-info h3 {
+    /* outline: auto; */
+    margin-left: 60px;
+}
+
+.app-info p {
+    /* outline: auto; */
+    margin-left: 60px;
+}
+
+.app-info .feature ul {
+    /* outline: auto; */
+    margin-left: 20px;
+    list-style: none;
+}
+
+.app-info .feature ul li {
+    /* outline: auto; */
+    flex: 1;
+    margin: 0;
+    padding: 50px;
+    border-radius: 20px;
+    border: 1px solid black;
+}
+.app-info .operation ul {
+    /* outline: auto; */
+    margin-left: 60px;
+}
+
+.app-info .operation ul ul {
+    /* outline: auto; */
+    margin-left: 0;
+    margin-bottom: 20px;
+}
+
+.app-info .limit ul {
+    /* outline: auto; */
+    margin-left: 40px;
+}
+
+.app-info li {
+    /* outline: auto; */
+    padding: 5px;
+}
+
+.app-info .description {
+    /* outline: auto; */
+    margin-top: 50px;
+}

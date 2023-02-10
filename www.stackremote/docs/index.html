@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src=" https://code.jquery.com/jquery-3.6.3.min.js"></script>
+
+    <link href="/css/normalize.css" rel="stylesheet" />
+    <link href="/css/basic.css" rel="stylesheet" />
+    <link href="/css/app-info.css" rel="stylesheet" />
+
+    <link rel="icon" href="data:," />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Noto+Sans+JP"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=M+PLUS+1p"
+      rel="stylesheet"
+    />
+
+    <script>
+      $(window).on("load", function () {
+        const random = Math.random();
+        $("#header").load("/header.html");
+        $("#appInfo").load("/app-info.html");
+        $("#footer").load("/footer.html");
+      });
+    </script>
+
+    <title>StackRemote</title>
+  </head>
+
+  <body>
+    <section class="wrapper Xwf-notosansjapanese wf-mplus1p Xwf-sawarabigothic">
+      <section id="header"></section>
+
+      <section class="base-container">
+        <main>
+          <section id="appInfo"></section>
+        </main>
+
+        <section id="footer"></section>
+      </section>
+    </section>
+  </body>
+</html>
