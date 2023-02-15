@@ -1,0 +1,46 @@
+<!-- <section class="app-inside-outside">
+  <h3>自分のアプリの内側と外側の関係図</h3>
+
+  <section class="description-image">
+    <p>
+      <img
+        width="800"
+        src="https://firebasestorage.googleapis.com/v0/b/stackremote.appspot.com/o/image%2Fapp_inside_outside.png?alt=media&token=1f6f97ea-68d2-41e3-8236-b3c98166c02e"
+      />
+    </p>
+  </section>
+
+  <section class="col-container">
+    <section class="point-comment">
+      <h4>ポイント</h4>
+
+      <ul>
+        <li>
+          ①自分のアプリで扱いやすいWidgetを定義する：青線の流れ
+          <p>
+            まず、Flutterが用意している一般的なWidgetから、自分のアプリ内で利用する「パーツ的なWidget」を、自分のアプリ内で扱いやすい粒度で定義しました。
+            この「パーツ的なWidget」は、汎用的なWidgetとして、複数箇所で使い回したいケースが想定されるため、ステートは分離しました。
+            そして、分離したステートは、Widgetをインスタンス化する際に、コンストラクタの引数として、渡すようにしました。
+            次に「パーツ的なWidgetをまとめるためのWidget」を定義しました。
+            一般的に、Page、Screen、View等と呼ばれる単位に相当するかと思っています。
+            この「パーツ的なWidgetをまとめるためのWidget」でもステートは分離しました。
+            ステートを分離した理由としては、複数の「パーツ的なWidget」を統合する責務のため、
+            コードが肥大化する懸念があり、理解容易性の低下を避けるために、分離しようと考えたためです。
+          </p>
+        </li>
+
+        <li>
+          ②ユーザ間のデータ共有：黒線の流れ
+          <p>
+            基本的に、自分のアプリ内のWidgetは、自分のアプリ内のステートだけを知っている。自分のアプリ外のことは知らない。
+            という考えで実装しました。
+            そのため、Widgetの責務は、ステートを更新する。ステートが更新されたらUIに反映する。ことに制限して実装しました。
+            一方、Widgetからステートが更新された後、例えば、Firestoreや、デバイスのshared_preferencesに永続化するための処理は次のように設計しました。
+            Riverpodを利用して、ステートの更新を監視しておきます。そして、ステートが更新されたら、その更新を検知して永続化の処理が実行されるように設計・実装しました。
+            このようにWidgetの責務・関心事を限定した設計にすることで、永続化の処理を、疎結合に設計しました。
+          </p>
+        </li>
+      </ul>
+    </section>
+  </section>
+</section> -->

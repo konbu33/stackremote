@@ -1,0 +1,31 @@
+<section class="system-diagram">
+  <h2>システム構成図</h2>
+
+  <section class="row-container">
+    <section>
+      <p>
+        <img width="400" src="/images/stackremote_system_diagram_lite.png" />
+      </p>
+    </section>
+
+    <section class="point-comment">
+      <h3>ポイント</h3>
+
+      <ul>
+        <li>
+          「StackRemote」という名前で、iOS/Android用のモバイルアプリをFlutterで作成しました。
+        </li>
+        <li>ビデオ通話は、Agora社のVideo Calling機能を利用しました。</li>
+        <li>認証は、Firebase Authenticatonのパスワード認証を利用しました。</li>
+        <li>
+          ビデオ通話を開始するためにはAgoraのTokenが必要になります。このTokenを発行するために、Cloud
+          Functionsを利用して、自前でTokenサーバを構築しました。言語はTypeScriptで作成しました。
+        </li>
+        <li>
+          ポインタ位置等、ユーザ間でのリアルタイムなデータ共有に、Frebase
+          Firestoreを利用しました。
+        </li>
+      </ul>
+    </section>
+  </section>
+</section>

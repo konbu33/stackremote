@@ -1,5 +1,5 @@
 body {
-    background-image: url('/images/background_image_figma.png');
+    background-image: url('/images/background_image.png');
     font-family: "M PLUS 1p", YuGothic, Meiryo, "Hiragino Kaku Gothic ProN", Arial, Helvetica, sans-serif;
 }
 
@@ -29,8 +29,10 @@ header {
     /* top:0; */
     /* left:0; */
     text-align: center;
-    font-size: 28px;
+    font-size: 26px;
     width: 100vw;
+    margin: auto;
+    z-index: 2;
 }
 
 .base-container {
@@ -45,6 +47,7 @@ header {
     display: flex;
     flex-flow: column;
     width: 960px;
+    font-size: 14px;
 }
 
 main {

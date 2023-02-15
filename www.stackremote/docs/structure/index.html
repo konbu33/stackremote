@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src=" https://code.jquery.com/jquery-3.6.3.min.js"></script>
+
+    <link href="/css/normalize.css" rel="stylesheet" />
+    <link href="/css/basic.css" rel="stylesheet" />
+    <link href="/css/structure.css" rel="stylesheet" />
+
+    <link rel="icon" href="data:," />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Noto+Sans+JP"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=M+PLUS+1p"
+      rel="stylesheet"
+    />
+
+    <script>
+      $(window).on("load", function () {
+        const random = Math.random();
+        $("#header").load("/header.html");
+        $("#footer").load("/footer.html");
+      });
+    </script>
+
+    <title>StackRemote</title>
+  </head>
+
+  <body>
+    <section class="wrapper Xwf-notosansjapanese wf-mplus1p Xwf-sawarabigothic">
+      <section id="header"></section>
+
+      <section class="base-container">
+        <main>
+          <section class="structure">
+            <section id="introDescription"></section>
+            <section id="systemDiagram"></section>
+            <section id="codeScale"></section>
+
+            <section id="dirStructure"></section>
+            <section id="packageDependencies"></section>
+            <section id="architecture"></section>
+            <section id="designPoint"></section>
+            <section id="testCoverage"></section>
+          </section>
+        </main>
+
+        <script>
+          $(window).on("load", function () {
+            const random = Math.random();
+            $("#introDescription").load("intro-description.html");
+            $("#systemDiagram").load("system-diagram.html");
+            $("#codeScale").load("code-scale.html");
+
+            $("#dirStructure").load("dir-structure.html");
+            $("#packageDependencies").load("package-dependencies.html");
+            $("#architecture").load("architecture.html");
+
+            $("#designPoint").load("design-point.html");
+            $("#testCoverage").load("test-coverage.html");
+          });
+        </script>
+
+        <section id="footer"></section>
+      </section>
+    </section>
+  </body>
+</html>

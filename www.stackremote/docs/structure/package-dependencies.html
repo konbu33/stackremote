@@ -1,0 +1,52 @@
+<section class="package-dependencies">
+  <h2>依存パッケージ</h2>
+
+  <section class="row-container">
+    <section>
+      <h3>dependencies</h3>
+      <p>
+        <img width="400" src="/images/package_dependencies.png" />
+      </p>
+    </section>
+
+    <section class="point-comment">
+      <h3>ポイント</h3>
+
+      <ul>
+        <li>ステート管理は、riverpod を利用しています。</li>
+        <li>ルーティングは、go_routerを利用しています。</li>
+        <li>ビデオ通話は、agora_rtc_engineを利用しています。</li>
+        <li>immutableなステートを実現するために、freezedを利用しています。</li>
+        <li>
+          機密性の高いconfigを外出しするために、flutter_dotenvを利用しています。
+        </li>
+        <li>
+          アプリ停止しても永続化しておきたいステートを保持するために、shared_preferencesを利用しています。
+        </li>
+      </ul>
+    </section>
+  </section>
+
+  <section class="row-container">
+    <section>
+      <h3>dev_dependencies</h3>
+      <p>
+        <img width="400" src="/images/package_dev_dependencies.png" />
+      </p>
+    </section>
+
+    <section class="point-comment">
+      <h3>ポイント</h3>
+
+      <ul>
+        <li>テストは、mocktail を利用しています。</li>
+        <li>goldent_test と integration_test も利用しています。</li>
+        <li>
+          テストの実装状況ですが、channel、user
+          ディレクトリの部分で、Firestoreへデータを出し入れする箇所のUnitテストは実装しました。
+          しかし、最適化・最新化する等、まだ十分に実装できていない状況です。また、その他のテストはまだ未実装です。
+        </li>
+      </ul>
+    </section>
+  </section>
+</section>

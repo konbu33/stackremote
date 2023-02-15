@@ -1,0 +1,58 @@
+<section class="dir-structure">
+  <h2>ディレクトリ構成</h2>
+
+  <section class="row-container">
+    <section>
+      <p>
+        <img width="400" src="/images/dir_structure.png" />
+      </p>
+    </section>
+
+    <section class="point-comment">
+      <h3>ポイント</h3>
+
+      <ul>
+        <li>
+          基本的に、機能単位でディレクトリ分割しています。機能単位で追加・削除し易くしておきたいという思いがあります。
+        </li>
+        <li>
+          common
+          ディレクトリには、その他の機能が共通で利用するコンポーネントを配置しています。
+        </li>
+        <li>
+          以下、アプリを利用する流れに沿って、各ディレクトリとの関連を記載します。
+        </li>
+
+        <ol>
+          <li>
+            main.dart
+            からアプリ起動し、まず、オンボーディング機能が開始されます(onbording_layer.dart、onbording
+            ディレクトリ)
+          </li>
+          <li>
+            オンボーディング完了後、認証機能が開始されます。(authentication_layer.dart、authentication
+            ディレクトリ)
+          </li>
+          <li>
+            認証完了後、ビデオ通話開始前のチャンネル参加画面に遷移します。また、メニューも利用可能になります。(rtc_video、menu
+            ディレクトリ)
+          </li>
+          <li>
+            チャンネル参加すると、ビデオ通話開始されます。同時に、「ユーザ間で共有する必要があるデータ」をFirestoreで共有開始します。
+          </li>
+          <li>
+            ユーザ間で共有するデータは、主にchannel,
+            userのデータです。(channel、user ディレクトリ)
+          </li>
+          <li>
+            チャンネル参加中、ポインタ機能を利用可能になります(pointer
+            ディレクトリ)
+          </li>
+          <li>
+            ポインタの位置のデータ等も、ユーザ間で共有します。ポインタ関連のデータは、userのデータに含めて(集約して)Firestoreに出し入れします。
+          </li>
+        </ol>
+      </ul>
+    </section>
+  </section>
+</section>

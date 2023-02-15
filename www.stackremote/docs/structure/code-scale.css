@@ -1,0 +1,19 @@
+.structure .code-scale {
+    /* outline: auto; */
+}
+
+.structure .code-scale table {
+    /* outline: auto; */
+    border-spacing: 30px 10px;
+    text-align: left;
+}
+
+.structure .code-scale table th {
+    /* outline: auto; */
+    border-bottom: 1px solid black;
+}
+
+.structure .code-scale table .int {
+    /* outline: auto; */
+    text-align: right;
+}

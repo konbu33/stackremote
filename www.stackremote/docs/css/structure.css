@@ -1,0 +1,66 @@
+@import url("/structure/intro-description.css");
+/* @import url("/structure/system-diagram.css"); */
+@import url("/structure/code-scale.css");
+/* @import url("/structure/dir-structure.css"); */
+/* @import url("/structure/package-dependencies.css"); */
+/* @import url("/structure/architecture.css"); */
+@import url("/structure/design-point.css");
+@import url("/structure/test-coverage.css");
+
+/* -------------------------------------------------- 
+  
+    structure
+  
+-------------------------------------------------- */
+.structure {
+    /* outline: auto; */
+    letter-spacing: 2px;
+    line-height: 1.5rem;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.structure section {
+    /* outline: auto; */
+    margin-bottom: 50px;
+}
+
+.structure h2 {
+    /* outline: auto; */
+}
+
+.structure h3 {
+    /* outline: auto; */
+    margin-left: 20px;
+}
+
+.structure p {
+    /* outline: auto; */
+    margin-left: 20px;
+}
+
+
+
+
+.structure .row-container {
+    /* outline: auto; */
+    display: flex;
+    gap: 20px
+}
+
+.structure .row-container .point-comment {
+    /* outline: auto; */
+    /* font-size: 12px; */
+}
+
+.structure .row-container .point-comment h3 {
+    /* outline: auto; */
+    margin: 0;
+    margin-top: 20px;
+}
+
+.structure .row-container li {
+    /* outline: auto; */
+    padding: 5px;
+}
+

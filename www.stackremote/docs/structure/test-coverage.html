@@ -1,0 +1,46 @@
+<section class="test-coverage">
+  <section class="title">
+    <h2>テスト</h2>
+  </section>
+
+  <section class="item-group">
+    <h3>モックライブラリ</h3>
+
+    <p>
+      モックライブラリとして、mocktailを利用しています。
+      他の選択肢として、mockitoも試してみました。
+      試した結論としては、mocktailも、mockitoと同等に利用できました。
+      また、mockitoはコード生成が必要になるのですが、
+      mocktailはコード生成が不要なため、よりシンプルなmocktailを利用することにしました。
+      またその他に、Firebase関連のモック・フェイクとして、fake_cloud_firestore
+      とfirebase_auth_mocks を利用しています。
+    </p>
+  </section>
+
+  <section class="item-group">
+    <h3>テスト記述状況</h3>
+
+    <p>下記テストを実行できるようにプロジェクトに導入しました。</p>
+
+    <ul>
+      <li>Unit Test</li>
+      <li>Widget Test</li>
+      <li>Integration Test</li>
+      <li>Golden Test</li>
+    </ul>
+
+    <p>
+      現時点でテスト記述できている部分は、Unit Testの一部のみです。
+      その他のテストについては、テストを実行可能か確認する用のテストを記述した程度です。
+    </p>
+  </section>
+
+  <section class="item-group">
+    <h3>Unit Test</h3>
+
+    <p>
+      テスト記述できている部分は、ディレクトリ構成で言うと「channelとuser」の部分です。
+      主に、Firestoreに対して、データを出し入れするコードのテストを記述しました。
+    </p>
+  </section>
+</section>

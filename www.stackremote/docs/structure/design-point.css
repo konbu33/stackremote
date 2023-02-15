@@ -1,0 +1,43 @@
+.structure .design-point .item-group {
+    border: 1px solid black;
+    border-radius: 10px;
+    position: relative;
+    margin-left: 20px;
+}
+
+.structure .design-point .item-group h3 {
+    position: absolute;
+    background-color: white;
+    padding: 5px;
+    transform: translateY(-100%);
+}
+
+.structure .design-point .item-group p {
+    margin: 30px;
+    font-size: 12px;
+}
+
+.structure .design-point .item-group ul  {
+    /* margin: 30px; */
+    font-size: 12px;
+    list-style: none;
+}
+
+
+
+
+/* .structure .design-point .description-image {
+    margin-left: 20px;
+} */
+
+/* .structure .design-point .col-container {
+    margin-left: 40px;
+} */
+
+/* .structure .design-point .col-container ul {
+    list-style: none;
+} */
+
+/* .structure .design-point .col-container ul li {
+    margin-bottom: 40px;
+} */
