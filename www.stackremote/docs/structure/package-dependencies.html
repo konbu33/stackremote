@@ -39,13 +39,17 @@
       <h3>ポイント</h3>
 
       <ul>
-        <li>テストは、mocktail を利用しています。</li>
+        <li>テストのモックライブラリは、mocktail を利用しています。</li>
         <li>goldent_test と integration_test も利用しています。</li>
         <li>
+          Firebase関連のモック・フェイクとして、fake_cloud_firestore
+          とfirebase_auth_mocks を利用しています。
+        </li>
+        <!-- <li>
           テストの実装状況ですが、channel、user
           ディレクトリの部分で、Firestoreへデータを出し入れする箇所のUnitテストは実装しました。
           しかし、最適化・最新化する等、まだ十分に実装できていない状況です。また、その他のテストはまだ未実装です。
-        </li>
+        </li> -->
       </ul>
     </section>
   </section>

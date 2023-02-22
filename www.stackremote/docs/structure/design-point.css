@@ -13,7 +13,7 @@
 }
 
 .structure .design-point .item-group p {
-    margin: 30px;
+    margin: 30px; 
     font-size: 12px;
 }
 
@@ -21,5 +21,24 @@
     /* margin: 30px; */
     font-size: 12px;
     list-style: none;
+}
+
+.structure .design-point .description-image {
+    margin-left: 20px;
+}
+
+.structure .design-point .item-group ol  {
+    font-size: 12px;
+    margin-left: 20px;
+}
+
+.structure .design-point #separateWidgetState  {
+    padding-top: 160px;
+    margin-top: -160px;
+}
+
+
+.structure .design-point .item-group a  {
+    text-decoration: none;
 }
 
