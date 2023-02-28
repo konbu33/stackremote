@@ -33,6 +33,7 @@
     <script>
       $(window).on("load", function () {
         const random = Math.random();
+        $("#googleAnalytics").load("/google-analytics.html");
         $("#header").load("/header.html");
         $("#appInfo").load("/app-info.html");
         $("#footer").load("/footer.html");
@@ -41,6 +42,8 @@
 
     <title>StackRemote</title>
   </head>
+
+  <section id="googleAnalytics"></section>
 
   <body>
     <section class="wrapper Xwf-notosansjapanese wf-mplus1p Xwf-sawarabigothic">
